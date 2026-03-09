@@ -1,4 +1,4 @@
-# Phase 0 — i18n & Layout Foundation (DEV-17, DEV-18, DEV-19, DEV-20, DEV-21)
+# Phase 0 — i18n & Layout Foundation (DEV-17, DEV-18, DEV-19, DEV-20, DEV-21, DEV-23)
 
 Study topics covering the concepts behind next-intl v4, URL-based locale routing, and RTL/LTR layout in Next.js 16.
 
@@ -558,3 +558,112 @@ This separation also makes the pure functions trivially testable with Vitest (no
 **Resources:**
 - [Next.js: Server vs Client Components](https://nextjs.org/docs/app/building-your-application/rendering/composition-patterns)
 - [next-intl: useFormatter hook](https://next-intl.dev/docs/usage/numbers)
+
+---
+
+## 22. Cookie-Based Locale Persistence (NEXT_LOCALE)
+
+**What:** A browser cookie named `NEXT_LOCALE` that stores the user's last-chosen locale so future visits default to it without requiring a URL change.
+
+**Why it matters:** Zerupt supports `ar` and `en`. A user who prefers Arabic shouldn't have to navigate to `/ar/` every time. The cookie makes the preference sticky across sessions — no backend profile needed at this stage.
+
+**How it works / Key concepts:**
+
+next-intl's middleware compares the requested locale against the user's `accept-language` header. When they differ (e.g. user navigates to `/ar/` but browser says `en`), the middleware infers the user explicitly chose a different locale and sets:
+
+```http
+Set-Cookie: NEXT_LOCALE=ar; Path=/; SameSite=Lax
+```
+
+On the next visit to `/`, the middleware reads this cookie and redirects to `/ar/` automatically. No explicit `document.cookie` or `cookies()` code is needed in your app — it is entirely handled by `createMiddleware(routing)` in `proxy.ts`.
+
+You can customise or disable this cookie via the `localeCookie` option in `defineRouting`.
+
+**Resources:**
+- [next-intl: localeCookie config](https://next-intl.dev/docs/routing/configuration#localecookie)
+- [next-intl: locale detection order](https://next-intl.dev/docs/routing/middleware#locale-detection)
+
+---
+
+## 23. Typed Navigation Helpers (createNavigation)
+
+**What:** `createNavigation(routing)` from next-intl generates locale-aware versions of Next.js navigation primitives — `Link`, `useRouter`, `usePathname`, `redirect` — that are typed to your supported locales and automatically inject the correct locale prefix into every href.
+
+**Why it matters:** Without this, you'd import from `next/navigation` and manually pass `locale` everywhere. With it, `router.replace('/dashboard', { locale: 'ar' })` navigates to `/ar/dashboard` — locale injection is automatic and type-safe.
+
+**How it works / Key concepts:**
+
+```ts
+// src/i18n/navigation.ts
+import { createNavigation } from "next-intl/navigation";
+import { routing } from "./routing";
+
+export const { Link, redirect, usePathname, useRouter } = createNavigation(routing);
+```
+
+Import these instead of `next/navigation` across the entire app. TypeScript will error if you pass an unsupported locale.
+
+**Resources:**
+- [next-intl: Navigation API](https://next-intl.dev/docs/routing/navigation)
+
+---
+
+## 24. useCallback for Stable Hook Return Values
+
+**What:** `useCallback(fn, deps)` memoises a function so the same reference is returned across renders as long as dependencies haven't changed.
+
+**Why it matters:** Hooks that return functions (like `useLocalePref`'s `setLocale`) should return stable references. If a parent component passes `setLocale` to a child as a prop or puts it in a `useEffect` dependency array, a new reference on every render causes unnecessary re-renders or effect re-runs — a common React performance bug.
+
+**How it works / Key concepts:**
+
+```ts
+const setLocale = useCallback(
+  (next: Locale): void => {
+    if (next === currentLocale) return;
+    router.replace(pathname, { locale: next });
+  },
+  [router, pathname, currentLocale],
+);
+```
+
+Rule of thumb: any function returned from a custom hook should be wrapped in `useCallback`. This is especially true when the hook abstracts navigation or side-effectful operations.
+
+**Resources:**
+- [React: useCallback reference](https://react.dev/reference/react/useCallback)
+
+---
+
+## 25. Testing React Hooks and Components with Vitest + jsdom
+
+**What:** Vitest runs in Node by default, but React hooks and components need a browser-like DOM environment. The `jsdom` environment simulates `document`, `window`, and browser APIs inside Node so tests can render components without a real browser.
+
+**Why it matters:** Zerupt's web app has client components and custom hooks. Without jsdom, `renderHook` and `render` from `@testing-library/react` throw because DOM APIs don't exist.
+
+**How it works / Key concepts:**
+
+Configure Vitest globally:
+```ts
+// vitest.config.ts
+export default defineConfig({
+  plugins: [react()],          // transforms JSX in test files
+  test: {
+    environment: "jsdom",      // DOM APIs available in all tests
+    setupFiles: ["./src/test-setup.ts"],  // runs before each test file
+  },
+});
+```
+
+Setup file extends Vitest's `expect` with jest-dom matchers:
+```ts
+// src/test-setup.ts
+import "@testing-library/jest-dom";
+```
+
+Override per file if a test genuinely needs Node:
+```ts
+// @vitest-environment node
+```
+
+**Resources:**
+- [Vitest: test environments](https://vitest.dev/guide/environment)
+- [Testing Library: renderHook](https://testing-library.com/docs/react-testing-library/api/#renderhook)

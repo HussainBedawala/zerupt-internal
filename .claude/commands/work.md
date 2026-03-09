@@ -2,28 +2,43 @@
 description: "Pick up the next Linear issue and orchestrate the full development SOP. Delegates to existing commands at each phase."
 ---
 
-You are the Zerupt development orchestrator. You pick up one Linear issue and walk through each phase, delegating to existing commands. Pause after each phase for user approval.
+You are the Zerupt development orchestrator. You pick up one Linear issue and walk through each phase. Pause after each phase for user approval before proceeding.
 
 ## PHASE 1: PICK ISSUE
 
-Find the next issue using this priority:
+Find the next issue using this priority order:
 
-1. Check for any "In Progress" issue in Development team → resume it
-2. Otherwise: find the active project (status "In Progress") → its first incomplete milestone (by sortOrder) → first "Todo" issue (by priority then identifier number)
+1. Check for any "In Progress" issue in the Development team → resume it
+2. Otherwise: find the active project (status = "In Progress") → its first incomplete milestone (by sortOrder, lowest first) → first "Todo" or "New" issue (by priority ascending, then identifier number ascending)
 
-Use Linear MCP: `list_projects` → `list_milestones` → `list_issues` → `get_issue`
+**Milestone completeness rule:** A milestone is incomplete if any issue in it has status other than "Done" or "Cancelled". Skip milestones where all issues are Done/Cancelled.
 
-Present the issue summary. Ask: "Start this issue? (yes / skip / pick different)"
+**Issue status precedence for selection:** Todo > New > Soon (in that order). "Soon" is a backlog state — only pick it if no Todo/New issues exist in the milestone.
+
+Use Linear MCP in this order: `list_projects` → `list_milestones` → `list_issues` (filter by project) → `get_issue` for full description.
+
+Present a summary table:
+- Issue: DEV-XX — Title
+- Milestone: name
+- Priority: Urgent/High/Medium/Low
+- Labels: list
+- Description: 2-3 line summary
+
+Ask: "Start this issue? (yes / skip / pick different)"
 
 If yes → `save_issue` to set status "In Progress"
 
 ## PHASE 2: BRANCH
 
-Create branch: `<phase>/<DEV-XX>-<short-kebab-description>`
+**IMPORTANT:** Always run `git checkout -b <branch>` from inside the `erp/` directory (the git repo root is at `/Users/hus3ain/Development/Zerupt/erp/`). The `/Zerupt/` root is a separate local-only git repo with no remote.
+
+Branch format: `phase-0/<DEV-XX>-<short-kebab-description>`
 
 Phase prefixes: phase-0, phase-1, phase-2, phase-3, phase-4a, phase-4b, phase-4c, phase-5, phase-6, phase-7, phase-8, website
 
-Run `git checkout -b <branch>`. Ask: "Branch created. Continue?"
+Run: `cd /Users/hus3ain/Development/Zerupt/erp && git checkout -b <branch>`
+
+Confirm the branch was created with `git branch`. Ask: "Branch created. Continue?"
 
 ## PHASE 3: READ SPEC
 
@@ -36,87 +51,141 @@ Read the relevant spec from `agent-os/product/{module}/` based on the issue's pr
 - Phase 5 → `onboarding/`
 - Phase 6 → `dashboard/` + `reports/`
 - Phase 7 → `agents/`
-- Auth issues → also read `user-auth-management/`
+- Auth/security issues → also read `user-auth-management/`
 
-Summarize what's relevant. Ask: "Spec reviewed. Additional context? (continue / add context)"
+For Phase 0 infra issues, also check: `erp/.env.example` to understand the current env var state.
+
+Summarize what's relevant to this specific issue (not the whole spec). Ask: "Spec reviewed. Additional context? (continue / add context)"
 
 ## PHASE 4: FETCH DOCS
 
-Scan the issue for external packages (NestJS, Prisma, Supabase, next-intl, BullMQ, etc.). For each, use context7 MCP (`resolve-library-id` → `query-docs`) to fetch latest docs.
+Scan the issue title + description for external packages (e.g. next-intl, Prisma, BullMQ, Sentry, Supabase, etc.).
 
-Only fetch what's directly relevant. Ask: "Docs fetched for [list]. Continue to planning?"
+For each relevant package, use context7 MCP:
+1. `resolve-library-id` with the package name + a task-specific query
+2. `query-docs` with the exact task (e.g. "NestJS setup with JWT validation") — be specific
+
+Fetch in parallel when possible. Only fetch what's directly needed for this issue.
+
+Tell the user: "Docs fetched for: [package list]. Continue to planning?"
 
 ## PHASE 5: PLAN
 
-Run the `/plan` command behavior. The planner agent creates the implementation plan.
+Present a clear implementation plan before writing any code. Include:
+- What files will be created/modified
+- What packages will be installed
+- What the user needs to do manually (e.g. cloud console setup, credentials)
+- What credentials/values to provide back (if applicable)
+- Any risks or blockers
 
-**Do NOT write code until user approves the plan.**
+**Do NOT write any code until the user approves the plan.**
+
+Ask: "Approve this plan? (yes / adjust)"
 
 ## PHASE 6: TDD
 
 Run the `/tdd` command behavior. The tdd-guide agent writes tests first (RED → GREEN → REFACTOR).
 
-Coverage: 80%+ general, 100% for financial/auth code.
+**Coverage targets:**
+- General code: 80%+
+- Financial/accounting code: 100%
+- Auth/security code: 100%
+
+**Exception:** Pure infrastructure/provisioning issues (no business logic, just SDK init + env vars) do not require tests. Document this exception explicitly when skipping.
 
 ## PHASE 7: CODE REVIEW
 
 Run the `/code-review` command behavior.
 
 Additionally invoke based on issue labels:
-- Security/auth labels → `security-reviewer` agent
+- Security / auth labels → `security-reviewer` agent
 - Database label → `database-reviewer` agent
-- AI Service/Python label → `python-reviewer` agent
+- AI Service / Python label → `python-reviewer` agent
 
-Fix CRITICAL/HIGH findings before continuing.
+Fix all CRITICAL and HIGH findings before continuing. Document MEDIUM findings as follow-up Linear issues if not fixed.
 
 ## PHASE 8: VERIFY
 
-Run the `/verify` command behavior (build → types → lint → tests → security → git status).
+Run the following checks in order:
+1. `pnpm --filter @zerupt/api typecheck`
+2. `pnpm --filter @zerupt/web typecheck`
+3. `pnpm turbo lint` (or per-app lint)
+4. `pnpm turbo test` (or per-app test)
+5. `git status` — confirm no unintended files staged
 
-Do not proceed until all checks pass.
+Do not proceed until all checks pass. If a check fails, fix it before moving on.
 
-## PHASE 9: COMMIT + PR + LINEAR SYNC
+## PHASE 9: COMMIT + LINEAR SYNC
 
-1. Stage specific files (not `git add .`)
-2. Commit:
+**Commit rules:**
+- Stage specific files only — never `git add .` or `git add -A`
+- All commits go to `erp/` repo (has GitHub remote): `cd /Users/hus3ain/Development/Zerupt/erp`
+- Study files go to root `/Zerupt/` repo (local-only, no remote): commit there separately
+- Commit message subject MUST be all lowercase (commitlint enforces this)
+
+**Commit format:**
 ```
-<type>(<scope>): <description>
+<type>(<scope>): <lowercase description>
 
-[body]
+- bullet point details
+- what was added/changed and why
 
 Closes DEV-XX
-
-Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
 ```
+
 Type from labels: Feature→feat, Bug→fix, Infrastructure→chore, Database→chore(db), Security→feat(security)
 Scope from app: web, api, ai, shared, db, db-admin, ui
 
-3. Push: `git push -u origin <branch>`
-4. Create PR:
-```
-gh pr create --title "<type>(<scope>): <description> [DEV-XX]" --body "Closes DEV-XX ..."
-```
-Include: summary bullets, files changed, test coverage, test plan checklist.
+**Push:** `git push origin main` (we commit directly to main for Phase 0 infra work; feature branches will be used from Phase 1 onwards when there is more parallel work)
 
-5. Comment PR URL on the Linear issue via `save_comment`
-6. Ask: "PR created. Merge now? (yes / later)"
-   - If yes → `gh pr merge --squash` → Linear auto-moves to Done
-   - If later → stays open, auto-completes on future merge
+**Linear sync:**
+- `save_issue` → set status to "Done"
+- `save_comment` on the issue with: commit hash, files changed, env vars added, notes for future issues
 
 ## PHASE 10: STUDY TOPICS
 
-Generate study topics at `study/<phase>/<milestone-kebab>/README.md`. Topics = concepts behind what was just built, with 2-3 resource links each.
+**Location:** `study/<phase>/<milestone-kebab>/README.md` — in the root `/Zerupt/` repo (not `erp/`)
+
+**If the file already exists** (same milestone as a previous issue): append new sections to it, update the title to include the new DEV-XX.
+
+**If it doesn't exist:** create it.
+
+**Format per topic:**
+```markdown
+## N. Topic Name
+
+**What:** one sentence definition
+
+**Why it matters:** why this is relevant to Zerupt specifically
+
+**How it works / Key concepts:** code snippet or bullet list
+
+**Resources:**
+- [Link title](url)
+- [Link title](url)
+```
+
+Topics should cover the *concepts behind what was built* — not implementation steps, but the "why" and "how it works under the hood." Write for a smart developer who is new to the specific technology.
+
+Commit study file to root `/Zerupt/` repo after writing.
 
 ## PHASE 11: CONTENT CHECK
 
-If the issue is content-worthy (shipped visible feature, hit milestone, interesting technical problem):
-- Create issue in Linear Marketing team with labels `dev-triggered` + format + pillar
-- Reference `agent-os/content-style-guide.md`
+Check if the issue is content-worthy for Instagram/X:
+- Shipped a visible feature users will see?
+- Hit a milestone (100% complete)?
+- Solved an interesting technical problem?
+- Good "build in public" moment?
 
-If not content-worthy, skip.
+If yes: read `agent-os/content-style-guide.md` → create issue in Linear **Marketing** team with:
+- Labels: `dev-triggered` + relevant format + pillar
+- Description: what was shipped, why it matters to the audience
 
-## PHASE 12: NEXT
+If not content-worthy: skip silently (do not mention the skip).
 
-Ask: "DEV-XX done. Next issue? (yes / done for today)"
-- If yes → restart from PHASE 1
-- If done → run `/learn-eval` to extract session patterns
+## PHASE 12: NEXT ISSUE PREP + WRAP
+
+1. Move the next logical issue to "Todo" status in Linear (`save_issue` with `state: "Todo"`)
+2. Ask: "DEV-XX done. Next issue? (yes / done for today)"
+   - If yes → restart from PHASE 1
+   - If done → run `/learn-eval` to extract session patterns

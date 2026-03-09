@@ -1,4 +1,4 @@
-# Phase 0 — i18n & Layout Foundation (DEV-17)
+# Phase 0 — i18n & Layout Foundation (DEV-17, DEV-18)
 
 Study topics covering the concepts behind next-intl v4, URL-based locale routing, and RTL/LTR layout in Next.js 16.
 
@@ -133,3 +133,109 @@ const messageLoaders: Record<Locale, () => Promise<{ default: object }>> = {
 **Resources:**
 - [next-intl messages loading](https://next-intl.dev/docs/usage/configuration#i18n-request)
 - [Webpack dynamic imports and tree-shaking](https://webpack.js.org/guides/tree-shaking/)
+
+---
+
+## 6. CSS Logical Properties
+
+**What:** CSS logical properties are direction-agnostic equivalents of physical properties like `margin-left`. They map to the correct physical side based on the element's writing direction.
+
+**Why it matters:** Zerupt ships in Arabic (RTL) and English (LTR) from day one. If you write `margin-left: 16px`, it means "left" regardless of direction — breaking Arabic layout. Logical properties flip automatically so one codebase works for both directions.
+
+**How it works / Key concepts:**
+```
+Physical → Logical equivalent
+margin-left       → margin-inline-start
+margin-right      → margin-inline-end
+padding-left      → padding-inline-start
+padding-right     → padding-inline-end
+left: 0           → inset-inline-start: 0
+right: 0          → inset-inline-end: 0
+border-left       → border-inline-start
+text-align: left  → text-align: start
+```
+Tailwind v3 logical utility classes:
+- `ms-4` = `margin-inline-start: 1rem`
+- `pe-2` = `padding-inline-end: 0.5rem`
+- `start-0` = `inset-inline-start: 0`
+
+**Resources:**
+- [MDN: CSS Logical Properties](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_logical_properties_and_values)
+- [Tailwind logical properties](https://tailwindcss.com/docs/margin#using-logical-properties)
+
+---
+
+## 7. Tailwind RTL/LTR Variants (Built-in v3.3+)
+
+**What:** Tailwind v3.3 introduced built-in `rtl:` and `ltr:` variants that apply a class only when the nearest `dir` attribute matches.
+
+**Why it matters:** Some styles can't be expressed with logical properties alone (e.g. `transform: scaleX(-1)` to mirror an icon). The `rtl:`/`ltr:` variants cover these cases without needing a separate plugin.
+
+**How it works / Key concepts:**
+- No plugin needed — works out of the box in Tailwind v3.3+
+- Variants are inherited: they check the closest ancestor with a `dir` attribute
+- Use logical property classes first (`ms-*`, `start-*`); use `rtl:` / `ltr:` only when logical properties are insufficient
+
+```tsx
+// Mirror a chevron icon in RTL without duplicating components
+<ChevronRight className="rtl:rotate-180 transition-transform" />
+
+// Logical properties (preferred — no variant needed)
+<div className="ms-4 ps-2 start-0">...</div>
+
+// Physical direction override (use sparingly)
+<div className="ltr:text-left rtl:text-right">...</div>
+```
+
+**Resources:**
+- [Tailwind RTL support docs](https://tailwindcss.com/docs/hover-focus-and-other-states#rtl-support)
+
+---
+
+## 8. React Hydration and `suppressHydrationWarning`
+
+**What:** React hydration is the process of attaching React's event system to server-rendered HTML. A hydration mismatch occurs when the HTML the server sent differs from what React renders on the client.
+
+**Why it matters:** The `dir` attribute on `<html>` is set server-side. Browser extensions (translation tools, password managers) often inject attributes into `<html>` and `<body>` before React hydrates — causing false-positive hydration warnings that pollute logs and mask real bugs.
+
+**How it works / Key concepts:**
+- `suppressHydrationWarning` on an element tells React to ignore attribute differences on that specific element (it does NOT suppress errors in children)
+- It is safe to add to `<html>` and `<body>` — these are always rendered once at the top level
+- Next.js App Router convention: always add it to both `<html>` and `<body>` in the root layout
+
+```tsx
+// layout.tsx — correct pattern
+return (
+  <html lang={locale} dir={dir} suppressHydrationWarning>
+    <body suppressHydrationWarning>
+      {children}
+    </body>
+  </html>
+);
+```
+
+**Resources:**
+- [React hydration docs](https://react.dev/reference/react-dom/client/hydrateRoot#suppressing-unavoidable-hydration-mismatch-errors)
+- [Next.js layout docs](https://nextjs.org/docs/app/api-reference/file-conventions/layout)
+
+---
+
+## 9. `--dir-factor` CSS Custom Property Pattern
+
+**What:** A CSS custom property set to `1` in LTR and `-1` in RTL, used to flip directional values (like `translateX`) without duplicating rules.
+
+**Why it matters:** CSS logical properties don't cover everything. `translateX`, `box-shadow` offsets, and some SVG values are physical. The `--dir-factor` pattern lets you write direction-aware transforms with a single rule.
+
+**How it works / Key concepts:**
+```css
+:root { --dir-factor: 1; }
+[dir="rtl"] { --dir-factor: -1; }
+```
+```tsx
+// Slide in from the correct side regardless of direction
+style={{ transform: `translateX(calc(var(--dir-factor) * 16px))` }}
+```
+**Limitation:** `--dir-factor` is page-level only. For mixed-direction subtrees (e.g. an LTR price amount inside an RTL page), compute direction locally using `getDir()` rather than relying on this variable.
+
+**Resources:**
+- [MDN: CSS custom properties](https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties)

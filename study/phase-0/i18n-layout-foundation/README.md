@@ -1,4 +1,4 @@
-# Phase 0 — i18n & Layout Foundation (DEV-17, DEV-18, DEV-19, DEV-20, DEV-21, DEV-23)
+# Phase 0 — i18n & Layout Foundation (DEV-17, DEV-18, DEV-19, DEV-20, DEV-21, DEV-22, DEV-23)
 
 Study topics covering the concepts behind next-intl v4, URL-based locale routing, and RTL/LTR layout in Next.js 16.
 
@@ -667,3 +667,92 @@ Override per file if a test genuinely needs Node:
 **Resources:**
 - [Vitest: test environments](https://vitest.dev/guide/environment)
 - [Testing Library: renderHook](https://testing-library.com/docs/react-testing-library/api/#renderhook)
+
+---
+
+## 13. next/font/google — Automatic Font Optimization
+
+**What:** `next/font/google` is a built-in Next.js module that downloads Google Fonts at build time, self-hosts them, and injects them with zero layout shift via `font-display: swap`.
+
+**Why it matters:** Zerupt serves Arabic, Latin, and Devanagari — three scripts with different font files. `next/font` handles subset loading (only `arabic`, `latin`, `devanagari` glyphs) so users don't download fonts for scripts they'll never see. Zero external network requests at runtime = faster load times in MENA/India.
+
+**How it works / Key concepts:**
+```ts
+// Fonts are initialized at module level (server-side only)
+// Next.js downloads + optimizes the font at build time
+const ibmPlexSansArabic = IBM_Plex_Sans_Arabic({
+  subsets: ["arabic"],         // only Arabic glyphs
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-sans-arabic", // inject as CSS custom property
+  display: "swap",             // show fallback font until loaded
+});
+
+// Apply the generated class to <html> — injects the CSS variable
+<html className={ibmPlexSansArabic.variable}>
+```
+- Font configs must live at module scope (not inside components) — Next.js statically analyzes them
+- `variable` mode generates a CSS custom property; `className` mode applies the font directly
+- `display: "swap"` is handled automatically — no additional CSS needed
+
+**Resources:**
+- [Next.js font optimization docs](https://nextjs.org/docs/app/building-your-application/optimizing/fonts)
+- [next/font/google API reference](https://nextjs.org/docs/app/api-reference/components/font)
+
+---
+
+## 14. CSS `:lang()` Pseudo-Class for Script-Aware Typography
+
+**What:** `:lang(xx)` is a CSS pseudo-class that matches elements based on the `lang` attribute on `<html>` (or any ancestor). It's the CSS-native way to apply locale-specific styles.
+
+**Why it matters:** Zerupt switches between Arabic (RTL, right-to-left numerals, Arabic font) and English (LTR, Latin font) at the page level. `:lang()` lets the correct font activate automatically based on the HTML `lang` attribute — no JavaScript required, works even before React hydrates.
+
+**How it works / Key concepts:**
+```css
+/* globals.css — active font switches automatically with locale */
+:lang(en) {
+  font-family: var(--font-sans), system-ui, sans-serif;
+}
+
+:lang(ar) {
+  font-family: var(--font-sans-arabic), system-ui, sans-serif;
+}
+
+:lang(hi) {
+  font-family: var(--font-sans-devanagari), system-ui, sans-serif;
+}
+```
+- `:lang()` is more specific than `[lang="xx"]` — it matches inherited language (e.g. `<span>` inside `<html lang="ar">`)
+- `[lang="ar"]` attribute selector only matches the exact element with that attribute
+- For page-level font switching, both work; `:lang()` is semantically cleaner
+
+**Resources:**
+- [MDN: :lang() pseudo-class](https://developer.mozilla.org/en-US/docs/Web/CSS/:lang)
+- [CSS Fonts Module: font-display](https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display)
+
+---
+
+## 15. Tailwind CSS `fontFamily` Extension with CSS Variables
+
+**What:** Tailwind's `theme.extend.fontFamily` lets you override `font-sans` and `font-mono` utility classes to point to your own CSS custom properties instead of the default system fonts.
+
+**Why it matters:** Zerupt uses `font-sans` throughout shadcn/ui components. By wiring it to `var(--font-sans)`, every component automatically uses IBM Plex Sans without per-component overrides. One config change = global typographic consistency.
+
+**How it works / Key concepts:**
+```ts
+// tailwind.config.ts
+theme: {
+  extend: {
+    fontFamily: {
+      sans: ["var(--font-sans)", "var(--font-sans-arabic)", "var(--font-sans-devanagari)", "system-ui", "sans-serif"],
+      mono: ["var(--font-mono)", "monospace"],
+    },
+  },
+}
+```
+- Tailwind generates `font-family: var(--font-sans), ...` when you use `className="font-sans"`
+- The CSS variables are only defined when the `next/font` class is applied to `<html>` — so the fallback chain matters
+- `system-ui` is the last fallback before the browser's default — always include it
+
+**Resources:**
+- [Tailwind: font-family configuration](https://tailwindcss.com/docs/font-family#customizing-your-theme)
+- [next/font with Tailwind CSS](https://nextjs.org/docs/app/building-your-application/optimizing/fonts#with-tailwind-css)

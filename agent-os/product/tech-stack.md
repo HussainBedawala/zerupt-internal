@@ -73,8 +73,9 @@ Compact, implementation-facing stack reference for AI agents. This is the source
 │  │                      │  │                                     │ │
 │  │  - tenants           │  │  ┌──────────┐ ┌──────────┐         │ │
 │  │  - tenant_databases  │  │  │Tenant A  │ │Tenant B  │ ...     │ │
-│  │  - subscriptions     │  │  │+pgvector │ │+pgvector │         │ │
-│  │  - user_tenant_map   │  │  └──────────┘ └──────────┘         │ │
+│  │  - plans             │  │  │+pgvector │ │+pgvector │         │ │
+│  │  - subscriptions     │  │  └──────────┘ └──────────┘         │ │
+│  │  - user_tenant_map   │  │                                     │ │
 │  │  - provisioning_jobs │  │                                     │ │
 │  └──────────────────────┘  └─────────────────────────────────────┘ │
 │                                                                     │
@@ -93,7 +94,7 @@ Compact, implementation-facing stack reference for AI agents. This is the source
 - **Cache/queues**: Upstash Redis + BullMQ
 - **Auth + files**: Supabase Auth + Supabase Storage
 - **Databases**:
-  - **Central Admin DB**: tenant registry, subscription/billing, tenant DB metadata, user-tenant mapping, provisioning jobs
+  - **Central Admin DB**: tenant registry, plans, subscription/billing, tenant DB metadata, user-tenant mapping, provisioning jobs. Full schema: `settings-admin/13-database-architecture.md`.
   - **Per-tenant PostgreSQL DBs** (one DB per tenant): all business data + pgvector + audit trail
 
 ### Why modular monolith (not microservices)

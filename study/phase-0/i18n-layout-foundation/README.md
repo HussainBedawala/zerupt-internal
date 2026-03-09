@@ -1,4 +1,4 @@
-# Phase 0 — i18n & Layout Foundation (DEV-17, DEV-18)
+# Phase 0 — i18n & Layout Foundation (DEV-17, DEV-18, DEV-19)
 
 Study topics covering the concepts behind next-intl v4, URL-based locale routing, and RTL/LTR layout in Next.js 16.
 
@@ -239,3 +239,80 @@ style={{ transform: `translateX(calc(var(--dir-factor) * 16px))` }}
 
 **Resources:**
 - [MDN: CSS custom properties](https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties)
+
+---
+
+> Topics below added from DEV-19 — Translation file structure & missing key detection.
+
+## 6. Namespace-Based Translation File Structure
+
+**What:** Splitting a single locale JSON file into multiple files, one per application module (e.g., `messages/en/accounting.json`, `messages/ar/settings.json`), each acting as an independent namespace.
+
+**Why it matters:** Zerupt will have 7+ modules and hundreds of translation keys. A single flat file becomes unmanageable for translators and causes unnecessary re-loading of all strings on every page. Namespacing lets you load only what a page needs, keep module teams autonomous, and simplify future translation handoffs.
+
+**How it works / Key concepts:**
+- next-intl's `getRequestConfig` receives a plain `messages` object — it doesn't care how you assembled it. You can spread or `Object.fromEntries` multiple files into one object.
+- The `NAMESPACES` constant acts as the single registry. Adding a namespace = one line there + two JSON files.
+- `Promise.all` loads all files in parallel, not sequentially — important for performance at startup.
+
+```ts
+// Merge multiple namespace files into one messages object
+const entries = await Promise.all(
+  NAMESPACES.map(async (ns) => {
+    const mod = await import(`../../messages/${locale}/${ns}.json`);
+    return [ns, mod.default] as const;
+  })
+);
+const messages = Object.fromEntries(entries);
+```
+
+**Resources:**
+- [next-intl: configuration](https://next-intl.dev/docs/usage/configuration)
+
+---
+
+## 7. ICU Message Syntax for Pluralization and Interpolation
+
+**What:** ICU (International Components for Unicode) is a standard syntax for expressing locale-aware string patterns: variable substitution, pluralization, date/number formatting, and gender selection.
+
+**Why it matters:** Arabic has 6 grammatical plural forms (zero, one, two, few, many, other). Using ICU means next-intl handles all of them automatically — you never write `if (count === 1)` in UI code.
+
+**How it works / Key concepts:**
+```json
+// Interpolation
+{ "welcome": "Welcome, {name}!" }
+
+// Pluralization (next-intl uses _one / _other suffix convention)
+{ "item_one": "1 item", "item_other": "{count} items" }
+
+// Usage in component
+t('item', { count: n })   // → "3 items"
+t('welcome', { name: 'Hussain' })  // → "Welcome, Hussain!"
+```
+- Arabic plural forms are resolved automatically when the locale is `ar` — no extra code needed.
+
+**Resources:**
+- [next-intl: translations](https://next-intl.dev/docs/usage/messages)
+- [ICU Message Format](https://unicode-org.github.io/icu/userguide/format_parse/messages/)
+
+---
+
+## 8. Missing Translation Detection and CI Gating
+
+**What:** A script that compares all locale files against the source-of-truth (English) and reports missing keys, extra keys, and empty string values. Exits with code 1 if issues are found, so CI fails before broken translations reach production.
+
+**Why it matters:** Missing translations silently render as the translation key string (e.g., `"common.save"`) in the UI. On an Arabic product launch, a single missing key is visible to every user. Automated detection catches this at commit time, not in production.
+
+**How it works / Key concepts:**
+- **Flatten keys to dot-notation:** `{ a: { b: "val" } }` → `["a.b"]` — enables simple Set-based comparison regardless of nesting depth.
+- **Source of truth = `en/`:** Every other locale must have the same keys. Extra keys in non-English locales are warnings (orphaned), not errors.
+- **Exit code 1:** Scripts that exit 1 fail CI steps. `pnpm i18n:check` can be added to a GitHub Actions workflow as a pre-deploy gate.
+
+```ts
+// Core algorithm
+const missing = sourceKeys.filter(k => !new Set(targetKeys).has(k));
+```
+
+**Resources:**
+- [Node.js `process.exit`](https://nodejs.org/api/process.html#processexitcode)
+- [tsx — TypeScript execution for scripts](https://github.com/privatenumber/tsx)

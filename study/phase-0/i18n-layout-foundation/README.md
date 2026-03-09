@@ -1,4 +1,4 @@
-# Phase 0 — i18n & Layout Foundation (DEV-17, DEV-18, DEV-19, DEV-20)
+# Phase 0 — i18n & Layout Foundation (DEV-17, DEV-18, DEV-19, DEV-20, DEV-21)
 
 Study topics covering the concepts behind next-intl v4, URL-based locale routing, and RTL/LTR layout in Next.js 16.
 
@@ -434,3 +434,127 @@ setRequestLocale(locale); // TypeScript knows this is safe
 
 **Resources:**
 - [TypeScript handbook: type predicates](https://www.typescriptlang.org/docs/handbook/2/narrowing.html#using-type-predicates)
+
+---
+
+## DEV-21 — Locale-Aware Formatting Utilities
+
+---
+
+## N+1. Intl.NumberFormat — The Browser's Built-in Locale Formatter
+
+**What:** `Intl.NumberFormat` is a native JavaScript API that formats numbers according to a BCP 47 locale tag, handling digit systems, grouping separators, decimal symbols, and currency placement automatically.
+
+**Why it matters:** Zerupt targets MENA and India — customers expect Eastern Arabic digits (١٢٣٤) in Arabic UI and Indian-style grouping (1,00,000) in Hindi UI. Rolling a custom formatter would be fragile; `Intl.NumberFormat` uses the platform's ICU data and gets this right out of the box.
+
+**How it works / Key concepts:**
+```ts
+// Western digits (en-US)
+new Intl.NumberFormat("en-US").format(1234567.89)
+// → "1,234,567.89"
+
+// Eastern Arabic digits (ar-EG)
+new Intl.NumberFormat("ar-EG").format(1234567.89)
+// → "١٬٢٣٤٬٥٦٧٫٨٩"
+
+// Currency with symbol placement
+new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(49.9)
+// → "$49.90"
+
+// Arabic currency (symbol appears after number in RTL context)
+new Intl.NumberFormat("ar-EG", { style: "currency", currency: "AED" }).format(49.9)
+// → "٤٩٫٩٠ د.إ.‏"
+```
+- Always use `ar-EG` (not plain `ar`) to guarantee Eastern Arabic digits — plain `ar` may fall back to Western digits depending on OS ICU version.
+- The `currency` option requires a valid ISO 4217 three-letter uppercase code. Passing anything else throws a `RangeError`.
+
+**Resources:**
+- [MDN: Intl.NumberFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat)
+- [Unicode CLDR — Arabic locale data](https://cldr.unicode.org/)
+
+---
+
+## N+2. BCP 47 Locale Tags and Unicode Extensions
+
+**What:** BCP 47 is the standard for language tags (e.g. `en-US`, `ar-EG`). Unicode extensions (the `-u-` subtag) let you override specific locale behaviors like calendar system, numbering system, and collation.
+
+**Why it matters:** In a retail ERP, financial dates must always be Gregorian — but `ar-EG` alone may render Hijri calendar dates on some ICU builds. Adding `-u-ca-gregory` forces the Gregorian calendar for all Arabic date rendering.
+
+**How it works / Key concepts:**
+```ts
+// Force Gregorian calendar for Arabic
+new Intl.DateTimeFormat("ar-EG-u-ca-gregory", {
+  year: "numeric", month: "numeric", day: "numeric"
+}).format(new Date("2025-03-15"))
+// → "١٥/٣/٢٠٢٥" (Gregorian, Eastern Arabic digits)
+
+// Without -u-ca-gregory, some environments render:
+// → "١٤/٩/١٤٤٦" (Hijri calendar — wrong for invoices)
+```
+
+Common Unicode extension keys:
+- `ca` — calendar (`gregory`, `islamic`, `persian`, `buddhist`)
+- `nu` — numbering system (`arab` for Eastern Arabic, `latn` for Western)
+- `co` — collation order
+
+**Resources:**
+- [BCP 47 spec (RFC 5646)](https://www.rfc-editor.org/rfc/rfc5646)
+- [MDN: Locale extensions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl#locale_identification_and_negotiation)
+
+---
+
+## N+3. Intl.RelativeTimeFormat — "2 hours ago" in Any Language
+
+**What:** `Intl.RelativeTimeFormat` formats a numeric offset + time unit into a human-readable relative time string, fully localized (pluralization, grammatical gender, digit system).
+
+**Why it matters:** Zerupt displays "last synced X minutes ago", "invoice due in 3 days" etc. This API handles Arabic's complex plural forms (singular/dual/plural) and RTL-safe output without any manual string building.
+
+**How it works / Key concepts:**
+```ts
+const rtf = new Intl.RelativeTimeFormat("ar-EG", { numeric: "auto" });
+
+rtf.format(-1, "day")   // → "أمس" (yesterday — not "-1 day")
+rtf.format(-2, "hour")  // → "قبل ساعتين" (dual form, automatic)
+rtf.format(3, "day")    // → "بعد 3 أيام"
+
+// English
+const en = new Intl.RelativeTimeFormat("en", { numeric: "auto" });
+en.format(0, "second")  // → "now"
+en.format(-1, "day")    // → "yesterday"
+```
+- `numeric: "auto"` replaces "-1 day" with "yesterday" when a natural word exists.
+- `numeric: "always"` always shows the number (useful in compact UIs).
+- You must provide the unit yourself — the API doesn't auto-detect it from the magnitude.
+
+**Resources:**
+- [MDN: Intl.RelativeTimeFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/RelativeTimeFormat)
+
+---
+
+## N+4. Server vs Client Formatting — When to Use Pure Functions vs Hooks
+
+**What:** In Next.js App Router, components are Server Components by default. React hooks (`useLocale`, `useFormatter`) only work in Client Components (`"use client"`). This means formatting utilities need two shapes.
+
+**Why it matters:** Mixing them up causes a runtime error: "You're importing a component that needs `useState`. It only works in a Client Component." Knowing which layer needs what prevents hard-to-debug errors.
+
+**How it works / Key concepts:**
+```
+Server Component (default)        Client Component ("use client")
+─────────────────────────         ──────────────────────────────
+import { formatNumber }           import { useFormatNumber }
+  from "@/lib/format"               from "@/lib/hooks/use-format"
+
+const locale = await getLocale() // const format = useFormatNumber()
+const result = formatNumber(     // const result = format(1234.5)
+  1234.5, locale)
+```
+
+Pattern used in Zerupt:
+- `lib/format.ts` — pure `Intl.*` functions, locale passed as argument → Server Components, API routes, tests
+- `lib/hooks/use-format.ts` — thin wrappers calling `useLocale()` → Client Components only
+
+This separation also makes the pure functions trivially testable with Vitest (no React context needed).
+
+**Resources:**
+- [Next.js: Server vs Client Components](https://nextjs.org/docs/app/building-your-application/rendering/composition-patterns)
+- [next-intl: useFormatter hook](https://next-intl.dev/docs/usage/numbers)

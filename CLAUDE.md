@@ -9,6 +9,118 @@ The world's first agentic AI retail ERP. Signup to live with real data in under 
 - **Company IG:** @zerupt.erp
 - **Linear workspace:** Zerupt (teams: Development, Marketing)
 
+---
+
+## Quick Reference (Read This First)
+
+### Git — Two Repos, Different Remotes
+
+- `/Zerupt/erp/` — has GitHub remote. All **code** commits go here.
+- `/Zerupt/` (root) — local-only, no remote. Only **study files** and **CLAUDE.md** go here.
+
+**Always `cd /Users/hus3ain/Development/Zerupt/erp` before creating branches or committing code.**
+
+### Shell — Quote Paths With Brackets
+
+The `[locale]` directory causes zsh glob errors. Always quote it:
+
+```bash
+git add "apps/web/src/app/[locale]/layout.tsx"   # correct
+git add apps/web/src/app/[locale]/layout.tsx       # fails
+```
+
+### Commits — Lowercase Subjects Only
+
+commitlint enforces all-lowercase subject lines. Will reject on pre-commit hook:
+
+```
+feat(web): add bidi isolation utility   # correct
+feat(web): Add Bidi Isolation Utility   # rejected
+```
+
+### Per-App Commands
+
+```bash
+pnpm --filter @zerupt/web typecheck
+pnpm --filter @zerupt/web test
+pnpm --filter @zerupt/web i18n:check
+pnpm --filter @zerupt/api typecheck
+```
+
+---
+
+## Codebase Gotchas
+
+Discovered during development — do not re-research these.
+
+### next-intl — `hasLocale` Does Not Exist in v4.8.3
+
+Docs examples show `hasLocale()` but it is not exported in v4.8.3 (current, also latest). Use a type predicate instead:
+
+```ts
+function isLocale(value: string): value is Locale {
+  return (routing.locales as readonly string[]).includes(value);
+}
+if (!isLocale(locale)) notFound();
+// locale is now Locale — no cast needed
+```
+
+### next-intl — `setRequestLocale` Must Be Called in Both Exports
+
+`generateMetadata` and the default layout export run in separate React trees. Call it in both:
+
+```ts
+export async function generateMetadata({ params }) {
+  const { locale } = await params;
+  setRequestLocale(locale); // required here
+  const t = await getTranslations({ locale, namespace: 'common' });
+  return { title: t('appName') };
+}
+
+export default async function LocaleLayout({ params }) {
+  const { locale } = await params;
+  setRequestLocale(locale); // required here too
+}
+```
+
+### next-intl — `params` Must Be Awaited (Next.js 16)
+
+```ts
+const { locale } = await params;   // correct
+const { locale } = params;          // wrong — silently breaks in Next.js 16
+```
+
+### Next.js 16 — `proxy.ts` Not `middleware.ts`
+
+Next.js 16 renamed middleware. The next-intl middleware lives at `apps/web/src/proxy.ts`.
+
+### `suppressHydrationWarning` — `<html>` Only, Never `<body>`
+
+On `<html>`: correct — browser extensions modify its attributes.
+On `<body>`: wrong — silences real SSR/CSR mismatch bugs during development.
+
+### Bidi — User Content Needs Isolation
+
+Product names, customer names have unknown direction. Use `apps/web/src/lib/bidi.ts`:
+
+```ts
+// Inside a translated string:
+t('greeting', { name: isolateText(customer.name) })
+
+// As a JSX container:
+<p dir={getContentDir(product.name)}>{product.name}</p>
+```
+
+### Translations — `en/` Is Source of Truth
+
+`messages/ar/*.json` must have the same keys as `messages/en/*.json`. Verify with `pnpm --filter @zerupt/web i18n:check`. Fails CI on mismatch.
+
+### Code Review — Fix Everything
+
+All findings (CRITICAL → LOW) need an action: code fix, or explicit comment explaining deferral. Do not skip LOW findings silently.
+
+---
+
 ## Directory Structure
 
 ```
@@ -31,13 +143,13 @@ The world's first agentic AI retail ERP. Signup to live with real data in under 
 
 | Layer | Technology |
 |-------|-----------|
-| Frontend | Next.js 15 + React 19, TypeScript strict, shadcn/ui + Tailwind, TanStack Query, Zustand, next-intl (ar/en) |
+| Frontend | **Next.js 16.1.6** + React 19, TypeScript strict, shadcn/ui + Tailwind, TanStack Query, Zustand, next-intl v4 (ar/en) |
 | Backend | NestJS modular monolith, Prisma ORM, BullMQ + Upstash Redis, NestJS EventEmitter |
 | AI Service | FastAPI (Python), LiteLLM, pgvector |
 | Database | PostgreSQL (one DB per tenant + Central Admin DB), Supabase Auth + Storage |
 | Search | Meilisearch |
 | Hosting | Vercel (frontend), Railway (API + AI), Supabase/Neon (DBs), Upstash (Redis) |
-| Testing | Vitest/Jest (unit), Supertest (integration), Playwright (E2E), k6 (load), pytest (AI service) |
+| Testing | Vitest (unit/integration, web+api), Playwright (E2E), k6 (load), pytest (AI service) |
 | CI/CD | GitHub Actions, Turborepo, pnpm workspaces |
 | Observability | Sentry, PostHog, Uptime Kuma, Resend (email) |
 
@@ -122,11 +234,15 @@ Hussain builds in public on Instagram (personal + company) and X (planned).
 | Primary color | Violet (#7C3AED / Tailwind violet-600) |
 | Secondary color | Teal (#14B8A6 / Tailwind teal-500) |
 | Neutral | Zinc (#27272A / Tailwind zinc-800 for dark backgrounds) |
-| Heading font | IBM Plex Sans |
-| Body font | IBM Plex Sans |
+| Heading font | IBM Plex Sans (Latin) |
+| Body font | IBM Plex Sans (Latin) |
+| Arabic font | IBM Plex Sans Arabic (same family — harmonizes with Latin) |
+| Devanagari font | IBM Plex Sans Devanagari (same family — for Hindi/IN market) |
 | Mono font | IBM Plex Mono |
 | Logo | Two upward-pointing triangles (violet gradient) + circle dot |
 | Theme | Dark-first, premium feel |
+
+**Font rationale:** IBM Plex Sans, IBM Plex Sans Arabic, and IBM Plex Sans Devanagari are cuts from the same type family — same x-height, weight scale, proportions. Harmonious across Arabic, Latin, and Devanagari. Do NOT mix with Inter or Noto Sans (different design origins = visual inconsistency in mixed-script UI).
 
 ## Development SOP
 
@@ -170,8 +286,9 @@ All agents, skills, commands, hooks, and rules live in `.claude/`. Tuned for Zer
 
 - Always use pnpm (not npm/yarn)
 - Conventional commits: `feat:`, `fix:`, `refactor:`, `docs:`, `test:`, `chore:`
+- **Commit message subjects must be all lowercase** — commitlint enforces this
 - TypeScript strict mode everywhere
-- CSS logical properties only (RTL/LTR support)
+- CSS logical properties only (RTL/LTR support) — never physical `margin-left`, `padding-right` etc.
 - i18n from day one: ar + en at launch
 - Immutable audit logs for every mutation
 - Never hardcode secrets — use environment variables

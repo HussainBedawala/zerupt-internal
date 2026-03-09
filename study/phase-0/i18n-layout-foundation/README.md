@@ -1,4 +1,4 @@
-# Phase 0 — i18n & Layout Foundation (DEV-17, DEV-18, DEV-19)
+# Phase 0 — i18n & Layout Foundation (DEV-17, DEV-18, DEV-19, DEV-20)
 
 Study topics covering the concepts behind next-intl v4, URL-based locale routing, and RTL/LTR layout in Next.js 16.
 
@@ -200,14 +200,14 @@ Tailwind v3 logical utility classes:
 
 **How it works / Key concepts:**
 - `suppressHydrationWarning` on an element tells React to ignore attribute differences on that specific element (it does NOT suppress errors in children)
-- It is safe to add to `<html>` and `<body>` — these are always rendered once at the top level
-- Next.js App Router convention: always add it to both `<html>` and `<body>` in the root layout
+- Safe to add to `<html>` — browser extensions modify the `<html>` element's attributes (e.g. `translate="no"`, `data-extension-*`)
+- **Do NOT add to `<body>`** — React hydration warnings on `<body>` children are real bugs (SSR/CSR mismatches). Suppressing them hides genuine rendering issues in development.
 
 ```tsx
 // layout.tsx — correct pattern
 return (
   <html lang={locale} dir={dir} suppressHydrationWarning>
-    <body suppressHydrationWarning>
+    <body>
       {children}
     </body>
   </html>
@@ -316,3 +316,121 @@ const missing = sourceKeys.filter(k => !new Set(targetKeys).has(k));
 **Resources:**
 - [Node.js `process.exit`](https://nodejs.org/api/process.html#processexitcode)
 - [tsx — TypeScript execution for scripts](https://github.com/privatenumber/tsx)
+
+---
+
+> Topics below added from DEV-20 — Arabic/English locale setup, bidi isolation, static rendering.
+
+## 9. Unicode Bidirectional Algorithm and Bidi Isolation
+
+**What:** The Unicode Bidirectional Algorithm (UBA) determines how to display text that mixes left-to-right and right-to-left characters. Bidi *isolation* is a mechanism to prevent a string from leaking its direction into surrounding text.
+
+**Why it matters:** In an ERP, user-generated content (product names, customer names, addresses) can be Arabic or English regardless of the UI language. Without isolation, an Arabic product name embedded in an English sentence (or vice versa) can corrupt the visual order of surrounding text — a classic "bidi spoofing" bug that also affects UI legibility.
+
+**How it works / Key concepts:**
+- **First Strong Isolate (FSI, U+2068)** + **Pop Directional Isolate (PDI, U+2069):** Unicode characters that wrap a string, auto-detecting its direction and preventing it from affecting surrounding text
+- **`dir="auto"`:** HTML attribute that applies the first-strong algorithm to the element's content — browser-native equivalent of FSI/PDI but only works on HTML elements, not interpolated strings
+- **First-strong algorithm:** Scans characters left-to-right, skips neutrals (digits, punctuation, spaces), returns the direction of the first strongly directional character (Arabic → RTL, Latin → LTR)
+
+```ts
+// isolateText() — use when embedding user text inside a translated string
+t('greeting', { name: isolateText(customer.name) })
+// → "Hello, ‪Hussain‬" (LTR) or "مرحباً، ‪محمد‬" (RTL customer name in RTL string)
+
+// getContentDir() — use to set dir on a user-content container in JSX
+<p dir={getContentDir(product.name)}>{product.name}</p>
+```
+
+**Resources:**
+- [Unicode Bidirectional Algorithm (TR9)](https://unicode.org/reports/tr9/)
+- [MDN: dir="auto"](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/dir#auto)
+- [Unicode bidi isolates explainer](https://www.w3.org/International/articles/inline-bidi-markup/uba-basics)
+
+---
+
+## 10. Arabic Unicode Ranges and Legacy Encodings
+
+**What:** Arabic text spans multiple Unicode blocks — the main Arabic block (U+0600–06FF), plus Presentation Forms used in legacy systems (U+FB50–FDFF, U+FE70–FEFF).
+
+**Why it matters:** MENA retail data (from POS terminals, ERPs, supplier feeds) often comes from legacy systems that encode Arabic in the Presentation Forms blocks rather than the canonical Arabic block. A direction-detection regex that only covers U+0600–06FF will misclassify these strings as LTR, breaking sorting, display, and search.
+
+**How it works / Key concepts:**
+```
+U+0590–05FF  Hebrew
+U+0600–06FF  Arabic (main block — Farsi, Urdu, Kurdish included)
+U+0700–074F  Syriac
+U+0750–077F  Arabic Supplement
+U+0780–07BF  Thaana (Maldivian)
+U+08A0–08FF  Arabic Extended-A
+U+FB50–FDFF  Arabic Presentation Forms-A (legacy)
+U+FE70–FEFF  Arabic Presentation Forms-B (legacy)
+```
+- Presentation Forms appear in font-encoded documents, old Windows codepages, and some POS receipt formats
+- Always include all three Arabic ranges (main + both Presentation Forms) in any RTL detection regex for production MENA systems
+
+**Resources:**
+- [Unicode Arabic block chart](https://www.unicode.org/charts/PDF/U0600.pdf)
+- [Unicode Arabic Presentation Forms-A](https://www.unicode.org/charts/PDF/UFB50.pdf)
+
+---
+
+## 11. `setRequestLocale` and next-intl Static Rendering
+
+**What:** `setRequestLocale(locale)` is a next-intl v4 API that must be called in every Server Component that uses next-intl APIs (like `getTranslations`). It enables Next.js static rendering (pre-rendering at build time) by making the locale available without reading it from the request at runtime.
+
+**Why it matters:** Without `setRequestLocale`, every route that calls `getTranslations` or `getMessages` forces dynamic rendering (SSR on every request). Calling it in the root layout and every nested async Server Component unlocks static pre-rendering — critical for performance on Vercel with a global CDN.
+
+**How it works / Key concepts:**
+- Must be called **before** any other next-intl API in the same component
+- Pairs with `generateStaticParams()` — tells Next.js which locales to pre-render at build time
+- In layouts: call it once, then all child Server Components inherit the locale via React context
+- In `generateMetadata`: call it separately because `generateMetadata` runs in a different React tree from the layout's default export
+
+```ts
+// layout.tsx
+export async function generateMetadata({ params }: Props) {
+  const { locale } = await params;
+  setRequestLocale(locale); // must call here too — separate render
+  const t = await getTranslations({ locale, namespace: 'common' });
+  return { title: t('appName'), description: t('appTagline') };
+}
+
+export default async function LocaleLayout({ params }: Props) {
+  const { locale } = await params;
+  setRequestLocale(locale); // and here — in the component render
+  const messages = await getMessages();
+  // ...
+}
+```
+
+**Resources:**
+- [next-intl: static rendering](https://next-intl.dev/docs/getting-started/app-router/with-i18n-routing#static-rendering)
+- [next-intl: generateMetadata](https://next-intl.dev/docs/usage/metadata)
+
+---
+
+## 12. TypeScript Type Predicates for Runtime Narrowing
+
+**What:** A type predicate is a function whose return type is `value is SomeType` — it tells TypeScript that if the function returns `true`, the argument can be treated as `SomeType` in subsequent code, without an explicit cast.
+
+**Why it matters:** Next.js types route params as `string`, but Zerupt's locale type is a union (`"en" | "ar"`). Without a type predicate, you need an `as Locale` cast after the runtime guard — a cast that TypeScript accepts blindly even if the guard logic changes. A type predicate makes the narrowing part of the type signature, so TypeScript enforces correctness.
+
+**How it works / Key concepts:**
+```ts
+// WITHOUT type predicate — cast is manual and fragile
+if (!routing.locales.includes(locale as Locale)) notFound();
+const typedLocale = locale as Locale; // TypeScript accepts this blindly
+
+// WITH type predicate — TypeScript narrows automatically
+function isLocale(value: string): value is Locale {
+  return (routing.locales as readonly string[]).includes(value);
+}
+if (!isLocale(locale)) notFound();
+// locale is now Locale here — no cast needed
+setRequestLocale(locale); // TypeScript knows this is safe
+```
+- Type predicates work with any control flow — `if`, `filter`, `find`
+- They don't add runtime cost — they only affect the type checker
+
+**Resources:**
+- [TypeScript handbook: type predicates](https://www.typescriptlang.org/docs/handbook/2/narrowing.html#using-type-predicates)

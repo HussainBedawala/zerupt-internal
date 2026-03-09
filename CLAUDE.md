@@ -13,10 +13,19 @@ The world's first agentic AI retail ERP. Signup to live with real data in under 
 
 ## Quick Reference (Read This First)
 
-### Git — Two Repos, Different Remotes
+### Git — Two Repos, Two Remotes
 
-- `/Zerupt/erp/` — has GitHub remote. All **code** commits go here.
-- `/Zerupt/` (root) — local-only, no remote. Only **study files** and **CLAUDE.md** go here.
+| Repo | Path | Remote | What goes here |
+|------|------|--------|----------------|
+| `zerupt-erp` | `/Zerupt/erp/` | `https://github.com/HussainBedawala/zerupt-erp.git` | All **code** — apps, packages, migrations |
+| `zerupt-internal` | `/Zerupt/` (root) | `https://github.com/HussainBedawala/zerupt-internal.git` | **Non-code only** — `CLAUDE.md`, `study/`, `agent-os/`, `.claude/` config |
+
+**Rules (enforce strictly):**
+- NEVER commit code to the root repo
+- NEVER commit study/config files to `erp/`
+- Always `cd` to the correct directory before committing
+- Both repos push to `origin main`
+- Root repo is **private** on GitHub
 
 **Always `cd /Users/hus3ain/Development/Zerupt/erp` before creating branches or committing code.**
 

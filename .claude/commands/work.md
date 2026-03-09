@@ -102,7 +102,48 @@ Additionally invoke based on issue labels:
 - Database label → `database-reviewer` agent
 - AI Service / Python label → `python-reviewer` agent
 
-Fix all CRITICAL and HIGH findings before continuing. Document MEDIUM findings as follow-up Linear issues if not fixed.
+Fix all CRITICAL and HIGH findings before continuing.
+
+### After fixing — log findings to Linear
+
+**Step A: Comment on the current issue** using `save_comment` with this exact structure so future AI sessions have full context:
+
+```
+## Code Review Findings
+
+**Reviewer:** code-reviewer [+ security-reviewer if invoked]
+**Issue:** DEV-XX — <title>
+**Date:** <YYYY-MM-DD>
+
+### Fixed in this session
+| Severity | Finding | File | Fix applied |
+|----------|---------|------|-------------|
+| HIGH | <title> | <file>:<line> | <one-line description> |
+
+### Deferred to follow-up issues
+| Severity | Finding | Follow-up |
+|----------|---------|-----------|
+| MEDIUM | <title> | DEV-YY |
+
+### No findings
+(write this row if review was clean)
+```
+
+**Step B: For each MEDIUM finding not fixed** → `save_issue` to create a follow-up Linear issue:
+- Title: `[Tech Debt] <short description> (from DEV-XX)`
+- Description: severity, file:line, full finding text, recommended fix, link to parent DEV-XX
+- Priority: Normal
+- Labels: same labels as parent + `tech-debt`
+- Milestone: same milestone as parent
+- Status: New
+
+**Step C: For any SECURITY finding** (any severity, fixed or not) → always create a follow-up issue for permanent audit trail:
+- Title: `[Security] <short description> (from DEV-XX)`
+- Description: severity, file:line, full finding, fix applied (if any), verification steps
+- Priority: HIGH findings → Urgent; MEDIUM → High; LOW → Normal
+- Labels: `Security` + `tech-debt`
+- Milestone: same milestone as parent
+- Status: New (even if fixed — so it can be verified independently)
 
 ## PHASE 8: VERIFY
 
@@ -178,7 +219,7 @@ Check if the issue is content-worthy for Instagram/X:
 - Good "build in public" moment?
 
 If yes: read `agent-os/content-style-guide.md` → create issue in Linear **Marketing** team with:
-- Labels: `dev-triggered` + relevant format + pillar
+- Labels: `dev-triggered` + relevant format + pillar + platform
 - Description: what was shipped, why it matters to the audience
 
 If not content-worthy: skip silently (do not mention the skip).

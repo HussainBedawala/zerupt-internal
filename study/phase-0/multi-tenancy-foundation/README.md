@@ -1,6 +1,6 @@
 # Multi-Tenancy Foundation — Study Topics
 
-Phase 0 | DEV-24: Design and create Central Admin DB schema | DEV-25: Implement tenant DB provisioning pipeline | DEV-26: Build TenantContextMiddleware (JWT → tenant → DB resolution) | DEV-27: Build TenantConnectionService (pool, LRU cache, eviction) | DEV-28: Implement Redis caching for tenant connections | DEV-122/123/124: Security verification tests
+Phase 0 | DEV-24: Design and create Central Admin DB schema | DEV-25: Implement tenant DB provisioning pipeline | DEV-26: Build TenantContextMiddleware (JWT → tenant → DB resolution) | DEV-27: Build TenantConnectionService (pool, LRU cache, eviction) | DEV-28: Implement Redis caching for tenant connections | DEV-29: Build audit trail spine (append-only log, NestJS interceptor) | DEV-122/123/124: Security verification tests
 
 ---
 
@@ -637,3 +637,135 @@ export function sanitizeErrorMessage(message: string): string {
 **Resources:**
 - [OWASP — Error Handling Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Error_Handling_Cheat_Sheet.html)
 - [OWASP — Logging Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Logging_Cheat_Sheet.html)
+
+---
+
+## 22. Append-Only Audit Logs for Regulatory Compliance
+
+**What:** An append-only audit log is a database table where records can only be inserted — never updated or deleted. This immutability guarantees a tamper-proof record of every mutation in the system. Regulatory frameworks (ZATCA for Saudi VAT, GST for India, PDPA for Southeast Asia) require such logs for financial transactions.
+
+**Why it matters:** Zerupt is a retail ERP handling POS transactions, inventory adjustments, and accounting entries. Regulators can audit "who changed what, when." If records can be modified, the audit trail is untrustworthy. The append-only constraint must be enforced at the database level (not just application code) to survive both bugs and malicious actors with DB access.
+
+**Key concepts:**
+- **DB trigger enforcement:** A `BEFORE UPDATE OR DELETE` trigger that raises an exception is the strongest guarantee. Application code can't bypass it.
+- **Privilege hardening:** `REVOKE UPDATE, DELETE ON audit_log FROM app_role` adds a second layer — even without the trigger, the app role can't mutate rows.
+- **No `updatedAt` column:** The absence of an `updatedAt` field signals intent — this table never updates.
+- **GDPR tension:** "Right to erasure" conflicts with append-only. Solution: store only identifiers and non-PII metadata in audit rows, not full personal data.
+
+```sql
+CREATE OR REPLACE FUNCTION prevent_audit_log_mutation()
+RETURNS TRIGGER AS $$
+BEGIN
+  RAISE EXCEPTION 'audit_log is append-only: UPDATE and DELETE are not permitted';
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER audit_log_immutable
+BEFORE UPDATE OR DELETE ON audit_log
+FOR EACH ROW EXECUTE FUNCTION prevent_audit_log_mutation();
+```
+
+**Resources:**
+- [OWASP — Logging Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Logging_Cheat_Sheet.html)
+- [PostgreSQL — CREATE TRIGGER](https://www.postgresql.org/docs/current/sql-createtrigger.html)
+
+---
+
+## 23. NestJS Interceptors — Aspect-Oriented Side Effects
+
+**What:** A NestJS interceptor wraps the route handler execution. It has access to both the request (before the handler) and the response (after the handler via RxJS Observable). This makes interceptors ideal for cross-cutting concerns like logging, caching, and audit trails.
+
+**Why it matters:** The audit log interceptor needs to capture both request metadata (IP, user-agent, HTTP method) and response data (the entity returned after creation/update). Guards can't do this — they run before the handler and don't see the response. Middleware runs too early. Interceptors sit at exactly the right point in the lifecycle.
+
+**Key concepts:**
+- **`intercept(context, next)`:** `context` gives access to the HTTP request. `next.handle()` returns an `Observable` of the handler's response.
+- **RxJS `tap` operator:** Executes a side effect (audit write) without modifying the response stream. The response reaches the client unchanged.
+- **Decorator-gated:** Use `Reflector.get()` to check for a custom decorator (`@Audited('EntityType')`). Only fire for decorated handlers.
+- **Fire-and-forget:** Audit writes happen asynchronously. Failures are caught and logged but don't break the API response.
+- **Request lifecycle position:** `Middleware → Guards → Interceptors (pre) → Pipes → Handler → Interceptors (post)`
+
+```typescript
+@Injectable()
+export class AuditLogInterceptor implements NestInterceptor {
+  intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
+    const request = context.switchToHttp().getRequest();
+    return next.handle().pipe(
+      tap((responseBody) => {
+        // Side effect: write audit log entry
+        void this.auditService.append(databaseUrl, { ... });
+      }),
+    );
+  }
+}
+```
+
+**Resources:**
+- [NestJS — Interceptors](https://docs.nestjs.com/interceptors)
+- [RxJS — tap operator](https://rxjs.dev/api/operators/tap)
+
+---
+
+## 24. PII Scrubbing in Audit Snapshots
+
+**What:** When storing before/after state in audit logs, the response body must be filtered to exclude personally identifiable information (PII) and secrets. An allowlist approach (explicitly list safe fields) is more secure than a denylist approach (list fields to exclude) because new sensitive fields are excluded by default.
+
+**Why it matters:** Zerupt's audit log is append-only — data stored there can never be deleted. If a response body contains a password hash, API token, tax ID, or full customer address, that data is permanently captured. This creates GDPR/PDPA compliance risk and a high-value target for attackers who gain DB read access.
+
+**Key concepts:**
+- **Allowlist > Denylist:** An allowlist (`id`, `status`, `name`, `updatedAt`) means a new field `socialSecurityNumber` is automatically excluded. A denylist would miss it.
+- **Defense-in-depth:** Use both — an allowlist of safe fields AND a denylist of known-dangerous fields (`password`, `token`, `secret`, `apiKey`).
+- **Per-entity allowlists (Phase 1+):** The `@Audited('Product')` decorator can carry metadata about which fields are safe for that entity type.
+
+```typescript
+const SAFE_KEYS = new Set(["id", "code", "status", "name", "updatedAt"]);
+const DENIED_KEYS = new Set(["password", "token", "secret", "apiKey"]);
+
+function scrub(body: Record<string, unknown>): Record<string, unknown> {
+  return Object.fromEntries(
+    Object.entries(body).filter(([k]) => SAFE_KEYS.has(k) && !DENIED_KEYS.has(k))
+  );
+}
+```
+
+**Resources:**
+- [OWASP — Logging Cheat Sheet (sensitive data)](https://cheatsheetseries.owasp.org/cheatsheets/Logging_Cheat_Sheet.html#data-to-exclude)
+- [GDPR — Right to Erasure](https://gdpr-info.eu/art-17-gdpr/)
+
+---
+
+## 25. Connection Pool Management for Multi-Tenant Prisma
+
+**What:** Creating a new `PrismaClient` on every database operation opens a fresh connection pool, which exhausts PostgreSQL's `max_connections` under any real load. The solution is to cache one `PrismaClient` per database URL and reuse it across requests.
+
+**Why it matters:** The audit log service writes to the tenant DB on every mutation. If each write creates a new PrismaClient (opening ~5 connections, then immediately closing them), a burst of 50 requests opens 250 connections — likely exceeding the tenant DB's connection limit on Railway/Supabase. Caching one client per URL reuses the same pool.
+
+**Key concepts:**
+- **`Map<string, PrismaClient>` cache:** Key = databaseUrl, Value = client instance. Check before creating.
+- **No `$disconnect()` per request:** With a cached client, calling `$disconnect()` in a `finally` block kills the shared pool for every concurrent request. Only disconnect on application shutdown.
+- **`OnModuleDestroy`:** NestJS lifecycle hook — iterate all cached clients and disconnect gracefully.
+- **Memory bound:** For 100-200 tenants (Zerupt Phase 0-2 scale), a simple `Map` is sufficient. For 10K+ tenants, use an LRU eviction strategy.
+
+```typescript
+const clientCache = new Map<string, PrismaClient>();
+
+function getOrCreate(url: string): PrismaClient {
+  const existing = clientCache.get(url);
+  if (existing) return existing;
+
+  const client = new PrismaClient({ datasources: { db: { url } } });
+  clientCache.set(url, client);
+  return client;
+}
+
+// On shutdown
+async onModuleDestroy() {
+  await Promise.allSettled(
+    [...clientCache.values()].map(c => c.$disconnect())
+  );
+  clientCache.clear();
+}
+```
+
+**Resources:**
+- [Prisma — Connection Management](https://www.prisma.io/docs/orm/prisma-client/setup-and-configuration/databases-connections)
+- [PostgreSQL — max_connections](https://www.postgresql.org/docs/current/runtime-config-connection.html)

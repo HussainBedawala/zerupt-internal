@@ -58,6 +58,28 @@ pnpm --filter @zerupt/api typecheck
 
 ---
 
+## Testing — How to Run Tests
+
+Tests use **Jest** (not Vitest) for the API. Config is at `erp/apps/api/jest.config.js`. Test files are colocated with source files as `*.spec.ts`.
+
+```bash
+# Run all API tests
+pnpm --filter @zerupt/api test
+
+# Run tests matching a pattern (from erp/apps/api/)
+cd /Users/hus3ain/Development/Zerupt/erp/apps/api && npx jest --testPathPattern='audit' --no-coverage
+
+# Run a single test file
+npx jest src/audit/audit-log.service.spec.ts --no-coverage
+
+# pnpm filter passes args after --
+pnpm --filter @zerupt/api test -- --testPathPattern='audit' --no-coverage
+```
+
+**Important:** `pnpm --filter @zerupt/api test` runs `jest --passWithNoTests`. If no tests match, it exits 0 silently. Always verify test discovery by checking the output for "Test Suites: N" lines.
+
+---
+
 ## Codebase Gotchas
 
 Discovered during development — do not re-research these.

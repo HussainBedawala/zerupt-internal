@@ -102,7 +102,7 @@ Additionally invoke based on issue labels:
 - Database label → `database-reviewer` agent
 - AI Service / Python label → `python-reviewer` agent
 
-Fix all CRITICAL and HIGH findings before continuing.
+Fix ALL findings at every severity level (CRITICAL, HIGH, MEDIUM, LOW) before continuing. Never skip or defer any finding — every issue gets resolved in the same session.
 
 ### After fixing — log findings to Linear
 
@@ -120,7 +120,7 @@ Fix all CRITICAL and HIGH findings before continuing.
 |----------|---------|------|-------------|
 | HIGH | <title> | <file>:<line> | <one-line description> |
 
-### Deferred to follow-up issues
+### Deferred (out of milestone scope only)
 | Severity | Finding | Follow-up |
 |----------|---------|-----------|
 | MEDIUM | <title> | DEV-YY |
@@ -129,13 +129,15 @@ Fix all CRITICAL and HIGH findings before continuing.
 (write this row if review was clean)
 ```
 
-**Step B: For each MEDIUM finding not fixed** → `save_issue` to create a follow-up Linear issue:
+**Step B: For any finding that is out of scope for the current milestone** → `save_issue` to create a standalone follow-up issue (NOT linked to any project — it lives in the team backlog):
 - Title: `[Tech Debt] <short description> (from DEV-XX)`
 - Description: severity, file:line, full finding text, recommended fix, link to parent DEV-XX
 - Priority: Normal
 - Labels: same labels as parent + `tech-debt`
-- Milestone: same milestone as parent
 - Status: New
+- Do NOT assign to a project or milestone — keep it in the team backlog for triage
+
+All findings within the current milestone's scope MUST be fixed in-session. Only defer if the fix genuinely belongs to a different milestone or phase.
 
 **Step C: For any SECURITY finding** (any severity, fixed or not) → always create a follow-up issue for permanent audit trail:
 - Title: `[Security] <short description> (from DEV-XX)`

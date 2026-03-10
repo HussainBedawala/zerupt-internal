@@ -1,6 +1,6 @@
 # Multi-Tenancy Foundation — Study Topics
 
-Phase 0 | DEV-24: Design and create Central Admin DB schema | DEV-25: Implement tenant DB provisioning pipeline | DEV-26: Build TenantContextMiddleware (JWT → tenant → DB resolution) | DEV-27: Build TenantConnectionService (pool, LRU cache, eviction) | DEV-28: Implement Redis caching for tenant connections
+Phase 0 | DEV-24: Design and create Central Admin DB schema | DEV-25: Implement tenant DB provisioning pipeline | DEV-26: Build TenantContextMiddleware (JWT → tenant → DB resolution) | DEV-27: Build TenantConnectionService (pool, LRU cache, eviction) | DEV-28: Implement Redis caching for tenant connections | DEV-122/123/124: Security verification tests
 
 ---
 
@@ -583,3 +583,57 @@ class MyGuard {
 **Resources:**
 - [NestJS — Optional Providers](https://docs.nestjs.com/providers#optional-providers)
 - [NestJS — Custom Providers](https://docs.nestjs.com/fundamentals/custom-providers)
+
+---
+
+## 20. URL Injection Attacks in Database Connection Strings
+
+**What:** A URL injection attack occurs when user-controlled input is embedded into a URL without proper encoding. In database connection strings (`postgresql://user:pass@host:port/dbname`), special characters like `@`, `?`, `#`, `/` have structural meaning. If a field like `dbHost` or `dbName` contains these characters, the resulting URL may route to a different host, database, or include unintended parameters.
+
+**Why it matters:** Zerupt constructs database URLs dynamically during tenant provisioning. The `dbHost`, `dbUser`, `dbName`, and `password` come from the admin DB. If an attacker could influence these values (e.g., via a compromised admin record), they could redirect a tenant's connection to an attacker-controlled database. `buildPostgresUrl()` prevents this by validating hosts and encoding all other fields.
+
+**Key concepts:**
+- **Host validation:** Reject `@` (would create a new user:pass section), `/` (path traversal), `?` (query injection), `#` (fragment), whitespace (URL parsing ambiguity)
+- **Port validation:** Must be integer 1-65535 — non-integer or out-of-range ports cause undefined behavior
+- **`encodeURIComponent()`:** Encodes all reserved URL characters. A `dbName` of `mydb?sslmode=disable` becomes `mydb%3Fsslmode%3Ddisable` — the `?` is treated as literal data, not a query separator
+- **Defense-in-depth:** Combine input validation (reject bad hosts) with output encoding (encode all fields) — either alone is insufficient
+
+```ts
+// WITHOUT encoding — injection possible
+const url = `postgresql://${user}:${pass}@${host}:${port}/${dbName}`;
+// If dbName = "db?sslmode=disable", the sslmode parameter is interpreted
+
+// WITH encoding — injection prevented
+const url = `postgresql://${encodeURIComponent(user)}:${encodeURIComponent(pass)}@${host}:${port}/${encodeURIComponent(dbName)}`;
+// dbName = "db?sslmode=disable" → "db%3Fsslmode%3Ddisable"
+```
+
+**Resources:**
+- [OWASP — Server-Side Request Forgery (SSRF)](https://cheatsheetseries.owasp.org/cheatsheets/Server_Side_Request_Forgery_Prevention_Cheat_Sheet.html)
+- [MDN — encodeURIComponent](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent)
+
+---
+
+## 21. Credential Leakage Prevention in Error Handling
+
+**What:** When database operations fail, error messages and stack traces often contain the connection URL — including credentials. If these messages are logged, stored in a database, or returned to users, the credentials are leaked. Sanitization functions must intercept error messages before they reach any output channel.
+
+**Why it matters:** Zerupt's provisioning pipeline retries on failure and stores the error message in `provisioning_jobs.error_message`. Without sanitization, a connection failure like `"connection to postgresql://tenant_app:s3cret@db.host:5432/mydb failed"` would store the password in the admin DB in plaintext. Anyone with admin DB read access could extract tenant credentials.
+
+**Key concepts:**
+- **Regex redaction:** Replace `postgresql://` and `postgres://` URLs with a redacted placeholder. The `gi` flags handle case-insensitive matching and global replacement.
+- **Multiple patterns:** Also redact `password=` key-value pairs from log-style messages
+- **Apply early:** Sanitize at the point of capture (in `onFailed` handler), not at the point of display. This ensures no code path accidentally uses the raw message.
+- **Stack traces:** `error.stack` may also contain credentials if the error message does. Consider sanitizing stack traces too.
+
+```ts
+export function sanitizeErrorMessage(message: string): string {
+  return message
+    .replace(/postgres(?:ql)?:\/\/[^\s'"]+/gi, "postgresql://***REDACTED***")
+    .replace(/password[=:\s]+\S+/gi, "password=***REDACTED***");
+}
+```
+
+**Resources:**
+- [OWASP — Error Handling Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Error_Handling_Cheat_Sheet.html)
+- [OWASP — Logging Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Logging_Cheat_Sheet.html)

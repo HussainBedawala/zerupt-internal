@@ -1,6 +1,6 @@
 # Multi-Tenancy Foundation — Study Topics
 
-Phase 0 | DEV-24: Design and create Central Admin DB schema | DEV-25: Implement tenant DB provisioning pipeline | DEV-26: Build TenantContextMiddleware (JWT → tenant → DB resolution) | DEV-27: Build TenantConnectionService (pool, LRU cache, eviction)
+Phase 0 | DEV-24: Design and create Central Admin DB schema | DEV-25: Implement tenant DB provisioning pipeline | DEV-26: Build TenantContextMiddleware (JWT → tenant → DB resolution) | DEV-27: Build TenantConnectionService (pool, LRU cache, eviction) | DEV-28: Implement Redis caching for tenant connections
 
 ---
 
@@ -470,3 +470,116 @@ await client.$disconnect();
 **Resources:**
 - [Prisma — Programmatically override a datasource URL](https://www.prisma.io/docs/orm/prisma-client/setup-and-configuration/databases-connections#programmatically-override-a-datasource-url)
 - [Prisma — Connection management](https://www.prisma.io/docs/orm/prisma-client/setup-and-configuration/databases-connections)
+
+---
+
+## 17. Cache-Aside (Lazy Loading) Pattern
+
+**What:** A caching strategy where the application checks the cache first, falls back to the primary data source on a miss, and populates the cache with the fetched data. The cache is a read-through layer — it's never written to by the data source directly.
+
+**Why it matters:** Zerupt's `TenantResolverGuard` runs on every authenticated request, looking up tenant DB connection metadata from the Central Admin DB. Without caching, that's one DB query per request just for routing. Cache-aside with a 5-minute TTL means most requests skip the Admin DB entirely, reducing latency and load. The pattern also supports graceful degradation — if Redis is down, the app falls through to the DB and continues working.
+
+**Key concepts:**
+- **Cache hit:** Return cached value, skip the primary source
+- **Cache miss:** Query primary source, store result in cache with TTL, return to caller
+- **TTL expiry:** Entries automatically expire — provides an upper bound on staleness without active invalidation
+- **Explicit invalidation:** For immediate consistency (e.g., tenant suspension), delete the cache key so the next request goes to the source
+- **Fire-and-forget writes:** Cache `set()` after a DB read doesn't need to block the response — use `void` to avoid adding latency
+- **Graceful degradation:** Wrap all cache operations in try/catch. A dead cache means every request hits the DB — slower but correct.
+
+```ts
+async function getWithCache(key: string): Promise<Data> {
+  // 1. Try cache
+  const cached = await cache.get(key);
+  if (cached) return cached;
+
+  // 2. Cache miss — go to source
+  const data = await database.find(key);
+
+  // 3. Populate cache (fire-and-forget)
+  void cache.set(key, data, { ex: 300 });
+
+  return data;
+}
+```
+
+**Resources:**
+- [AWS — Caching Strategies (Lazy Loading)](https://docs.aws.amazon.com/AmazonElastiCache/latest/mem-ug/Strategies.html#Strategies.LazyLoading)
+- [Microsoft — Cache-Aside Pattern](https://learn.microsoft.com/en-us/azure/architecture/patterns/cache-aside)
+
+---
+
+## 18. Upstash Redis (HTTP/REST-Based Redis Client)
+
+**What:** Upstash Redis is a serverless Redis service accessed via HTTP REST API rather than TCP connections. The `@upstash/redis` TypeScript SDK sends commands as HTTP requests — no persistent connection needed.
+
+**Why it matters:** Traditional Redis clients (like ioredis) use long-lived TCP connections, which can be problematic in serverless environments (cold starts, connection limits). Upstash's HTTP approach works everywhere — Vercel Edge, Cloudflare Workers, Lambda, and standard Node.js. For Zerupt, it means the tenant connection cache works identically in Railway (long-running) and any future edge deployment.
+
+**Key concepts:**
+- **Connectionless:** Each command is an independent HTTP request. No connection pool to manage.
+- **`Redis.fromEnv()`:** Reads `UPSTASH_REDIS_REST_URL` and `UPSTASH_REDIS_REST_TOKEN` from environment
+- **Auto-serialization:** Objects are JSON-serialized on `set()` and deserialized on `get<T>()` — no manual `JSON.parse()`
+- **TTL:** `redis.set(key, value, { ex: seconds })` — same semantics as Redis `SET key value EX seconds`
+- **Trade-off:** Higher per-command latency than TCP (~1-5ms HTTP overhead vs ~0.1ms TCP), but eliminates connection management complexity
+
+```ts
+import { Redis } from "@upstash/redis";
+
+const redis = new Redis({
+  url: "https://your-redis.upstash.io",
+  token: "your-token",
+});
+
+// Objects auto-serialized
+await redis.set("key", { foo: "bar" }, { ex: 300 });
+const data = await redis.get<{ foo: string }>("key");
+// data = { foo: "bar" } — already parsed
+```
+
+**Resources:**
+- [Upstash Redis — Getting Started](https://upstash.com/docs/redis/overall/getstarted)
+- [Upstash Redis JS SDK](https://github.com/upstash/redis-js)
+
+---
+
+## 19. NestJS Optional Dependency Injection (@Optional)
+
+**What:** The `@Optional()` decorator in NestJS marks a constructor dependency as optional. If the provider resolves to `null` or is not registered, NestJS injects `undefined` instead of throwing a missing dependency error.
+
+**Why it matters:** The tenant connection cache is optional — it's only available when `UPSTASH_REDIS_REST_URL` and `UPSTASH_REDIS_REST_TOKEN` are set. In local dev without Upstash, the cache provider factory returns `null`. Without `@Optional()`, NestJS would throw on startup because the `TENANT_CONNECTION_CACHE` token resolves to `null`.
+
+**Key concepts:**
+- **`@Optional()`** must be placed before the `@Inject()` decorator
+- The injected parameter type should be `T | undefined` (or `T?` shorthand)
+- Guards and services must null-check before using: `this.cache?.get(...)` (optional chaining)
+- Factory providers can return `null` to signal "not available" — combine with `@Optional()` on the consumer
+
+```ts
+// Provider — returns null when config is missing
+{
+  provide: "TENANT_CONNECTION_CACHE",
+  inject: [ConfigService],
+  useFactory: (config: ConfigService) => {
+    const url = config.get("UPSTASH_REDIS_REST_URL");
+    if (!url) return null;
+    // ...
+  },
+}
+
+// Consumer — @Optional prevents startup crash
+@Injectable()
+class MyGuard {
+  constructor(
+    @Optional() @Inject("TENANT_CONNECTION_CACHE")
+    private readonly cache?: TenantConnectionCache,
+  ) {}
+
+  async doWork() {
+    const cached = await this.cache?.get(key); // safe with ?.
+  }
+}
+```
+
+**Resources:**
+- [NestJS — Optional Providers](https://docs.nestjs.com/providers#optional-providers)
+- [NestJS — Custom Providers](https://docs.nestjs.com/fundamentals/custom-providers)

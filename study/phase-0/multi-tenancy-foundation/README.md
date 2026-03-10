@@ -1,6 +1,6 @@
 # Multi-Tenancy Foundation — Study Topics
 
-Phase 0 | DEV-24: Design and create Central Admin DB schema
+Phase 0 | DEV-24: Design and create Central Admin DB schema | DEV-25: Implement tenant DB provisioning pipeline
 
 ---
 
@@ -154,3 +154,140 @@ Zerupt's choices:
 
 **Resources:**
 - [Microsoft — Multi-tenant SaaS database tenancy patterns](https://learn.microsoft.com/en-us/azure/azure-sql/database/saas-tenancy-app-design-patterns)
+
+---
+
+## 7. BullMQ Job Queues and Worker Patterns
+
+**What:** BullMQ is a Redis-backed job queue for Node.js. It supports delayed jobs, retries with exponential backoff, rate limiting, concurrency control, and job lifecycle events (`completed`, `failed`, `stalled`).
+
+**Why it matters:** Tenant provisioning is a multi-step, potentially slow operation (creating a database, running migrations). It must happen asynchronously so the signup API returns immediately. BullMQ provides retry semantics — if a step fails, the job retries with exponential backoff rather than losing the tenant's provisioning request.
+
+**Key concepts:**
+- **Queue:** Named channel where jobs are added. `tenant-provisioning` in Zerupt.
+- **Worker (Processor):** Consumes jobs from the queue. `@Processor(QUEUE_NAME)` in NestJS.
+- **Retry config:** `{ attempts: 3, backoff: { type: 'exponential', delay: 5000 } }` → retries at 5s, 10s, 20s.
+- **`@OnWorkerEvent("failed")`:** Fires on every failed attempt. Check `attemptsMade` to distinguish intermediate vs final failure.
+- **Job ID correlation:** Use the same ID for the DB record and BullMQ job so you can correlate status in both systems.
+- **Concurrency:** `@Processor(QUEUE, { concurrency: 2 })` — processes up to 2 jobs in parallel per worker instance.
+
+```ts
+// NestJS BullMQ pattern
+@Processor('tenant-provisioning', { concurrency: 2 })
+export class ProvisioningProcessor extends WorkerHost {
+  async process(job: Job<ProvisioningContext>): Promise<void> {
+    // Pipeline logic here
+  }
+
+  @OnWorkerEvent('failed')
+  onFailed(job: Job, error: Error): void {
+    // Handle failure (intermediate or final)
+  }
+}
+```
+
+**Resources:**
+- [BullMQ — What is BullMQ](https://docs.bullmq.io/)
+- [NestJS — Queues (BullMQ)](https://docs.nestjs.com/techniques/queues)
+
+---
+
+## 8. AES-256-GCM Authenticated Encryption
+
+**What:** AES-256-GCM is an authenticated encryption algorithm. It encrypts data (confidentiality) AND produces an authentication tag (integrity/tamper detection) in a single operation. The "256" means a 256-bit (32-byte) key. The "GCM" (Galois/Counter Mode) provides both encryption and authentication.
+
+**Why it matters:** Tenant database passwords are stored encrypted in the Central Admin DB. If someone gains read access to the admin DB, they should not be able to read tenant passwords. AES-256-GCM ensures both secrecy (can't read the password) and integrity (can't silently modify the ciphertext without detection).
+
+**Key concepts:**
+- **IV (Initialization Vector):** 12 bytes, randomly generated per encryption. MUST be unique per key+plaintext pair. Reusing an IV with the same key completely breaks GCM security.
+- **Auth Tag:** 16 bytes. Verified during decryption — if the ciphertext or auth tag is tampered with, decryption throws an error instead of returning garbage.
+- **Key validation:** Must be exactly 32 bytes (64 hex chars). Shorter keys are insecure, longer keys are invalid for AES-256.
+- **Ciphertext format:** `enc:v{keyVersion}:{iv}:{ciphertext}:{authTag}` — self-describing, parseable, versioned.
+
+```ts
+// Encrypt
+const iv = randomBytes(12);
+const cipher = createCipheriv('aes-256-gcm', keyBuffer, iv);
+const encrypted = Buffer.concat([cipher.update(plaintext), cipher.final()]);
+const authTag = cipher.getAuthTag(); // MUST call after final()
+
+// Decrypt
+const decipher = createDecipheriv('aes-256-gcm', keyBuffer, iv);
+decipher.setAuthTag(authTag); // MUST call before update()
+const decrypted = Buffer.concat([decipher.update(encrypted), decipher.final()]);
+```
+
+**Resources:**
+- [NIST SP 800-38D — Recommendation for GCM](https://csrc.nist.gov/publications/detail/sp/800-38d/final)
+- [Node.js — Crypto (createCipheriv)](https://nodejs.org/api/crypto.html#cryptocreatecipherivalgorithm-key-iv-options)
+
+---
+
+## 9. Idempotent Pipeline Design
+
+**What:** An idempotent operation produces the same result whether it runs once or multiple times. In a multi-step pipeline with retries, each step must be idempotent — running it again after a partial failure should not create duplicate data or leave the system in an inconsistent state.
+
+**Why it matters:** The provisioning pipeline retries on failure. If the `CreateDB` step succeeds but `RunMigrations` fails, the retry will re-execute `CreateDB`. Without idempotency, it would try to create the same database again and crash. With idempotency, it detects "already exists" and skips to the next step.
+
+**Key concepts:**
+- **Check-then-act:** Query for existing state before creating. `IF NOT EXISTS` in SQL, `findUnique` then skip in application code.
+- **Upsert:** `INSERT ... ON CONFLICT DO UPDATE` — atomically creates or updates. Prisma: `prisma.model.upsert()`.
+- **PostgreSQL error codes:** `42P04` = database already exists, `42710` = duplicate object. Catch and skip instead of crashing.
+- **Step-level resume:** Store which step completed last. On retry, skip completed steps: `PROVISIONING_STEP_ORDER.indexOf(lastCompleted) + 1`.
+- **Prisma `migrate deploy`:** Already idempotent — only applies pending migrations, skips already-applied ones.
+
+```ts
+// Pattern: catch "already exists" for idempotency
+try {
+  await client.query(`CREATE DATABASE ${escapedDbName}`);
+} catch (error) {
+  if (error.code === '42P04') {
+    // Already exists — idempotent skip
+  } else {
+    throw error; // Real error — propagate
+  }
+}
+```
+
+**Resources:**
+- [Designing Data-Intensive Applications — Chapter 11 (Idempotence)](https://dataintensive.net/)
+- [PostgreSQL — Error Codes](https://www.postgresql.org/docs/current/errcodes-appendix.html)
+
+---
+
+## 10. PostgreSQL Role and Privilege Hardening
+
+**What:** PostgreSQL uses a role-based access control system. Every connection authenticates as a role. Roles can own objects, have privileges granted, and be restricted from creating databases or other roles. The default `PUBLIC` role grants certain privileges to every role automatically.
+
+**Why it matters:** Each tenant gets a dedicated database user. If that user has excessive privileges (e.g., can `CREATE DATABASE` or `CREATE ROLE`), a compromised application credential could escalate to full server compromise. Defense-in-depth means restricting tenant users to the minimum privileges needed.
+
+**Key concepts:**
+- **NOCREATEDB:** Prevents the role from creating new databases
+- **NOCREATEROLE:** Prevents creating or modifying other roles
+- **NOINHERIT:** Role does not automatically inherit privileges from roles it's a member of
+- **CONNECTION LIMIT N:** Limits concurrent connections (prevents resource exhaustion)
+- **REVOKE CREATE ON SCHEMA public FROM PUBLIC:** The `PUBLIC` pseudo-role has CREATE on `public` schema by default in PostgreSQL ≤13 and some configurations of 14+. This means any authenticated user can create tables. Always revoke this.
+- **GRANT on existing vs future tables:** `GRANT ... ON ALL TABLES` grants on tables that exist now. `ALTER DEFAULT PRIVILEGES` grants on tables created in the future. You need both.
+
+```sql
+-- Hardened tenant user creation
+CREATE USER zerupt_tenant_acme_app
+  WITH PASSWORD '...'
+  NOCREATEDB NOCREATEROLE NOINHERIT
+  CONNECTION LIMIT 20;
+
+-- Revoke dangerous defaults
+REVOKE CREATE ON SCHEMA public FROM PUBLIC;
+REVOKE ALL ON DATABASE zerupt_tenant_acme FROM PUBLIC;
+
+-- Grant minimal application privileges
+GRANT USAGE ON SCHEMA public TO zerupt_tenant_acme_app;
+GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO zerupt_tenant_acme_app;
+ALTER DEFAULT PRIVILEGES IN SCHEMA public
+  GRANT SELECT, INSERT, UPDATE, DELETE ON TABLES TO zerupt_tenant_acme_app;
+```
+
+**Resources:**
+- [PostgreSQL — GRANT](https://www.postgresql.org/docs/current/sql-grant.html)
+- [PostgreSQL — ALTER DEFAULT PRIVILEGES](https://www.postgresql.org/docs/current/sql-alterdefaultprivileges.html)
+- [PostgreSQL — Database Roles](https://www.postgresql.org/docs/current/user-manag.html)

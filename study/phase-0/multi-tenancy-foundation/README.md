@@ -1,6 +1,6 @@
 # Multi-Tenancy Foundation — Study Topics
 
-Phase 0 | DEV-24: Design and create Central Admin DB schema | DEV-25: Implement tenant DB provisioning pipeline | DEV-26: Build TenantContextMiddleware (JWT → tenant → DB resolution)
+Phase 0 | DEV-24: Design and create Central Admin DB schema | DEV-25: Implement tenant DB provisioning pipeline | DEV-26: Build TenantContextMiddleware (JWT → tenant → DB resolution) | DEV-27: Build TenantConnectionService (pool, LRU cache, eviction)
 
 ---
 
@@ -405,3 +405,68 @@ export class AppModule implements NestModule {
 
 **Resources:**
 - [Supabase — API Keys](https://supabase.com/docs/guides/api/api-keys)
+
+---
+
+## 15. LRU Cache Design for Connection Pooling
+
+**What:** An LRU (Least Recently Used) cache evicts the entry that hasn't been accessed for the longest time when the cache reaches capacity. In JavaScript, `Map` preserves insertion order — delete+re-insert on access moves an entry to the "most recently used" position. The first key in iteration order is always the LRU candidate.
+
+**Why it matters:** Zerupt creates a PrismaClient per tenant database URL. Without eviction, memory grows unbounded as tenants accumulate. An LRU cache bounds memory at `maxPoolSize` clients while keeping hot tenants (frequent requests) cached and evicting cold tenants.
+
+**Key concepts:**
+- **Map insertion order:** JavaScript `Map` iterates in insertion order. `map.keys().next().value` returns the oldest (LRU) key.
+- **Access refresh:** On cache hit, delete the entry and re-insert it — this moves it to the end (most recently used).
+- **Concurrent dedup:** Use a `pending` Map of in-flight creation promises to prevent duplicate PrismaClient creation when two requests arrive simultaneously for the same uncached tenant.
+- **Stale detection:** Track `lastAccessedAt` per entry. After a configurable timeout, health-check the connection (`SELECT 1`) before returning it. Evict and recreate if the check fails.
+- **Graceful shutdown:** On app shutdown, iterate all pool entries and call `$disconnect()` on each. Drain in-flight creations first with `Promise.allSettled()`.
+
+```ts
+// LRU refresh — delete + re-insert moves to end of Map
+const existing = pool.get(key);
+pool.delete(key);
+pool.set(key, { ...existing, lastAccessedAt: Date.now() });
+
+// LRU eviction — first key is oldest
+const lruKey = pool.keys().next().value;
+pool.delete(lruKey);
+await client.$disconnect();
+```
+
+**Resources:**
+- [MDN — Map iteration order](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map#description)
+- [Wikipedia — Cache replacement policies](https://en.wikipedia.org/wiki/Cache_replacement_policies#Least_recently_used_(LRU))
+
+---
+
+## 16. Prisma Dynamic Datasource URL
+
+**What:** Prisma supports overriding the database URL at runtime by passing `datasources: { db: { url } }` to the `PrismaClient` constructor. This creates a client connected to a specific database rather than the one in the schema's `env("DATABASE_URL")`.
+
+**Why it matters:** In a per-tenant database architecture, each request targets a different database. The `TenantConnectionService` creates `PrismaClient` instances dynamically with the tenant's database URL. Without this feature, you'd need a separate Prisma schema per tenant or resort to raw SQL.
+
+**Key concepts:**
+- The `datasources` option overrides the `url` in `schema.prisma`'s `datasource db` block
+- Prisma lazy-connects on first query (no `$connect()` needed upfront)
+- Each `PrismaClient` instance maintains its own connection pool (default 5 connections via `connection_limit` in the URL)
+- `$disconnect()` must be called to release connections — otherwise they leak until process exit
+
+```ts
+import { PrismaClient } from "@zerupt/db";
+
+const client = new PrismaClient({
+  datasources: {
+    db: { url: "postgresql://user:pass@host:5432/tenant_acme" },
+  },
+});
+
+// Use the client...
+await client.tenantIdentity.findFirst();
+
+// Clean up
+await client.$disconnect();
+```
+
+**Resources:**
+- [Prisma — Programmatically override a datasource URL](https://www.prisma.io/docs/orm/prisma-client/setup-and-configuration/databases-connections#programmatically-override-a-datasource-url)
+- [Prisma — Connection management](https://www.prisma.io/docs/orm/prisma-client/setup-and-configuration/databases-connections)

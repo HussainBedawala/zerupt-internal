@@ -1,6 +1,6 @@
 # Multi-Tenancy Foundation — Study Topics
 
-Phase 0 | DEV-24: Design and create Central Admin DB schema | DEV-25: Implement tenant DB provisioning pipeline
+Phase 0 | DEV-24: Design and create Central Admin DB schema | DEV-25: Implement tenant DB provisioning pipeline | DEV-26: Build TenantContextMiddleware (JWT → tenant → DB resolution)
 
 ---
 
@@ -291,3 +291,117 @@ ALTER DEFAULT PRIVILEGES IN SCHEMA public
 - [PostgreSQL — GRANT](https://www.postgresql.org/docs/current/sql-grant.html)
 - [PostgreSQL — ALTER DEFAULT PRIVILEGES](https://www.postgresql.org/docs/current/sql-alterdefaultprivileges.html)
 - [PostgreSQL — Database Roles](https://www.postgresql.org/docs/current/user-manag.html)
+
+---
+
+## 11. JWKS (JSON Web Key Set) and ES256 JWT Verification
+
+**What:** JWKS is a JSON document containing a set of public keys used to verify JWT signatures. ES256 is an ECDSA signature algorithm using the P-256 (secp256r1) curve with SHA-256. Unlike HS256 (symmetric — shared secret), ES256 is asymmetric: the auth server signs with a private key, and your API verifies with the public key from JWKS.
+
+**Why it matters:** Zerupt uses Supabase Auth, which publishes its signing keys at `{SUPABASE_URL}/auth/v1/.well-known/jwks.json`. By verifying against JWKS instead of a shared secret, the API never holds the signing key — it only holds public keys. This is fundamentally more secure: even if the API server is compromised, the attacker cannot forge tokens.
+
+**Key concepts:**
+- **JWKS endpoint:** `.well-known/jwks.json` — contains an array of JWK (JSON Web Key) objects with `kty`, `crv`, `x`, `y`, `kid`, `use`
+- **Key ID (`kid`):** JWTs include a `kid` in the header. The verifier looks up the matching key in the JWKS. This enables key rotation without downtime.
+- **jose library:** The `createRemoteJWKSet()` function auto-fetches and caches the JWKS. `jwtVerify()` validates signature, expiry, issuer, audience.
+- **Algorithm pinning:** Always specify `algorithms: ["ES256"]` to prevent algorithm confusion attacks (e.g., attacker sends HS256 token using the public key as the HMAC secret).
+- **ES256 vs RS256:** Both are asymmetric. ES256 (ECDSA P-256) produces smaller signatures (~64 bytes vs ~256 for RS256) and is faster to verify. Supabase recommends ES256 for new signing keys.
+
+```ts
+import { createRemoteJWKSet, jwtVerify } from "jose";
+
+const jwks = createRemoteJWKSet(
+  new URL("https://project.supabase.co/auth/v1/.well-known/jwks.json")
+);
+
+const { payload } = await jwtVerify(token, jwks, {
+  issuer: "https://project.supabase.co/auth/v1",
+  audience: "authenticated",
+  algorithms: ["ES256"], // CRITICAL: pin the algorithm
+});
+```
+
+**Resources:**
+- [RFC 7517 — JSON Web Key (JWK)](https://datatracker.ietf.org/doc/html/rfc7517)
+- [jose — jwtVerify](https://github.com/panva/jose/blob/main/docs/functions/jwt_verify.jwtVerify.md)
+- [Supabase — Auth: new signing keys](https://supabase.com/docs/guides/auth/jwts)
+
+---
+
+## 12. AsyncLocalStorage for Request-Scoped Context
+
+**What:** `AsyncLocalStorage` (ALS) is a Node.js API (`node:async_hooks`) that provides a context store that propagates automatically through the async call chain. Unlike thread-local storage in Java, ALS follows the continuation (callbacks, promises, async/await) rather than a specific thread.
+
+**Why it matters:** In a multi-tenant NestJS API, every request needs to know which tenant it belongs to. Passing `tenantContext` through every function parameter is invasive. ALS lets you store the context once (in middleware/guard) and read it from anywhere in the call chain — services, repositories, interceptors — without prop drilling.
+
+**Key concepts:**
+- **`run(store, callback)`:** Creates a new async scope. Everything inside `callback` (and its continuations) can access `store` via `getStore()`.
+- **`enterWith(store)`:** Replaces the current scope's store. Useful in guards (which run inside a `run()` boundary set by middleware). The store persists for all subsequent async continuations within the same scope.
+- **Isolation:** Each `run()` creates an isolated scope. Concurrent requests each have their own scope — Request A's context is invisible to Request B.
+- **Pattern:** Middleware calls `run()` to create the boundary. Guard calls `enterWith()` to populate the context. Services call `getStore()` to read it.
+
+```ts
+// Middleware — create the ALS boundary
+tenantStore.run(undefined as never, next);
+
+// Guard — populate the context
+tenantStore.enterWith({ tenantId, userId, email, databaseUrl });
+
+// Service — read the context
+const ctx = tenantStore.getStore();
+if (!ctx) throw new Error("Not in tenant scope");
+```
+
+**Resources:**
+- [Node.js — AsyncLocalStorage](https://nodejs.org/api/async_context.html#class-asynclocalstorage)
+- [NestJS — Execution Context](https://docs.nestjs.com/fundamentals/execution-context)
+
+---
+
+## 13. NestJS Guard Execution Order and APP_GUARD
+
+**What:** NestJS guards (`CanActivate`) run before route handlers. When registered as `APP_GUARD` via `{ provide: APP_GUARD, useClass: MyGuard }`, they apply globally to every route. The execution order of multiple APP_GUARDs follows the module import order in `AppModule`.
+
+**Why it matters:** Zerupt has two global guards: `JwtAuthGuard` (validates JWT) and `TenantResolverGuard` (resolves tenant DB). The tenant guard depends on `request.user` being populated by the JWT guard. If the import order is wrong, the tenant guard runs first and fails because there's no JWT payload.
+
+**Key concepts:**
+- **Module import order = guard execution order.** `imports: [AuthModule, TenantModule]` means JWT guard runs first.
+- **Middleware vs Guard:** Middleware runs before guards. The `TenantContextMiddleware` establishes the ALS boundary, then guards populate it.
+- **`@Public()` decorator:** Custom decorator using `SetMetadata`. Both guards check for it and skip their logic, allowing unauthenticated endpoints (health checks, webhooks).
+- **Request lifecycle:** `Middleware → Guards → Interceptors (pre) → Pipes → Handler → Interceptors (post) → Exception filters`
+
+```ts
+// AppModule — order matters
+@Module({
+  imports: [
+    AuthModule,       // JwtAuthGuard registered as APP_GUARD here
+    TenantModule,     // TenantResolverGuard registered as APP_GUARD here
+  ],
+})
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer): void {
+    consumer.apply(TenantContextMiddleware).forRoutes("*");
+  }
+}
+```
+
+**Resources:**
+- [NestJS — Guards](https://docs.nestjs.com/guards)
+- [NestJS — Middleware](https://docs.nestjs.com/middleware)
+
+---
+
+## 14. Supabase New API Keys (Publishable vs Secret)
+
+**What:** Supabase is transitioning from legacy API keys (`anon` / `service_role`) to a new key format: `sb_publishable_...` (replaces anon) and `sb_secret_...` (replaces service_role). The new keys are tied to the new JWT signing keys and are functionally equivalent but use the updated key infrastructure.
+
+**Why it matters:** Zerupt migrated to the new key format during DEV-26. The publishable key is safe to expose in client-side code (browser, mobile). The secret key has full admin access and must never be exposed. Using the new keys ensures compatibility with ES256 JWT signing and Supabase's evolving security model.
+
+**Key concepts:**
+- **Publishable key (`sb_publishable_...`):** Used by the frontend (Next.js). Embeds the `anon` role. Subject to RLS policies. Safe for client-side use.
+- **Secret key (`sb_secret_...`):** Used by the backend only. Bypasses all RLS. Has `service_role` privileges. Never expose in client code.
+- **JWT connection:** New keys are signed with the new JWT signing key (ES256). Old keys were signed with the legacy JWT secret (HS256).
+- **Migration:** Rename env vars (`SUPABASE_ANON_KEY` → `SUPABASE_PUBLISHABLE_KEY`, etc.) and update Railway/Vercel env vars.
+
+**Resources:**
+- [Supabase — API Keys](https://supabase.com/docs/guides/api/api-keys)

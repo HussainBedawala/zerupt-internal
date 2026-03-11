@@ -77,6 +77,7 @@ Present a clear implementation plan before writing any code. Include:
 - What the user needs to do manually (e.g. cloud console setup, credentials)
 - What credentials/values to provide back (if applicable)
 - Any risks or blockers
+- In case designing API, use `api-design` skill to plan it.
 
 **Do NOT write any code until the user approves the plan.**
 
@@ -101,7 +102,7 @@ Additionally invoke based on issue labels:
 - Security / auth labels → `security-reviewer` agent
 - Database label → `database-reviewer` agent
 - AI Service / Python label → `python-reviewer` agent
-- API / Backend labels → `api-reviewer` agent + `api-design` skill
+- API / Backend labels → `api-reviewer` agent
 
 Fix ALL findings at every severity level (CRITICAL, HIGH, MEDIUM, LOW) before continuing. Never skip or defer any finding — every issue gets resolved in the same session.
 
@@ -180,11 +181,28 @@ Closes DEV-XX
 Type from labels: Feature→feat, Bug→fix, Infrastructure→chore, Database→chore(db), Security→feat(security)
 Scope from app: web, api, ai, shared, db, db-admin, ui
 
-**Push:** `git push origin main` (we commit directly to main for Phase 0 infra work; feature branches will be used from Phase 1 onwards when there is more parallel work)
+**Push + PR:**
+1. Push the feature branch: `git push -u origin <branch-name>`
+2. Create a PR using `gh pr create` with:
+   - Title: `<type>(<scope>): <lowercase description> (DEV-XX)`
+   - Body format:
+     ```
+     ## Summary
+     - bullet points of what changed and why
+
+     ## Test plan
+     - [ ] tests passing (X tests, Y suites)
+     - [ ] typecheck clean
+     - [ ] lint clean
+
+     Closes DEV-XX
+     ```
+   - Base branch: `main`
+3. Return the PR URL to the user
 
 **Linear sync:**
 - `save_issue` → set status to "Done"
-- `save_comment` on the issue with: commit hash, files changed, env vars added, notes for future issues
+- `save_comment` on the issue with: commit hash, PR URL, files changed, env vars added, notes for future issues
 
 ## PHASE 10: STUDY TOPICS
 

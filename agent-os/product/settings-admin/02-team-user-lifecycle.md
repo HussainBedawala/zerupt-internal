@@ -9,7 +9,7 @@
 | `email` | string | Unique per tenant |
 | `fullName` | string | |
 | `phone` | string | |
-| `status` | enum | `Invited`, `Active`, `Suspended`, `Deactivated` |
+| `status` | enum | `Invited`, `PendingActivation`, `Active`, `Suspended`, `Deactivated`, `Offboarded` |
 | `locale` | string | User's preferred locale (e.g., `ar`, `en`, `hi`). Nullable — inherits `tenant.languageDefault` if unset. See `14-internationalization.md`. |
 | `dateFormat` | enum | `DMY`, `MDY`, `YMD`. Nullable — inherits tenant default. |
 | `timeFormat` | enum | `12h`, `24h`. Nullable — inherits tenant default. |
@@ -42,11 +42,13 @@
 ## User State Machine
 
 ```
-Invited -> Active
-Invited -> Deactivated
-Active <-> Suspended
-Active -> Deactivated
-Suspended -> Deactivated
+Invited -> PendingActivation       (user accepts invite link; one-time secure token)
+PendingActivation -> Active        (profile setup + first auth success; default role/branch applied)
+Invited -> Deactivated             (admin revokes before acceptance)
+Active <-> Suspended               (risk event or admin action / admin restore)
+Active -> Deactivated              (planned removal)
+Suspended -> Deactivated           (planned removal while suspended)
+Deactivated -> Offboarded          (retention policy completes; irreversible identity cleanup)
 ```
 
 ## Lifecycle Rules
@@ -56,8 +58,10 @@ Suspended -> Deactivated
 | Invitation expiry | Default 7 days; configurable max 30 |
 | Duplicate invite | Reuses existing pending invite token |
 | Activation prerequisites | Accepted invite + password set + required MFA bound |
+| PendingActivation | Intermediate state after invite acceptance but before profile setup + first auth. User cannot access tenant resources yet. |
 | Suspension effect | Login denied, sessions revoked, scheduled jobs disabled |
 | Deactivation effect | Permanent access removal; audit attribution preserved |
+| Offboarding | Irreversible identity cleanup after retention policy completes. Revoke all sessions, remove privileged roles, transfer pending approvals/tasks, preserve immutable audit history, apply regional retention/deletion policy. |
 
 ## Branch Assignment Rules
 

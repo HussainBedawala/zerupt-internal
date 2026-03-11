@@ -1,6 +1,7 @@
 # Phase 1 — Tenant & User Management: Study Topics
 
 DEV-31: Implement tenant entity + governance (plan, status, feature flags)
+DEV-32: Build user lifecycle API (invite → activate → suspend → deactivate)
 
 ---
 
@@ -195,3 +196,136 @@ async update(
 **Resources:**
 - [Zod — TypeScript-first schema validation](https://zod.dev/)
 - [NestJS Custom Pipes](https://docs.nestjs.com/pipes#custom-pipes)
+
+---
+
+## 7. User Lifecycle State Machines vs Tenant State Machines
+
+**What:** User lifecycle and tenant lifecycle use the same FSM pattern but have different state sets, transition rules, and side effects.
+
+**Why it matters:** In Zerupt, tenants have 5 states (PendingProvisioning → Active → Suspended → Archived → ProvisioningFailed) while users within a tenant have 4 states (Invited → Active → Suspended → Deactivated). Conflating them leads to bugs — e.g., a "suspended" tenant means all users lose access, but a "suspended" user only affects that individual.
+
+**How it works:**
+
+```typescript
+// User state machine — pure function, no side effects
+const USER_TRANSITIONS: Record<UserTenantStatus, readonly UserTenantStatus[]> = {
+  Invited:     [Active, Deactivated],
+  Active:      [Suspended, Deactivated],
+  Suspended:   [Active, Deactivated],
+  Deactivated: [],  // terminal — no exits
+};
+```
+
+Key differences from tenant FSM:
+- User `Deactivated` is terminal (tenant `Archived` is also terminal)
+- User `Invited → Active` requires external trigger (invite acceptance)
+- User `Active ↔ Suspended` is bidirectional (tenant `Active → Suspended` is also bidirectional)
+- Side effects differ: suspending a user revokes sessions; suspending a tenant blocks all API access
+
+**Resources:**
+- [State Pattern (Refactoring Guru)](https://refactoring.guru/design-patterns/state)
+- [Domain-Driven Design — Aggregates and Lifecycle](https://martinfowler.com/bliki/DDD_Aggregate.html)
+
+---
+
+## 8. TOCTOU Race Conditions in Database Operations
+
+**What:** Time-of-Check-to-Time-of-Use (TOCTOU) is a race condition where the state checked in step 1 changes before step 2 acts on it.
+
+**Why it matters:** In `transitionStatus`, the naive flow is: (1) read user status, (2) check if transition is valid, (3) update status. Between steps 1 and 3, another request could change the status, bypassing the validation. Critical example: two concurrent requests to deactivate the last two owners both read "2 owners" and both proceed — leaving zero owners.
+
+**How it works:**
+
+```typescript
+// BAD: read and write are separate — race window between them
+const user = await prisma.userTenantMap.findUnique({ where: { ... } });
+if (user.status !== 'Active') throw new ConflictException();
+await prisma.userTenantMap.update({ where: { ... }, data: { status: 'Suspended' } });
+
+// GOOD: wrap in a transaction — atomicity guaranteed
+await prisma.$transaction(async (tx) => {
+  const user = await tx.userTenantMap.findUnique({ where: { ... } });
+  if (user.status !== 'Active') throw new ConflictException();
+  // For stronger isolation, use SELECT FOR UPDATE via raw query
+  return tx.userTenantMap.update({ where: { ... }, data: { status: 'Suspended' } });
+});
+```
+
+Prisma's `$transaction` uses PostgreSQL's `SERIALIZABLE` isolation by default, which detects conflicting reads. For maximum safety, use `SELECT FOR UPDATE` via raw SQL within the transaction.
+
+**Resources:**
+- [CWE-367: TOCTOU Race Condition](https://cwe.mitre.org/data/definitions/367.html)
+- [PostgreSQL Transaction Isolation](https://www.postgresql.org/docs/current/transaction-iso.html)
+- [Prisma Interactive Transactions](https://www.prisma.io/docs/orm/prisma-client/queries/transactions)
+
+---
+
+## 9. Role-Based Access Control (RBAC) Guards in NestJS
+
+**What:** A guard that checks the authenticated user's role before allowing access to an endpoint. Runs after authentication (JWT validation) but before the route handler.
+
+**Why it matters:** Without RBAC, any authenticated tenant member can perform admin actions (invite users, suspend others, deactivate accounts). This is a privilege escalation vulnerability in a multi-tenant ERP.
+
+**How it works:**
+
+```typescript
+@Injectable()
+export class OwnerGuard implements CanActivate {
+  constructor(@Inject('ADMIN_PRISMA') private readonly prisma: PrismaClient) {}
+
+  async canActivate(_context: ExecutionContext): Promise<boolean> {
+    const ctx = getTenantContext(); // from AsyncLocalStorage
+    const actor = await this.prisma.userTenantMap.findUnique({
+      where: { userId_tenantId: { userId: ctx.userId, tenantId: ctx.tenantId } },
+    });
+    if (!actor || actor.role !== UserTenantRole.Owner || actor.status !== UserTenantStatus.Active) {
+      throw new ForbiddenException('Owner access required');
+    }
+    return true;
+  }
+}
+
+// Usage
+@Post('invite')
+@UseGuards(OwnerGuard)
+async invite(@Body() body: InviteUserBody) { ... }
+```
+
+Key design: the guard reads the actor's own row in `user_tenant_map` and checks both `role` and `status`. Fail-closed: if the row is missing, access is denied.
+
+**Resources:**
+- [NestJS Guards](https://docs.nestjs.com/guards)
+- [OWASP Access Control Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Access_Control_Cheat_Sheet.html)
+
+---
+
+## 10. Supabase Admin API — User Invitation Flow
+
+**What:** Supabase provides `auth.admin.inviteUserByEmail()` which creates a user record and sends a magic link email. If the user already exists, it returns an error.
+
+**Why it matters:** Zerupt's invite flow must handle both new users (create in Supabase + send email) and existing users (reuse their Supabase ID, just add to tenant). The fallback lookup must be paginated — `listUsers()` defaults to page 1 (max 1000) and silently truncates.
+
+**How it works:**
+
+```typescript
+// Step 1: Try to invite
+const { data, error } = await supabase.auth.admin.inviteUserByEmail(email);
+if (data?.user) return { id: data.user.id };
+
+// Step 2: If user exists, paginate to find them
+if (error) {
+  for (let page = 1; page <= 10; page++) {
+    const { data } = await supabase.auth.admin.listUsers({ page, perPage: 1000 });
+    const match = data?.users?.find(u => u.email === email);
+    if (match) return { id: match.id };
+    if (!data?.users?.length || data.users.length < 1000) break;
+  }
+}
+```
+
+The key gotcha: `listUsers()` without pagination params returns only page 1. At scale (>1000 users across all tenants sharing one Supabase project), the fallback silently fails.
+
+**Resources:**
+- [Supabase Admin API — inviteUserByEmail](https://supabase.com/docs/reference/javascript/auth-admin-inviteuserbyemail)
+- [Supabase Admin API — listUsers](https://supabase.com/docs/reference/javascript/auth-admin-listusers)

@@ -1,6 +1,6 @@
 # Multi-Tenancy Foundation — Study Topics
 
-Phase 0 | DEV-24: Design and create Central Admin DB schema | DEV-25: Implement tenant DB provisioning pipeline | DEV-26: Build TenantContextMiddleware (JWT → tenant → DB resolution) | DEV-27: Build TenantConnectionService (pool, LRU cache, eviction) | DEV-28: Implement Redis caching for tenant connections | DEV-29: Build audit trail spine (append-only log, NestJS interceptor) | DEV-122/123/124: Security verification tests
+Phase 0 | DEV-24: Design and create Central Admin DB schema | DEV-25: Implement tenant DB provisioning pipeline | DEV-26: Build TenantContextMiddleware (JWT → tenant → DB resolution) | DEV-27: Build TenantConnectionService (pool, LRU cache, eviction) | DEV-28: Implement Redis caching for tenant connections | DEV-29: Build audit trail spine (append-only log, NestJS interceptor) | DEV-30: Configure Supabase Auth with JWT tenant_id claim | DEV-122/123/124: Security verification tests
 
 ---
 
@@ -769,3 +769,98 @@ async onModuleDestroy() {
 **Resources:**
 - [Prisma — Connection Management](https://www.prisma.io/docs/orm/prisma-client/setup-and-configuration/databases-connections)
 - [PostgreSQL — max_connections](https://www.postgresql.org/docs/current/runtime-config-connection.html)
+
+## 26. Supabase Custom Access Token Hooks
+
+**What:** A PL/pgSQL function that Supabase Auth calls before issuing every JWT (login and refresh), allowing you to inject custom claims into the token.
+
+**Why it matters:** Zerupt uses this hook to inject `tenant_id` from `user_tenant_map` into `app_metadata` on every token issuance. This is the primary mechanism ensuring every JWT carries the correct tenant scope — the NestJS guard then validates it. Without this, you'd rely solely on `app_metadata` set via the Admin API, which can become stale.
+
+**Key concepts:**
+- The hook receives a JSONB `event` containing `user_id`, `claims`, and `authentication_method`
+- You modify `claims` and return the event — Supabase signs the modified claims into the JWT
+- The function MUST never throw — if it does, Supabase Auth fails the entire token issuance
+- Use `SECURITY DEFINER` so the function runs as its owner, bypassing RLS on lookup tables
+- Use `VOLATILE` (not `STABLE`) since you read from tables whose contents change
+- Set `search_path = public` explicitly to prevent search path injection attacks
+- Exception handlers should be **fail-closed**: strip sensitive claims rather than returning them unchanged
+
+```sql
+create or replace function public.custom_access_token_hook(event jsonb)
+returns jsonb
+language plpgsql
+volatile
+security definer
+set search_path = public
+as $$
+declare
+  claims jsonb;
+begin
+  claims := event->'claims';
+  -- Modify claims...
+  event := jsonb_set(event, '{claims}', claims);
+  return event;
+exception when others then
+  -- Fail-closed: strip custom claims
+  return jsonb_set(event, '{claims}', (event->'claims') #- '{app_metadata, tenant_id}');
+end;
+$$;
+```
+
+**Resources:**
+- [Supabase — Custom Access Token Hook](https://supabase.com/docs/guides/auth/auth-hooks/custom-access-token-hook)
+- [Supabase — Custom Claims and RBAC](https://supabase.com/docs/guides/auth/custom-claims-and-role-based-access-control-rbac)
+
+## 27. SECURITY DEFINER vs SECURITY INVOKER in PostgreSQL Functions
+
+**What:** PostgreSQL functions can run as either the calling user's role (`SECURITY INVOKER`, the default) or as the function owner's role (`SECURITY DEFINER`).
+
+**Why it matters:** The custom_access_token_hook is called by `supabase_auth_admin`, which has limited permissions. Using `SECURITY DEFINER` ensures the function can always read `user_tenant_map` regardless of RLS policies or future permission changes. But it introduces a privilege escalation surface — you must lock down the function's search path and revoke execute from untrusted roles.
+
+**Key concepts:**
+- `SECURITY INVOKER`: function runs with caller's privileges. Safe by default, but the caller needs all necessary grants.
+- `SECURITY DEFINER`: function runs with owner's privileges. Powerful but dangerous — any caller with EXECUTE can do whatever the owner can do within that function.
+- Always pair `SECURITY DEFINER` with `SET search_path = public` (or the specific schema) to prevent search path injection — where an attacker creates a schema with malicious functions that shadow your intended tables/functions.
+- Always `REVOKE EXECUTE FROM PUBLIC` on SECURITY DEFINER functions.
+
+**Resources:**
+- [PostgreSQL — CREATE FUNCTION Security](https://www.postgresql.org/docs/current/sql-createfunction.html)
+- [PostgreSQL — Writing SECURITY DEFINER Functions Safely](https://www.postgresql.org/docs/current/sql-createfunction.html#SQL-CREATEFUNCTION-SECURITY)
+
+## 28. Fail-Closed vs Fail-Open in Auth Systems
+
+**What:** When an auth component encounters an error, it can either deny access (fail-closed) or allow access (fail-open). In security-critical paths, fail-closed is almost always correct.
+
+**Why it matters:** The custom_access_token_hook's exception handler was initially fail-open — on error, it returned the original JWT claims unchanged, which could contain a stale `tenant_id` from a previous session. This means a user whose tenant access was revoked could keep accessing the system if the hook crashed during the revocation check. Changing to fail-closed (strip `tenant_id` on error) ensures the NestJS guard rejects the token.
+
+**Key concepts:**
+- **Fail-closed:** On error, deny access. Users may be temporarily locked out, but no unauthorized access occurs. Correct for: authentication, authorization, encryption, tenant isolation.
+- **Fail-open:** On error, allow access. Users aren't disrupted, but unauthorized access is possible. Correct for: rate limiting (maybe), feature flags, non-security analytics.
+- In a layered auth system (hook → guard → resolver), each layer should independently fail-closed. Don't rely on a downstream layer to catch an upstream failure.
+- Exception handlers in auth code should explicitly strip/deny rather than pass through unchanged state.
+
+**Resources:**
+- [OWASP — Fail Securely](https://cheatsheetseries.owasp.org/cheatsheets/Error_Handling_Cheat_Sheet.html)
+
+## 29. Supabase Admin API and app_metadata vs user_metadata
+
+**What:** Supabase distinguishes between `app_metadata` (server-controlled, included in JWT) and `user_metadata` (user-editable, also in JWT but not trusted for authorization).
+
+**Why it matters:** Zerupt stores `tenant_id` in `app_metadata` because only the server (via Admin API or the custom hook) can modify it. If it were in `user_metadata`, users could change their own tenant_id via the client SDK — a critical privilege escalation vulnerability.
+
+**Key concepts:**
+- `app_metadata`: Only modifiable via `auth.admin.updateUserById()` (requires service role key). Included in JWT claims. Used for: tenant_id, roles, permissions, subscription tier.
+- `user_metadata`: Modifiable by the user via `auth.updateUser({ data: {...} })`. Included in JWT. Used for: display name, avatar URL, preferences.
+- `updateUserById` with `app_metadata` does a **shallow merge** — existing keys are preserved, only specified keys are added/updated.
+- Never use the service role key on the client. It bypasses all RLS and has full admin access.
+
+```typescript
+// Server-side only (service role key)
+const { error } = await supabase.auth.admin.updateUserById(userId, {
+  app_metadata: { tenant_id: tenantId }, // merged with existing app_metadata
+});
+```
+
+**Resources:**
+- [Supabase — User Management](https://supabase.com/docs/guides/auth/managing-user-data)
+- [Supabase — Admin API](https://supabase.com/docs/reference/javascript/auth-admin-updateuserbyid)

@@ -2,6 +2,7 @@
 
 DEV-31: Implement tenant entity + governance (plan, status, feature flags)
 DEV-32: Build user lifecycle API (invite → activate → suspend → deactivate)
+DEV-33: Create Settings UI shell (layout, navigation, sidebar)
 
 ---
 
@@ -329,3 +330,119 @@ The key gotcha: `listUsers()` without pagination params returns only page 1. At 
 **Resources:**
 - [Supabase Admin API — inviteUserByEmail](https://supabase.com/docs/reference/javascript/auth-admin-inviteuserbyemail)
 - [Supabase Admin API — listUsers](https://supabase.com/docs/reference/javascript/auth-admin-listusers)
+
+---
+
+## 11. CSS Logical Properties for RTL/LTR Support
+
+**What:** CSS logical properties replace physical directions (`left`, `right`, `margin-left`, `padding-right`) with flow-relative equivalents (`start`, `end`, `margin-inline-start`, `padding-inline-end`) that adapt to the document's writing direction.
+
+**Why it matters:** Zerupt supports Arabic (RTL) and English (LTR). With physical properties, every layout detail needs manual mirroring for RTL. Logical properties flip automatically based on the `dir` attribute — one codebase, both directions.
+
+**How it works:**
+
+```css
+/* Physical (breaks in RTL) */
+.sidebar { border-right: 1px solid; padding-left: 16px; margin-left: auto; }
+
+/* Logical (works in both directions) */
+.sidebar { border-inline-end: 1px solid; padding-inline-start: 16px; margin-inline-start: auto; }
+```
+
+Tailwind equivalents: `ms-*` (margin-start), `me-*` (margin-end), `ps-*` (padding-start), `pe-*` (padding-end), `start-0` (inset-inline-start), `end-0` (inset-inline-end), `border-s` (border-start), `border-e` (border-end).
+
+**Resources:**
+- [MDN — CSS Logical Properties](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_logical_properties_and_values)
+- [Tailwind — Logical Properties](https://tailwindcss.com/docs/margin#logical-properties)
+
+---
+
+## 12. Icon Rail Navigation Pattern
+
+**What:** A compact sidebar that shows only icons (64px) by default and expands to show labels (220px) on hover. Combines information density with discoverability.
+
+**Why it matters:** ERP apps have many modules. A full sidebar wastes screen real estate; a hidden hamburger menu buries navigation. The icon rail is a middle ground — always visible, minimal footprint, progressive disclosure on hover.
+
+**How it works:**
+
+```tsx
+// CSS variable-driven width for easy theming
+const [expanded, setExpanded] = useState(false);
+
+<nav onMouseEnter={() => setExpanded(true)} onMouseLeave={() => setExpanded(false)}>
+  <div className={expanded ? "w-[220px]" : "w-[64px]"}>
+    {items.map(item => (
+      <button>
+        <Icon />
+        {expanded && <span>{label}</span>}
+      </button>
+    ))}
+  </div>
+</nav>
+```
+
+Key UX decisions:
+- **200ms collapse delay** — prevents flickering when cursor briefly leaves the sidebar
+- **Tooltips on collapsed icons** — accessibility + discoverability without expansion
+- **CSS `transition-all duration-200`** — smooth animation that doesn't feel laggy
+
+**Resources:**
+- [Material Design — Navigation Rail](https://m3.material.io/components/navigation-rail/overview)
+- [Radix UI Tooltip](https://www.radix-ui.com/primitives/docs/components/tooltip)
+
+---
+
+## 13. Next.js Route Groups for Layout Segmentation
+
+**What:** Route groups (parenthesized folder names like `(app)`) in Next.js App Router let you share layouts between routes without affecting the URL path.
+
+**Why it matters:** In Zerupt, authenticated pages need the app shell (sidebar + nav) while public pages (login, onboarding) don't. Route groups let you wrap `(app)/` routes in the app shell layout without the `(app)` segment appearing in the URL.
+
+**How it works:**
+
+```
+app/[locale]/
+  (app)/           ← route group (not in URL)
+    layout.tsx     ← wraps all authenticated pages with AppShell
+    settings/
+      layout.tsx   ← settings-specific sidebar layout
+      page.tsx     ← redirects to /settings/organisation
+      [section]/
+        page.tsx   ← dynamic section pages
+  (auth)/          ← another group for login/signup
+    login/page.tsx
+```
+
+URL `/en/settings/organisation` matches `app/[locale]/(app)/settings/[section]/page.tsx`. The `(app)` folder is invisible in the URL but its `layout.tsx` wraps the content.
+
+**Resources:**
+- [Next.js Route Groups](https://nextjs.org/docs/app/building-your-application/routing/route-groups)
+- [Next.js Layouts and Templates](https://nextjs.org/docs/app/building-your-application/routing/layouts-and-templates)
+
+---
+
+## 14. Radix Primitives and RTL Behavior
+
+**What:** Radix UI primitives (Tooltip, Dialog, DropdownMenu, etc.) read the `dir` attribute from the nearest ancestor and automatically adjust positioning. For example, `side="right"` on a Tooltip flips to the left side in RTL.
+
+**Why it matters:** Custom RTL handling for every popup, tooltip, and dropdown is error-prone. Radix handles it natively — you use semantic positioning (`side="right"`) and it resolves to the physical direction based on `dir`.
+
+**How it works:**
+
+```tsx
+// This tooltip appears on the right in LTR, left in RTL
+<Tooltip>
+  <TooltipTrigger>{icon}</TooltipTrigger>
+  <TooltipContent side="right" sideOffset={8}>
+    {label}
+  </TooltipContent>
+</Tooltip>
+```
+
+Exception: Radix Tooltip only accepts physical values (`top`, `bottom`, `left`, `right`), not logical (`start`, `end`). But it auto-flips `right` to `left` when `dir="rtl"` is set on `<html>`.
+
+For Sheet/Dialog slide animations, Tailwind CSS doesn't support logical slide directions, so you must add explicit `rtl:` variant overrides.
+
+**Resources:**
+- [Radix UI — RTL Support](https://www.radix-ui.com/primitives/docs/overview/accessibility#right-to-left-support)
+- [Radix Tooltip API](https://www.radix-ui.com/primitives/docs/components/tooltip)

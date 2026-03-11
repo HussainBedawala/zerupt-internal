@@ -3,6 +3,7 @@
 DEV-31: Implement tenant entity + governance (plan, status, feature flags)
 DEV-32: Build user lifecycle API (invite → activate → suspend → deactivate)
 DEV-33: Create Settings UI shell (layout, navigation, sidebar)
+DEV-34: Build User Management UI (list, invite, edit, suspend)
 
 ---
 
@@ -446,3 +447,146 @@ For Sheet/Dialog slide animations, Tailwind CSS doesn't support logical slide di
 **Resources:**
 - [Radix UI — RTL Support](https://www.radix-ui.com/primitives/docs/overview/accessibility#right-to-left-support)
 - [Radix Tooltip API](https://www.radix-ui.com/primitives/docs/components/tooltip)
+
+---
+
+## 15. TanStack Table — Headless Data Tables
+
+**What:** TanStack Table (v8) is a headless table library — it provides the logic (sorting, filtering, pagination, column visibility) but zero UI. You bring your own markup and styling.
+
+**Why it matters:** Zerupt's user management table needs sorting, global search, pagination, and per-row actions. A headless approach means the table logic scales to thousands of rows while the UI matches the design system exactly — no fighting framework CSS.
+
+**How it works:**
+
+```typescript
+const table = useReactTable({
+  data,
+  columns,
+  state: { globalFilter, pagination },
+  getCoreRowModel: getCoreRowModel(),
+  getFilteredRowModel: getFilteredRowModel(),
+  getPaginationRowModel: getPaginationRowModel(),
+});
+
+// Render — you own the markup
+<tbody>
+  {table.getRowModel().rows.map(row => (
+    <tr key={row.id}>
+      {row.getVisibleCells().map(cell => (
+        <td key={cell.id}>
+          {flexRender(cell.column.columnDef.cell, cell.getContext())}
+        </td>
+      ))}
+    </tr>
+  ))}
+</tbody>
+```
+
+Key concepts: `columnDef` defines how each column renders, `accessorKey` maps to data fields, `cell` render function receives the row context.
+
+**Resources:**
+- [TanStack Table v8 Docs](https://tanstack.com/table/latest)
+- [TanStack Table Column Defs](https://tanstack.com/table/latest/docs/guide/column-defs)
+
+---
+
+## 16. TanStack Query — Server State Management
+
+**What:** TanStack Query (React Query v5) manages server state separately from client state. It handles caching, background refetching, stale-while-revalidate, and optimistic updates.
+
+**Why it matters:** Without it, every component that needs user data fetches independently, duplicating requests. TanStack Query deduplicates in-flight requests, caches by key, and automatically refetches stale data — critical for an ERP where multiple panels show the same data.
+
+**How it works:**
+
+```typescript
+// Query — declarative data fetching
+const { data, isLoading, isError } = useQuery({
+  queryKey: ["tenant", "users", { status }],
+  queryFn: () => fetchUsers({ status }),
+});
+
+// Mutation — write operations with cache invalidation
+const mutation = useMutation({
+  mutationFn: ({ userId, action }) => activateUser(userId),
+  onSuccess: () => {
+    queryClient.invalidateQueries({ queryKey: ["tenant", "users"] });
+  },
+});
+```
+
+Key patterns: query keys are hierarchical arrays (invalidating `["tenant", "users"]` clears all user queries regardless of filters). `staleTime` controls how long data is considered fresh.
+
+**Resources:**
+- [TanStack Query v5 Overview](https://tanstack.com/query/latest/docs/framework/react/overview)
+- [Query Invalidation](https://tanstack.com/query/latest/docs/framework/react/guides/query-invalidation)
+
+---
+
+## 17. Feature Folder Architecture in Next.js
+
+**What:** Organizing code by feature/domain (`features/team/`) rather than by type (`components/`, `hooks/`, `utils/`). Each feature folder is self-contained with its own types, API layer, components, and tests.
+
+**Why it matters:** As an ERP grows to 10+ modules, type-based folders become unmanageable — 50 files in `components/` with no cohesion. Feature folders keep related code together, making it easy to reason about, test, and eventually extract into separate packages.
+
+**How it works:**
+
+```
+features/team/
+  types.ts           # domain types + state machine
+  index.ts           # public API barrel export
+  api/
+    team-api.ts      # raw fetch functions
+    team-queries.ts  # TanStack Query hooks
+  components/
+    team-panel.tsx   # orchestrator
+    users-table.tsx  # data table
+    invite-user-dialog.tsx
+  __tests__/
+    types.test.ts
+    team-api.test.ts
+```
+
+Rules: (1) features never import from other features directly — use shared packages, (2) the barrel `index.ts` controls the public surface, (3) tests live alongside the feature.
+
+**Resources:**
+- [Feature-Sliced Design](https://feature-sliced.design/)
+- [Bulletproof React — Project Structure](https://github.com/alan2207/bulletproof-react)
+
+---
+
+## 18. API Client Pattern — Centralized Fetch Wrapper
+
+**What:** A thin wrapper around `fetch()` that centralizes base URL, headers, auth token injection, JSON serialization, and error handling for all API calls.
+
+**Why it matters:** Without it, every API call duplicates header setup, error parsing, and auth logic. When Supabase Auth is wired in, you change one file instead of every fetch call. The wrapper also normalizes errors into a typed `ApiError` class.
+
+**How it works:**
+
+```typescript
+export class ApiError extends Error {
+  constructor(message: string, public readonly status: number) {
+    super(message);
+  }
+}
+
+export async function apiClient<T>(path: string, options = {}): Promise<T> {
+  const { body, params, ...rest } = options;
+  const url = buildUrl(path, params); // base URL + query params
+  const response = await fetch(url, {
+    ...rest,
+    headers: { "Content-Type": "application/json" },
+    ...(body ? { body: JSON.stringify(body) } : {}),
+  });
+  if (!response.ok) {
+    const errorBody = await response.json().catch(() => null);
+    throw new ApiError(errorBody?.message ?? `${response.status}`, response.status);
+  }
+  return response.json() as Promise<T>;
+}
+```
+
+The generic `<T>` return type means consumers get typed responses without casts. Auth header injection is a single line change when ready.
+
+**Resources:**
+- [MDN — Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API)
+- [Kent C. Dodds — Stop using isLoading](https://kentcdodds.com/blog/stop-using-isloading)

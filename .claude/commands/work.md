@@ -101,6 +101,7 @@ Additionally invoke based on issue labels:
 - Security / auth labels → `security-reviewer` agent
 - Database label → `database-reviewer` agent
 - AI Service / Python label → `python-reviewer` agent
+- API / Backend labels → `api-reviewer` agent + `api-design` skill
 
 Fix ALL findings at every severity level (CRITICAL, HIGH, MEDIUM, LOW) before continuing. Never skip or defer any finding — every issue gets resolved in the same session.
 

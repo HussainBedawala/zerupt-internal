@@ -167,7 +167,6 @@ All findings (CRITICAL → LOW) need an action: code fix, or explicit comment ex
   erp/                   <- Codebase monorepo (Phase 0+)
   study/                 <- Auto-generated learning topics per phase/milestone
   content/               <- Build-in-public content assets
-  website/               <- Landing page (static, Vercel)
 ```
 
 ## Tech Stack (Non-Negotiable)
@@ -203,9 +202,10 @@ All findings (CRITICAL → LOW) need an action: code fix, or explicit comment ex
 ```
 erp/
   apps/
-    web/              # Next.js frontend
+    web/              # Next.js ERP frontend
     api/              # NestJS modular monolith
     ai/               # FastAPI AI service
+    website/          # Next.js marketing site (zerupt.com)
   packages/
     shared/           # Shared types/constants/zod schemas
     db/               # Prisma schema (tenant DBs)
@@ -297,6 +297,40 @@ The `/work` command:
 Command file: `.claude/commands/work.md`
 Detailed SOP reference: `agent-os/development-sop.md`
 
+## Website Development SOP
+
+**Run `/website` to execute the website development workflow.**
+
+The `/website` command handles zerupt.com landing page and marketing site work:
+1. Picks the next website issue from Linear (Website project or label)
+2. Creates a branch (`website/<DEV-XX>-<description>`)
+3. Reads context (mission, content-style-guide, design tokens, existing pages)
+4. Fetches docs for Next.js, Tailwind, GSAP, shadcn/ui, etc.
+5. Designs via Stitch MCP (new pages) or frontend-design skill (edits)
+6. Generates copy using content-engine skill (with SEO patterns)
+7. Builds with TDD (Playwright E2E tests)
+8. Reviews using website-review skill (SEO, a11y, perf, copy, brand)
+9. Verifies (build, lint, test, Lighthouse 90+)
+10. Offers optional Remotion video generation for social content
+11. Commits, pushes, updates Linear
+12. Creates Marketing issue if content-worthy
+13. Prepares next website issue
+
+**Website skills available:**
+- `stitch-design-md` — Extract design system from Stitch screens
+- `stitch-enhance-prompt` — Optimize prompts for Stitch generation
+- `stitch-react-components` — Convert Stitch HTML to React
+- `stitch-loop` — Iterative autonomous website building
+- `stitch-remotion` — Generate walkthrough videos
+- `shadcn-ui` — shadcn/ui component integration
+- `frontend-design` — Distinctive UI design patterns
+- `video-to-website` — Scroll-driven animated websites
+- `content-engine` — Marketing copy + SEO patterns
+- `website-review` — Quality assurance checklist
+- `nano-banana-images` — AI image generation via Kie.ai
+
+Command file: `.claude/commands/website.md`
+
 ## Study Guide
 
 Auto-generated learning topics at `study/`. Each completed issue adds topics for what you should understand as the solo CTO. Study between dev sessions.
@@ -307,7 +341,7 @@ All agents, skills, commands, hooks, and rules live in `.claude/`. Tuned for Zer
 
 **Agents (11):** planner, architect, code-reviewer, security-reviewer, build-error-resolver, e2e-runner, refactor-cleaner, database-reviewer, python-reviewer, tdd-guide, doc-updater
 
-**Key commands:** /work (full SOP), /plan, /tdd, /build-fix, /code-review, /e2e, /verify, /learn
+**Key commands:** /work (full SOP), /website (website SOP), /plan, /tdd, /build-fix, /code-review, /e2e, /verify, /learn
 
 **Hooks:** Auto-format (Prettier/black), auto-typecheck (tsc/mypy), console.log warnings, session persistence, continuous learning
 

@@ -86,3 +86,97 @@ Before delivering:
 - no generic hype language
 - no duplicated copy across platforms unless requested
 - the CTA matches the content and audience
+
+---
+
+## Website & SEO Patterns
+
+When creating content for websites (landing pages, product pages, blog posts), apply these additional patterns.
+
+### Meta Tags
+
+Every page needs:
+- **Title**: 50-60 characters, primary keyword near the start, brand at end
+- **Description**: 150-160 characters, includes primary keyword, ends with CTA or value prop
+- **OG Title/Description**: Can be slightly different for social sharing (more hook-driven)
+- **Twitter Card**: Use `summary_large_image` for visual pages
+
+Template:
+```
+Title: [Primary Benefit] - [Secondary Keyword] | [Brand]
+Description: [Value prop with keyword]. [Supporting detail]. [CTA or promise].
+```
+
+### Heading Hierarchy
+
+- **H1**: One per page, contains primary keyword, matches search intent
+- **H2**: Section headings, each targets a related keyword or question
+- **H3**: Subsections within H2s, use for feature lists or breakdowns
+- Never skip levels (H1 → H3 is wrong)
+
+### Keyword Integration
+
+- Primary keyword: H1, first paragraph, meta title, meta description
+- Secondary keywords: H2s, body paragraphs, image alt text
+- Density: 1-2% for primary, natural for secondary
+- Avoid stuffing — readability always wins
+
+### Structured Data (JSON-LD)
+
+Include appropriate schema for:
+- **Organization**: Company info, logo, social links
+- **Product**: For product pages (name, description, price, availability)
+- **FAQ**: For pages with Q&A sections (helps win featured snippets)
+- **Article**: For blog posts (author, date, headline)
+- **BreadcrumbList**: For navigation context
+
+### Internal Linking
+
+- Every page should link to 2-5 related internal pages
+- Use descriptive anchor text (not "click here")
+- Link to high-value pages from high-traffic pages
+- Create topic clusters: pillar page + supporting articles
+
+### LLM-Friendly Patterns
+
+Make content easy for AI assistants to parse and cite:
+- Clear section headings that answer questions
+- Semantic HTML structure (proper heading hierarchy)
+- FAQ sections with explicit Q&A format
+- Bullet points for feature lists
+- Tables for comparisons
+- Avoid content hidden in accordions or tabs for key info
+
+---
+
+## Website CTAs
+
+### Waitlist Signup
+- **Primary**: "Join the Waitlist" or "Get Early Access"
+- **Supporting**: "Be first to know when we launch" or "Limited spots available"
+- **Form**: Email only (reduce friction), optional company name
+- **Confirmation**: Clear success state, set expectations ("We'll email you in X")
+
+### Demo Request
+- **Primary**: "Request a Demo" or "See it in Action"
+- **Supporting**: "15-minute personalized walkthrough"
+- **Form**: Name, email, company, optional use case
+- **Confirmation**: Calendar link or "We'll reach out within 24 hours"
+
+### Newsletter Subscription
+- **Primary**: "Subscribe" or "Get Updates"
+- **Supporting**: Frequency and value ("Weekly insights on X")
+- **Form**: Email only
+- **Confirmation**: "Check your inbox to confirm"
+
+### Social Proof Integration
+- Place testimonials near CTAs
+- Show customer logos above the fold
+- Display metrics (users, companies, time saved)
+- Use real names and photos when possible
+
+### CTA Placement Rules
+- Above the fold: Primary CTA visible without scrolling
+- After value prop: CTA follows explanation of benefits
+- End of page: Final CTA with urgency or recap
+- Sticky header/footer: Persistent CTA on long pages (mobile especially)

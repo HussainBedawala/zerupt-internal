@@ -223,7 +223,6 @@ These live in `.claude/commands/` and are the backbone of the system.
 5. **Comparison Table** -- Zerupt vs SAP vs Oracle vs Odoo (price, setup time, MENA support, AI-native)
 6. **Build-in-Public Dashboard** -- Current phase, recent shipped tasks, launch countdown
 7. **Target Markets** -- GCC + India + SEA with language/compliance details
-8. **Founder** -- Photo, bio, social links
 9. **Footer** -- Waitlist CTA repeated, "Launching Eid 2026"
 
 ### Tech

@@ -1,6 +1,6 @@
 # Multi-Tenancy Foundation — Study Topics
 
-Phase 0 | DEV-24: Design and create Central Admin DB schema | DEV-25: Implement tenant DB provisioning pipeline | DEV-26: Build TenantContextMiddleware (JWT → tenant → DB resolution) | DEV-27: Build TenantConnectionService (pool, LRU cache, eviction) | DEV-28: Implement Redis caching for tenant connections | DEV-29: Build audit trail spine (append-only log, NestJS interceptor) | DEV-30: Configure Supabase Auth with JWT tenant_id claim | DEV-122/123/124: Security verification tests
+Phase 0 | DEV-24: Central Admin DB schema | DEV-25: Tenant DB provisioning | DEV-26: TenantContextMiddleware | DEV-27: TenantConnectionService | DEV-28: Redis tenant cache | DEV-29: Audit trail spine | DEV-30: Supabase Auth JWT | DEV-122/123/124: Security verification | DEV-118: Duplicate-job guard | DEV-119: Timezone map | DEV-120: Config-driven key rotation | DEV-121: PII minimization | DEV-135: HMAC cache integrity | DEV-136: Configurable TTL
 
 ---
 
@@ -864,3 +864,96 @@ const { error } = await supabase.auth.admin.updateUserById(userId, {
 **Resources:**
 - [Supabase — User Management](https://supabase.com/docs/guides/auth/managing-user-data)
 - [Supabase — Admin API](https://supabase.com/docs/reference/javascript/auth-admin-updateuserbyid)
+
+---
+
+## 30. HMAC-SHA256 for Cache Integrity Verification
+
+**What:** HMAC (Hash-based Message Authentication Code) uses a secret key + a hash function (SHA-256) to produce a fixed-length tag over data. Only someone with the secret can produce a valid tag, so it proves both integrity (data wasn't modified) and authenticity (data was written by someone with the key).
+
+**Why it matters:** Zerupt caches tenant DB connection metadata in Upstash Redis. The `dbPasswordEnc` field is protected by AES-GCM's auth tag, but `dbHost`, `dbPort`, `dbUser`, and `sslMode` are plain strings. If Redis is compromised, an attacker could modify these fields to redirect connections to a malicious database. HMAC-SHA256 computed over all fields on write, verified on read, detects any tampering and falls through to the authoritative DB lookup.
+
+**Key concepts:**
+- **Compute on write:** `hmac = HMAC-SHA256(secret, JSON.stringify(allFields))`
+- **Verify on read:** Recompute HMAC from the retrieved data. If it doesn't match the stored HMAC, reject the cache entry.
+- **Constant-time comparison:** Use `crypto.timingSafeEqual()`, NOT `===` or `!==`. String comparison short-circuits on the first mismatched byte, leaking information about which bytes are correct. An attacker who can measure response latency can brute-force the HMAC byte-by-byte.
+- **Canonical serialization:** Use `JSON.stringify` with explicit key order, not pipe-delimited strings. Pipe delimiters break if any field value contains a `|`, causing two different data combinations to produce the same HMAC input (canonicalization attack).
+- **Graceful degradation:** If HMAC verification fails, return `null` and let the caller fall through to the DB — don't crash.
+
+```ts
+import { createHmac, timingSafeEqual } from "crypto";
+
+function computeHmac(data: CachedData, secret: string): string {
+  const payload = JSON.stringify({ field1: data.field1, field2: data.field2 });
+  return createHmac("sha256", secret).update(payload).digest("hex");
+}
+
+function hmacEqual(a: string, b: string): boolean {
+  const bufA = Buffer.from(a, "hex");
+  const bufB = Buffer.from(b, "hex");
+  if (bufA.length !== bufB.length) return false;
+  return timingSafeEqual(bufA, bufB);
+}
+```
+
+**Resources:**
+- [Node.js — crypto.createHmac](https://nodejs.org/api/crypto.html#cryptocreatehmacalgorithm-key-options)
+- [Node.js — crypto.timingSafeEqual](https://nodejs.org/api/crypto.html#cryptotimingsafeequala-b)
+- [OWASP — Testing for Timing Attacks](https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/10-Business_Logic_Testing/04-Test_for_Process_Timing)
+
+---
+
+## 31. TOCTOU Race Conditions in Database Operations
+
+**What:** TOCTOU (Time of Check to Time of Use) is a class of race condition where the state changes between when you check it and when you act on it. In database operations: you `SELECT` to check if a record exists, then `INSERT` based on the result — but another transaction can `INSERT` between your check and your action.
+
+**Why it matters:** Zerupt's duplicate-job guard checks for existing Queued/InProgress provisioning jobs before creating a new one. Two simultaneous API requests for the same tenant can both pass the `findFirst` check before either `create` completes, creating two competing provisioning jobs. While the pipeline is idempotent (both jobs will succeed), they race on password rotation and status updates.
+
+**Key concepts:**
+- **Non-atomic check-then-act:** `SELECT` + `INSERT` in separate statements is inherently racy under concurrent access.
+- **Fix 1 — Unique partial index:** `CREATE UNIQUE INDEX ON provisioning_jobs (tenant_id) WHERE status IN ('Queued','InProgress')`. The DB enforces at most one active job per tenant atomically. Catch the unique violation (`P2002`) and convert to `409 Conflict`.
+- **Fix 2 — Advisory locks:** `SELECT pg_advisory_xact_lock(hashtext(tenant_id))` serializes operations per tenant within a transaction. Heavier, but works without schema changes.
+- **Fix 3 — Serializable isolation:** `SET TRANSACTION ISOLATION LEVEL SERIALIZABLE` makes the entire transaction behave as if no other transactions ran concurrently. Highest correctness but highest contention.
+- **Risk assessment:** Acceptable in single-instance Phase 0 (owner-only trigger, idempotent pipeline). Must be addressed before multi-instance deployment.
+
+**Resources:**
+- [PostgreSQL — Partial Indexes](https://www.postgresql.org/docs/current/indexes-partial.html)
+- [PostgreSQL — Advisory Locks](https://www.postgresql.org/docs/current/explicit-locking.html#ADVISORY-LOCKS)
+- [CWE-367: TOCTOU Race Condition](https://cwe.mitre.org/data/definitions/367.html)
+
+---
+
+## 32. IANA Timezone Database and Multi-Region SaaS
+
+**What:** The IANA Time Zone Database (often called "tz" or "zoneinfo") is the authoritative source for timezone rules worldwide. Timezone identifiers like `Asia/Dubai`, `Africa/Cairo`, `Asia/Kolkata` are IANA names. Node.js and PostgreSQL both use this database internally via the operating system or ICU.
+
+**Why it matters:** Zerupt serves Arabic-speaking countries (18 countries), India, and Southeast Asia — spanning UTC+0 (Morocco) to UTC+8 (Malaysia/Singapore). When provisioning a tenant, the system must assign the correct timezone based on country code. Using `UTC` as a fallback for unmapped countries silently produces wrong local times for billing cutoffs, report dates, and scheduled jobs.
+
+**Key concepts:**
+- **One country, one primary timezone:** Most of Zerupt's target markets have a single timezone. Exceptions: Indonesia (3 zones), but `Asia/Jakarta` covers the majority (Java, Sumatra).
+- **Morocco's irregular DST:** `Africa/Casablanca` observes DST but suspends it during Ramadan. The IANA database tracks this — Node's `Intl.DateTimeFormat` handles it automatically.
+- **Country → timezone mapping is not in any standard library.** You must maintain your own map or use a package like `country-timezone`. For Zerupt's 23 target countries, a static map is simpler and has zero dependencies.
+- **Store IANA names, not offsets:** `Asia/Dubai` is stable. `UTC+4` breaks when DST rules change. Always store the IANA name and let the runtime compute the current offset.
+
+**Resources:**
+- [IANA Time Zone Database](https://www.iana.org/time-zones)
+- [MDN — Intl.DateTimeFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat)
+
+---
+
+## 33. PII Minimization in Message Queue Payloads
+
+**What:** PII (Personally Identifiable Information) minimization means storing only the minimum data needed for a process to function. In message queues like BullMQ (backed by Redis), job payloads persist in memory and on disk. If Redis is compromised, every queued, active, and completed job payload is exposed.
+
+**Why it matters:** Zerupt's provisioning pipeline originally sent `tenantName`, `tenantCode`, `ownerUserId`, and `countryCode` in the BullMQ payload. If Redis were breached, an attacker would see every tenant's name, their database username pattern (`tenantCode_app`), and which user owns each tenant. By sending only opaque UUIDs (`tenantId`, `jobId`), the blast radius is reduced to meaningless identifiers.
+
+**Key concepts:**
+- **Store references, not data:** Send an ID, have the consumer re-fetch the full record from the authoritative database.
+- **Tradeoff — extra DB read:** The consumer makes one extra `findUnique` call per job. For a provisioning pipeline that runs once per tenant signup, this is negligible.
+- **Redis persistence:** BullMQ uses Redis, which can persist to disk (RDB snapshots, AOF logs). Payloads aren't just in memory — they're on disk too. Treat Redis as a data store, not ephemeral cache.
+- **Completed job retention:** BullMQ keeps completed jobs by default (`removeOnComplete: false`). Even after processing, PII in the payload remains in Redis until explicitly cleaned up.
+- **Pair with audit logging:** If you need an audit trail of what was processed, log it in the database (which has proper access controls), not in the queue payload.
+
+**Resources:**
+- [OWASP — Data Minimization](https://owasp.org/www-project-developer-guide/draft/design/web_app_checklist/data_minimization/)
+- [BullMQ — Job Options (removeOnComplete)](https://docs.bullmq.io/guide/jobs/removing-jobs)

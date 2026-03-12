@@ -1,4 +1,4 @@
-# Phase 1 — RBAC & Permissions: DEV-35, DEV-36, DEV-37, DEV-38, DEV-189 Study Topics
+# Phase 1 — RBAC & Permissions: DEV-35, DEV-36, DEV-37, DEV-38, DEV-189, DEV-39 Study Topics
 
 ## 1. Permission Key Taxonomies (module.entity.action)
 
@@ -409,3 +409,113 @@ function toRoleResponse(role: Record<string, unknown>): RoleResponse {
 
 **Resources:**
 - [TypeScript: Type Assertions](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#type-assertions)
+
+## 18. Permission Matrix UI Pattern (DEV-39)
+
+**What:** A grouped checkbox grid that lets admins grant or revoke fine-grained permissions visually — organized by module → entity → action, with tri-state checkboxes at the module and entity level.
+
+**Why it matters:** RBAC systems often have dozens or hundreds of permissions. A flat checkbox list is unusable. Grouping by module/entity and adding "select all" tri-state controls lets admins manage permissions efficiently without missing or over-granting access.
+
+**Key concepts:**
+- Parse permission keys (`module.entity.action`) into a hierarchical data structure at module load time (not per-render)
+- Tri-state checkbox: checked (all children selected), indeterminate (some selected), unchecked (none selected)
+- Indeterminate is a DOM property, not an HTML attribute — Radix UI's `checked="indeterminate"` abstracts this
+- Module-level toggle selects/deselects all entity.action pairs in that module
+- Entity-level toggle selects/deselects all actions for that entity
+- Filter out `OWNER_ONLY_KEYS` from the matrix — they're not assignable via roles
+
+**Resources:**
+- [Radix UI: Checkbox](https://www.radix-ui.com/primitives/docs/components/checkbox)
+- [WAI-ARIA: Tri-State Checkbox](https://www.w3.org/WAI/ARIA/apg/patterns/checkbox/)
+
+## 19. Immutable Set Operations in React State (DEV-39)
+
+**What:** When using `Set<T>` inside React state, you must create a new Set on every update instead of mutating the existing one — otherwise React won't detect the change and won't re-render.
+
+**Why it matters:** `Set.add()` and `Set.delete()` mutate in place and return the same reference. React's `useState` setter uses `Object.is()` to compare old and new values — same reference = no re-render. This is a common source of "state doesn't update" bugs.
+
+**Key concepts:**
+```typescript
+// BAD — mutates in place, same reference, no re-render
+setSelected(prev => { prev.add(key); return prev; });
+
+// GOOD — creates new Set, new reference, triggers re-render
+setSelected(prev => new Set([...prev, key]));
+
+// GOOD — removal
+setSelected(prev => new Set([...prev].filter(k => k !== key)));
+
+// GOOD — toggle all (bulk add)
+setSelected(prev => {
+  const next = new Set(prev);
+  for (const k of keys) next.add(k);
+  return next;
+});
+```
+
+- Same principle applies to `Map`, arrays, and plain objects — always new reference
+- Spreading a Set into an array (`[...set]`) is O(n) but negligible for permission-sized collections
+- Consider `useReducer` for complex state transitions with multiple Set operations
+
+**Resources:**
+- [React: Updating Arrays in State](https://react.dev/learn/updating-arrays-in-state)
+- [React: Updating Objects in State](https://react.dev/learn/updating-objects-in-state)
+
+## 20. Key-Based Form Remounting Pattern (DEV-39)
+
+**What:** Instead of using `useEffect` to sync props into form state (which violates React Compiler's lint rules), split the component into an outer shell that fetches data and an inner form component with a `key` prop. When the key changes, React destroys and recreates the inner component with fresh initial state.
+
+**Why it matters:** React Compiler (React 19+) flags `useEffect` that calls `setState` synchronously as an anti-pattern — it causes unnecessary double-renders and can introduce subtle bugs with stale closures. The key-based pattern is the idiomatic React solution: cleaner, no effects, no stale state.
+
+**Key concepts:**
+```tsx
+// BAD — useEffect to sync props → state (React Compiler warning)
+function RoleDialog({ role }) {
+  const [name, setName] = useState("");
+  useEffect(() => { setName(role?.name ?? ""); }, [role]);
+  // ...
+}
+
+// GOOD — key-based remounting
+function RoleDialog({ role }) {
+  return <RoleForm key={role?.id ?? "new"} role={role} />;
+}
+
+function RoleForm({ role }) {
+  const [name, setName] = useState(role?.name ?? "");
+  // No useEffect needed — component remounts with correct initial state
+}
+```
+
+- The `key` prop is React's identity mechanism — changing it unmounts the old instance and mounts a new one
+- Trade-off: remounting resets ALL state (including scroll position, focus) — acceptable for dialogs, not for long-lived views
+- This pattern also works for resetting forms after submission (set key to a counter or timestamp)
+
+**Resources:**
+- [React: Resetting State with a Key](https://react.dev/learn/preserving-and-resetting-state#resetting-state-with-a-key)
+- [React: You Might Not Need an Effect](https://react.dev/learn/you-might-not-need-an-effect)
+
+## 21. TanStack React Table with React 19 and Immutability (DEV-39)
+
+**What:** TanStack React Table requires a mutable array reference for its internal row model. In an immutable-first codebase, you must spread the data array (`[...data]`) before passing it to `useReactTable`.
+
+**Why it matters:** TanStack Table sorts and filters by mutating the data array internally. If you pass a frozen or readonly array (e.g., from TanStack Query's cache), it throws a runtime error. The `[...data]` spread creates a mutable copy while keeping the original immutable.
+
+**Key concepts:**
+```tsx
+const { data = [] } = useRolesQuery();
+
+// BAD — TanStack Table may mutate the query cache
+const table = useReactTable({ data, columns, ... });
+
+// GOOD — spread creates a mutable copy
+const table = useReactTable({ data: [...data], columns, ... });
+```
+
+- TanStack Table's `useReactTable()` triggers a React Compiler warning (`react-hooks/incompatible-library`) because it uses internal mutation — this is cosmetic, not a production bug
+- Column definitions should be defined outside the component or memoized to prevent unnecessary re-renders
+- `columnHelper.accessor()` provides type-safe column definitions with autocomplete on row fields
+
+**Resources:**
+- [TanStack Table: Quick Start](https://tanstack.com/table/latest/docs/guide/tables)
+- [TanStack Table: Column Definitions](https://tanstack.com/table/latest/docs/guide/column-defs)

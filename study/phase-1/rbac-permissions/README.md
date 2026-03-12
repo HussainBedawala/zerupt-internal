@@ -1,4 +1,4 @@
-# Phase 1 — RBAC & Permissions: DEV-35, DEV-36, DEV-37 Study Topics
+# Phase 1 — RBAC & Permissions: DEV-35, DEV-36, DEV-37, DEV-38 Study Topics
 
 ## 1. Permission Key Taxonomies (module.entity.action)
 
@@ -254,3 +254,70 @@ if (result.granted && !result.isOwnerBypass) {
 **Resources:**
 - [OWASP: Insecure Direct Object References](https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/05-Authorization_Testing/04-Testing_for_Insecure_Direct_Object_References)
 - [OWASP Top 10: A01 Broken Access Control](https://owasp.org/Top10/A01_2021-Broken_Access_Control/)
+
+## 12. Module Entitlement vs Permission-Based Access Control
+
+**What:** Two distinct layers of authorization in a SaaS ERP: entitlement (does the tenant's plan include this module?) and permission (does this user have the right role to perform this action?).
+
+**Why it matters:** These solve different business problems. Entitlement is a billing/product concern — it gates which modules a tenant has paid for. Permission is an organizational concern — it controls who within a tenant can do what. Conflating them (e.g., checking plan access inside a permission guard) creates coupling between billing and security logic.
+
+**Key concepts:**
+- **Entitlement guard** runs before permission guard — no point checking fine-grained permissions if the tenant doesn't have the module
+- Guard execution chain: `JWT Auth → Entitlement → Permission`
+- Entitlement is per-tenant (all users in the tenant share the same plan)
+- Permission is per-user (different roles within the same tenant)
+- "Always-entitled" modules (e.g., settings) bypass the plan check entirely — they're core infrastructure
+- The 403 response should distinguish "not in your plan" (`upgradeRequired: true`) from "you don't have permission" — frontend needs to show different CTAs
+
+**Resources:**
+- [AWS: Service Control Policies vs IAM Policies](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_scps.html)
+
+## 13. Fail-Closed Design in Authorization Guards
+
+**What:** A design principle where any unexpected condition (missing data, parse error, DB failure) results in access denial rather than access grant.
+
+**Why it matters:** Authorization code has an asymmetric risk profile: a false-positive (wrongly granting access) is far worse than a false-negative (wrongly denying access). Fail-closed ensures that bugs, data corruption, and infrastructure failures all push toward the safe side.
+
+**Key concepts:**
+```typescript
+// Fail-closed examples:
+// 1. Malformed plan modules → empty object → no modules enabled
+const planModulesSchema = z.record(z.string(), z.boolean()).catch({});
+
+// 2. DB error during entitlement check → catch block → 500 (not 200)
+try {
+  const result = await checkEntitlement();
+} catch (err) {
+  if (err instanceof HttpException) throw err;
+  throw new InternalServerErrorException(); // deny, don't allow
+}
+
+// 3. Missing tenant context → deny immediately
+const ctx = getTenantContextOrNull();
+if (!ctx) throw new ForbiddenException("Access denied");
+```
+
+- Every `return true` in a guard should be a conscious, justified decision
+- Every error path should end in a thrown exception (deny)
+- Default should be deny — only explicit conditions lead to allow
+- Zod's `.catch()` makes fail-closed the default for schema parsing
+
+**Resources:**
+- [OWASP: Fail Securely](https://owasp.org/www-community/Fail_securely)
+
+## 14. Subscription Status Enforcement in Multi-Tenant SaaS
+
+**What:** Checking the tenant's subscription lifecycle state (Active, Trial, Expired, Cancelled, PastDue) before granting access to paid features.
+
+**Why it matters:** Without subscription enforcement, an expired tenant can continue using the product indefinitely. The entitlement guard checks which modules the plan includes, but it must also verify the subscription is in a valid state — otherwise a cancelled tenant with a Growth plan still has access to all Growth modules.
+
+**Key concepts:**
+- Active states (allow access): `Active`, `Trial`
+- Inactive states (deny access): `Expired`, `Cancelled`, `PastDue`
+- `PastDue` is a grace period — some SaaS products allow access for N days before hard-blocking
+- Subscription status lives in the Central Admin DB (not the tenant DB) — it's a platform concern
+- The guard fetches both `plan.modules` and `subscriptionStatus` in the same query to avoid extra DB round-trips
+
+**Resources:**
+- [Stripe: Subscription Statuses](https://docs.stripe.com/billing/subscriptions/overview#subscription-statuses)
+- [Chargebee: Subscription Lifecycle](https://www.chargebee.com/docs/2.0/subscription-lifecycle.html)

@@ -4,6 +4,8 @@ DEV-31: Implement tenant entity + governance (plan, status, feature flags)
 DEV-32: Build user lifecycle API (invite → activate → suspend → deactivate)
 DEV-33: Create Settings UI shell (layout, navigation, sidebar)
 DEV-34: Build User Management UI (list, invite, edit, suspend)
+DEV-177: Add PATCH user profile endpoint (fullName, phone, locale, dateFormat, timeFormat, timezone)
+DEV-178: Add server-side user search and enhanced list filters
 
 ---
 
@@ -590,3 +592,126 @@ The generic `<T>` return type means consumers get typed responses without casts.
 **Resources:**
 - [MDN — Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API)
 - [Kent C. Dodds — Stop using isLoading](https://kentcdodds.com/blog/stop-using-isloading)
+
+---
+
+## 19. E.164 Phone Number Format
+
+**What:** E.164 is the ITU international phone number standard: `+` followed by country code + subscriber number, max 15 digits total. No spaces, dashes, or parentheses.
+
+**Why it matters:** Zerupt targets MENA, India, and SEA — three regions with different dialing conventions. Storing phones in E.164 (`+971501234567`, `+919876543210`) ensures consistent format for SMS notifications, WhatsApp integrations, and cross-border user matching. Freeform strings like `(050) 123-4567` are unparseable at scale.
+
+**How it works:**
+
+```typescript
+// Zod validation
+const phoneSchema = z.string().regex(/^\+[1-9]\d{7,14}$/, "E.164 format required");
+
+// Examples
+phoneSchema.parse("+971501234567");  // UAE — passes
+phoneSchema.parse("+919876543210");  // India — passes
+phoneSchema.parse("050-123-4567");   // fails — no country code
+phoneSchema.parse("+0123456");       // fails — starts with 0
+```
+
+Key rules: always starts with `+`, first digit after `+` is never `0`, min 8 digits (country code + number), max 15 digits total.
+
+**Resources:**
+- [ITU-T E.164 Recommendation](https://www.itu.int/rec/T-REC-E.164)
+- [Google libphonenumber](https://github.com/google/libphonenumber)
+
+---
+
+## 20. IANA Timezone Validation with Intl API
+
+**What:** The `Intl.DateTimeFormat` API can validate IANA timezone strings (like `Asia/Dubai`, `America/New_York`) without any external library — if the timezone is invalid, it throws `RangeError`.
+
+**Why it matters:** Users set their preferred timezone for date/time display. Storing arbitrary strings leads to runtime crashes when formatting dates. Validating at input time with the platform's own timezone database ensures only real timezones are accepted.
+
+**How it works:**
+
+```typescript
+function isValidTimezone(tz: string): boolean {
+  try {
+    Intl.DateTimeFormat(undefined, { timeZone: tz });
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+// In Zod schema
+const timezoneSchema = z.string().refine(isValidTimezone, "Invalid IANA timezone");
+```
+
+The `Intl` API uses the ICU timezone database bundled with the runtime (Node.js, browsers). No npm package needed. The database updates with Node.js releases.
+
+**Resources:**
+- [MDN — Intl.DateTimeFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat)
+- [IANA Time Zone Database](https://www.iana.org/time-zones)
+
+---
+
+## 21. Prisma exactOptionalPropertyTypes and Nullable Fields
+
+**What:** TypeScript's `exactOptionalPropertyTypes` flag (enabled in strict configs) distinguishes between `undefined` (property absent) and `null` (property explicitly set to null). Prisma's generated types for nullable fields accept `string | null` but NOT `undefined`.
+
+**Why it matters:** When passing a Zod-parsed body directly to Prisma's `update()`, optional fields that weren't provided are `undefined` in the parsed object. With `exactOptionalPropertyTypes`, TypeScript rejects this because `undefined` is not assignable to `string | null`. You must strip undefined keys before passing to Prisma.
+
+**How it works:**
+
+```typescript
+// Zod output: { fullName: "John" } — phone, locale etc. are undefined
+const body = updateProfileSchema.parse(req.body);
+
+// BAD: Prisma rejects undefined values
+await prisma.user.update({ data: body }); // TS error!
+
+// GOOD: Strip undefined keys
+const data: Record<string, unknown> = {};
+for (const [key, value] of Object.entries(body)) {
+  if (value !== undefined) data[key] = value;
+}
+await prisma.user.update({ data }); // works
+```
+
+Alternative: use Prisma's `Prisma.skip` symbol (v5.8+) or `set` wrapper for nullable fields.
+
+**Resources:**
+- [TypeScript — exactOptionalPropertyTypes](https://www.typescriptlang.org/tsconfig#exactOptionalPropertyTypes)
+- [Prisma — Null and Undefined](https://www.prisma.io/docs/orm/prisma-client/queries/null-and-undefined)
+
+---
+
+## 22. Transaction-Scoped Authorization (Preventing TOCTOU in RBAC)
+
+**What:** When an API endpoint needs to check the actor's role before performing a write, both the role check and the write must happen inside the same database transaction. Otherwise, a concurrent request could change the actor's role between the check and the write.
+
+**Why it matters:** In `PATCH /tenant/users/:userId/profile`, the system checks "is the actor an Owner?" before allowing them to edit another user's profile. If this check happens outside the transaction, a race condition exists: the actor could be demoted to Member between the role check and the profile update.
+
+**How it works:**
+
+```typescript
+// BAD: role check outside transaction
+const actorRole = await getActorRole(actorId); // separate query
+if (actorRole !== 'Owner') throw new ForbiddenException();
+await prisma.user.update({ data: profileData }); // race window!
+
+// GOOD: role check inside transaction
+await prisma.$transaction(async (tx) => {
+  const [actor, target] = await Promise.all([
+    tx.userTenantMap.findUnique({ where: { ... } }),
+    tx.userTenantMap.findUnique({ where: { ... } }),
+  ]);
+  if (actor.role !== 'Owner' && actorId !== targetId) {
+    throw new ForbiddenException();
+  }
+  return tx.userTenantMap.update({ data: profileData });
+});
+```
+
+Bonus: fetching actor and target in `Promise.all` inside the transaction saves a round-trip. For self-edits, only one query is needed.
+
+**Resources:**
+- [OWASP — Insecure Direct Object References](https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/05-Authorization_Testing/04-Testing_for_Insecure_Direct_Object_References)
+- [PostgreSQL — SERIALIZABLE Isolation](https://www.postgresql.org/docs/current/transaction-iso.html#XACT-SERIALIZABLE)

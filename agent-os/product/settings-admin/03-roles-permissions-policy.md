@@ -20,7 +20,7 @@
 |-------|------|-------------|
 | `id` | UUID | |
 | `roleId` | UUID | |
-| `permissionKey` | string | `{module}.{action}` |
+| `permissionKey` | string | `{module}.{entity}.{action}` |
 | `scopeType` | enum | `Tenant`, `Branch`, `Own` |
 | `branchIds` | array(UUID) | Required for `Branch` |
 | `fieldMask` | array(string) | Hidden fields list |
@@ -32,7 +32,7 @@
 
 | Rule | Detail |
 |------|--------|
-| Naming | Lowercase `{module}.{action}` |
+| Naming | Lowercase `{module}.{entity}.{action}` |
 | Unknown key | Reject role publish |
 | Key deprecation | Soft-deprecate, map to replacement, keep audit trail |
 | Ownership key | `settings.owner` cannot be granted or revoked |

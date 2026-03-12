@@ -1,4 +1,4 @@
-# Phase 1 — RBAC & Permissions: DEV-35, DEV-36 Study Topics
+# Phase 1 — RBAC & Permissions: DEV-35, DEV-36, DEV-37 Study Topics
 
 ## 1. Permission Key Taxonomies (module.entity.action)
 
@@ -174,3 +174,83 @@ SELECT * FROM role_permission_branches WHERE branch_id = 'branch-uuid';
 **Resources:**
 - [PostgreSQL: Array Types](https://www.postgresql.org/docs/current/arrays.html)
 - [Use The Index, Luke: Many-to-Many](https://use-the-index-luke.com/sql/join/many-to-many)
+
+## 9. NestJS Guard Execution Order and APP_GUARD
+
+**What:** NestJS global guards registered via `APP_GUARD` execute in the order they are registered in the module's `providers` array. This is how you chain authentication → authorization.
+
+**Why it matters:** In a layered security model, `JwtAuthGuard` must populate `request.user` before `PermissionGuard` reads it. If the order is reversed, the permission guard has no user to evaluate. NestJS does not document execution order guarantees explicitly — it follows provider registration order by convention.
+
+**Key concepts:**
+```typescript
+// auth.module.ts — order matters
+@Module({
+  providers: [
+    { provide: APP_GUARD, useClass: JwtAuthGuard },      // runs first
+    { provide: APP_GUARD, useClass: PermissionGuard },    // runs second
+  ],
+})
+```
+
+- `APP_GUARD` is a multi-provider token — multiple guards registered under it all run on every request
+- Guards return `true` (allow), `false` (deny with 403), or throw an exception
+- `Reflector.getAllAndOverride()` checks both handler and class metadata — handler-level overrides class-level
+- `useClass` creates a new DI-managed instance; `useExisting` reuses an already-provided instance
+
+**Resources:**
+- [NestJS Guards Documentation](https://docs.nestjs.com/guards)
+- [NestJS Execution Context](https://docs.nestjs.com/fundamentals/execution-context)
+
+## 10. Discriminated Unions for Authorization Results
+
+**What:** A TypeScript pattern where a union type uses a literal field (the "discriminant") to let the compiler narrow the type in conditionals. Forces exhaustive handling of all cases.
+
+**Why it matters:** Authorization results have different shapes depending on the outcome (denied, owner bypass, scoped grant). Using a flat interface with optional fields (`scopeType?: string`) means downstream code can access `result.scopeType` without checking `result.granted` first — a silent bug. Discriminated unions make this a compile error.
+
+**Key concepts:**
+```typescript
+// BAD — flat interface with optionals
+interface PermissionResult {
+  granted: boolean;
+  scopeType?: string;    // accessible even when granted=false
+  branchIds?: string[];
+}
+
+// GOOD — discriminated union
+type PermissionResult =
+  | { granted: false; isOwnerBypass: false }
+  | { granted: true; isOwnerBypass: true }
+  | { granted: true; isOwnerBypass: false; scopeType: string; branchIds: string[] };
+
+// TypeScript forces narrowing:
+if (result.granted && !result.isOwnerBypass) {
+  result.scopeType; // ✅ accessible — compiler knows the shape
+}
+```
+
+- The discriminant field must be a literal type (`true`, `false`, `"Tenant"`)
+- `switch` statements on discriminants get exhaustiveness checking
+- Especially valuable in security-critical paths where missing a case = vulnerability
+
+**Resources:**
+- [TypeScript Handbook: Discriminated Unions](https://www.typescriptlang.org/docs/handbook/2/narrowing.html#discriminated-unions)
+
+## 11. Cross-Tenant IDOR Prevention in Multi-Tenant Systems
+
+**What:** Insecure Direct Object Reference (IDOR) occurs when an attacker manipulates request parameters to access another tenant's data. In multi-tenant systems, this means crossing tenant boundaries.
+
+**Why it matters:** If tenant resolution comes from a request header (e.g. `X-Tenant-ID`) rather than the authenticated JWT, an attacker can authenticate as Tenant A and send requests to Tenant B's database. Even with per-tenant databases, the middleware connecting to the wrong DB makes the query succeed.
+
+**Key concepts:**
+- **Defense:** Assert that the JWT's `app_metadata.tenant_id` matches the resolved `TenantContext.tenantId` at every authorization checkpoint
+- **Fail-closed:** If there's a mismatch, deny immediately — never log and continue
+- **Defense-in-depth layers:**
+  1. JWT carries tenant_id (tamper-proof, signed)
+  2. Middleware resolves tenant from JWT (not from headers)
+  3. Guard asserts JWT tenant == context tenant (redundant but catches bugs)
+  4. DB queries include `tenantId` in WHERE clauses (even with per-tenant DBs)
+- This is OWASP A01 (Broken Access Control) — the #1 vulnerability category
+
+**Resources:**
+- [OWASP: Insecure Direct Object References](https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/05-Authorization_Testing/04-Testing_for_Insecure_Direct_Object_References)
+- [OWASP Top 10: A01 Broken Access Control](https://owasp.org/Top10/A01_2021-Broken_Access_Control/)

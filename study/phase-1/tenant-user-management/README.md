@@ -6,6 +6,7 @@ DEV-33: Create Settings UI shell (layout, navigation, sidebar)
 DEV-34: Build User Management UI (list, invite, edit, suspend)
 DEV-177: Add PATCH user profile endpoint (fullName, phone, locale, dateFormat, timeFormat, timezone)
 DEV-178: Add server-side user search and enhanced list filters
+DEV-179: Add role change endpoint (PATCH /tenant/users/:userId/role)
 
 ---
 
@@ -715,3 +716,104 @@ Bonus: fetching actor and target in `Promise.all` inside the transaction saves a
 **Resources:**
 - [OWASP — Insecure Direct Object References](https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/05-Authorization_Testing/04-Testing_for_Insecure_Direct_Object_References)
 - [PostgreSQL — SERIALIZABLE Isolation](https://www.postgresql.org/docs/current/transaction-iso.html#XACT-SERIALIZABLE)
+
+---
+
+## 23. NestJS EventEmitter2 — Domain Events Pattern
+
+**What:** NestJS's `@nestjs/event-emitter` wraps EventEmitter2, enabling in-process pub/sub with dot-notation namespaced events (e.g., `user.role.changed`). Services emit events; listeners decorated with `@OnEvent()` handle side effects.
+
+**Why it matters:** Role changes trigger side effects (session revocation, audit logging, notifications). Hard-wiring these into the service creates tight coupling. The event pattern decouples the mutation from its consequences — the service says "this happened" and listeners decide what to do.
+
+**How it works:**
+
+```typescript
+// Emit in service (after DB write)
+this.eventEmitter.emit('user.role.changed', {
+  userId, tenantId, previousRole, newRole, downgraded: true,
+});
+
+// Listen in separate handler
+@OnEvent('user.role.changed')
+handleRoleChange(payload: UserRoleChangedEvent) {
+  if (payload.downgraded) {
+    // revoke sessions, send notification, etc.
+  }
+}
+```
+
+Key gotchas:
+- Events are synchronous by default — a throwing listener blocks the emitter
+- Events emitted outside a DB transaction create a dual-write risk (DB committed but event handler fails)
+- Listeners must be idempotent when possible
+- Event subscribers cannot be request-scoped (no access to request context)
+
+**Resources:**
+- [NestJS Events Documentation](https://docs.nestjs.com/techniques/events)
+- [EventEmitter2 — Namespaced Events](https://github.com/EventEmitter2/EventEmitter2)
+
+---
+
+## 24. Defense in Depth — Guard + Service Authorization
+
+**What:** Defense in depth applies multiple security layers so that a failure in one layer doesn't compromise the system. In NestJS, this means using both a controller guard (outer gate) and a service-level authorization check (inner gate).
+
+**Why it matters:** If authorization only lives in the guard, a misconfigured route or missing decorator exposes the endpoint. If it only lives in the service, unauthorized requests still spin up transactions and make DB reads before being rejected — a DoS surface. Both layers together ensure fail-closed behavior at every level.
+
+**How it works:**
+
+```typescript
+// Layer 1: Guard — rejects before any business logic runs
+@UseGuards(OwnerGuard)
+@Patch(':userId/role')
+async changeRole(...) { ... }
+
+// Layer 2: Service — re-checks inside transaction for TOCTOU safety
+async changeRole(tenantId, targetId, actorId, newRole) {
+  await this.prisma.$transaction(async (tx) => {
+    const actor = await tx.userTenantMap.findUnique({ ... });
+    if (actor.role !== 'Owner' || actor.status !== 'Active') {
+      throw new ForbiddenException();
+    }
+    // ... proceed with write
+  });
+}
+```
+
+The guard prevents wasted resources. The service-level check prevents TOCTOU races (role could change between guard check and transaction). Together they are comprehensive.
+
+**Resources:**
+- [OWASP — Defense in Depth](https://owasp.org/www-community/Defense_in_depth)
+- [NestJS Guards](https://docs.nestjs.com/guards)
+
+---
+
+## 25. Last-Owner Protection — Invariant Guards in Multi-Tenant Systems
+
+**What:** An invariant guard is a business rule that must ALWAYS hold true, regardless of the operation. "At least one active Owner must exist in every tenant" is an invariant — every operation that could violate it (deactivation, role demotion, suspension) must check it.
+
+**Why it matters:** If a tenant loses all Owners, no one can invite users, change roles, or manage the tenant. This is an unrecoverable state in a self-service SaaS — the tenant is effectively locked out and requires manual intervention.
+
+**How it works:**
+
+```typescript
+// Inside transaction — prevents TOCTOU
+if (target.role === UserTenantRole.Owner && newRole !== UserTenantRole.Owner) {
+  const ownerCount = await tx.userTenantMap.count({
+    where: {
+      tenantId,
+      role: UserTenantRole.Owner,
+      status: { not: UserTenantStatus.Deactivated },
+    },
+  });
+  if (ownerCount <= 1) {
+    throw new ConflictException("Cannot demote the last owner");
+  }
+}
+```
+
+The same check appears in `transitionStatus` (deactivation) and `changeRole` (demotion). It counts only non-deactivated owners to avoid counting owners who have already lost access.
+
+**Resources:**
+- [Domain-Driven Design — Invariants](https://martinfowler.com/bliki/InvariantChecking.html)
+- [PostgreSQL Advisory Locks](https://www.postgresql.org/docs/current/explicit-locking.html#ADVISORY-LOCKS) (for stronger guarantees)

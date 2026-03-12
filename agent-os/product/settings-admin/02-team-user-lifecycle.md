@@ -82,10 +82,24 @@ Deactivated -> Offboarded          (retention policy completes; irreversible ide
 | Idle timeout | Tenant policy, min 5m max 8h |
 | Password reset | Invalidates all refresh tokens |
 
+## Role Change Rules
+
+| Rule | Detail |
+|------|--------|
+| Permission key | `settings.users.role.update` |
+| Who can change roles | Owner always; Member only if granted `settings.users.role.update` permission (requires RBAC — DEV-36/37) |
+| Owner promotion | Only an Owner can promote another user to Owner — permission alone is never sufficient |
+| Cannot change own role | Prevents accidental self-demotion |
+| Cannot demote last Owner | Same guard as deactivation — at least one active Owner must remain |
+| Deactivated users | Role change blocked |
+| Side effect: downgrade | Owner→Member triggers forced logout (session revocation) |
+| Side effect: event | Emit `user.role.changed` with `{ userId, tenantId, previousRole, newRole }` |
+| Audit | All role changes are audited with actor, target, previous role, new role |
+
 ## Approval Rules
 
 | Action | Approval |
 |--------|----------|
 | Deactivate active admin | Manager PIN + reason |
-| Promote to privileged role | Manager PIN + reason |
+| Promote to privileged role | Manager PIN + reason (deferred to RBAC milestone) |
 | Remove last branch access from non-owner | Block operation |

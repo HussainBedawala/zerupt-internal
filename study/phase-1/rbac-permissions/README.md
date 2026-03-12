@@ -1,4 +1,4 @@
-# Phase 1 — RBAC & Permissions: DEV-35, DEV-36, DEV-37, DEV-38 Study Topics
+# Phase 1 — RBAC & Permissions: DEV-35, DEV-36, DEV-37, DEV-38, DEV-189 Study Topics
 
 ## 1. Permission Key Taxonomies (module.entity.action)
 
@@ -321,3 +321,91 @@ if (!ctx) throw new ForbiddenException("Access denied");
 **Resources:**
 - [Stripe: Subscription Statuses](https://docs.stripe.com/billing/subscriptions/overview#subscription-statuses)
 - [Chargebee: Subscription Lifecycle](https://www.chargebee.com/docs/2.0/subscription-lifecycle.html)
+
+## 15. TOCTOU Race Conditions in CRUD APIs (DEV-189)
+
+**What:** Time-of-check-to-time-of-use (TOCTOU) is a race condition where a check (e.g., "are there 0 assigned users?") and an action (e.g., "delete the role") are not atomic. A concurrent request can change the state between check and action.
+
+**Why it matters:** In the Roles CRUD API, two critical operations are vulnerable: deleting a role (check user count → delete) and revoking the last Owner (check owner count → delete assignment). Without atomicity, concurrent requests can delete a role that still has users, or remove all owners from a tenant.
+
+**Key concepts:**
+```typescript
+// BAD — two separate DB round-trips, race window between them
+const count = await prisma.userRole.count({ where: { roleId } });
+if (count > 0) throw new ConflictException();
+await prisma.role.delete({ where: { id: roleId } });
+
+// GOOD — atomic transaction, no race window
+await prisma.$transaction(async (tx) => {
+  const count = await tx.userRole.count({ where: { roleId } });
+  if (count > 0) throw new ConflictException();
+  await tx.role.delete({ where: { id: roleId } });
+});
+```
+
+- Prisma's interactive transactions (`$transaction(async (tx) => { ... })`) run inside a single DB transaction
+- For the last-owner guard, use `Serializable` isolation to prevent phantom reads
+- Defense-in-depth: DB triggers as a final safety net (application transactions can still have bugs)
+
+**Resources:**
+- [CWE-367: TOCTOU Race Condition](https://cwe.mitre.org/data/definitions/367.html)
+- [Prisma: Interactive Transactions](https://www.prisma.io/docs/orm/prisma-client/queries/transactions#interactive-transactions)
+
+## 16. Prisma P2002 Unique Constraint Error Handling (DEV-189)
+
+**What:** When a Prisma `create` or `update` violates a unique constraint, it throws `PrismaClientKnownRequestError` with code `P2002`. If uncaught, this surfaces as a raw 500 error to the client.
+
+**Why it matters:** Users expect a clear "already exists" message (409 Conflict), not an opaque server error. Catching P2002 and converting it to a domain-appropriate HTTP exception is a pattern you'll use in every CRUD service.
+
+**Key concepts:**
+```typescript
+import { Prisma } from "@zerupt/db";
+
+try {
+  await prisma.role.create({ data: { tenantId, name } });
+} catch (error) {
+  if (
+    error instanceof Prisma.PrismaClientKnownRequestError &&
+    error.code === "P2002"
+  ) {
+    throw new ConflictException("A role with this name already exists");
+  }
+  throw error; // re-throw unknown errors
+}
+```
+
+- `error.meta.target` contains the fields that caused the violation (e.g., `["tenant_id", "name"]`)
+- Always re-throw non-P2002 errors — don't silently swallow them
+- For `assignRole`, the same pattern catches duplicate user+role assignments
+
+**Resources:**
+- [Prisma: Error Reference](https://www.prisma.io/docs/orm/reference/error-reference#p2002)
+
+## 17. Response Mappers vs Type Casting in TypeScript APIs (DEV-189)
+
+**What:** The pattern of converting raw Prisma query results into explicit API response shapes using mapper functions, instead of double-casting (`as unknown as RoleResponse`).
+
+**Why it matters:** `as unknown as T` casts suppress all type safety — if the Prisma schema drifts from the response interface (e.g., a field is renamed), the compiler won't catch it. A mapper function makes the shape transformation explicit and fails at compile time if fields are missing.
+
+**Key concepts:**
+```typescript
+// BAD — compiler blind to shape mismatches
+return role as unknown as RoleResponse;
+
+// GOOD — explicit mapping, compile-time safety
+function toRoleResponse(role: Record<string, unknown>): RoleResponse {
+  return {
+    id: role.id as string,
+    name: role.name as string,
+    permissions: (role.permissions ?? []).map(toPermissionResponse),
+    // ... missing field = compile error
+  };
+}
+```
+
+- Trade-off: more code, but catches bugs at compile time instead of production
+- Especially valuable in API boundaries where the internal model and external contract diverge
+- The mapper also serves as documentation of the response contract
+
+**Resources:**
+- [TypeScript: Type Assertions](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#type-assertions)

@@ -1,4 +1,4 @@
-# Phase 1 — Organization Hierarchy: DEV-40
+# Phase 1 — Organization Hierarchy: DEV-40, DEV-41
 
 Study topics from implementing Branch model CRUD with multi-branch support.
 
@@ -81,3 +81,68 @@ Study topics from implementing Branch model CRUD with multi-branch support.
 
 **Resources:**
 - [Zod strip vs strict](https://zod.dev/?id=strip)
+
+## 6. Warehouse Hierarchy in Retail ERP
+
+**What:** A multi-level location hierarchy (Branch → Warehouse → Zone → Bin) that models where physical inventory lives.
+
+**Why it matters:** Zerupt's inventory engine (Phase 3) will deduct stock from specific locations. Without this hierarchy, stock tracking is a flat list per branch — fine for a single-counter shop, unusable for a retailer with back-of-store, multiple aisles, or inter-branch transfers.
+
+**How it works / Key concepts:**
+- **Warehouse types:** `Store` (selling floor), `Warehouse` (storage), `Transit` (virtual — goods in flight between locations)
+- **Default warehouse:** Every active branch needs exactly one. POS transactions deduct from here automatically. Enforced by a partial unique index: `CREATE UNIQUE INDEX ... ON warehouses (tenant_id, branch_id) WHERE is_default = true`
+- **Zone/Bin:** Optional granularity. Zones are areas (e.g., "Frozen"), bins are shelf slots (e.g., "A-01-03"). Small retailers skip these entirely.
+- **Transit warehouse:** Enables stock transfer workflows. Stock leaves source warehouse → enters transit → arrives at destination warehouse. Cannot be the default (enforced by DB CHECK constraint).
+
+**Resources:**
+- [Warehouse Management Concepts (Oracle)](https://docs.oracle.com/en/cloud/saas/warehouse-management/22d/owmgs/warehouse-management-concepts.html)
+
+## 7. Cascade Deactivation vs Cascade Deletion
+
+**What:** Two different approaches to handling parent-child lifecycle — deactivating a parent can cascade deactivation to children (soft), while deleting is blocked if children exist (hard).
+
+**Why it matters:** In an ERP, deleting a warehouse that has zones and bins would orphan inventory references. Deactivating it (setting `isActive: false`) is reversible and preserves all data for reactivation later.
+
+**How it works / Key concepts:**
+- **Cascade deactivation:** When a warehouse is deactivated, all its zones and bins are also deactivated in the same transaction. Implemented via `updateMany` inside `$transaction`.
+- **Delete protection:** Deletion is blocked at the application level if children exist (`count > 0`). At the DB level, `ON DELETE RESTRICT` on FKs provides a safety net.
+- **Reactivation guard:** A child cannot be reactivated if its parent is still inactive. This prevents orphaned active bins under an inactive zone.
+- **Why not CASCADE on delete?** Silently deleting zones/bins/inventory when a warehouse is removed would be catastrophic for an ERP. RESTRICT forces explicit cleanup.
+
+**Resources:**
+- [Soft Delete Pattern](https://www.prisma.io/docs/orm/prisma-client/queries/crud#soft-delete)
+
+## 8. Partial Unique Indexes in PostgreSQL
+
+**What:** A unique index with a `WHERE` clause that only enforces uniqueness on a subset of rows.
+
+**Why it matters:** The "one default warehouse per branch" rule cannot be expressed with a standard unique constraint. A partial unique index on `(tenant_id, branch_id) WHERE is_default = true` ensures at most one default exists per branch at the database level — even if the application has a bug.
+
+**How it works / Key concepts:**
+```sql
+CREATE UNIQUE INDEX warehouses_single_default_idx
+  ON warehouses (tenant_id, branch_id)
+  WHERE is_default = true;
+```
+- Only rows where `is_default = true` are included in the index
+- Multiple rows with `is_default = false` are allowed (not indexed)
+- This is a PostgreSQL-specific feature (not standard SQL)
+- Combines with application-level `updateMany` (unset previous default) for belt-and-suspenders enforcement
+
+**Resources:**
+- [PostgreSQL Partial Indexes](https://www.postgresql.org/docs/current/indexes-partial.html)
+
+## 9. Defense-in-Depth: tenantId on Every Query
+
+**What:** Including `tenantId` in every database query's WHERE clause, even when FK chains already scope the data to a tenant.
+
+**Why it matters:** Zerupt uses per-tenant databases, so cross-tenant access is theoretically impossible at the connection level. But defense-in-depth means adding `tenantId` to every query anyway — if the tenant routing layer has a bug, or if the architecture changes to shared databases later, each query is independently safe.
+
+**How it works / Key concepts:**
+- Every model carries a `tenantId` column, even when it's "redundant" given the FK chain (Bin → Zone → Warehouse → Branch all have tenantId)
+- Every `findFirst`, `findMany`, `update`, `updateMany`, `delete` includes `tenantId` in the WHERE clause
+- The code review caught cases where `updateMany` (cascade deactivation) and `update` (final write) were missing `tenantId` — these were CRITICAL security findings
+- Cost: slightly larger indexes and marginally more query complexity. Benefit: bulletproof tenant isolation.
+
+**Resources:**
+- [OWASP Multi-Tenancy Security](https://cheatsheetseries.owasp.org/cheatsheets/Multi-Tenancy_Security_Cheat_Sheet.html)

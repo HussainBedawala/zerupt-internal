@@ -30,7 +30,7 @@ If yes → `save_issue` to set status "In Progress"
 
 ## PHASE 2: BRANCH
 
-**IMPORTANT:** Always run `git checkout -b <branch>` from inside the `erp/` directory (the git repo root is at `/Users/hus3ain/Development/Zerupt/erp/`). The `/Zerupt/` root is a separate local-only git repo with no remote.
+**IMPORTANT:** Always run `git checkout -b <branch>` from inside the `erp/` directory (the git repo root is at `/Users/hus3ain/Development/Zerupt/erp/`). The `/Zerupt/` root is a separate git repo (`zerupt-internal`) with its own remote.
 
 **NOTE:** Make sure `main` is upto date and no unmerged branches exist before proceeding to creating a new branch.
 
@@ -169,7 +169,7 @@ Do not proceed until all checks pass. If a check fails, fix it before moving on.
 **Commit rules:**
 - Stage specific files only — never `git add .` or `git add -A`
 - All commits go to `erp/` repo (has GitHub remote): `cd /Users/hus3ain/Development/Zerupt/erp`
-- Study files go to root `/Zerupt/` repo (local-only, no remote): commit there separately
+- Study files go to root `/Zerupt/` repo: commit there separately, then push to origin main
 - Commit message subject MUST be all lowercase (commitlint enforces this)
 
 **Commit format:**
@@ -244,7 +244,7 @@ study/
 
 Topics should cover the *concepts behind what was built* — not implementation steps, but the "why" and "how it works under the hood." Write for a smart developer who is new to the specific technology.
 
-Commit study file to root `/Zerupt/` repo after writing.
+Commit study file to root `/Zerupt/` repo after writing, then push: `cd /Users/hus3ain/Development/Zerupt && git push origin main`
 
 ## PHASE 11: CONTENT CHECK
 

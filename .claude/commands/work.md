@@ -210,11 +210,22 @@ Scope from app: web, api, ai, shared, db, db-admin, ui
 
 ## PHASE 10: STUDY TOPICS
 
-**Location:** `study/<phase>/<milestone-kebab>/README.md` — in the root `/Zerupt/` repo (not `erp/`)
+**Location:** `study/<phase>/<topic-kebab>/README.md` — in the root `/Zerupt/` repo (not `erp/`)
 
-**If the file already exists** (same milestone as a previous issue): append new sections to it, update the title to include the new DEV-XX.
+Each high-level topic gets its own folder under the phase directory. Do NOT group by milestone — group by topic.
 
-**If it doesn't exist:** create it.
+**Example structure:**
+```
+study/
+  phase-1/
+    multi-entity-architecture/README.md   ← DEV-195
+    rbac-permissions/README.md            ← DEV-36
+    organization-hierarchy/README.md      ← DEV-40, DEV-41
+```
+
+**If the folder already exists** (same topic from a previous issue): append new sections to the existing README.md.
+
+**If it doesn't exist:** create the folder and README.md.
 
 **Format per topic:**
 ```markdown

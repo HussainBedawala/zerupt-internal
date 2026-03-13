@@ -197,6 +197,60 @@ Invoke the `website-review` skill. Run through all checklists:
 
 Document findings. Fix all issues before proceeding.
 
+### Security Audit (Website-Scoped)
+
+**Always run security review if the page includes any of:**
+- Forms (waitlist, contact, newsletter signup)
+- User input fields
+- Third-party scripts or embeds
+- Analytics/tracking pixels
+- External API calls (client-side)
+
+**Security checklist for websites:**
+- [ ] Form submissions use CSRF protection
+- [ ] Input validation on all form fields (client + server)
+- [ ] No sensitive data in client-side code or localStorage
+- [ ] Third-party scripts loaded from trusted CDNs with SRI hashes
+- [ ] No inline event handlers (onclick, onload) — use event listeners
+- [ ] Content Security Policy headers configured
+- [ ] No user-generated content rendered without sanitization
+- [ ] External links have `rel="noopener noreferrer"`
+- [ ] No exposed API keys or secrets in client bundle
+- [ ] reCAPTCHA or similar on public forms (spam prevention)
+
+**If security-relevant features exist:** Invoke the `security-reviewer` agent with scope limited to:
+1. Client-side code in `erp/apps/website/`
+2. Any API routes in `erp/apps/website/src/app/api/`
+3. Form handling logic
+4. Third-party integrations
+
+**Logging security findings to Linear:**
+
+For any security finding (any severity, fixed or not), create a follow-up issue for audit trail:
+- Title: `[Security] <short description> (from DEV-XX)`
+- Description: severity, file:line, full finding, fix applied (if any), verification steps
+- Priority: HIGH → Urgent; MEDIUM → High; LOW → Normal
+- Labels: `Security` + `Website`
+- Status: New (even if fixed — so it can be verified independently)
+
+Add a comment to the current issue using `save_comment`:
+
+```
+## Security Review Findings
+
+**Reviewer:** security-reviewer (website scope)
+**Issue:** DEV-XX — <title>
+**Date:** <YYYY-MM-DD>
+
+### Fixed in this session
+| Severity | Finding | File | Fix applied |
+|----------|---------|------|-------------|
+| MEDIUM | <title> | <file>:<line> | <one-line description> |
+
+### No findings
+(write this row if review was clean)
+```
+
 Ask: "Review complete. All checks passing? (continue / fix issues)"
 
 ## PHASE 9: VERIFY
@@ -315,10 +369,10 @@ If not content-worthy: skip silently.
 
 ---
 
-## Skills Reference
+## Skills & Agents Reference
 
-| Skill | Purpose | When to Use |
-|-------|---------|-------------|
+| Skill/Agent | Purpose | When to Use |
+|-------------|---------|-------------|
 | `stitch-design-md` | Create DESIGN.md from existing Stitch screen | First time setup, design system extraction |
 | `stitch-enhance-prompt` | Optimize prompts for Stitch generation | Before any Stitch generation |
 | `stitch-react-components` | Convert Stitch HTML to React | After Stitch generation |
@@ -329,6 +383,7 @@ If not content-worthy: skip silently.
 | `video-to-website` | Scroll-driven animated websites | Hero sections, product pages |
 | `content-engine` | Marketing copy + SEO patterns | Phase 6 copy generation |
 | `website-review` | Quality assurance checklist | Phase 8 review |
+| `security-reviewer` | Security audit (website-scoped) | Phase 8 when forms/inputs/APIs exist |
 | `nano-banana-images` | AI image generation via Kie.ai | Custom imagery needs |
 
 ---

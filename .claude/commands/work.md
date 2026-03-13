@@ -32,6 +32,8 @@ If yes → `save_issue` to set status "In Progress"
 
 **IMPORTANT:** Always run `git checkout -b <branch>` from inside the `erp/` directory (the git repo root is at `/Users/hus3ain/Development/Zerupt/erp/`). The `/Zerupt/` root is a separate local-only git repo with no remote.
 
+**NOTE:** Make sure `main` is upto date and no unmerged branches exist before proceeding to creating a new branch.
+
 Branch format: `phase-0/<DEV-XX>-<short-kebab-description>`
 
 Phase prefixes: phase-0, phase-1, phase-2, phase-3, phase-4a, phase-4b, phase-4c, phase-5, phase-6, phase-7, phase-8, website
@@ -78,7 +80,9 @@ Present a clear implementation plan before writing any code. Include:
 - What credentials/values to provide back (if applicable)
 - Any risks or blockers
 - In case designing API, use `api-design` skill to plan it.
+- In case designing / updating database, use `database-reviewer` agent.
 
+**Give your own recommendations and improvements also. Even if it is missing from the spec, or you have any thoughts, please add those.**
 **Do NOT write any code until the user approves the plan.**
 
 Ask: "Approve this plan? (yes / adjust)"
@@ -94,7 +98,7 @@ Run the `/tdd` command behavior. The tdd-guide agent writes tests first (RED →
 
 **Exception:** Pure infrastructure/provisioning issues (no business logic, just SDK init + env vars) do not require tests. Document this exception explicitly when skipping.
 
-## PHASE 7: CODE REVIEW
+## PHASE 7: CODE REVIEW [VERY IMPORTANT TO DO THIS ACCURATELY]
 
 Run the `/code-review` command behavior.
 

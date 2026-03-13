@@ -1,4 +1,4 @@
-# Phase 1 — Organization Hierarchy: DEV-40, DEV-41
+# Phase 1 — Organization Hierarchy: DEV-40, DEV-41, DEV-42
 
 Study topics from implementing Branch model CRUD with multi-branch support.
 
@@ -146,3 +146,84 @@ CREATE UNIQUE INDEX warehouses_single_default_idx
 
 **Resources:**
 - [OWASP Multi-Tenancy Security](https://cheatsheetseries.owasp.org/cheatsheets/Multi-Tenancy_Security_Cheat_Sheet.html)
+
+## 10. Key-Based Remounting in React
+
+**What:** Using React's `key` prop to force a component to unmount and remount with fresh state, rather than updating in place.
+
+**Why it matters:** In Zerupt's location dialogs, switching between "create" and "edit" modes reuses the same Dialog component. Without key-based remounting, stale `useState` values from a previous edit persist into the next open — e.g., opening "create" after editing a branch shows the old branch's name.
+
+**How it works / Key concepts:**
+- React reconciles components by position in the tree. Same position + same type = same instance (state preserved)
+- Changing the `key` prop tells React "this is a different instance" — it unmounts the old and mounts a new one
+- Pattern: `<ZoneDialog key={editingZone?.id ?? "create"} ... />`
+- Alternative: manually reset state in `useEffect` — more error-prone and verbose
+- Trade-off: remounting is slightly more expensive than updating, but for dialogs (low frequency) it's negligible
+
+**Resources:**
+- [React docs: Resetting state with a key](https://react.dev/learn/preserving-and-resetting-state#resetting-a-form-with-a-key)
+
+## 11. TanStack Query Mutation Cache Invalidation
+
+**What:** After a mutation (create/update/delete), TanStack Query can automatically refetch related queries by invalidating their cache keys.
+
+**Why it matters:** Zerupt's location hierarchy has parent-child relationships across 4 levels. When a zone is deleted, the zones list for that warehouse must refetch. Without invalidation, the UI shows stale data until the user manually refreshes.
+
+**How it works / Key concepts:**
+- Query keys are hierarchical arrays: `["zones", warehouseId]` — invalidating `["zones"]` refetches all zone queries
+- `queryClient.invalidateQueries({ queryKey: [...] })` marks cached data as stale and triggers a background refetch
+- Place invalidation in the mutation's `onSuccess` callback, not `onSettled` (don't refetch on error)
+- Zerupt pattern: each mutation hook calls `invalidateQueries` for its entity type on success
+- For cross-level cascades (deactivating a warehouse should refresh zones), invalidate multiple key prefixes
+
+**Resources:**
+- [TanStack Query: Invalidation from Mutations](https://tanstack.com/query/latest/docs/framework/react/guides/invalidations-from-mutations)
+
+## 12. NFC Normalization for Search Filtering
+
+**What:** Unicode Normalization Form C (NFC) ensures that characters with diacritics are represented consistently — as a single code point rather than a base character + combining mark.
+
+**Why it matters:** Zerupt supports Arabic text. Arabic text with diacritical marks (tashkeel) can be encoded in multiple ways. Without normalization, a user searching for "مخزن" might not match "مخزن" if one uses composed and the other decomposed Unicode.
+
+**How it works / Key concepts:**
+- `"café".normalize("NFC")` — combines `e` + `◌́` into `é` (single code point)
+- Apply `.normalize("NFC")` to both the search term and the data being searched
+- Do this client-side for instant filtering, server-side for database queries
+- Zerupt applies NFC in `BranchesTable` search: `term.normalize("NFC")` compared against `branch.name.normalize("NFC")`
+- Cost: negligible — NFC is the default form for most keyboard input anyway
+
+**Resources:**
+- [MDN String.prototype.normalize()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/normalize)
+
+## 13. CSS Logical Properties for RTL Support
+
+**What:** CSS logical properties (`margin-inline-start`, `padding-inline-end`, `ps-4`, `me-1`) replace physical properties (`margin-left`, `padding-right`) to automatically adapt to text direction.
+
+**Why it matters:** Zerupt launches with Arabic (RTL) and English (LTR). Using physical properties means writing separate RTL overrides for every spacing rule. Logical properties flip automatically based on `dir="rtl"`.
+
+**How it works / Key concepts:**
+- `margin-inline-start` = left margin in LTR, right margin in RTL
+- Tailwind shortcuts: `ps-` (padding-start), `pe-` (padding-end), `ms-` (margin-start), `me-` (margin-end)
+- `text-start` instead of `text-left`, `float-start` instead of `float-left`
+- Block axis (top/bottom) stays the same: `pt-`, `pb-`, `mt-`, `mb-` are fine
+- Zerupt convention: never use `pl-`, `pr-`, `ml-`, `mr-` — always the logical equivalents
+
+**Resources:**
+- [MDN CSS Logical Properties](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_logical_properties_and_values)
+- [Tailwind Logical Properties](https://tailwindcss.com/blog/tailwindcss-v3-3#logical-properties)
+
+## 14. Intl.supportedValuesOf() for Runtime Validation
+
+**What:** A JavaScript Intl API method that returns all values supported by the runtime for a given category — e.g., `Intl.supportedValuesOf("timeZone")` returns every IANA timezone the engine knows.
+
+**Why it matters:** Zerupt's branch creation form needs a timezone picker. Hardcoding a timezone list means it goes stale as IANA updates. Using `Intl.supportedValuesOf("timeZone")` gives the authoritative list for the current runtime, always up to date.
+
+**How it works / Key concepts:**
+- `Intl.supportedValuesOf("timeZone")` → `["Africa/Abidjan", "Africa/Accra", ..., "UTC"]`
+- Also works for: `"calendar"`, `"collation"`, `"currency"`, `"numberingSystem"`, `"unit"`
+- Browser support: all modern browsers (Chrome 99+, Firefox 93+, Safari 15.4+)
+- Zerupt uses it to populate a searchable dropdown and validate the submitted value
+- The list is computed once on component mount (memoized) — ~400 entries, negligible cost
+
+**Resources:**
+- [MDN Intl.supportedValuesOf()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/supportedValuesOf)

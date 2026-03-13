@@ -67,22 +67,90 @@ Tests use **Jest** (not Vitest) for the API. Config is at `erp/apps/api/jest.con
 pnpm --filter @zerupt/api test
 
 # Run tests matching a pattern (from erp/apps/api/)
-cd /Users/hus3ain/Development/Zerupt/erp/apps/api && npx jest --testPathPattern='audit' --no-coverage
+cd /Users/hus3ain/Development/Zerupt/erp/apps/api && npx jest --testPathPatterns='audit' --no-coverage
 
 # Run a single test file
 npx jest src/audit/audit-log.service.spec.ts --no-coverage
 
 # pnpm filter passes args after --
-pnpm --filter @zerupt/api test -- --testPathPattern='audit' --no-coverage
+pnpm --filter @zerupt/api test -- --testPathPatterns='audit' --no-coverage
 ```
 
 **Important:** `pnpm --filter @zerupt/api test` runs `jest --passWithNoTests`. If no tests match, it exits 0 silently. Always verify test discovery by checking the output for "Test Suites: N" lines.
 
 ---
 
+## Prisma Migrations — How They Work
+
+The tenant DB schema lives at `erp/packages/db/prisma/schema.prisma`. Prisma config is at `erp/packages/db/prisma.config.ts` (loads `.env` automatically via dotenv).
+
+### Database URLs (from `.env`)
+
+| Var | DB | Purpose |
+|-----|-----|---------|
+| `DATABASE_TENANT_URL` | `zerupt_tenant_dev` | Dev tenant DB — where migrations apply |
+| `SHADOW_DATABASE_URL` | `zerupt_tenant_shadow` | Shadow DB — Prisma uses this to validate migrations replay from scratch |
+| `DATABASE_ADMIN_URL` | `zerupt_admin` | Central admin DB (separate Prisma schema at `packages/db-admin/`) |
+
+### How to run migrations
+
+Always run from `erp/packages/db/`:
+
+```bash
+cd /Users/hus3ain/Development/Zerupt/erp/packages/db
+
+# Check current status (no-op, safe)
+npx prisma migrate status
+
+# Generate migration SQL WITHOUT applying (for hand-editing)
+npx prisma migrate dev --create-only --name descriptive_name_here
+
+# Apply all pending migrations
+npx prisma migrate dev
+
+# Just regenerate the Prisma client (no DB changes)
+npx prisma generate
+```
+
+### Migration timestamp ordering (CRITICAL)
+
+Prisma replays all migrations in **alphabetical order by directory name** (which is timestamp-prefixed). A new migration that references a table from a previous migration MUST have a later timestamp. If you use `--create-only`, Prisma auto-generates the timestamp. If you hand-create a migration directory, ensure its timestamp sorts AFTER all migrations it depends on.
+
+**Example:** If `20260314200000_add_warehouse` creates the `warehouses` table, a new migration referencing `warehouses` must use a timestamp > `20260314200000`.
+
+### Hand-editing migrations
+
+When a migration needs data backfill or raw SQL (CHECK constraints, partial indexes), use this flow:
+
+1. `npx prisma migrate dev --create-only --name descriptive_name` — generates SQL shell
+2. Edit the SQL file in `prisma/migrations/<timestamp>_<name>/migration.sql`
+3. `npx prisma migrate dev` — applies the edited SQL
+
+**Common hand-edits:**
+- Adding a non-nullable FK to an existing table: add column as nullable → backfill → set NOT NULL → add FK
+- CHECK constraints (Prisma doesn't generate these)
+- Partial unique indexes (Prisma generates these correctly with `partialIndexes` preview feature, but verify)
+
+### Shadow database errors
+
+If you see `P3006: Migration failed to apply cleanly to the shadow database`:
+- The shadow DB (`zerupt_tenant_shadow`) must exist. Create it: `docker exec zerupt_postgres psql -U zerupt -d postgres -c "CREATE DATABASE zerupt_tenant_shadow;"`
+- Check migration timestamp ordering (see above)
+- Check that `SHADOW_DATABASE_URL` is set in `.env`
+
+### Never rename a migration directory after it has been applied
+
+Prisma records the migration directory name in `_prisma_migrations`. Renaming the directory creates a mismatch and forces a DB reset. If you must rename, update the `migration_name` column in `_prisma_migrations` to match.
+
+---
+
 ## Codebase Gotchas
 
 Discovered during development — do not re-research these.
+
+### Jest — `--testPathPattern` Is Removed
+
+Jest replaced `--testPathPattern` with `--testPathPatterns` (plural). Use `--testPathPatterns` in all CLI invocations.
 
 ### next-intl — `hasLocale` Does Not Exist in v4.8.3
 

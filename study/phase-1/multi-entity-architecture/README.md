@@ -1,4 +1,4 @@
-# Multi-Entity Architecture — DEV-195
+# Multi-Entity Architecture — DEV-195, DEV-197
 
 ## 1. Partial Unique Indexes in PostgreSQL
 
@@ -105,3 +105,97 @@ ALTER TABLE legal_entities
 
 **Resources:**
 - [Prisma Shadow Database](https://www.prisma.io/docs/orm/prisma-migrate/understanding-prisma-migrate/shadow-database)
+
+## 6. Intl.DisplayNames for Locale-Aware Display
+
+**What:** A built-in browser API that provides translated display names for regions, languages, currencies, and scripts.
+
+**Why it matters:** Zerupt's legal entity UI needs to show country names in the user's locale (e.g., "الإمارات العربية المتحدة" in Arabic, "United Arab Emirates" in English) without bundling a translation database. `Intl.DisplayNames` ships with the runtime — zero bytes added to the bundle.
+
+**How it works:**
+```ts
+const dn = new Intl.DisplayNames(["ar"], { type: "region" });
+dn.of("AE"); // "الإمارات العربية المتحدة"
+
+const dnEn = new Intl.DisplayNames(["en"], { type: "region" });
+dnEn.of("AE"); // "United Arab Emirates"
+```
+
+**Key concepts:**
+- `type: "region"` for countries (ISO 3166-1), `"currency"` for currencies (ISO 4217), `"language"` for languages
+- First argument is a locale array — falls back down the list if the first locale isn't available
+- Cache instances per locale to avoid re-creation on every render
+- Works in all modern browsers and Node.js 12+
+
+**Resources:**
+- [MDN Intl.DisplayNames](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DisplayNames)
+
+## 7. Emoji Flags from ISO Country Codes
+
+**What:** Converting ISO 3166-1 alpha-2 country codes to emoji flags using Unicode Regional Indicator Symbols.
+
+**Why it matters:** Showing a flag emoji next to country names gives instant visual recognition without loading image assets. Works everywhere emoji renders — no flag sprite sheets needed.
+
+**How it works:**
+```ts
+function getCountryFlag(code: string): string {
+  const codePoints = [...code.toUpperCase()].map(
+    (char) => 0x1F1E6 + char.charCodeAt(0) - 65
+  );
+  return String.fromCodePoint(...codePoints);
+}
+getCountryFlag("AE"); // 🇦🇪
+```
+
+**Key concept:** Each letter A-Z maps to a Regional Indicator Symbol (U+1F1E6 to U+1F1FF). Two consecutive regional indicators render as a flag emoji. "A" = U+1F1E6, "E" = U+1F1EA → 🇦🇪.
+
+**Caveat:** Windows renders some flags as two-letter codes instead of flag images. This is a Windows limitation, not a code bug.
+
+## 8. Combobox Accessibility (ARIA Roles)
+
+**What:** The ARIA pattern for a searchable dropdown (combobox) — combining a text input with a filterable list.
+
+**Why it matters:** Custom dropdown pickers (country, currency) must be keyboard-navigable and announce state changes to screen readers. Without proper ARIA roles, the picker is invisible to assistive technology.
+
+**Key roles and attributes:**
+```html
+<input
+  role="combobox"
+  aria-expanded="true"        <!-- list is visible -->
+  aria-controls="listbox-id"  <!-- points to the list -->
+  aria-autocomplete="list"    <!-- typing filters the list -->
+/>
+<div id="listbox-id" role="listbox">
+  <button role="option" aria-selected="true">UAE</button>
+  <button role="option" aria-selected="false">Saudi Arabia</button>
+</div>
+```
+
+**Also important:**
+- `aria-invalid` + `aria-describedby` on inputs with validation errors — screen readers announce the error message
+- `aria-label` on icon-only buttons and indicators (like the lock icon)
+
+**Resources:**
+- [WAI-ARIA Combobox Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/combobox/)
+
+## 9. Separate Mutation Instances in TanStack Query
+
+**What:** Using multiple instances of the same `useMutation` hook to track independent operations separately.
+
+**Why it matters:** When a single component triggers multiple types of mutations (edit, deactivate, reactivate), sharing one `useMutation` instance means `isPending` is `true` for ALL actions when ANY action is in-flight. This produces wrong loading states — e.g., showing "Deactivating..." when an edit is saving.
+
+**How it works:**
+```tsx
+// BAD: shared mutation — isPending is ambiguous
+const updateMutation = useUpdateMutation();
+
+// GOOD: separate instances — each tracks its own state
+const editMutation = useUpdateMutation();
+const deactivateMutation = useUpdateMutation();
+const reactivateMutation = useUpdateMutation();
+```
+
+Each instance has its own `isPending`, `isError`, `isSuccess` state. They all share the same `mutationFn` and invalidation logic (defined in the hook), but their lifecycle is independent.
+
+**Resources:**
+- [TanStack Query Mutations](https://tanstack.com/query/latest/docs/framework/react/guides/mutations)

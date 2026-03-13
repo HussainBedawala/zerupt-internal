@@ -1,16 +1,30 @@
-# Default Chart of Accounts Template
+# Chart of Accounts
+
+## COA Scope: Per Legal Entity
+
+Each legal entity has its own COA instance. This is required because:
+- Different countries have different regulatory account requirements (UAE VAT vs India GST vs SG GST)
+- Each entity produces independent financial statements
+- Account codes and names may differ by jurisdiction
+
+**At launch (single-entity tenants):** One COA, auto-seeded from the general retail template. Indistinguishable from a "per-tenant" COA for the user.
+
+**Multi-entity tenants:** Each new legal entity gets its own COA seeded from the same template. Entities can then diverge (add country-specific tax accounts, rename accounts, etc.).
 
 ## Account Properties
 
 | Field | Type | Description |
 |-------|------|-------------|
-| `code` | string | Hierarchical numeric code (e.g., `1131`) |
+| `id` | UUID | PK |
+| `legalEntityId` | UUID | FK to LegalEntity. Every account belongs to one entity. |
+| `tenantId` | UUID | Defense-in-depth |
+| `code` | string | Hierarchical numeric code (e.g., `1131`). Unique per entity. |
 | `name` | string | Primary language |
 | `nameAlt` | string | Alternate language (bilingual support) |
 | `type` | enum | `Asset`, `Liability`, `Equity`, `Income`, `Expense` |
 | `subType` | enum | See sub-types below |
 | `normalBalance` | enum | `Debit` or `Credit` |
-| `currencyCode` | string? | For FC accounts (null = functional currency) |
+| `currencyCode` | string? | For FC accounts (null = entity's functional currency) |
 | `isControlAccount` | boolean | Posted to by engine only, not directly |
 | `isSystemAccount` | boolean | Cannot be deleted or type-changed |
 | `cashFlowCategory` | enum | `Operating`, `Investing`, `Financing`, `None` |
@@ -26,6 +40,8 @@
 **Equity:** `ShareCapital`, `RetainedEarnings`, `CurrentYearEarnings`
 
 ## General Retail Template
+
+Seeded per legal entity during entity creation. Country-specific tax accounts are added based on `LegalEntity.countryCode`.
 
 ```
 1000  ASSETS
@@ -116,16 +132,36 @@
 └── 7900  Other Expenses                              [Expense, OtherExpense, DR]
 ```
 
+## Country-Specific Tax Account Variants
+
+Seeded based on `LegalEntity.countryCode` during COA creation:
+
+| Country | Tax accounts seeded | Notes |
+|---------|--------------------|-------|
+| AE, SA, BH, OM, QA (GCC) | `1162 Input VAT Recoverable`, `2131 Output VAT Payable`, `2132 VAT Settlement` | Single-rate VAT (5% for UAE/SA/BH/OM, 0% for KW) |
+| IN (India) | `1162.01 Input CGST`, `1162.02 Input SGST`, `1162.03 Input IGST`, `2131.01 Output CGST`, `2131.02 Output SGST`, `2131.03 Output IGST` | Dual GST structure |
+| SG (Singapore) | `1162 Input GST Recoverable`, `2131 Output GST Payable` | Single-rate GST (9%) |
+| MY (Malaysia) | `1162 Input SST Recoverable`, `2131 Output SST Payable` | Sales and Service Tax |
+
 ## System Accounts (Non-Deletable)
 
-These are required for auto-generated journal entries:
+Required for auto-generated journal entries. Seeded in every entity's COA:
 
 `1112` Cash Register, `1129` Cheques in Transit, `1131` Trade Receivables, `1141` Merchandise Inventory, `1142` Inventory in Transit, `1150` Cheques in Hand, `1161` Supplier Prepayments, `1162` Input Tax Recoverable, `2111` Trade Payables, `2121` GRN Accrual, `2131` Output Tax Payable, `2140` Cheques Issued, `2151` Customer Deposits, `3200` Retained Earnings Prior, `3300` Retained Earnings Current, `3900` Opening Balance Equity, `4110` Product Sales, `4200` Sales Returns, `5100` COGS, `6700` Cash Over/Short
 
 ## Opening Balances
 
-1. Tenant enters balances as of a cutoff date
-2. System creates journal entry of type `OpeningBalance`
+1. Tenant enters balances as of a cutoff date (per legal entity)
+2. System creates journal entry of type `OpeningBalance` in that entity's ledger
 3. Each account balance → debit or credit line
 4. Balancing entry → `Opening Balance Equity (3900)`
 5. After all balances entered, 3900 should be zero (imbalance = migration error)
+
+## Cross-Reference
+
+| Reference | Alignment |
+|-----------|-----------|
+| `settings-admin/15-multi-entity-architecture.md` | COA belongs to LegalEntity |
+| `settings-admin/06-tax-configuration-controls.md` | Tax profiles determine which tax accounts are used |
+| `01-architecture.md` | Engine resolves entity → COA for account mapping |
+| `06-account-mappings.md` | Maps event types to specific accounts in the entity's COA |

@@ -105,3 +105,53 @@ Key patterns:
 - Upsert by the natural unique key
 - Only update fields that might legitimately change between runs
 - Add a production guard: `if (NODE_ENV === 'production') throw`
+
+---
+
+## 6. Client-Side Auth Header Injection (from DEV-202)
+
+**What:** Centralising JWT injection in a single fetch wrapper so every API call automatically includes the auth token.
+
+**Why it matters:** In a multi-tenant SaaS, every API call must carry a JWT that identifies the user AND their tenant. If even one call leaks without a token, the API returns 401. If the token injection is scattered across individual API functions, it's easy to miss one — creating silent failures or security gaps.
+
+**How it works:**
+```ts
+// Two-call pattern: validate first, then read token
+const { error } = await supabase.auth.getUser();   // server round-trip
+if (error) throw new ApiError("Not authenticated", 401);
+
+const { data } = await supabase.auth.getSession();  // local cache (now fresh)
+headers["Authorization"] = `Bearer ${data.session.access_token}`;
+```
+
+Why two calls? `getUser()` validates the session server-side (catches revoked sessions, triggers refresh). `getSession()` returns the actual token string. Using only `getSession()` would forward unverified tokens — the NestJS JWKS guard catches expired tokens, but not revoked sessions (those remain valid until JWT natural expiry, typically 1 hour).
+
+**Resources:**
+- [Supabase: getUser vs getSession](https://supabase.com/docs/reference/javascript/auth-getuser)
+
+---
+
+## 7. URL Construction Pitfall: `new URL()` vs String Concatenation
+
+**What:** `new URL(path, base)` does NOT simply concatenate — it resolves `path` relative to `base` using RFC 3986 rules. A leading `/` in `path` discards the base path entirely.
+
+**Why it matters:** If your API base URL is `http://localhost:3001/api/v1` and you pass `/tenant/users`, `new URL` resolves to `http://localhost:3001/tenant/users` — silently dropping the `/api/v1` prefix. Your API call hits a nonexistent route.
+
+**How it works:**
+```js
+new URL("/tenant/users", "http://localhost:3001/api/v1")
+// → http://localhost:3001/tenant/users  ← WRONG
+
+new URL("tenant/users", "http://localhost:3001/api/v1/")
+// → http://localhost:3001/api/v1/tenant/users  ← CORRECT
+```
+
+Two fixes needed: (1) ensure base ends with `/`, (2) strip leading `/` from path. This is a common bug in monorepo API clients.
+
+---
+
+## 8. `"use client"` as a Security Boundary
+
+**What:** In Next.js App Router, `"use client"` is not just a rendering hint — it's a module-level declaration that prevents the file from being imported in Server Components.
+
+**Why it matters for multi-tenancy:** If a browser-only Supabase client (singleton, bound to one user's cookies) gets imported in a Server Component, the Node.js process shares that singleton across all requests. User A's session token could be used for User B's request — a cross-tenant data leak. Adding `"use client"` to `api-client.ts` makes Next.js error at build time if a Server Component tries to import it, instead of silently leaking data at runtime.

@@ -1,4 +1,4 @@
-# Multi-Entity Architecture — DEV-195, DEV-197
+# Multi-Entity Architecture — DEV-195, DEV-197, DEV-198
 
 ## 1. Partial Unique Indexes in PostgreSQL
 
@@ -199,3 +199,68 @@ Each instance has its own `isPending`, `isError`, `isSuccess` state. They all sh
 
 **Resources:**
 - [TanStack Query Mutations](https://tanstack.com/query/latest/docs/framework/react/guides/mutations)
+
+## 10. TOCTOU Race Conditions in Check-Then-Act Patterns
+
+**What:** Time-of-check to time-of-use (TOCTOU) — a class of race condition where the state checked in one query changes before the dependent write executes.
+
+**Why it matters:** In DEV-198, the branch service validates that a legal entity is active, then creates a branch referencing it. Without a transaction, a concurrent request could deactivate the entity between those two queries, violating the business rule.
+
+**How it works / Key concepts:**
+
+```typescript
+// TOCTOU vulnerable: two separate round trips
+const entity = await prisma.legalEntity.findFirst({ where: { id, tenantId } });
+if (!entity.isActive) throw new ConflictException("...");
+await prisma.branch.create({ data: { legalEntityId: id, ... } });
+
+// Fixed: atomic transaction
+await prisma.$transaction(async (tx) => {
+  const entity = await tx.legalEntity.findFirst({ where: { id, tenantId } });
+  if (!entity.isActive) throw new ConflictException("...");
+  return tx.branch.create({ data: { legalEntityId: id, ... } });
+});
+```
+
+**When transactions are overkill:** If the database can enforce the invariant via a CHECK constraint or FK, prefer that — it's simpler and performs better. Use application-level transactions only when the invariant involves cross-table logic (like checking `isActive` on a related record).
+
+**Resources:**
+- [TOCTOU (Wikipedia)](https://en.wikipedia.org/wiki/Time-of-check_to_time-of-use)
+- [Prisma Interactive Transactions](https://www.prisma.io/docs/orm/prisma-client/queries/transactions#interactive-transactions)
+
+## 11. Zod `.refine()` Gotcha with Optional Fields
+
+**What:** A subtle bug in Zod's `.refine()` when checking if "at least one field" is present in a PATCH schema where all fields are `.optional()`.
+
+**Why it matters:** The naive guard `Object.keys(v).length > 0` passes when a client sends `{ "name": undefined }` — Zod retains the key with an `undefined` value. This allows no-op PATCH requests that write empty `data: {}` to the database.
+
+**How it works:**
+
+```typescript
+// BUG: Object.keys({ name: undefined }) returns ["name"] → length is 1
+.refine((v) => Object.keys(v).length > 0, { message: "..." });
+
+// FIX: Check for at least one defined value
+.refine(
+  (v) => Object.values(v).some((val) => val !== undefined),
+  { message: "At least one field must be provided" }
+);
+```
+
+**Resources:**
+- [Zod Refinements](https://zod.dev/?id=refine)
+
+## 12. Multi-Currency Strategy in ERP Design
+
+**What:** The distinction between functional, transaction, and presentation currencies — and when to validate currency assignments in an ERP.
+
+**Why it matters:** Zerupt targets multi-currency markets (UAE free zones transacting in USD under AED entities, tourism retailers accepting EUR/GBP). Enforcing strict currency matching too early blocks legitimate use cases. The right time for currency validation is when the accounting engine introduces exchange rate tables.
+
+**Key concepts:**
+- **Functional currency:** Financial reporting currency, tied to the legal entity's primary economic environment (IAS 21)
+- **Transaction currency:** The currency of a specific business document (invoice, PO, payment)
+- **Branch default currency:** Optional override — when null, inherits entity's functional currency
+- **Validation strategy:** Format-only validation (ISO 4217) at the API boundary; business-level compatibility deferred to the accounting module
+
+**Resources:**
+- [IAS 21 — Effects of Changes in Foreign Exchange Rates](https://www.ifrs.org/issued-standards/list-of-standards/ias-21-the-effects-of-changes-in-foreign-exchange-rates/)

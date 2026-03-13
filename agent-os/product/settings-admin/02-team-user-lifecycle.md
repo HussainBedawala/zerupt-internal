@@ -18,7 +18,7 @@
 | `lastLoginIp` | string | nullable |
 | `mustResetPassword` | boolean | |
 | `isMfaRequired` | boolean | |
-| `allowedBranches` | array(UUID) | Empty = all branches |
+| `allowedBranches` | array(UUID) | Stored in `UserBranch` junction table (tenant DB). Fail-closed: empty = no access for non-owners, owners exempt. See Branch Assignment Rules. |
 | `primaryRoleId` | UUID | |
 | `createdAt` | datetime | |
 | `updatedAt` | datetime | |
@@ -67,11 +67,14 @@ Deactivated -> Offboarded          (retention policy completes; irreversible ide
 
 | Rule | Detail |
 |------|--------|
-| Assignment model | User-level `allowedBranches` + role permissions |
-| Empty branch scope | Means all tenant branches |
-| Owner exception | Owner always all branches |
+| Assignment model | `UserBranch` junction table in tenant DB (DEV-180). User-level branch assignments + role permissions. |
+| Fail-closed default | Non-owner users with no `UserBranch` rows have **zero branch access** (not all). This prevents accidental privilege escalation when owner forgets to assign branches. |
+| Owner exception | Owner always has all branches — enforced by role check in code, not by data. Owners have zero `UserBranch` rows (ignored). |
+| Non-owner assignment | Must have at least one explicit branch. Cannot set empty `branchIds` via PATCH endpoint. |
 | Cross-branch action | Requires permission + branch in scope |
-| Branch deactivation | Users assigned to only that branch become suspended until reassigned |
+| Branch deactivation | Users assigned to only that branch become suspended until reassigned (DEV-192) |
+| Owner demotion | When owner is demoted to member, must auto-assign all active branches to preserve access (DEV-191) |
+| Invite-time assignment | `branchScope` should be mandatory for non-owner invites (DEV-190) |
 
 ## Session Security Rules
 

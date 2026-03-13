@@ -7,6 +7,7 @@ DEV-34: Build User Management UI (list, invite, edit, suspend)
 DEV-177: Add PATCH user profile endpoint (fullName, phone, locale, dateFormat, timeFormat, timezone)
 DEV-178: Add server-side user search and enhanced list filters
 DEV-179: Add role change endpoint (PATCH /tenant/users/:userId/role)
+DEV-180: Add user branch assignment endpoint (PUT /tenant/users/:userId/branches)
 
 ---
 
@@ -817,3 +818,117 @@ The same check appears in `transitionStatus` (deactivation) and `changeRole` (de
 **Resources:**
 - [Domain-Driven Design — Invariants](https://martinfowler.com/bliki/InvariantChecking.html)
 - [PostgreSQL Advisory Locks](https://www.postgresql.org/docs/current/explicit-locking.html#ADVISORY-LOCKS) (for stronger guarantees)
+
+---
+
+## 26. Fail-Closed vs Fail-Open Access Models
+
+**What:** A fail-closed system denies access when the access control data is absent or ambiguous. A fail-open system grants access in the same situation.
+
+**Why it matters:** In Zerupt's branch assignment model, the question was: "What happens when a user has no branch assignments?" Fail-open (`[] = all branches`) is dangerous — a forgotten configuration grants maximum access. Fail-closed (`[] = no branches`) means the owner must explicitly grant access, and forgetting to do so results in zero access rather than full access.
+
+**How it works:**
+
+```typescript
+// Fail-open (DANGEROUS — original spec)
+if (userBranches.length === 0) return true; // all branches
+
+// Fail-closed (SAFE — implemented)
+if (user.role === Owner) return true;        // owners exempt
+if (userBranches.length === 0) return false;  // no rows = no access
+return userBranches.includes(branchId);       // explicit check
+```
+
+The fail-closed model pushes configuration burden onto the admin (must assign branches) but prevents silent privilege escalation.
+
+**Resources:**
+- [OWASP: Fail Securely](https://owasp.org/www-community/Fail_securely)
+- [Principle of Least Privilege (NIST)](https://csrc.nist.gov/glossary/term/least_privilege)
+
+---
+
+## 27. Junction Tables for Cross-Database Relationships
+
+**What:** A junction table (also called a bridge or associative table) maps many-to-many relationships. When the two entities live in different databases, the junction table uses UUIDs as foreign keys without database-level FK constraints on the remote side.
+
+**Why it matters:** Zerupt's users live in the admin DB (Supabase Auth), and branches live in per-tenant DBs. A `UserBranch` junction table in the tenant DB maps `userId` (no FK — external reference) to `branchId` (FK to branches). This is a common pattern in multi-database architectures where referential integrity is split across boundaries.
+
+**How it works:**
+
+```prisma
+model UserBranch {
+  id         String   @id @default(uuid(7)) @db.Uuid
+  tenantId   String   @map("tenant_id") @db.Uuid
+  userId     String   @map("user_id") @db.Uuid      // No FK — lives in admin DB
+  branchId   String   @map("branch_id") @db.Uuid
+
+  branch Branch @relation(fields: [branchId], references: [id], onDelete: Restrict)
+
+  @@unique([tenantId, userId, branchId])  // Prevents duplicates
+}
+```
+
+Key design decisions:
+- `onDelete: Restrict` on `branchId` — can't delete a branch while users are assigned
+- No FK on `userId` — validated at the application layer against admin DB
+- Unique composite index also serves as the lookup index (left-prefix)
+
+**Resources:**
+- [Wikipedia — Associative Entity](https://en.wikipedia.org/wiki/Associative_entity)
+- [Prisma Relations — Many-to-Many](https://www.prisma.io/docs/orm/prisma-schema/data-model/relations/many-to-many-relations)
+
+---
+
+## 28. PUT vs PATCH — HTTP Method Semantics for Resource Replacement
+
+**What:** HTTP PUT replaces the entire resource (or sub-resource) at the target URI. PATCH applies a partial modification. PUT is idempotent (same request always produces the same result); PATCH may not be.
+
+**Why it matters:** The branch assignment endpoint sends `{ branchIds: ["b1", "b2"] }` and replaces ALL branch assignments for the user. This is PUT semantics — the client sends the complete desired state, not a delta. Using PATCH would mislead clients into thinking they can send partial updates (e.g., "add branch b3" without listing existing ones).
+
+**How it works:**
+
+```
+PUT  /users/:id/branches  { branchIds: ["b1", "b2"] }  → replaces all
+PATCH /users/:id/branches { add: ["b3"] }               → partial update
+
+// PUT is idempotent — calling it twice with the same body produces the same state
+// PATCH is not necessarily idempotent — calling "add b3" twice might duplicate
+```
+
+Rule of thumb: if the client sends the full desired state → PUT. If the client sends a diff → PATCH.
+
+**Resources:**
+- [RFC 9110 — PUT](https://httpwg.org/specs/rfc9110.html#PUT)
+- [RFC 5789 — PATCH](https://www.rfc-editor.org/rfc/rfc5789)
+
+---
+
+## 29. Atomic Replace Pattern — Delete + Create in Transaction
+
+**What:** When replacing a set of related records (e.g., all branch assignments for a user), the safest pattern is `deleteMany` + `createMany` inside a transaction, rather than computing a diff (add/remove individual rows).
+
+**Why it matters:** The diff approach (`find existing → compute adds/removes → apply`) has more code, more edge cases, and a wider TOCTOU window. The atomic replace is O(1) logic complexity: delete all, insert all. The transaction guarantees either all changes apply or none do.
+
+**How it works:**
+
+```typescript
+await prisma.$transaction(async (tx) => {
+  // Step 1: Remove all existing assignments
+  await tx.userBranch.deleteMany({
+    where: { tenantId, userId },
+  });
+
+  // Step 2: Insert the new set
+  await tx.userBranch.createMany({
+    data: branchIds.map(branchId => ({
+      tenantId, userId, branchId, assignedBy: actorId,
+    })),
+  });
+});
+```
+
+Trade-off: this generates new UUIDs for every row on every update (no row identity preservation). This is fine for junction tables but would be problematic for tables where row IDs are referenced elsewhere.
+
+**Resources:**
+- [Prisma Interactive Transactions](https://www.prisma.io/docs/orm/prisma-client/queries/transactions)
+- [PostgreSQL — ACID Properties](https://www.postgresql.org/docs/current/transaction-iso.html)

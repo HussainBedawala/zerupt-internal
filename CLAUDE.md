@@ -105,12 +105,20 @@ npx prisma migrate status
 # Generate migration SQL WITHOUT applying (for hand-editing)
 npx prisma migrate dev --create-only --name descriptive_name_here
 
-# Apply all pending migrations
-npx prisma migrate dev
+# Apply all pending migrations (pipe empty stdin to avoid interactive prompts)
+echo "" | npx prisma migrate dev
 
 # Just regenerate the Prisma client (no DB changes)
 npx prisma generate
 ```
+
+### Non-interactive Prisma commands (CRITICAL)
+
+Always pipe empty stdin to `prisma migrate dev` to prevent interactive prompts that hang in CLI:
+```bash
+echo "" | npx prisma migrate dev
+```
+Other Prisma commands (`migrate status`, `generate`, `migrate dev --create-only`) are safe without this.
 
 ### Migration timestamp ordering (CRITICAL)
 

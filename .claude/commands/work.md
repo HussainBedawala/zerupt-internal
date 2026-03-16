@@ -204,11 +204,13 @@ Do not proceed until all checks pass. If a check fails, fix it before moving on.
 ```
 <type>(<scope>): <lowercase description>
 
-- bullet point details
-- what was added/changed and why
+- short bullet points (max 100 chars per line)
+- keep body concise, commitlint enforces line length
 
 Closes DEV-XX
 ```
+
+**IMPORTANT:** Every line in the commit body MUST be under 100 characters. commitlint enforces `body-max-line-length`. Keep bullet points short and split long lines.
 
 Type from labels: Feature→feat, Bug→fix, Infrastructure→chore, Database→chore(db), Security→feat(security)
 Scope from app: web, api, ai, shared, db, db-admin, ui

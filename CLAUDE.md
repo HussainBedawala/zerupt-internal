@@ -252,9 +252,9 @@ All findings (CRITICAL → LOW) need an action: code fix, or explicit comment ex
 | Frontend | **Next.js 16.1.6** + React 19, TypeScript strict, shadcn/ui + Tailwind, TanStack Query, Zustand, next-intl v4 (ar/en) |
 | Backend | NestJS modular monolith, Prisma ORM, BullMQ + Upstash Redis, NestJS EventEmitter |
 | AI Service | FastAPI (Python), LiteLLM, pgvector |
-| Database | PostgreSQL (one DB per tenant + Central Admin DB), Supabase Auth + Storage |
+| Database | Neon Serverless Postgres (admin DB + per-tenant DBs + pgvector), Supabase Auth |
 | Search | Meilisearch |
-| Hosting | Vercel (frontend), Railway (API + AI), Supabase/Neon (DBs), Upstash (Redis) |
+| Hosting | Vercel (frontend), Railway (API + AI), Neon (all PostgreSQL), Supabase (Auth + Storage), Upstash (Redis) |
 | Testing | Vitest (unit/integration, web+api), Playwright (E2E), k6 (load), pytest (AI service) |
 | CI/CD | GitHub Actions, Turborepo, pnpm workspaces |
 | Observability | Sentry, PostHog, Uptime Kuma, Resend (email) |
@@ -290,7 +290,7 @@ erp/
     ui/               # Shared UI components (shadcn/ui based)
   turbo.json
   package.json
-  docker-compose.yml  # Local: Postgres, Redis, Meilisearch
+  docker-compose.yml  # Local: Redis, Meilisearch (DBs are on Neon)
 ```
 
 ## Development Phases (Linear Projects)

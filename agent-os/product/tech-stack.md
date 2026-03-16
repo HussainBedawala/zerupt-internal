@@ -122,7 +122,7 @@ erp/
 │   └── ui/              # shared UI components
 ├── turbo.json
 ├── package.json
-└── docker-compose.yml   # local postgres/redis/meilisearch
+└── docker-compose.yml   # local redis/meilisearch (DBs on Neon)
 ```
 
 ---
@@ -257,9 +257,26 @@ Core fields:
 |---|---|
 | Vercel | Next.js frontend |
 | Railway | NestJS API, FastAPI, Meilisearch |
-| Supabase | Auth + Storage |
-| Supabase/Neon | Per-tenant PostgreSQL provisioning |
+| Supabase | Auth (JWT, users, MFA) + Storage (S3) |
+| Neon | All PostgreSQL — admin DB + per-tenant DBs + pgvector |
 | Upstash | Redis cache + BullMQ backend |
+
+**Production database architecture (decided March 2026):**
+
+```
+Supabase → Auth only (JWT, users, MFA)
+Neon     → All PostgreSQL (admin DB + per-tenant DBs + pgvector)
+Railway  → Compute only (API + AI + Meilisearch)
+Upstash  → Redis (cache + BullMQ)
+```
+
+**Why Neon for all databases (not Supabase Postgres):**
+- Neon's database-per-tenant model on shared compute costs ~$20/mo for 1,000 tenants
+- Scale-to-zero compute means idle tenant DBs cost nothing
+- `CREATE DATABASE` works via SQL — no API needed for provisioning
+- Pooled (PgBouncer) and direct endpoints per database out of the box
+- pgvector supported natively for AI layer (Phase 7)
+- Supabase Postgres would require one project per tenant (~$25/tenant/mo) or RLS (complexity risk)
 
 ### Payments
 

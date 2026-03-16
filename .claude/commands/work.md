@@ -86,6 +86,29 @@ Present a clear implementation plan before writing any code. Include:
 - In case provisioning or managing Neon databases/branches, use `neon-postgres` skill. For Neon MCP tools (create_branch, run_sql, get_connection_string, etc.), use the Neon MCP server if connected.
 
 **Give your own recommendations and improvements also. Even if it is missing from the spec, or you have any thoughts, please add those.**
+
+### Label Assignment (do this during planning)
+
+Review the issue's current labels and add any missing ones based on what the implementation touches. Use `save_issue` with the full desired label list (existing + new).
+
+**Label reference:**
+
+| Category | Labels | Rules |
+|----------|--------|-------|
+| **Standalone** (combine freely) | `Frontend`, `Backend`, `Database`, `AI Service`, `Bug`, `Improvement`, `Feature` | Add ALL that apply. An issue can have `Frontend` + `Backend` + `Database` simultaneously. |
+| **Type** (exclusive group) | `Design/UX`, `Documentation`, `Testing`, `Security`, `Infrastructure` | Pick at most ONE. These are in a Linear group — applying two will error. |
+| **Module** (exclusive group) | `Settings`, `Accounting`, `Inventory`, `POS`, `Sales`, `Purchase`, `Onboarding`, `Dashboard`, `Reports`, `Search`, `AI/Agents` | Pick at most ONE. These are in a Linear group — applying two will error. |
+
+**Assignment logic:**
+- Touches `apps/web/` or frontend components → add `Frontend`
+- Touches `apps/api/` or NestJS services → add `Backend`
+- Touches Prisma schema, migrations, or DB queries → add `Database`
+- Touches `apps/ai/` or FastAPI → add `AI Service`
+- New capability → add `Feature`; fix → add `Bug`; enhancement → add `Improvement`
+- If issue involves security hardening or auth → set Type to `Security`
+- If issue is infra/CI/CD only → set Type to `Infrastructure`
+- Module label should match the project phase (Phase 1 → `Settings`, Phase 2 → `Accounting`, etc.)
+
 **Do NOT write any code until the user approves the plan.**
 
 Ask: "Approve this plan? (yes / adjust)"
@@ -101,61 +124,53 @@ Run the `/tdd` command behavior. The tdd-guide agent writes tests first (RED →
 
 **Exception:** Pure infrastructure/provisioning issues (no business logic, just SDK init + env vars) do not require tests. Document this exception explicitly when skipping.
 
-## PHASE 7: CODE REVIEW [VERY IMPORTANT TO DO THIS ACCURATELY]
+## PHASE 7: Implementation REVIEW [VERY IMPORTANT TO DO THIS ACCURATELY]
 
 Run the `/code-review` command behavior.
 
-Additionally invoke based on issue labels:
+Additionally invoke based on **issue labels** (**make sure you fetch the issue again from Linear and verify the labels properly**):
 - Security / auth labels → `security-reviewer` agent
 - Database label → `database-reviewer` agent + verify Neon connection patterns via `neon-postgres` skill (pooled vs direct URLs, branch isolation, pgvector setup)
 - AI Service / Python label → `python-reviewer` agent
 - API / Backend labels → `api-reviewer` agent
 - Infrastructure / provisioning labels → verify env vars documented in `.env.example`, no secrets in code, Neon project/branch config correct
 
-Fix ALL findings at every severity level (CRITICAL, HIGH, MEDIUM, LOW) before continuing. Never skip or defer any finding — every issue gets resolved in the same session.
+### Findings workflow
 
-### After fixing — log findings to Linear
+After all reviewers complete, write ALL findings to `erp/.review-findings.md` (gitignored temp file):
 
-**Step A: Comment on the current issue** using `save_comment` with this exact structure so future AI sessions have full context:
-
-```
-## Code Review Findings
-
-**Reviewer:** code-reviewer [+ security-reviewer if invoked]
-**Issue:** DEV-XX — <title>
-**Date:** <YYYY-MM-DD>
-
-### Fixed in this session
-| Severity | Finding | File | Fix applied |
-|----------|---------|------|-------------|
-| HIGH | <title> | <file>:<line> | <one-line description> |
-
-### Deferred (out of milestone scope only)
-| Severity | Finding | Follow-up |
-|----------|---------|-----------|
-| MEDIUM | <title> | DEV-YY |
-
-### No findings
-(write this row if review was clean)
+```markdown
+# Review Findings — DEV-XX
+| # | Severity | Finding | File:Line | Status |
+|---|----------|---------|-----------|--------|
+| 1 | HIGH | description | file.ts:42 | TODO |
+| 2 | MEDIUM | description | file.ts:99 | TODO |
 ```
 
-**Step B: For any finding that is out of scope for the current milestone** → `save_issue` to create a standalone follow-up issue (NOT linked to any project — it lives in the team backlog):
-- Title: `[Tech Debt] <short description> (from DEV-XX)`
-- Description: severity, file:line, full finding text, recommended fix, link to parent DEV-XX
-- Priority: Normal
-- Labels: same labels as parent + `tech-debt`
-- Status: New
-- Do NOT assign to a project or milestone — keep it in the team backlog for triage
+Then fix them **one by one**, updating Status to `DONE` after each fix. Re-run tests after every 3-5 fixes.
 
-All findings within the current milestone's scope MUST be fixed in-session. Only defer if the fix genuinely belongs to a different milestone or phase.
+**Rules:**
+- Fix ALL findings (CRITICAL → LOW) in the same session. No deferral by default.
+- Only create a Linear issue if the fix genuinely belongs to a **different phase or module** (e.g., a frontend finding on a backend-only issue). Title: `[Tech Debt] <description> (from DEV-XX)`, labels: parent labels + `tech-debt`, status: New, no project.
+- SECURITY findings (any severity): always create a Linear issue for audit trail even if fixed. Title: `[Security] <description> (from DEV-XX)`, priority based on severity.
 
-**Step C: For any SECURITY finding** (any severity, fixed or not) → always create a follow-up issue for permanent audit trail:
-- Title: `[Security] <short description> (from DEV-XX)`
-- Description: severity, file:line, full finding, fix applied (if any), verification steps
-- Priority: HIGH findings → Urgent; MEDIUM → High; LOW → Normal
-- Labels: `Security` + `tech-debt`
-- Milestone: same milestone as parent
-- Status: New (even if fixed — so it can be verified independently)
+After all findings are DONE, **delete** `erp/.review-findings.md`.
+
+### Log findings to Linear
+
+After fixing, comment on the issue using `save_comment`:
+
+```
+## Review Findings — DEV-XX
+**Reviewers:** code-reviewer [+ others]
+**Date:** YYYY-MM-DD
+
+| Severity | Finding | File | Fix |
+|----------|---------|------|-----|
+| HIGH | title | file:line | one-line fix description |
+
+Deferred: none (or link to DEV-YY if any)
+```
 
 ## PHASE 8: VERIFY
 

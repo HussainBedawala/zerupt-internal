@@ -224,7 +224,7 @@ t('greeting', { name: isolateText(customer.name) })
 
 ### Code Review — Fix Everything
 
-All findings (CRITICAL → LOW) need an action: code fix, or explicit comment explaining deferral. Do not skip LOW findings silently.
+All findings (CRITICAL → LOW) get fixed in the same session. Write findings to `erp/.review-findings.md` (gitignored), fix one by one, delete when done. Only create a Linear issue if the fix belongs to a different phase/module. See `/work` Phase 7 for the full workflow.
 
 ---
 

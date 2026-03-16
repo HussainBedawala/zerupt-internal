@@ -84,6 +84,8 @@ psql -c "SELECT indexrelname, idx_scan, idx_tup_read FROM pg_stat_user_indexes O
 
 For detailed index patterns, schema design examples, connection management, concurrency strategies, JSONB patterns, and full-text search, see skills: `postgres-patterns` and `database-migrations`.
 
+For Neon-specific patterns (branching, pooled vs direct URLs, Prisma integration, pgvector, cost optimization), see skill: `neon-postgres`.
+
 ---
 
 **Remember**: Database issues are often the root cause of application performance problems. Optimize queries and schema design early. Use EXPLAIN ANALYZE to verify assumptions. Always index foreign keys and RLS policy columns.

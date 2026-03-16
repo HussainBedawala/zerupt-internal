@@ -1,0 +1,5 @@
+# macOS
+.DS_Store
+
+# Code repo (separate git remote)
+erp/

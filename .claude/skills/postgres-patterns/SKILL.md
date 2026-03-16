@@ -139,7 +139,8 @@ SELECT pg_reload_conf();
 ## Related
 
 - Agent: `database-reviewer` - Full database review workflow
-- Skill: `clickhouse-io` - ClickHouse analytics patterns
+- Skill: `neon-postgres` - Neon branching, pooling, Prisma integration, pgvector
+- Skill: `database-migrations` - Migration best practices
 - Skill: `backend-patterns` - API and backend patterns
 
 ---

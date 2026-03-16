@@ -61,11 +61,13 @@ Summarize what's relevant to this specific issue (not the whole spec). Ask: "Spe
 
 ## PHASE 4: FETCH DOCS
 
-Scan the issue title + description for external packages (e.g. next-intl, Prisma, BullMQ, Sentry, Supabase, etc.).
+Scan the issue title + description for external packages (e.g. next-intl, Prisma, BullMQ, Sentry, Supabase, Neon, etc.).
 
 For each relevant package, use context7 MCP:
 1. `resolve-library-id` with the package name + a task-specific query
 2. `query-docs` with the exact task (e.g. "NestJS setup with JWT validation") — be specific
+
+**Neon-specific:** For any issue involving database provisioning, migrations, branching, or connection management, also fetch Neon docs as markdown from `https://neon.com/docs/{topic}.md` (see `neon-postgres` skill for doc URLs and index at `https://neon.com/docs/llms.txt`).
 
 Fetch in parallel when possible. Only fetch what's directly needed for this issue.
 
@@ -81,6 +83,7 @@ Present a clear implementation plan before writing any code. Include:
 - Any risks or blockers
 - In case designing API, use `api-design` skill to plan it.
 - In case designing / updating database, use `database-reviewer` agent.
+- In case provisioning or managing Neon databases/branches, use `neon-postgres` skill. For Neon MCP tools (create_branch, run_sql, get_connection_string, etc.), use the Neon MCP server if connected.
 
 **Give your own recommendations and improvements also. Even if it is missing from the spec, or you have any thoughts, please add those.**
 **Do NOT write any code until the user approves the plan.**
@@ -104,9 +107,10 @@ Run the `/code-review` command behavior.
 
 Additionally invoke based on issue labels:
 - Security / auth labels → `security-reviewer` agent
-- Database label → `database-reviewer` agent
+- Database label → `database-reviewer` agent + verify Neon connection patterns via `neon-postgres` skill (pooled vs direct URLs, branch isolation, pgvector setup)
 - AI Service / Python label → `python-reviewer` agent
 - API / Backend labels → `api-reviewer` agent
+- Infrastructure / provisioning labels → verify env vars documented in `.env.example`, no secrets in code, Neon project/branch config correct
 
 Fix ALL findings at every severity level (CRITICAL, HIGH, MEDIUM, LOW) before continuing. Never skip or defer any finding — every issue gets resolved in the same session.
 

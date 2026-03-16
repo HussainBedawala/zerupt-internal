@@ -54,3 +54,61 @@ This applies to Express and Fastify under the hood — both use first-match rout
 **Resources:**
 - [NestJS Controllers — Route wildcards](https://docs.nestjs.com/controllers#route-wildcards)
 - [Express Route Matching](https://expressjs.com/en/guide/routing.html)
+
+## 4. Per-Item Pending State in Toggle Grids
+
+**What:** When a UI has multiple independent toggles that each trigger an API mutation, tracking pending state globally (one boolean) blocks all toggles when any one is in flight. Per-item pending state tracks which specific items are mutating.
+
+**Why it matters:** In Zerupt's notification preferences, a user might rapidly toggle System Alerts off while enabling Email for Reports. With shared `isPending`, the second toggle is disabled until the first request completes — sluggish UX. Per-category tracking via a `Set<Category>` lets independent mutations run concurrently without blocking unrelated controls.
+
+**How it works:**
+```typescript
+const [pending, setPending] = useState<ReadonlySet<Category>>(new Set());
+
+function markPending(cat: Category) {
+  setPending(prev => new Set([...prev, cat]));
+}
+function clearPending(cat: Category) {
+  setPending(prev => { const next = new Set(prev); next.delete(cat); return next; });
+}
+
+// In mutate options:
+mutation.mutate(args, {
+  onSettled: () => clearPending(category),
+});
+
+// In component:
+<Switch disabled={pending.has(category)} />
+```
+
+**Resources:**
+- [TanStack Query — Optimistic Updates](https://tanstack.com/query/latest/docs/framework/react/guides/optimistic-updates)
+- [React useState with Set](https://react.dev/reference/react/useState)
+
+## 5. Runtime Input Validation at the API Client Boundary
+
+**What:** Even when TypeScript enforces types at compile time, runtime validation guards should exist at system boundaries — especially where user-controlled data enters URL paths via string interpolation.
+
+**Why it matters:** A `NotificationCategory` type union prevents invalid values at compile time, but the value may originate from API response data, URL params, or deserialized state where TypeScript's guarantees don't apply. Validating before URL interpolation prevents path traversal attacks (e.g., `../../admin/reset` as a category).
+
+**How it works:**
+```typescript
+function assertValidCategory(value: string): asserts value is NotificationCategory {
+  if (!NOTIFICATION_CATEGORIES.includes(value as NotificationCategory)) {
+    throw new Error(`Invalid notification category: ${value}`);
+  }
+}
+
+// Called before URL interpolation:
+assertValidCategory(category);
+return apiClient(`/notifications/preferences/${category}`, ...);
+```
+
+For UUIDs, a regex check prevents non-UUID strings from entering paths:
+```typescript
+const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+```
+
+**Resources:**
+- [OWASP — Input Validation](https://cheatsheetseries.owasp.org/cheatsheets/Input_Validation_Cheat_Sheet.html)
+- [TypeScript Assertion Functions](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-7.html#assertion-functions)

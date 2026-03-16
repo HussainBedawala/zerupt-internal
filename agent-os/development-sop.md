@@ -107,7 +107,7 @@ Every module has specs in `agent-os/product/{module}/`. Read them in this order:
 |-----------|-------------------|
 | API endpoint (NestJS) | Unit test (service logic) + Integration test (Supertest) |
 | UI component (Next.js) | Unit test (Vitest) + E2E if it's a critical flow |
-| Database migration | Integration test (Prisma test client) |
+| Database migration | Integration test (Drizzle test client) |
 | AI plugin (FastAPI) | Unit test (pytest) + Integration test |
 | Business logic | Unit test (pure function) + Integration test (with DB) |
 | Auth/RBAC | Unit + Integration + E2E (critical security flow) |
@@ -140,7 +140,7 @@ Every module has specs in `agent-os/product/{module}/`. Read them in this order:
 - **Dataclasses** (frozen=True) for DTOs
 - **Specific exceptions** (never bare `except:`)
 
-### Database (PostgreSQL + Prisma)
+### Database (PostgreSQL + Drizzle)
 - **Parameterized queries** always (never string concatenation)
 - **Indexes** on WHERE/JOIN columns
 - **RLS** on tenant tables

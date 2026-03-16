@@ -6,15 +6,15 @@
 |------|-----------|-------------|---------------|
 | User clicks "Start Free Trial" | **Next.js 16** | Renders marketing site + signup page | Vercel |
 | Account creation | **Supabase Auth** | Creates user, hashes password, issues JWT (ES256) | Supabase cloud |
-| Tenant record creation | **NestJS** + **Prisma** | Writes tenant/plan/subscription to admin DB | Railway |
+| Tenant record creation | **NestJS** + **Drizzle ORM** | Writes tenant/plan/subscription to admin DB | Railway |
 | Admin DB storage | **Neon PostgreSQL** | `zerupt_admin` — tenant registry, plans, routing | Neon (ap-southeast-1) |
 | Job enqueue | **BullMQ** | Adds provisioning job to Redis queue | Railway (NestJS) |
 | Job queue | **Upstash Redis** | Stores BullMQ job payload (UUIDs only, no PII) | Upstash cloud |
 | Database creation | **Neon PostgreSQL** | `CREATE DATABASE zerupt_tenant_{code}` | Neon |
-| Schema migration | **Prisma Migrate** | `prisma migrate deploy` — creates all tables | Railway → Neon |
+| Schema migration | **Drizzle Kit** | `drizzle-kit migrate` — creates all tables | Railway → Neon |
 | Password encryption | **Node.js crypto** | AES-256-GCM with key versioning | Railway (NestJS) |
-| Identity seeding | **Prisma** (tenant DB) | Upserts TenantIdentity with locale defaults | Railway → Neon |
-| Status finalization | **Prisma** (admin DB) | Transaction: Ready + Active + Completed | Railway → Neon |
+| Identity seeding | **Drizzle ORM** (tenant DB) | Upserts TenantIdentity with locale defaults | Railway → Neon |
+| Status finalization | **Drizzle ORM** (admin DB) | Transaction: Ready + Active + Completed | Railway → Neon |
 | JWT tenant_id injection | **Supabase Admin API** | Sets `app_metadata.tenant_id` on user | Railway → Supabase |
 | Welcome event | **NestJS EventEmitter** | Emits `tenant.provisioned` for downstream listeners | Railway |
 | Frontend polling | **TanStack Query** | Polls provisioning status every 1-2s | Browser → Railway |
@@ -29,10 +29,10 @@
 | JWT verification | **jose** library | Verifies ES256 signature via JWKS endpoint | Railway |
 | Connection cache check | **Upstash Redis** | Checks if tenant connection details are cached (5-min TTL) | Railway → Upstash |
 | HMAC integrity | **Node.js crypto** | Verifies cache entry wasn't tampered with (SHA-256) | Railway |
-| Admin DB fallback | **Prisma** (admin DB) | Queries `tenant_databases` on cache miss | Railway → Neon |
+| Admin DB fallback | **Drizzle ORM** (admin DB) | Queries `tenant_databases` on cache miss | Railway → Neon |
 | Password decryption | **Node.js crypto** | AES-256-GCM decryption with versioned keys | Railway |
-| Connection pool | **TenantConnectionService** | LRU cache of PrismaClient instances (max 50) | Railway (in-memory) |
-| Tenant DB query | **Prisma** (tenant DB) | Executes business query against tenant's database | Railway → Neon |
+| Connection pool | **TenantConnectionService** | LRU cache of Drizzle instances (max 50) | Railway (in-memory) |
+| Tenant DB query | **Drizzle ORM** (tenant DB) | Executes business query against tenant's database | Railway → Neon |
 | Response | **NestJS** | Returns JSON response | Railway → Vercel → Browser |
 
 ## During Normal ERP Usage
@@ -52,7 +52,7 @@
 | Email | **Resend** | Transactional emails (invoices, password resets) |
 | Error tracking | **Sentry** | Catches + alerts on errors (frontend + backend) |
 | Product analytics | **PostHog** | Usage tracking, feature flags |
-| Audit trail | **Prisma** (tenant DB) | Immutable log of every data mutation |
+| Audit trail | **Drizzle ORM** (tenant DB) | Immutable log of every data mutation |
 
 ## The Two Databases
 
@@ -104,7 +104,7 @@ The customer's private world — all their business data.
 │  │ (Supabase    │   │ Guard        │   │  Services)           │  │
 │  │  ES256 JWKS) │   │ (resolve DB) │   │                      │  │
 │  └──────────────┘   └──────┬───────┘   │ getTenantContext()   │  │
-│                            │           │  → prismaClient      │  │
+│                            │           │  → db                │  │
 │                     ┌──────▼───────┐   └──────────┬───────────┘  │
 │                     │ Redis Cache  │              │               │
 │                     │ (Upstash)    │              │               │

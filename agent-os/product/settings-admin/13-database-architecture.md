@@ -7,7 +7,7 @@
 ```
 Supabase Auth (centralized) → JWT with tenant_id
         ↓
-NestJS API → TenantContextMiddleware → Redis cache lookup → PrismaClient per tenant
+NestJS API → TenantContextMiddleware → Redis cache lookup → Drizzle instance per tenant
         ↓                    ↓
 Central Admin DB         Tenant DBs (isolated)
 ```
@@ -18,7 +18,7 @@ Central Admin DB         Tenant DBs (isolated)
 
 ## Central Admin DB Schema
 
-Prisma schema lives at `packages/db-admin/prisma/schema.prisma`. Env var: `DATABASE_ADMIN_URL`.
+Drizzle schema lives at `packages/db-admin/src/schema/`. Env var: `DATABASE_ADMIN_URL`.
 
 This database stores **platform metadata only** — tenant registry, billing, DB connection routing, and provisioning state. All tenant business data (accounting, inventory, POS, etc.) lives in per-tenant databases managed by `packages/db/`.
 
@@ -72,7 +72,7 @@ Stores connection credentials for each tenant's dedicated PostgreSQL database. T
 | `region` | String | Required | Cloud region identifier (e.g. `us-east-1`, `ap-southeast-1`). Used for latency-aware routing. |
 | `provider` | String | Required | DB hosting provider (e.g. `supabase`, `neon`). Used by provisioning pipeline to call the correct API. |
 | `status` | `TenantDbStatus` | Required, default `Provisioning` | Database lifecycle state. Only `Ready` allows tenant access. |
-| `migrationVersion` | String | Nullable | Last successfully applied Prisma migration name. Used by batch migration runner to detect drift. |
+| `migrationVersion` | String | Nullable | Last successfully applied Drizzle migration name. Used by batch migration runner to detect drift. |
 | `createdAt` | DateTime | Default `now()` | When the DB record was created. |
 | `updatedAt` | DateTime | Auto-updated | Last modification timestamp. |
 
@@ -152,7 +152,7 @@ Tracks the multi-step database provisioning pipeline. Each step (CreateDB → Ru
 
 **Indexes:** Index on `tenantId` (for "provisioning history for this tenant"). Index on `status` (for "all queued jobs" — the worker pickup query).
 
-### Relationships (Prisma)
+### Relationships (Drizzle)
 
 ```
 tenants 1──1 tenant_databases   (tenantId unique FK)
@@ -175,7 +175,7 @@ plans   1──* subscriptions      (planId FK)
 
 ## Tenant DB
 
-Each tenant DB contains all business data (accounting, inventory, sales, POS, etc.) + pgvector for AI. Managed via `packages/db/` Prisma schema.
+Each tenant DB contains all business data (accounting, inventory, sales, POS, etc.) + pgvector for AI. Managed via `packages/db/` Drizzle schema.
 
 - `tenantId` columns retained on entities for defense-in-depth
 - No RLS — isolation is physical
@@ -190,7 +190,7 @@ Each tenant DB contains all business data (accounting, inventory, sales, POS, et
 | Step | Action | On Failure |
 |------|--------|------------|
 | CreateDB | Call DB provider API | Retry 3x with backoff |
-| RunMigrations | Apply Prisma migrations | Retry 3x, then `ProvisioningFailed` |
+| RunMigrations | Apply Drizzle migrations | Retry 3x, then `ProvisioningFailed` |
 | SeedConfig | Insert tenant identity record | Retry 3x |
 | MarkReady | Set status = Ready/Active, emit `tenant.provisioned` | Alert ops |
 
@@ -203,8 +203,8 @@ Each tenant DB contains all business data (accounting, inventory, sales, POS, et
 **TenantContextMiddleware (every request):**
 1. Decode JWT → extract `tenant_id`
 2. Redis cache lookup (5-min TTL), fallback to Central Admin DB
-3. Get/create PrismaClient from LRU cache (max 200, 10-min idle eviction)
-4. Attach to request context → all services use `request.prisma`
+3. Get/create Drizzle instance from LRU cache (max 200, 10-min idle eviction)
+4. Attach to request context → all services use `request.db`
 
 ---
 
@@ -238,7 +238,7 @@ Data export available via self-serve during grace period.
 
 | Scale | Strategy |
 |-------|----------|
-| < 100 tenants | Prisma built-in pool (5 connections/tenant) |
+| < 100 tenants | Drizzle built-in pool (5 connections/tenant) |
 | 100-500 | PgBouncer (transaction mode) |
 | 500+ | Regional PgBouncer instances |
 
@@ -258,8 +258,8 @@ Data export available via self-serve during grace period.
 
 ```
 packages/
-  db/              # Tenant DB Prisma schema
-  db-admin/        # Central Admin DB Prisma schema
+  db/              # Tenant DB Drizzle schema
+  db-admin/        # Central Admin DB Drizzle schema
   tenant-context/  # TenantConnectionService, TenantContextMiddleware
 ```
 

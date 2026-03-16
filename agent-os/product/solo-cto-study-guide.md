@@ -98,7 +98,7 @@ Each phase includes:
 - **Job description:** Implement central admin DB, tenant DB provisioning, migration orchestration, and tenant-aware routing.
 - **Technical skills to learn:**
   - Multi-tenant architecture (dedicated DB per tenant).
-  - Prisma migration strategy (expand-contract, no destructive migration in one step).
+  - Drizzle Kit migration strategy (expand-contract, no destructive migration in one step).
   - `TenantContextMiddleware` and `TenantConnectionService` patterns.
   - Seed and provisioning automation.
 - **Business skills to learn:**

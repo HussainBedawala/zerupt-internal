@@ -8,7 +8,7 @@ Compact, implementation-facing stack reference for AI agents. This is the source
 2. Architecture is a **modular monolith first**, with extraction only when scaling pressure is proven.
 3. Auth is **centralized Supabase Auth**; JWT includes tenant context for backend routing.
 4. Multi-tenancy uses **one PostgreSQL database per tenant** plus a **Central Admin DB** for platform metadata.
-5. Tenant DB connections are resolved by middleware + cache, then injected as tenant-scoped Prisma clients.
+5. Tenant DB connections are resolved by middleware + cache, then injected as tenant-scoped Drizzle instances.
 6. Background automation uses **BullMQ workers in NestJS**; FastAPI handles AI plugin capabilities.
 7. AI follows a **plugin contract** (`name`, `description`, `invoke`, `health`) and uses LiteLLM for provider portability.
 8. Vector search uses **pgvector inside each tenant DB** (no separate vector platform by default).
@@ -116,8 +116,8 @@ erp/
 │   └── ai/              # FastAPI AI service
 ├── packages/
 │   ├── shared/          # Shared types/constants/zod schemas
-│   ├── db/              # Prisma schema for tenant DBs
-│   ├── db-admin/        # Prisma schema for central admin DB
+│   ├── db/              # Drizzle schema for tenant DBs
+│   ├── db-admin/        # Drizzle schema for central admin DB
 │   ├── tenant-context/  # tenant router + request context utilities
 │   └── ui/              # shared UI components
 ├── turbo.json
@@ -150,7 +150,7 @@ erp/
 | Tool | Purpose |
 |---|---|
 | NestJS | ERP domain modules + APIs |
-| Prisma | ORM/migrations for admin + tenant DBs |
+| Drizzle ORM | ORM/migrations for admin + tenant DBs (lightweight, type-safe, first-class pgvector + Neon support) |
 | NestJS EventEmitter | Cross-module side effects/events |
 | BullMQ + Upstash Redis | Jobs, schedulers, async processing |
 | FastAPI | AI plugin execution, LLM orchestration |
@@ -174,7 +174,7 @@ erp/
 1. User logs in via Supabase Auth and receives JWT (`tenant_id` claim).
 2. NestJS `TenantContextMiddleware` validates token and extracts tenant.
 3. Middleware resolves tenant DB connection (Redis cache, fallback to Central Admin DB lookup).
-4. Request gets tenant-scoped Prisma client.
+4. Request gets tenant-scoped Drizzle instance.
 5. Domain modules execute without embedding tenancy logic in every service.
 
 ---
@@ -314,7 +314,7 @@ Upstash  → Redis (cache + BullMQ)
 | Layer | Tooling | Scope |
 |---|---|---|
 | Unit | Vitest / Jest / pytest | pure logic + calculations |
-| Integration | Supertest + Prisma test clients | module + DB behavior |
+| Integration | Supertest + Drizzle test instances | module + DB behavior |
 | E2E | Playwright | critical user/business flows |
 | Load | k6 | POS/report throughput and concurrency |
 
@@ -327,7 +327,7 @@ Required controls:
 
 - Turborepo selective caching
 - PR preview environments
-- Prisma migrations for admin DB in CI
+- Drizzle migrations for admin DB in CI
 - Rolling tenant DB migrations in batches with circuit breaker
 - Feature flags for gradual rollouts
 

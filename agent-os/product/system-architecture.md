@@ -86,7 +86,7 @@
 | Backend API | NestJS modular monolith | Railway |
 | AI Service | FastAPI + LiteLLM | Railway |
 | Auth | Supabase Auth | Supabase |
-| ORM | Prisma (→ Neon serverless driver at L3) | — |
+| ORM | Drizzle ORM (→ Neon serverless driver at L3) | — |
 | Central Admin DB | PostgreSQL | Supabase |
 | Tenant DBs | PostgreSQL + pgvector | Supabase → Neon at scale |
 | Cache / Queues | Redis + BullMQ | Upstash |
@@ -123,7 +123,7 @@ Browser → Supabase Auth (login) → JWT issued
           a. Redis: GET tenant:conn:{tenant_id} (TTL 5 min)
           b. Miss → Central Admin DB: SELECT connection_string FROM tenant_databases
           c. Cache in Redis
-       4. Get or create tenant-scoped PrismaClient (AsyncLocalStorage)
+       4. Get or create tenant-scoped Drizzle instance (AsyncLocalStorage)
        5. RBAC Guard: load role permissions (Redis cache → tenant DB fallback)
        6. Check @RequiresPermission('module.entity.action') decorator
 ```
@@ -139,13 +139,13 @@ Browser → Supabase Auth (login) → JWT issued
 ```typescript
 // TenantConnectionService (NestJS singleton)
 class TenantConnectionService {
-  private pool: Map<string, { client: PrismaClient; lastUsed: Date }>;
+  private pool: Map<string, { client: DrizzleInstance; lastUsed: Date }>;
   private maxPoolSize: number; // L1: 10, L2: 100, L3: 2000 (LRU)
 
-  async getClient(tenantId: string): Promise<PrismaClient> {
+  async getClient(tenantId: string): Promise<DrizzleInstance> {
     // 1. Check in-memory pool
     // 2. If found and < 10 min idle: return, update lastUsed
-    // 3. If missing: resolve from Redis/AdminDB, create PrismaClient
+    // 3. If missing: resolve from Redis/AdminDB, create Drizzle instance
     // 4. If pool full: evict least-recently-used client
   }
 
@@ -155,7 +155,7 @@ class TenantConnectionService {
 }
 ```
 
-**Level 3 shift:** Replace Prisma direct connections with Neon serverless driver (HTTP-based, stateless queries). Eliminates the PrismaClient pool problem entirely. Each query is a single HTTP request through Neon's infrastructure.
+**Level 3 shift:** Replace Drizzle direct connections with Neon serverless driver (HTTP-based, stateless queries). Eliminates the Drizzle instance pool problem entirely. Each query is a single HTTP request through Neon's infrastructure.
 
 ### 2.3 Event Bus Design
 
@@ -242,11 +242,11 @@ apps/api/src/modules/
 
 ```
 1. HTTP request → NestJS
-2. TenantContextMiddleware: JWT validation → tenant DB resolution → PrismaClient in AsyncLocalStorage
+2. TenantContextMiddleware: JWT validation → tenant DB resolution → Drizzle instance in AsyncLocalStorage
 3. ValidationPipe (Zod schemas via nestjs-zod)
 4. RBAC Guard (@RequiresPermission)
 5. Module entitlement guard (subscription plan check)
-6. Controller → Service (business logic) → Repository (tenant PrismaClient)
+6. Controller → Service (business logic) → Repository (tenant Drizzle instance)
 7. Domain events emitted (EventEmitter2)
 8. Audit trail interceptor logs mutation
 9. Response serialized and returned
@@ -279,8 +279,8 @@ BullMQ queues (Upstash Redis backend):
 
 **Tenant iteration for batch agents:**
 ```typescript
-async processAllTenants(agentFn: (prisma: PrismaClient) => Promise<void>) {
-  const tenants = await adminPrisma.tenant.findMany({ where: { status: 'ACTIVE' } });
+async processAllTenants(agentFn: (db: DrizzleInstance) => Promise<void>) {
+  const tenants = await adminDb.query.tenants.findMany({ where: eq(tenants.status, 'ACTIVE') });
   for (const tenant of tenants) {
     const client = await tenantConnectionService.getClient(tenant.id);
     try { await agentFn(client); }
@@ -295,7 +295,7 @@ async processAllTenants(agentFn: (prisma: PrismaClient) => Promise<void>) {
 
 ```
 Trigger (event or cron)
-  → Agent service method with tenant PrismaClient
+  → Agent service method with tenant Drizzle instance
     → Rule-based check (pure business logic, no LLM)
       → If anomaly detected:
         → [Optional] POST to FastAPI for natural language explanation
@@ -347,11 +347,11 @@ platform_config (key, value)  -- feature flags, global settings
 
 | Level | Strategy | Max Connections |
 |-------|----------|-----------------|
-| L1 (1 user) | Direct Prisma (default pool of 5) | ~5 |
-| L2 (100 users) | Supabase Supavisor + LRU PrismaClient cache (max 100) | ~1,000 |
+| L1 (1 user) | Direct Drizzle (default pool of 5) | ~5 |
+| L2 (100 users) | Supabase Supavisor + LRU Drizzle instance cache (max 100) | ~1,000 |
 | L3 (100K users) | Neon serverless driver (HTTP, stateless) or PgBouncer per region | ~200 actual per region |
 
-At L3, the Neon serverless driver eliminates the need for persistent connection pools. Each query is an HTTP request. Alternative: `@prisma/adapter-neon` with Neon's WebSocket pooler.
+At L3, the Neon serverless driver eliminates the need for persistent connection pools. Each query is an HTTP request. Alternative: `drizzle-orm/neon-serverless` with Neon's WebSocket pooler.
 
 ### 4.3 Caching Strategy (Upstash Redis)
 
@@ -505,7 +505,7 @@ push to main:
   1. All above + integration tests (Supertest + test DB)
   2. Deploy to Railway (API + AI)
   3. Deploy to Vercel (production)
-  4. Prisma migrate on Central Admin DB
+  4. drizzle-kit migrate on Central Admin DB
   5. Enqueue rolling tenant DB migrations (BullMQ batches of 10)
      - Circuit breaker: 3 consecutive failures → pause + alert
 ```
@@ -530,7 +530,7 @@ push to main:
 Layer 1: Separate PostgreSQL database per tenant (hard isolation)
 Layer 2: tenant_id column on all tables (defense-in-depth)
 Layer 3: TenantContextMiddleware validates every request
-Layer 4: Tenant-scoped PrismaClient (cannot query wrong DB)
+Layer 4: Tenant-scoped Drizzle instance (cannot query wrong DB)
 Layer 5: Supabase Storage policies enforce tenant_id from JWT
 Layer 6: Meilisearch tenant tokens (per-tenant API keys)
 Layer 7: Socket.io rooms scoped by tenant_id
@@ -600,7 +600,7 @@ CREATE TABLE audit_trail (
 **Changes from L1:**
 - 50-100 tenant DBs on Supabase/Neon
 - Supabase Supavisor connection pooling
-- LRU PrismaClient cache (max 100)
+- LRU Drizzle instance cache (max 100)
 - Full Redis caching (8 layers)
 - 2 API replicas + dedicated worker service + 2 AI replicas
 - PITR backups, PostHog, Uptime Kuma
@@ -739,7 +739,7 @@ Frontend    NestJS API    Central Admin DB    BullMQ    DB Provider (Neon)    Fa
   │◄── { provisioning }        │                │            │                  │
   │                            │       Worker:  │            │                  │
   │                            │       1. CREATE DB ─────────►                  │
-  │                            │       2. Prisma migrate     │                  │
+  │                            │       2. drizzle-kit migrate│                  │
   │                            │       3. Seed COA + tax     │                  │
   │                            │       4. Create roles       │                  │
   │                            │       5. INSERT tenant_databases ──►          │

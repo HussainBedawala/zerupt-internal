@@ -87,7 +87,7 @@ Present a clear implementation plan before writing any code. Include:
 
 **Give your own recommendations and improvements also. Even if it is missing from the spec, or you have any thoughts, please add those.**
 
-### Label Assignment (do this during planning)
+### Label Assignment in Linear (do this during planning)
 
 Review the issue's current labels and add any missing ones based on what the implementation touches. Use `save_issue` with the full desired label list (existing + new).
 

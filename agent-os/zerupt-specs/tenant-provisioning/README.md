@@ -16,5 +16,5 @@ How Zerupt provisions a completely isolated database for every customer — from
 - **Async provisioning via BullMQ** — reliable, resumable, retryable (not synchronous HTTP)
 - **AES-256-GCM encrypted credentials** — tenant DB passwords encrypted at rest in admin DB
 - **AsyncLocalStorage for tenant context** — invisible to business logic, automatic isolation
-- **LRU connection pool** — max 50 cached PrismaClient instances, health-checked
+- **LRU connection pool** — max 50 cached Drizzle instances, health-checked
 - **Redis connection cache with HMAC** — 5-minute TTL, tamper-proof, graceful degradation

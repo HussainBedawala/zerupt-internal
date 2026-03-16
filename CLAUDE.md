@@ -80,75 +80,76 @@ pnpm --filter @zerupt/api test -- --testPathPatterns='audit' --no-coverage
 
 ---
 
-## Prisma Migrations — How They Work
+## Drizzle Migrations — How They Work
 
-The tenant DB schema lives at `erp/packages/db/prisma/schema.prisma`. Prisma config is at `erp/packages/db/prisma.config.ts` (loads `.env` automatically via dotenv).
+The tenant DB schema lives at `erp/packages/db/src/schema/` as TypeScript table definitions. Drizzle config is at `erp/packages/db/drizzle.config.ts`.
 
 ### Database URLs (from `.env`)
 
 | Var | DB | Purpose |
 |-----|-----|---------|
 | `DATABASE_TENANT_URL` | `zerupt_tenant_dev` | Dev tenant DB — where migrations apply |
-| `SHADOW_DATABASE_URL` | `zerupt_tenant_shadow` | Shadow DB — Prisma uses this to validate migrations replay from scratch |
-| `DATABASE_ADMIN_URL` | `zerupt_admin` | Central admin DB (separate Prisma schema at `packages/db-admin/`) |
+| `DATABASE_ADMIN_URL` | `zerupt_admin` | Central admin DB (separate Drizzle schema at `packages/db-admin/`) |
+
+No shadow database needed — Drizzle validates migrations without one.
 
 ### How to run migrations
 
-Always run from `erp/packages/db/`:
+Always run from `erp/packages/db/` (or `erp/packages/db-admin/` for admin):
 
 ```bash
 cd /Users/hus3ain/Development/Zerupt/erp/packages/db
 
-# Check current status (no-op, safe)
-npx prisma migrate status
+# Generate migration SQL from schema changes (does NOT apply)
+npx drizzle-kit generate
 
-# Generate migration SQL WITHOUT applying (for hand-editing)
-npx prisma migrate dev --create-only --name descriptive_name_here
+# Apply pending migrations to the database
+npx drizzle-kit migrate
 
-# Apply all pending migrations (pipe empty stdin to avoid interactive prompts)
-echo "" | npx prisma migrate dev
+# Push schema directly to dev DB (skips migration files — dev only)
+npx drizzle-kit push
 
-# Just regenerate the Prisma client (no DB changes)
-npx prisma generate
+# Pull existing DB schema into Drizzle format (introspection)
+npx drizzle-kit pull
+
+# Validate schema matches live DB
+npx drizzle-kit check
+
+# Open Drizzle Studio (web-based DB browser)
+npx drizzle-kit studio
 ```
 
-### Non-interactive Prisma commands (CRITICAL)
+### Schema organization
 
-Always pipe empty stdin to `prisma migrate dev` to prevent interactive prompts that hang in CLI:
-```bash
-echo "" | npx prisma migrate dev
-```
-Other Prisma commands (`migrate status`, `generate`, `migrate dev --create-only`) are safe without this.
+Schemas are TypeScript files in `packages/db/src/schema/`, one file per domain:
+- `enums.ts` — all `pgEnum` definitions
+- `tenant-identity.ts`, `rbac.ts`, `org-structure.ts`, `currency.ts`, `fiscal.ts`, `tax.ts`, `audit.ts`, `document-sequence.ts`, `notifications.ts`
+- `relations.ts` — all Drizzle `relations()` definitions
+- `index.ts` — barrel export
 
-### Migration timestamp ordering (CRITICAL)
-
-Prisma replays all migrations in **alphabetical order by directory name** (which is timestamp-prefixed). A new migration that references a table from a previous migration MUST have a later timestamp. If you use `--create-only`, Prisma auto-generates the timestamp. If you hand-create a migration directory, ensure its timestamp sorts AFTER all migrations it depends on.
-
-**Example:** If `20260314200000_add_warehouse` creates the `warehouses` table, a new migration referencing `warehouses` must use a timestamp > `20260314200000`.
+No `generate` step for types — Drizzle infers types directly from the TypeScript schema.
 
 ### Hand-editing migrations
 
-When a migration needs data backfill or raw SQL (CHECK constraints, partial indexes), use this flow:
+When a migration needs data backfill or raw SQL:
 
-1. `npx prisma migrate dev --create-only --name descriptive_name` — generates SQL shell
-2. Edit the SQL file in `prisma/migrations/<timestamp>_<name>/migration.sql`
-3. `npx prisma migrate dev` — applies the edited SQL
+1. `npx drizzle-kit generate` — generates SQL file in `drizzle/` (or configured output dir)
+2. Edit the generated SQL file
+3. `npx drizzle-kit migrate` — applies the edited SQL
 
-**Common hand-edits:**
-- Adding a non-nullable FK to an existing table: add column as nullable → backfill → set NOT NULL → add FK
-- CHECK constraints (Prisma doesn't generate these)
-- Partial unique indexes (Prisma generates these correctly with `partialIndexes` preview feature, but verify)
+### CHECK constraints and partial indexes
 
-### Shadow database errors
+Drizzle supports these directly in schema definitions via `.check()` and custom index expressions. No hand-editing needed for most cases.
 
-If you see `P3006: Migration failed to apply cleanly to the shadow database`:
-- The shadow DB (`zerupt_tenant_shadow`) must exist. Create it: `docker exec zerupt_postgres psql -U zerupt -d postgres -c "CREATE DATABASE zerupt_tenant_shadow;"`
-- Check migration timestamp ordering (see above)
-- Check that `SHADOW_DATABASE_URL` is set in `.env`
+### Neon driver strategy
 
-### Never rename a migration directory after it has been applied
+- **Admin DB:** `drizzle-orm/neon-http` (stateless, lightweight)
+- **Tenant DBs:** `drizzle-orm/neon-serverless` (WebSocket pooling, supports transactions)
 
-Prisma records the migration directory name in `_prisma_migrations`. Renaming the directory creates a mismatch and forces a DB reset. If you must rename, update the `migration_name` column in `_prisma_migrations` to match.
+### NestJS DI tokens
+
+- `TENANT_DB` — per-request Drizzle instance for tenant database
+- `ADMIN_DB` — singleton Drizzle instance for admin database
 
 ---
 
@@ -250,7 +251,7 @@ All findings (CRITICAL → LOW) get fixed in the same session. Write findings to
 | Layer | Technology |
 |-------|-----------|
 | Frontend | **Next.js 16.1.6** + React 19, TypeScript strict, shadcn/ui + Tailwind, TanStack Query, Zustand, next-intl v4 (ar/en) |
-| Backend | NestJS modular monolith, Prisma ORM, BullMQ + Upstash Redis, NestJS EventEmitter |
+| Backend | NestJS modular monolith, Drizzle ORM, BullMQ + Upstash Redis, NestJS EventEmitter |
 | AI Service | FastAPI (Python), LiteLLM, pgvector |
 | Database | Neon Serverless Postgres (admin DB + per-tenant DBs + pgvector), Supabase Auth |
 | Search | Meilisearch |
@@ -271,7 +272,7 @@ All findings (CRITICAL → LOW) get fixed in the same session. Write findings to
 - Central Admin DB: tenant registry, subscriptions, user-tenant mapping
 - Per-tenant PostgreSQL DBs: all business data + pgvector + audit trail
 - Supabase Auth (centralized): JWT carries tenant_id
-- TenantContextMiddleware resolves DB connection per request
+- TenantContextMiddleware resolves Drizzle DB connection per request
 
 ## Monorepo Structure (Target)
 
@@ -284,8 +285,8 @@ erp/
     website/          # Next.js marketing site (zerupt.com)
   packages/
     shared/           # Shared types/constants/zod schemas
-    db/               # Prisma schema (tenant DBs)
-    db-admin/         # Prisma schema (central admin DB)
+    db/               # Drizzle schema (tenant DBs)
+    db-admin/         # Drizzle schema (central admin DB)
     tenant-context/   # Tenant router + request context utilities
     ui/               # Shared UI components (shadcn/ui based)
   turbo.json

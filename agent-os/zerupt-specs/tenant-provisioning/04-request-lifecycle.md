@@ -9,10 +9,10 @@ HTTP Request
   → TenantContextMiddleware (AsyncLocalStorage boundary)
   → JwtAuthGuard (verify Supabase JWT)
   → TenantResolverGuard (resolve tenant DB connection)
-  → Controller → Service → prismaClient.xxx.findMany()
+  → Controller → Service → db.query.xxx.findMany()
 ```
 
-The business logic never knows which database it's talking to. It just calls `getTenantContext()` and gets a PrismaClient already pointing at the right database.
+The business logic never knows which database it's talking to. It just calls `getTenantContext()` and gets a Drizzle instance already pointing at the right database.
 
 ## Layer 1: TenantContextMiddleware
 
@@ -90,9 +90,9 @@ const cached = await this.cache.get(tenantId);
 ### 3C: Query Central Admin DB
 
 ```typescript
-const record = await adminPrisma.tenantDatabase.findUnique({
-  where: { tenantId },
-  include: { tenant: { select: { id: true, status: true } } }
+const record = await adminDb.query.tenantDatabases.findFirst({
+  where: eq(tenantDatabases.tenantId, tenantId),
+  with: { tenant: { columns: { id: true, status: true } } }
 });
 ```
 
@@ -136,16 +136,16 @@ const databaseUrl = buildPostgresUrl({
 // → postgresql://user:pass@host:5432/dbname?sslmode=require
 ```
 
-### 3G: Get or create PrismaClient from connection pool
+### 3G: Get or create Drizzle instance from connection pool
 
 ```typescript
-const prismaClient = await connectionService.getOrCreate(databaseUrl);
+const db = await connectionService.getOrCreate(databaseUrl);
 ```
 
-The `TenantConnectionService` is an LRU cache of PrismaClient instances:
+The `TenantConnectionService` is an LRU cache of Drizzle instance instances:
 - **Max pool size:** 50 clients (configurable)
 - **Stale detection:** Health check (`SELECT 1`) after 60 seconds of inactivity
-- **Concurrent dedup:** If two requests for the same tenant arrive simultaneously, only one PrismaClient is created
+- **Concurrent dedup:** If two requests for the same tenant arrive simultaneously, only one Drizzle instance is created
 - **LRU eviction:** When pool is full, the least-recently-used client is disconnected and removed
 - **Graceful shutdown:** `disposeAll()` disconnects every cached client on app teardown
 
@@ -157,15 +157,15 @@ tenantStore.enterWith({
   userId: jwtPayload.sub,
   email: jwtPayload.email,
   databaseUrl,
-  prismaClient
+  db
 });
 ```
 
 Now every service in this request can call:
 
 ```typescript
-const { prismaClient, tenantId, userId } = getTenantContext();
-// prismaClient is already pointing at the correct tenant database
+const { db, tenantId, userId } = getTenantContext();
+// db is already pointing at the correct tenant database
 ```
 
 ## The Business Logic Layer
@@ -176,8 +176,8 @@ A developer writing a new feature never thinks about databases:
 @Injectable()
 export class ProductService {
   async listProducts() {
-    const { prismaClient } = getTenantContext();
-    return prismaClient.product.findMany({ where: { isActive: true } });
+    const { db } = getTenantContext();
+    return db.query.products.findMany({ where: eq(products.isActive, true) });
   }
 }
 ```
@@ -208,5 +208,5 @@ apps/api/src/auth/
 └── auth.module.ts               # Module wiring
 
 apps/api/src/common/
-└── tenant-prisma.module.ts      # TenantPrismaService (connection cache)
+└── tenant-drizzle.module.ts     # TenantDrizzleService (connection cache)
 ```

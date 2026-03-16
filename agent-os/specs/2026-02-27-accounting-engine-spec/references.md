@@ -36,7 +36,7 @@
 
 ### Tech Stack
 - **Location:** `agent-os/product/tech-stack.md`
-- **Relevance:** NestJS EventEmitter, Prisma, PostgreSQL, modular monolith — architecture constraints.
+- **Relevance:** NestJS EventEmitter, Drizzle ORM, PostgreSQL, modular monolith — architecture constraints.
 
 ### Product Mission
 - **Location:** `agent-os/product/mission.md`

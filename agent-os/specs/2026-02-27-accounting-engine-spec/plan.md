@@ -115,7 +115,7 @@ Then:      Task 10 (Year-End Closing) — needs 5, 9
 | `merpec-frontend/product/sections/purchase/spec.md` | Purchase flows |
 | `merpec-frontend/product/sections/settings-admin/spec.md` | Tax configuration UI, fiscal year, currencies |
 | `merpec-frontend/product/data-shape/data-shape.md` | Entity definitions and relationships |
-| `agent-os/product/tech-stack.md` | NestJS EventEmitter, Prisma, PostgreSQL, modular monolith |
+| `agent-os/product/tech-stack.md` | NestJS EventEmitter, Drizzle ORM, PostgreSQL, modular monolith |
 
 ## Verification
 

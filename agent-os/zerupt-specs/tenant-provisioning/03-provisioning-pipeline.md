@@ -69,7 +69,7 @@ What it does:
 1. Reads encrypted credentials from `tenant_databases`
 2. Decrypts password using AES-256-GCM (reads key version from ciphertext prefix)
 3. Builds PostgreSQL connection URL using `buildPostgresUrl()`
-4. Shells out to `npx prisma migrate deploy --schema=packages/db/prisma/schema.prisma`
+4. Shells out to `npx drizzle-kit migrate --config=packages/db/drizzle.config.ts`
 5. Redacts any URLs in stdout/stderr before logging (prevents credential leaks in logs)
 6. Updates `tenant_databases.migration_version` with the last applied migration name
 
@@ -83,7 +83,7 @@ This creates all tables in the tenant database:
 - `tax_codes`, `tax_rates`, `tax_groups`, `tax_group_components` — tax config
 - `document_sequences`, `sequence_reservations` — auto-numbering
 
-**Idempotency:** `prisma migrate deploy` only applies pending migrations. If all are applied, it's a no-op.
+**Idempotency:** `drizzle-kit migrate` only applies pending migrations. If all are applied, it's a no-op.
 
 **Timeout:** 60 seconds hard limit on the `execFile` call.
 
@@ -93,14 +93,14 @@ This creates all tables in the tenant database:
 **Duration:** ~100ms
 
 What it does:
-1. Creates a temporary PrismaClient pointing at the tenant's database
+1. Creates a temporary Drizzle instance pointing at the tenant's database
 2. Derives locale defaults from country code:
    - Arabic countries (AE, SA, KW, QA, BH, OM, etc.) → Arabic language, RTL, local timezone
    - India → English, LTR, Asia/Kolkata
    - Malaysia → English, LTR, Asia/Kuala_Lumpur
    - etc.
 3. Upserts a `TenantIdentity` record with: id, code, name, countryCode, timezone, languageDefault, isRtlDefault, status=Active
-4. Disconnects the temporary PrismaClient
+4. Closes the temporary Drizzle instance
 
 **Note:** This only seeds the minimal identity record. Full seeding (Chart of Accounts templates, default roles, system accounts) is handled by the Onboarding Configuration Pipeline in Phase 5.
 
@@ -159,7 +159,7 @@ apps/api/src/provisioning/
     ├── provisioning-step.interface.ts  # Contract: ProvisioningStep, Context, Result
     ├── create-db.step.ts               # Step 1: CREATE DATABASE + user + encrypt
     ├── create-db.step.spec.ts
-    ├── run-migrations.step.ts          # Step 2: prisma migrate deploy
+    ├── run-migrations.step.ts          # Step 2: drizzle-kit migrate
     ├── run-migrations.step.spec.ts
     ├── seed-config.step.ts             # Step 3: TenantIdentity upsert
     ├── seed-config.step.spec.ts

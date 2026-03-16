@@ -57,3 +57,5 @@ $ARGUMENTS can be:
 - `full` - All checks (default)
 - `pre-commit` - Checks relevant for commits
 - `pre-pr` - Full checks plus security scan
+- `e2e` - Run full E2E suite (smoke + auth + settings): `cd erp/apps/web && pnpm test:e2e`
+- `e2e:settings` - Run only settings navigation E2E: `cd erp/apps/web && pnpm test:e2e -- --project=settings`

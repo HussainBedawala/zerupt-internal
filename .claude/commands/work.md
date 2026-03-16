@@ -166,6 +166,30 @@ Run the following checks in order:
 4. `pnpm turbo test` (or per-app test)
 5. `git status` — confirm no unintended files staged
 
+### E2E Integration Tests (on major feature pushes only)
+
+Run the full E2E suite when the issue meets ANY of these criteria:
+- **Milestone completion:** this issue is the last open issue in its milestone
+- **Major UI changes:** 
+- **Auth changes:** issue touches auth middleware, login flow, route protection, or Supabase auth config
+- **Layout/i18n changes:** issue touches `[locale]/layout.tsx`, proxy.ts, or i18n routing config
+- **Label contains:** `E2E`, `Integration`, `Settings`, or `Security`
+
+When triggered, run:
+```bash
+cd /Users/hus3ain/Development/Zerupt/erp/apps/web
+pnpm test:e2e  # runs all projects: smoke + auth + settings
+```
+
+For targeted runs (e.g. only settings):
+```bash
+pnpm test:e2e -- --project=settings
+```
+
+Skip E2E for: documentation-only changes, study file updates, backend-only changes with no frontend impact, CI/config tweaks.
+
+**NOTE:** The E2E tests should run for all the locales present in the product. 
+
 Do not proceed until all checks pass. If a check fails, fix it before moving on.
 
 ## PHASE 9: COMMIT + LINEAR SYNC

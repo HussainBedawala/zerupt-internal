@@ -1,6 +1,6 @@
 # Neon Serverless Postgres
 
-Study topics from DEV-215 and DEV-218: Neon project setup, admin DB, and first tenant DB provisioning.
+Study topics from DEV-215, DEV-218, and DEV-219: Neon project setup, admin DB, tenant DB provisioning, and connection string hardening.
 
 ---
 
@@ -194,3 +194,51 @@ npx prisma migrate dev --name add_new_table
 **Resources:**
 - [Prisma Migrate Deploy](https://www.prisma.io/docs/orm/prisma-migrate/workflows/deploy-migration)
 - [Prisma Production Deployment](https://www.prisma.io/docs/orm/prisma-migrate/workflows/production)
+
+---
+
+## 9. Channel Binding — SCRAM-SHA-256 Proof of TLS
+
+**What:** `channel_binding=require` in a PostgreSQL connection string ensures the client proves it's using the same TLS channel that the server sees, binding authentication to the transport layer.
+
+**Why it matters:** Without channel binding, a man-in-the-middle proxy (even one with a valid cert) could intercept SCRAM authentication and relay it to the real server. Channel binding makes this impossible by tying the SCRAM exchange to the specific TLS session. Neon supports it on pooled connections.
+
+**How it works:**
+- During SCRAM-SHA-256 authentication, the client includes a hash of the TLS channel's `tls-server-end-point` binding
+- The server verifies this hash matches its own TLS context
+- If they don't match (proxy in the middle), authentication fails
+- Only works over SSL — requesting `channel_binding=require` without `sslmode=require` is an error
+
+**Zerupt usage:** Runtime tenant queries (via pooled PgBouncer) use `channel_binding=require`. Provisioning steps (migrations, seeding) use direct connections without it since they're server-to-server within the same cloud network.
+
+**Resources:**
+- [PostgreSQL Channel Binding](https://www.postgresql.org/docs/current/auth-password.html)
+- [Neon Connection Security](https://neon.com/docs/connect/connect-securely)
+
+---
+
+## 10. Pooled vs Direct Host — When to Use Each
+
+**What:** For each Neon database, there are two hostnames: `ep-xxx-pooler.region.aws.neon.tech` (PgBouncer) and `ep-xxx.region.aws.neon.tech` (direct).
+
+**Why it matters:** Using the wrong one causes subtle bugs. PgBouncer in transaction mode doesn't support prepared statements across transactions, advisory locks, `LISTEN/NOTIFY`, or `SET` commands. Using direct for app runtime wastes connections and hits `max_connections` limits.
+
+**How it works / Key concepts:**
+
+| Use Case | Host | Why |
+|----------|------|-----|
+| App runtime queries | Pooled (`-pooler`) | Connection reuse, handles concurrency, auto-reconnect |
+| `prisma migrate deploy` | Direct | DDL + prepared statements need persistent connection |
+| One-off seeding | Direct | Short-lived, low concurrency, may use DDL |
+| `CREATE DATABASE` / `CREATE USER` | Direct (superuser) | DDL operations |
+| Schema hardening (GRANT/REVOKE) | Direct (superuser) | DDL operations |
+
+**Zerupt implementation:**
+- `TenantDatabase.dbHost` = direct hostname (for migrations)
+- `TenantDatabase.dbHostPooled` = pooled hostname (for runtime queries)
+- `deriveNeonPooledHost()` derives pooled from direct by inserting `-pooler` before the region segment
+- `TenantResolverGuard` uses `dbHostPooled` when building the runtime connection URL
+
+**Resources:**
+- [Neon Connection Pooling](https://neon.com/docs/connect/connection-pooling)
+- [PgBouncer Transaction Mode](https://www.pgbouncer.org/features.html)

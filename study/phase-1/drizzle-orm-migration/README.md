@@ -125,3 +125,79 @@ updatedAt: timestamp("updated_at", { withTimezone: true })
 **Resources:**
 - [Drizzle docs — $onUpdate](https://orm.drizzle.team/docs/sql-schema-declaration#on-update)
 - [PostgreSQL trigger functions](https://www.postgresql.org/docs/current/plpgsql-trigger.html)
+
+---
+
+## 6. Drizzle Query Builder vs Prisma Client
+
+**What:** Drizzle's query builder uses a SQL-like fluent API (`db.select().from().where()`) and a relational query API (`db.query.table.findMany()`). Prisma uses a model-centric API (`prisma.model.findMany()`).
+
+**Why it matters:** Drizzle's SQL-like API maps 1:1 to the SQL it generates — you can predict the query by reading the code. Prisma abstracts the SQL, which can lead to unexpected N+1 queries or inefficient joins. For a solo founder, predictable SQL = easier debugging.
+
+**Key patterns:**
+```typescript
+// Prisma: model-centric, hides SQL
+const users = await prisma.user.findMany({
+  where: { tenantId },
+  include: { role: true },
+});
+
+// Drizzle SQL-like: explicit joins
+const users = await db
+  .select()
+  .from(usersTable)
+  .leftJoin(rolesTable, eq(usersTable.roleId, rolesTable.id))
+  .where(eq(usersTable.tenantId, tenantId));
+
+// Drizzle relational: Prisma-like convenience
+const users = await db.query.users.findMany({
+  where: eq(usersTable.tenantId, tenantId),
+  with: { role: true },
+});
+```
+
+**Resources:**
+- [Drizzle — Select query](https://orm.drizzle.team/docs/select)
+- [Drizzle — Relational queries](https://orm.drizzle.team/docs/rqb)
+
+---
+
+## 7. Mocking Drizzle in Unit Tests
+
+**What:** Drizzle's query builder returns chainable objects (`select → from → where → execute`). Mocking requires setting up each chain method to return the mock object, with the final method resolving to test data.
+
+**Why it matters:** Prisma's flat API (`prisma.model.findMany()`) is trivial to mock. Drizzle's chainable API needs mock factories that return `{ from: () => ({ where: () => ({ ...}) }) }`. Getting this wrong causes cryptic "X is not a function" errors.
+
+**Key pattern:**
+```typescript
+// Mock factory for select chains
+function makeSelectChain<T>(data: T[]) {
+  const chain = {
+    from: jest.fn().mockReturnThis(),
+    where: jest.fn().mockReturnThis(),
+    leftJoin: jest.fn().mockReturnThis(),
+    orderBy: jest.fn().mockReturnThis(),
+    limit: jest.fn().mockReturnThis(),
+    then: jest.fn((resolve) => resolve(data)),
+  };
+  return chain;
+}
+
+// Usage in test
+const mockDb = { select: jest.fn(() => makeSelectChain(testData)) };
+```
+
+**Resources:**
+- [Jest mock functions](https://jestjs.io/docs/mock-functions)
+- [Drizzle testing patterns (community)](https://github.com/drizzle-team/drizzle-orm/discussions/1591)
+
+---
+
+## 8. CI Without Code Generation
+
+**What:** Prisma requires a `prisma generate` step in CI before builds/tests (it generates the client library). Drizzle has no codegen — types are inferred directly from TypeScript schema files.
+
+**Why it matters:** Removing the generate step simplifies CI pipelines, eliminates a class of "forgot to regenerate" bugs, and speeds up builds. The `db:generate` script in Drizzle means generating migration SQL files (committed to git), not runtime code.
+
+**Resources:**
+- [Drizzle-Kit generate](https://orm.drizzle.team/docs/drizzle-kit-generate)

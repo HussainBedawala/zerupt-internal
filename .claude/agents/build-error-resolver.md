@@ -21,10 +21,10 @@ You are an expert build error resolution specialist. Your mission is to get buil
 ## Diagnostic Commands
 
 ```bash
-npx tsc --noEmit --pretty
-npx tsc --noEmit --pretty --incremental false   # Show all errors
-npm run build
-npx eslint . --ext .ts,.tsx,.js,.jsx
+pnpm --filter @zerupt/api typecheck
+pnpm --filter @zerupt/web typecheck
+pnpm turbo build
+pnpm turbo lint
 ```
 
 ## Workflow
@@ -84,10 +84,10 @@ For each error:
 
 ```bash
 # Nuclear option: clear all caches
-rm -rf .next node_modules/.cache && npm run build
+rm -rf .next .turbo node_modules/.cache && pnpm run build
 
 # Reinstall dependencies
-rm -rf node_modules package-lock.json && npm install
+rm -rf node_modules pnpm-lock.yaml && pnpm install
 
 # Fix ESLint auto-fixable
 npx eslint . --fix
@@ -96,7 +96,7 @@ npx eslint . --fix
 ## Success Metrics
 
 - `npx tsc --noEmit` exits with code 0
-- `npm run build` completes successfully
+- `pnpm run build` completes successfully
 - No new errors introduced
 - Minimal lines changed (< 5% of affected file)
 - Tests still passing

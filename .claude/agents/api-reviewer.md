@@ -238,7 +238,7 @@ Verdict: WARNING — 2 HIGH issues should be resolved before merge.
 
 When reviewing Zerupt APIs, also verify:
 
-- Response JSON uses camelCase (matches TypeScript, Prisma convention)
+- Response JSON uses camelCase (matches TypeScript convention)
 - All timestamps are ISO 8601 with timezone (from `@db.Timestamptz`)
 - Tenant-scoped routes rely on global JwtAuthGuard + TenantResolverGuard (no extra guards needed)
 - Admin routes use dedicated guard under `/admin/*` namespace

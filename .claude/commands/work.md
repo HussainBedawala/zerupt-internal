@@ -2,312 +2,107 @@
 description: "Pick up the next Linear issue and orchestrate the full development SOP. Delegates to existing commands at each phase."
 ---
 
-You are the Zerupt development orchestrator. You pick up one Linear issue and walk through each phase. Pause after each phase for user approval before proceeding.
+You are the Zerupt development orchestrator. Walk through each phase, pausing for user approval before proceeding. Reference data (labels, specs, branch prefixes, reviewers) lives in CLAUDE.md under "/work Reference Data".
 
 ## PHASE 1: PICK ISSUE
 
-Find the next issue using this priority order:
+Find the next issue: "In Progress" first → else active project → first incomplete milestone (by sortOrder) → first Todo/New issue (by priority, then identifier).
 
-1. Check for any "In Progress" issue in the Development team → resume it
-2. Otherwise: find the active project (status = "In Progress") → its first incomplete milestone (by sortOrder, lowest first) → first "Todo" or "New" issue (by priority ascending, then identifier number ascending)
+Use Linear MCP: `list_projects` → `list_milestones` → `list_issues` → `get_issue`.
 
-**Milestone completeness rule:** A milestone is incomplete if any issue in it has status other than "Done" or "Cancelled". Skip milestones where all issues are Done/Cancelled.
+Present: Issue ID + title, milestone, priority, labels, 2-3 line description.
 
-**Issue status precedence for selection:** Todo > New > Soon (in that order). "Soon" is a backlog state — only pick it if no Todo/New issues exist in the milestone.
+If user passes an argument (e.g. `DEV-117`), fetch that issue directly.
 
-Use Linear MCP in this order: `list_projects` → `list_milestones` → `list_issues` (filter by project) → `get_issue` for full description.
-
-Present a summary table:
-- Issue: DEV-XX — Title
-- Milestone: name
-- Priority: Urgent/High/Medium/Low
-- Labels: list
-- Description: 2-3 line summary
-
-Ask: "Start this issue? (yes / skip / pick different)"
-
-If yes → `save_issue` to set status "In Progress"
+Ask: **"Start this issue? (yes / skip / pick different)"** → If yes, `save_issue` to "In Progress".
 
 ## PHASE 2: BRANCH
 
-**IMPORTANT:** Always run `git checkout -b <branch>` from inside the `erp/` directory (the git repo root is at `/Users/hus3ain/Development/Zerupt/erp/`). The `/Zerupt/` root is a separate git repo (`zerupt-internal`) with its own remote.
+From `erp/` directory (`cd /Users/hus3ain/Development/Zerupt/erp`):
+1. Ensure `main` is up to date and no unmerged branches exist
+2. `git checkout -b <prefix>/<DEV-XX>-<short-kebab>` (see CLAUDE.md for prefix mapping)
+3. Confirm with `git branch`
 
-**NOTE:** Make sure `main` is upto date and no unmerged branches exist before proceeding to creating a new branch.
+Ask: **"Branch created. Continue?"**
 
-Branch format: `phase-0/<DEV-XX>-<short-kebab-description>`
+## PHASE 3: RESEARCH
 
-Phase prefixes: phase-0, phase-1, phase-2, phase-3, phase-4a, phase-4b, phase-4c, phase-5, phase-6, phase-7, phase-8, website
+Combine spec reading + doc fetching in one phase:
 
-Run: `cd /Users/hus3ain/Development/Zerupt/erp && git checkout -b <branch>`
+1. **Read spec** from `agent-os/product/` using the phase→spec mapping in CLAUDE.md. Summarize what's relevant to THIS issue only.
+2. **Fetch docs** via context7 MCP for any external packages in the issue title/description. Use `resolve-library-id` then `query-docs` with task-specific queries. Fetch in parallel.
+3. For Neon/DB issues, also fetch Neon docs via `neon-postgres` skill.
 
-Confirm the branch was created with `git branch`. Ask: "Branch created. Continue?"
+Ask: **"Research complete. Additional context? (continue / add context)"**
 
-## PHASE 3: READ SPEC
+## PHASE 4: PLAN + RISK ANALYSIS
 
-Read the relevant spec from `agent-os/product/{module}/` based on the issue's project:
-- Phase 0 → `tech-stack.md` + `roadmap.md`
-- Phase 1 → `settings-admin/`
-- Phase 2 → `accounting/`
-- Phase 3 → `inventory/`
-- Phase 4A/4B/4C → `pos/`, `sales/`, `purchase/`
-- Phase 5 → `onboarding/`
-- Phase 6 → `dashboard/` + `reports/`
-- Phase 7 → `agents/`
-- Auth/security issues → also read `user-auth-management/`
+Present implementation plan:
+- Files to create/modify, packages to install, manual steps needed
+- **Risk table**: what can go wrong, severity, mitigation (think: race conditions, data loss, slow networks, user mistakes)
+- **Defensive UX checklist**: loading states, error states, confirmation dialogs, double-click protection
+- **Migration check**: does this need a DB migration? If yes, outline the migration steps.
+- Your own recommendations and improvements, even if missing from the spec
 
-For Phase 0 infra issues, also check: `erp/.env.example` to understand the current env var state.
+**Skill dispatch** (based on what the plan touches):
+- API design → use `api-design` skill
+- DB changes → use `database-reviewer` agent
+- Neon provisioning → use `neon-postgres` skill
 
-Summarize what's relevant to this specific issue (not the whole spec). Ask: "Spec reviewed. Additional context? (continue / add context)"
+**Label assignment**: review current labels, add missing ones per CLAUDE.md label reference. Use `save_issue` with full label list.
 
-## PHASE 4: FETCH DOCS
+**Do NOT write any code until the user approves.**
 
-Scan the issue title + description for external packages (e.g. next-intl, Prisma, BullMQ, Sentry, Supabase, Neon, etc.).
+Ask: **"Approve this plan? (yes / adjust)"**
 
-For each relevant package, use context7 MCP:
-1. `resolve-library-id` with the package name + a task-specific query
-2. `query-docs` with the exact task (e.g. "NestJS setup with JWT validation") — be specific
+If approved, run `/strategic compact` command to free up context and proceed.
 
-**Neon-specific:** For any issue involving database provisioning, migrations, branching, or connection management, also fetch Neon docs as markdown from `https://neon.com/docs/{topic}.md` (see `neon-postgres` skill for doc URLs and index at `https://neon.com/docs/llms.txt`).
+## PHASE 5: TDD
 
-Fetch in parallel when possible. Only fetch what's directly needed for this issue.
+Delegate to `/tdd` command behavior (tdd-guide agent). RED → GREEN → REFACTOR.
 
-Tell the user: "Docs fetched for: [package list]. Continue to planning?"
+Coverage targets are in CLAUDE.md. Exception: pure infra/provisioning (no business logic) can skip tests — document the exception explicitly.
 
-## PHASE 5: PLAN
+Once done, run `/strategic compact` command to free up context and proceed.
 
-Present a clear implementation plan before writing any code. Include:
-- What files will be created/modified
-- What packages will be installed
-- What the user needs to do manually (e.g. cloud console setup, credentials)
-- What credentials/values to provide back (if applicable)
-- Any risks or blockers
-- In case designing API, use `api-design` skill to plan it.
-- In case designing / updating database, use `database-reviewer` agent.
-- In case provisioning or managing Neon databases/branches, use `neon-postgres` skill. For Neon MCP tools (create_branch, run_sql, get_connection_string, etc.), use the Neon MCP server if connected.
+## PHASE 6: REVIEW
 
-**Give your own recommendations and improvements also. Even if it is missing from the spec, or you have any thoughts, please add those.**
-
-### Label Assignment in Linear (do this during planning)
-
-Review the issue's current labels and add any missing ones based on what the implementation touches. Use `save_issue` with the full desired label list (existing + new).
-
-**Label reference:**
-
-| Category | Labels | Rules |
-|----------|--------|-------|
-| **Standalone** (combine freely) | `Frontend`, `Backend`, `Database`, `AI Service`, `Bug`, `Improvement`, `Feature` | Add ALL that apply. An issue can have `Frontend` + `Backend` + `Database` simultaneously. |
-| **Type** (exclusive group) | `Design/UX`, `Documentation`, `Testing`, `Security`, `Infrastructure` | Pick at most ONE. These are in a Linear group — applying two will error. |
-| **Module** (exclusive group) | `Settings`, `Accounting`, `Inventory`, `POS`, `Sales`, `Purchase`, `Onboarding`, `Dashboard`, `Reports`, `Search`, `AI/Agents` | Pick at most ONE. These are in a Linear group — applying two will error. |
-
-**Assignment logic:**
-- Touches `apps/web/` or frontend components → add `Frontend`
-- Touches `apps/api/` or NestJS services → add `Backend`
-- Touches Prisma schema, migrations, or DB queries → add `Database`
-- Touches `apps/ai/` or FastAPI → add `AI Service`
-- New capability → add `Feature`; fix → add `Bug`; enhancement → add `Improvement`
-- If issue involves security hardening or auth → set Type to `Security`
-- If issue is infra/CI/CD only → set Type to `Infrastructure`
-- Module label should match the project phase (Phase 1 → `Settings`, Phase 2 → `Accounting`, etc.)
-
-**Do NOT write any code until the user approves the plan.**
-
-Ask: "Approve this plan? (yes / adjust)"
-
-## PHASE 6: TDD
-
-Run the `/tdd` command behavior. The tdd-guide agent writes tests first (RED → GREEN → REFACTOR).
-
-**Coverage targets:**
-- General code: 80%+
-- Financial/accounting code: 100%
-- Auth/security code: 100%
-
-**Exception:** Pure infrastructure/provisioning issues (no business logic, just SDK init + env vars) do not require tests. Document this exception explicitly when skipping.
-
-## PHASE 7: Implementation REVIEW [VERY IMPORTANT TO DO THIS ACCURATELY]
-
-Run the `/code-review` command behavior.
-
-Additionally invoke based on **issue labels** (**make sure you fetch the issue again from Linear and verify the labels properly**):
-- Security / auth labels → `security-reviewer` agent
-- Database label → `database-reviewer` agent + verify Neon connection patterns via `neon-postgres` skill (pooled vs direct URLs, branch isolation, pgvector setup)
-- AI Service / Python label → `python-reviewer` agent
-- API / Backend labels → `api-reviewer` agent
-- Infrastructure / provisioning labels → verify env vars documented in `.env.example`, no secrets in code, Neon project/branch config correct
+Run `/code-review` command behavior, PLUS additional reviewers based on issue labels (see CLAUDE.md reviewer dispatch table). Fetch the issue from Linear again to verify labels before dispatching.
 
 ### Findings workflow
 
-After all reviewers complete, write ALL findings to `erp/.review-findings.md` (gitignored temp file):
+1. Write ALL findings to `erp/.review-findings.md` (gitignored)
+2. Fix one by one, mark DONE. Re-run tests every 3-5 fixes.
+3. Fix ALL severities (CRITICAL→LOW) in same session. Only defer if fix belongs to a different phase/module → create `[Tech Debt]` issue in Linear.
+4. SECURITY findings: always ask the user if they want to create a Linear issue for audit trail, even if fixed.
+5. Delete `erp/.review-findings.md` when all done.
+6. Comment on the Linear issue via `save_comment` with findings summary table.
 
-```markdown
-# Review Findings — DEV-XX
-| # | Severity | Finding | File:Line | Status |
-|---|----------|---------|-----------|--------|
-| 1 | HIGH | description | file.ts:42 | TODO |
-| 2 | MEDIUM | description | file.ts:99 | TODO |
-```
+Once done, run `/strategic compact` command to free up context and proceed.
 
-Then fix them **one by one**, updating Status to `DONE` after each fix. Re-run tests after every 3-5 fixes.
+## PHASE 7: VERIFY
 
-**Rules:**
-- Fix ALL findings (CRITICAL → LOW) in the same session. No deferral by default.
-- Only create a Linear issue if the fix genuinely belongs to a **different phase or module** (e.g., a frontend finding on a backend-only issue). Title: `[Tech Debt] <description> (from DEV-XX)`, labels: parent labels + `tech-debt`, status: New, no project.
-- SECURITY findings (any severity): always create a Linear issue for audit trail even if fixed. Title: `[Security] <description> (from DEV-XX)`, priority based on severity.
-
-After all findings are DONE, **delete** `erp/.review-findings.md`.
-
-### Log findings to Linear
-
-After fixing, comment on the issue using `save_comment`:
-
-```
-## Review Findings — DEV-XX
-**Reviewers:** code-reviewer [+ others]
-**Date:** YYYY-MM-DD
-
-| Severity | Finding | File | Fix |
-|----------|---------|------|-----|
-| HIGH | title | file:line | one-line fix description |
-
-Deferred: none (or link to DEV-YY if any)
-```
-
-## PHASE 8: VERIFY
-
-Run the following checks in order:
+Run in order — do not proceed until all pass:
 1. `pnpm --filter @zerupt/api typecheck`
 2. `pnpm --filter @zerupt/web typecheck`
-3. `pnpm turbo lint` (or per-app lint)
-4. `pnpm turbo test` (or per-app test)
-5. `git status` — confirm no unintended files staged
+3. `pnpm turbo lint`
+4. `pnpm turbo test`
+5. `git status` — no unintended files
 
-### E2E Integration Tests (on major feature pushes only)
+**E2E trigger** (run if ANY): milestone completion, major UI changes, auth changes, layout/i18n changes, or labels contain `E2E`/`Integration`/`Settings`/`Security`. Run: `cd erp/apps/web && pnpm test:e2e`. Skip for: docs-only, study files, backend-only, CI/config. 
+- Use the `e2e` command (/e2e.md) to verify.
 
-Run the full E2E suite when the issue meets ANY of these criteria:
-- **Milestone completion:** this issue is the last open issue in its milestone
-- **Major UI changes:** 
-- **Auth changes:** issue touches auth middleware, login flow, route protection, or Supabase auth config
-- **Layout/i18n changes:** issue touches `[locale]/layout.tsx`, proxy.ts, or i18n routing config
-- **Label contains:** `E2E`, `Integration`, `Settings`, or `Security`
+## PHASE 8: COMMIT + PR + LINEAR
 
-When triggered, run:
-```bash
-cd /Users/hus3ain/Development/Zerupt/erp/apps/web
-pnpm test:e2e  # runs all projects: smoke + auth + settings
-```
+1. **Commit** to `erp/` repo. Stage specific files only. Subject all lowercase. Body lines under 100 chars. Format: `<type>(<scope>): <description>\n\nCloses DEV-XX`
+2. **Push**: `git push -u origin <branch>`
+3. **PR**: `gh pr create` with summary + test plan + `Closes DEV-XX`
+4. **Linear**: `save_issue` → "Done" + `save_comment` with commit hash, PR URL, files changed, env vars added
 
-For targeted runs (e.g. only settings):
-```bash
-pnpm test:e2e -- --project=settings
-```
+## PHASE 9: WRAP
 
-Skip E2E for: documentation-only changes, study file updates, backend-only changes with no frontend impact, CI/config tweaks.
+1. **Study topics**: write to `study/<phase>/<topic-kebab>/README.md` in root `/Zerupt/` repo. Concepts behind what was built, not implementation steps. Commit + push root repo.
+2. **Content check**: if content-worthy (visible feature, milestone hit, interesting problem) → read `agent-os/content-style-guide.md` → create Marketing team issue in Linear. Skip silently if not.
+3. **Next issue**: move next logical issue to "Todo". Ask: **"DEV-XX done. Next issue? (yes / done for today)"** → yes: restart from Phase 1 | done: run `/learn-eval`.
 
-**NOTE:** The E2E tests should run for all the locales present in the product. 
-
-Do not proceed until all checks pass. If a check fails, fix it before moving on.
-
-## PHASE 9: COMMIT + LINEAR SYNC
-
-**Commit rules:**
-- Stage specific files only — never `git add .` or `git add -A`
-- All commits go to `erp/` repo (has GitHub remote): `cd /Users/hus3ain/Development/Zerupt/erp`
-- Study files go to root `/Zerupt/` repo: commit there separately, then push to origin main
-- Commit message subject MUST be all lowercase (commitlint enforces this)
-
-**Commit format:**
-```
-<type>(<scope>): <lowercase description>
-
-- short bullet points (max 100 chars per line)
-- keep body concise, commitlint enforces line length
-
-Closes DEV-XX
-```
-
-**IMPORTANT:** Every line in the commit body MUST be under 100 characters. commitlint enforces `body-max-line-length`. Keep bullet points short and split long lines.
-
-Type from labels: Feature→feat, Bug→fix, Infrastructure→chore, Database→chore(db), Security→feat(security)
-Scope from app: web, api, ai, shared, db, db-admin, ui
-
-**Push + PR:**
-1. Push the feature branch: `git push -u origin <branch-name>`
-2. Create a PR using `gh pr create` with:
-   - Title: `<type>(<scope>): <lowercase description> (DEV-XX)`
-   - Body format:
-     ```
-     ## Summary
-     - bullet points of what changed and why
-
-     ## Test plan
-     - [ ] tests passing (X tests, Y suites)
-     - [ ] typecheck clean
-     - [ ] lint clean
-
-     Closes DEV-XX
-     ```
-   - Base branch: `main`
-3. Return the PR URL to the user
-
-**Linear sync:**
-- `save_issue` → set status to "Done"
-- `save_comment` on the issue with: commit hash, PR URL, files changed, env vars added, notes for future issues
-
-## PHASE 10: STUDY TOPICS
-
-**Location:** `study/<phase>/<topic-kebab>/README.md` — in the root `/Zerupt/` repo (not `erp/`)
-
-Each high-level topic gets its own folder under the phase directory. Do NOT group by milestone — group by topic.
-
-**Example structure:**
-```
-study/
-  phase-1/
-    multi-entity-architecture/README.md   ← DEV-195
-    rbac-permissions/README.md            ← DEV-36
-    organization-hierarchy/README.md      ← DEV-40, DEV-41
-```
-
-**If the folder already exists** (same topic from a previous issue): append new sections to the existing README.md.
-
-**If it doesn't exist:** create the folder and README.md.
-
-**Format per topic:**
-```markdown
-## N. Topic Name
-
-**What:** one sentence definition
-
-**Why it matters:** why this is relevant to Zerupt specifically
-
-**How it works / Key concepts:** code snippet or bullet list
-
-**Resources:**
-- [Link title](url)
-- [Link title](url)
-```
-
-Topics should cover the *concepts behind what was built* — not implementation steps, but the "why" and "how it works under the hood." Write for a smart developer who is new to the specific technology.
-
-Commit study file to root `/Zerupt/` repo after writing, then push: `cd /Users/hus3ain/Development/Zerupt && git push origin main`
-
-## PHASE 11: CONTENT CHECK
-
-Check if the issue is content-worthy for Instagram/X:
-- Shipped a visible feature users will see?
-- Hit a milestone (100% complete)?
-- Solved an interesting technical problem?
-- Good "build in public" moment?
-
-If yes: read `agent-os/content-style-guide.md` → create issue in Linear **Marketing** team with:
-- Labels: `dev-triggered` + relevant format + pillar + platform
-- Description: what was shipped, why it matters to the audience
-
-If not content-worthy: skip silently (do not mention the skip).
-
-## PHASE 12: NEXT ISSUE PREP + WRAP
-
-1. Move the next logical issue to "Todo" status in Linear (`save_issue` with `state: "Todo"`)
-2. Ask: "DEV-XX done. Next issue? (yes / done for today)"
-   - If yes → restart from PHASE 1
-   - If done → run `/learn-eval` to extract session patterns
+ARGUMENTS: $ARGUMENTS

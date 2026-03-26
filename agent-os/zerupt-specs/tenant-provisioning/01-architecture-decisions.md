@@ -82,7 +82,6 @@ Branch: production (default, primary)
 
 Databases on production branch:
 ├── zerupt_admin           ← Central Admin DB (tenant registry, plans, routing)
-├── zerupt_admin_shadow    ← (legacy, no longer needed with Drizzle Kit)
 ├── zerupt_tenant_dev      ← Local development tenant
 ├── zerupt_tenant_demo     ← First production demo tenant (DEV-218)
 ├── zerupt_tenant_{code}   ← Future: one per customer

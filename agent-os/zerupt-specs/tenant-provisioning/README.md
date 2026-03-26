@@ -9,6 +9,7 @@ How Zerupt provisions a completely isolated database for every customer — from
 3. `03-provisioning-pipeline.md` — The 4-step BullMQ pipeline (CreateDB → Migrate → Seed → MarkReady)
 4. `04-request-lifecycle.md` — How every API request routes to the correct tenant database
 5. `05-tech-stack-mapping.md` — Where each technology fits in the provisioning and runtime flow
+6. `06-database-operations-reference.md` — Exact DB targets, tables, and column values for every signup step
 
 ## Key Decisions
 

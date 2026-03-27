@@ -29,9 +29,10 @@ Ask: **"Branch created. Continue?"**
 
 Combine spec reading + doc fetching in one phase:
 
-1. **Read spec** from `agent-os/product/` using the phase→spec mapping in CLAUDE.md. Summarize what's relevant to THIS issue only.
-2. **Fetch docs** via context7 MCP for any external packages in the issue title/description. Use `resolve-library-id` then `query-docs` with task-specific queries. Fetch in parallel.
-3. For Neon/DB issues, also fetch Neon docs via `neon-postgres` skill.
+1. **Read codemap first** from `erp/docs/CODEMAPS/` — pick the relevant module codemap (accounting.md, settings-admin.md, shared-infra.md). This gives you file paths, routes, and DB tables without exploring. Only explore further if the codemap doesn't cover what you need.
+2. **Read spec** from `agent-os/product/` using the phase→spec mapping in CLAUDE.md. Summarize what's relevant to THIS issue only.
+3. **Fetch docs** via context7 MCP for any external packages in the issue title/description. Use `resolve-library-id` then `query-docs` with task-specific queries. Fetch in parallel.
+4. For Neon/DB issues, also fetch Neon docs via `neon-postgres` skill.
 
 Ask: **"Research complete. Additional context? (continue / add context)"**
 
@@ -98,6 +99,17 @@ Run in order — do not proceed until all pass:
 2. **Push**: `git push -u origin <branch>`
 3. **PR**: `gh pr create` with summary + test plan + `Closes DEV-XX`
 4. **Linear**: `save_issue` → "Done" + `save_comment` with commit hash, PR URL, files changed, env vars added
+
+## PHASE 8.5: CODEMAP FRESHNESS CHECK
+
+Check if this issue's changes warrant a codemap update by reviewing `git diff main...HEAD --stat`:
+- **New controller/module directory** added → recommend update
+- **New DB migration with new tables** (check `packages/db/drizzle/` or `packages/db-admin/drizzle/`) → recommend update
+- **New route group** (new `@Controller` decorator) → recommend update
+- **Major refactor** (files renamed/moved, >10 files changed) → recommend update
+- Otherwise → skip silently
+
+If update needed, say: **"This issue added [new routes/tables/module]. Run `/update-codemaps` to keep indexes fresh? (yes / skip)"**
 
 ## PHASE 9: WRAP
 

@@ -65,7 +65,10 @@ pnpm --filter @zerupt/api typecheck    # or test
 erp/
   apps/web/ api/ ai/ website/
   packages/shared/ db/ db-admin/ tenant-context/ ui/
+  docs/CODEMAPS/   ← module-level file maps (read FIRST before exploring)
 ```
+
+**Codemaps:** `erp/docs/CODEMAPS/{module}.md` — pre-computed indexes of routes, services, DB tables, and file paths per module. Read the relevant codemap before exploring code. Run `/update-codemaps` to regenerate after major changes.
 
 ---
 

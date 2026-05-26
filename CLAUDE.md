@@ -2,9 +2,7 @@
 
 The world's first agentic AI retail ERP. Signup to live with real data in under 2 hours. MENA, Southeast Asia, India. Built by Hussain, solo founder.
 
-- **Website:** zerupt.com (launching Eid 2026, March 19)
-- **Linear workspace:** Zerupt (teams: Development, Marketing)
-- **Socials:** @hussainbuildswithai (personal IG), @zerupt.erp (company IG)
+- **Website:** zerupt.com (launching Eid 2026, March 19) · **Linear:** Zerupt (Development, Marketing) · **Socials:** @hussainbuildswithai (personal), @zerupt.erp (company)
 
 ---
 
@@ -17,17 +15,10 @@ The world's first agentic AI retail ERP. Signup to live with real data in under 
 | `zerupt-erp` | `/Zerupt/erp/` | `github.com/HussainBedawala/zerupt-erp.git` | All code — apps, packages, migrations |
 | `zerupt-internal` | `/Zerupt/` (root) | `github.com/HussainBedawala/zerupt-internal.git` | Non-code — CLAUDE.md, study/, agent-os/, .claude/ |
 
-- NEVER mix them. Always `cd` to the correct directory before committing.
-- **Always `cd /Users/hus3ain/Development/Zerupt/erp` before creating branches or committing code.**
+- NEVER mix them. **Always `cd /Users/hus3ain/Development/Zerupt/erp` before branching/committing code.**
 - Both push to `origin main`. Root repo is private.
-
-### Shell — Quote Paths With Brackets
-
-`[locale]` directory causes zsh glob errors: `git add "apps/web/src/app/[locale]/layout.tsx"`
-
-### Commits — Lowercase Subjects Only
-
-commitlint enforces all-lowercase. Body lines must be under 100 characters.
+- **Shell:** quote bracket paths (`[locale]` breaks zsh globs): `git add "apps/web/src/app/[locale]/layout.tsx"`
+- **Commits:** commitlint enforces all-lowercase subjects; body lines under 100 chars.
 
 ### Per-App Commands
 
@@ -52,11 +43,9 @@ pnpm --filter @zerupt/api typecheck    # or test
 
 ## Architecture
 
-- **Modular monolith** — NOT microservices. Solo founder = low ops.
-- Event-driven side effects via NestJS EventEmitter. Future extraction possible per-module.
-- **Multi-tenancy:** Central Admin DB (tenant registry, subscriptions) + per-tenant Postgres DBs.
-- Supabase Auth (centralized), JWT carries tenant_id, TenantContextMiddleware resolves Drizzle connection.
-- **Neon drivers:** Admin DB uses `neon-http`, Tenant DBs use `neon-serverless` (WebSocket pooling).
+- **Modular monolith** — NOT microservices. Solo founder = low ops. Event-driven side effects via NestJS EventEmitter.
+- **Multi-tenancy:** Central Admin DB (tenant registry, subscriptions) + per-tenant Postgres DBs. Supabase Auth (centralized), JWT carries tenant_id, TenantContextMiddleware resolves the Drizzle connection.
+- **Neon drivers:** Admin DB → `neon-http`; Tenant DBs → `neon-serverless` (WebSocket pooling).
 - **NestJS DI tokens:** `TENANT_DB` (per-request), `ADMIN_DB` (singleton).
 
 ## Monorepo Structure
@@ -68,127 +57,79 @@ erp/
   docs/CODEMAPS/   ← module-level file maps (read FIRST before exploring)
 ```
 
-**Codemaps:** `erp/docs/CODEMAPS/{module}.md` — pre-computed indexes of routes, services, DB tables, and file paths per module. Read the relevant codemap before exploring code. Run `/update-codemaps` to regenerate after major changes.
+**Codemaps** (`erp/docs/CODEMAPS/{module}.md`) are pre-computed indexes of routes, services, DB tables, and file paths. Read the relevant codemap before exploring code; `/update-codemaps` regenerates them.
 
 ---
 
 ## Drizzle Migrations
 
-Schema: `packages/db/src/schema/` (tenant) and `packages/db-admin/src/schema/` (admin). Config: `drizzle.config.ts` in each package.
-
-| Var | DB | Purpose |
-|-----|-----|---------|
-| `DATABASE_TENANT_URL` | `zerupt_tenant_dev` | Dev tenant DB |
-| `DATABASE_ADMIN_URL` | `zerupt_admin` | Central admin DB |
+Schema in `packages/db/src/schema/` (tenant) and `packages/db-admin/src/schema/` (admin); each has its own `drizzle.config.ts`. Env: `DATABASE_TENANT_URL` → `zerupt_tenant_dev`, `DATABASE_ADMIN_URL` → `zerupt_admin`.
 
 ```bash
-cd /Users/hus3ain/Development/Zerupt/erp/packages/db  # or db-admin
-npx drizzle-kit generate   # Generate SQL (does NOT apply)
-npx drizzle-kit migrate    # Apply pending migrations
-npx drizzle-kit push       # Push schema directly (dev only)
-npx drizzle-kit check      # Validate schema matches DB
+cd /Users/hus3ain/Development/Zerupt/erp/packages/db   # or db-admin
+npx drizzle-kit generate   # SQL only (no apply)   ·   migrate   # apply pending
+npx drizzle-kit push       # direct push (dev only) ·   check     # validate vs DB
 ```
 
-For data backfills: `generate` → edit the SQL file → `migrate`. CHECK constraints and partial indexes work via `.check()` in schema definitions.
+Data backfills: `generate` → edit the SQL → `migrate`. CHECK constraints / partial indexes via `.check()` in schema.
 
 ---
 
 ## Testing
 
-Jest for API (`*.spec.ts` colocated). Use `--testPathPatterns` (plural, not singular — Jest changed this).
+Jest for API (`*.spec.ts` colocated). **`--testPathPatterns` (plural) silently matches 0 files** in Jest 30 — run `npx jest <filename-pattern>` from `erp/apps/api/` instead, and always confirm "Test Suites: N" in output (`pnpm ... test` exits 0 with no matches via passWithNoTests).
 
 ```bash
-# IMPORTANT: --testPathPatterns (plural) silently finds 0 tests.
-# Use npx jest <pattern> directly from erp/apps/api/:
 cd /Users/hus3ain/Development/Zerupt/erp/apps/api
-npx jest audit --no-coverage          # matches by filename
-npx jest accounts.service --no-coverage
-# Or via pnpm filter (singular --testPathPattern also unreliable in Jest 30):
-pnpm --filter @zerupt/api test -- --testPathPatterns='audit' --no-coverage
+npx jest audit --no-coverage         # matches by filename
 ```
-
-`pnpm --filter @zerupt/api test` exits 0 even with no matches (passWithNoTests). Always verify "Test Suites: N" in output.
 
 ---
 
 ## Codebase Gotchas
 
-- **next-intl `hasLocale`** — not exported in v4.8.3. Use type predicate: `routing.locales.includes(value)`
-- **next-intl `setRequestLocale`** — must call in BOTH `generateMetadata` AND default export
+- **next-intl `hasLocale`** — not exported in v4.8.3. Use `routing.locales.includes(value)`
+- **next-intl `setRequestLocale`** — call in BOTH `generateMetadata` AND default export
 - **next-intl `params`** — must `await params` in Next.js 16
 - **Next.js 16 middleware** — file is `proxy.ts`, not `middleware.ts`
 - **`suppressHydrationWarning`** — only on `<html>`, NEVER on `<body>`
 - **Bidi isolation** — use `apps/web/src/lib/bidi.ts` for user content with unknown direction
-- **Translations** — `en/` is source of truth. Run `pnpm --filter @zerupt/web i18n:check` to verify ar/en parity.
-- **Jest 30 test path** — `--testPathPatterns` (plural) silently matches 0 files. Use `npx jest <filename-pattern>` from `erp/apps/api/` instead. Always check "Test Suites: N" in output to confirm tests actually ran.
-- **Code review** — all findings (CRITICAL→LOW) fixed same session. Write to `erp/.review-findings.md` (gitignored), fix one by one, delete when done.
+- **Translations** — `en/` is source of truth; `pnpm --filter @zerupt/web i18n:check` verifies ar/en parity
+- **Code review** — fix all findings (CRITICAL→LOW) same session. Write to `erp/.review-findings.md` (gitignored), fix one by one, delete when done.
 
 ---
 
-## Defensive UX (CRITICAL)
+## Conventions
 
-Assume users will break everything. MENA/India/SEA retail users are not tech-savvy.
-
-- Every action needs: loading state, error state, empty state, success feedback
-- Destructive actions MUST have confirmation dialogs
-- Warn before data loss (unsaved changes, navigation away)
-- Debounce/disable buttons after click
-- Handle race conditions (double-clicks, concurrent edits, stale data)
-- Validate client-side AND server-side
-- Test with: "what's the dumbest thing a user could do here?"
-
----
-
-## Working Conventions
-
-- pnpm only (not npm/yarn)
-- Conventional commits: `feat:`, `fix:`, `refactor:`, `docs:`, `test:`, `chore:` — all lowercase
-- TypeScript strict mode everywhere
-- CSS logical properties only (RTL/LTR) — never physical `margin-left`, `padding-right`
-- i18n from day one: ar + en
-- Immutable audit logs for every mutation
-- Never hardcode secrets — use environment variables
-- API-first: frontend consumes backend APIs
+- pnpm only · conventional commits (all lowercase) · TypeScript strict everywhere
+- CSS logical properties only (RTL/LTR) — never physical `margin-left`/`padding-right`
+- i18n (ar + en) from day one · immutable audit logs for every mutation · never hardcode secrets · API-first
+- **Defensive UX (CRITICAL):** MENA/India/SEA retail users aren't tech-savvy. Every action needs loading/error/empty/success states; destructive actions need confirmation; warn before data loss; debounce buttons; handle race conditions; validate client + server. Ask "what's the dumbest thing a user could do here?"
 
 ## Brand
 
-| Element | Value |
-|---------|-------|
-| Primary | Violet #7C3AED | Secondary | Teal #14B8A6 | Neutral | Zinc #27272A |
-| Fonts | IBM Plex Sans (Latin + Arabic + Devanagari — same family), IBM Plex Mono |
-| Theme | Dark-first, premium |
-
-Do NOT mix with Inter or Noto Sans (different design origins = visual inconsistency in mixed-script UI).
+Violet `#7C3AED` (primary) · Teal `#14B8A6` (secondary) · Zinc `#27272A` (neutral). Fonts: IBM Plex Sans (Latin + Arabic + Devanagari, same family) + IBM Plex Mono. Dark-first, premium. Do NOT mix with Inter/Noto Sans.
 
 ---
 
 ## Development SOP
 
-**Run `/work` to execute the full development workflow.** It picks up a Linear issue and walks through: research → plan → TDD → review → verify → commit → study → content check.
+- **`/work`** — full dev workflow from a Linear issue: research → plan → TDD → review → verify → commit → study → content check.
+- **`/website`** — website issues: design (Stitch MCP), copy (content-engine), build, review (website-review skill), optional Remotion video.
 
-**Run `/website` for website issues.** Handles design (Stitch MCP), copy (content-engine), build, review (website-review skill), and optional Remotion video.
+### Linear Workflow
 
-## Linear Workflow
-
-- **Development team:** engineering work linked to Phase projects
-- **Marketing team:** content work. Statuses: Idea > Draft > Ready > Posted > Analyzed
-- Dev tasks that ship visible features → create linked Marketing issue
-
-### Linear Labels
+Development team → engineering linked to Phase projects. Marketing team → content (Idea > Draft > Ready > Posted > Analyzed). Dev tasks shipping visible features → create a linked Marketing issue.
 
 | Category | Labels | Rules |
 |----------|--------|-------|
 | **Standalone** | `Frontend`, `Backend`, `Database`, `AI Service`, `Bug`, `Improvement`, `Feature` | Combine freely |
-| **Type** (pick ONE) | `Design/UX`, `Documentation`, `Testing`, `Security`, `Infrastructure` | Exclusive group |
-| **Module** (pick ONE) | `Settings`, `Accounting`, `Inventory`, `POS`, `Sales`, `Purchase`, `Onboarding`, `Dashboard`, `Reports`, `Search`, `AI/Agents` | Exclusive group |
+| **Type** (pick ONE) | `Design/UX`, `Documentation`, `Testing`, `Security`, `Infrastructure` | Exclusive |
+| **Module** (pick ONE) | `Settings`, `Accounting`, `Inventory`, `POS`, `Sales`, `Purchase`, `Onboarding`, `Dashboard`, `Reports`, `Search`, `AI/Agents` | Exclusive |
 
----
+### /work Reference Data
 
-## /work Reference Data
-
-### Phase → Spec Path
-
-| Phase | Spec | Also read |
+| Phase | Spec (`agent-os/product/{path}`) | Also read |
 |-------|------|-----------|
 | 0 | `tech-stack.md` + `roadmap.md` | `erp/.env.example` |
 | 1 | `settings-admin/` | |
@@ -198,17 +139,11 @@ Do NOT mix with Inter or Noto Sans (different design origins = visual inconsiste
 | 5 | `onboarding/` | |
 | 6 | `dashboard/` + `reports/` | |
 | 7 | `agents/` | |
-| Auth | any | `user-auth-management/` |
+| Auth | `user-auth-management/` (any phase) | |
 
-All specs at `agent-os/product/{path}`. Always read the spec before building.
+Always read the spec before building. **Branch:** `<prefix>/<DEV-XX>-<short-kebab>` where prefix is `phase-0`…`phase-8`, `phase-4a/4b/4c`, or `website`.
 
-### Phase → Branch Prefix
-
-`phase-0` through `phase-8`, `phase-4a/4b/4c`, `website`. Format: `<prefix>/<DEV-XX>-<short-kebab>`
-
-### Reviewer Dispatch (by label)
-
-| Label | Additional reviewers |
+| Reviewer dispatch (by label) | |
 |-------|---------------------|
 | Always | `code-reviewer` |
 | Frontend | + `frontend-reviewer` |
@@ -218,30 +153,16 @@ All specs at `agent-os/product/{path}`. Always read the spec before building.
 | AI Service/Python | + `python-reviewer` |
 | Accounting | + `accounting-reviewer` |
 
-### Coverage Targets
+**Coverage:** 80%+ general · 100% financial/accounting · 100% auth/security. **Study topics:** `study/<phase>/<topic-kebab>/README.md` (root repo), grouped by topic.
 
-General: 80%+ | Financial/accounting: 100% | Auth/security: 100%
+---
 
-### Study Topics
+## gstack
 
-`study/<phase>/<topic-kebab>/README.md` in root repo. Group by topic, not milestone.
+Use the `/browse` skill for ALL web browsing — never `mcp__claude-in-chrome__*`. gstack skills (`/office-hours`, `/plan-eng-review`, `/qa`, `/ship`, `/codex`, etc.) self-register and appear in the skills list; don't enumerate them here.
 
 ---
 
 ## Self-Improvement Protocol
 
-This file is a living document. Update it when:
-
-1. **A gotcha is discovered** — add to Codebase Gotchas (e.g. library version quirks, Next.js behavior)
-2. **A convention is established** — add to Working Conventions (e.g. "always use X pattern for Y")
-3. **A gotcha is fixed upstream** — remove it (don't keep stale workarounds)
-4. **A phase completes** — update Development Phases status if tracked here
-5. **Tech stack changes** — update the table (e.g. Jest → Vitest migration)
-6. **The /work flow changes** — update the reference data tables, not prose descriptions
-
-**Rules for updating:**
-- Keep under 250 lines. If it grows beyond, something should move to `.claude/rules/` or `agent-os/`.
-- Prefer tables over prose. Tables are faster for AI to parse.
-- Never duplicate what's in `.claude/rules/` (coding style, security, testing patterns are there).
-- Never duplicate what's in command files (the `/work` and `/website` commands own their own logic).
-- This file owns: identity, architecture decisions, gotchas, reference data, and conventions.
+Living document — update when: a gotcha is found (add) or fixed upstream (remove), a convention is set, the `/work` flow changes (update tables, not prose). Keep under 250 lines, prefer tables over prose. Never duplicate `.claude/rules/` (coding/security/testing) or command-file logic. This file owns: identity, architecture decisions, gotchas, reference data, conventions.

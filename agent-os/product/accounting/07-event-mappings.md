@@ -4,6 +4,16 @@ Every business event and its exact journal entry. Account codes reference `04-ch
 
 **Convention:** FC = transaction currency amount. FN = functional currency equivalent.
 
+> **COGS sourcing (DEV-270):** The **revenue side** of a sale (cash/AR, revenue, tax)
+> is posted from the sale event itself (`pos.transaction.completed`,
+> `sales.invoice.confirmed`). The **COGS side** (DR COGS / CR Inventory, and its
+> reversal on returns) is the single responsibility of the **inventory costing
+> engine**, which owns the WAC/FIFO cost and emits separate `inventory.sale` /
+> `inventory.sale_return` accounting events. The COGS lines shown under the sale
+> events below are therefore posted via those `inventory.*` events, NOT duplicated
+> in the sale's own journal entry. Revenue JE and COGS JE share `sourceDocumentId`
+> and `correlationId` for reconciliation.
+
 ---
 
 ## POS Events

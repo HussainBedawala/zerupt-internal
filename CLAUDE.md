@@ -108,7 +108,7 @@ npx jest audit --no-coverage         # matches by filename
 
 ## Brand
 
-Violet `#7C3AED` (primary) · Teal `#14B8A6` (secondary) · Zinc `#27272A` (neutral). Fonts: IBM Plex Sans (Latin + Arabic + Devanagari, same family) + IBM Plex Mono. Dark-first, premium. Do NOT mix with Inter/Noto Sans.
+Warm cream `#F9F7F5` (canvas) · Ink `#141310` (text/primary) · Citron `#979C1A` (the one accent) · Olive `#747818`/`#454729` (data viz). Citron is **fill/accent only** — never text on light (fails WCAG); citron-toned text uses olive-deep. Primary actions are ink. Fonts: IBM Plex Sans (Latin + Arabic + Devanagari, same family) + IBM Plex Mono. Dark-first, premium. Do NOT use violet/teal (old palette) or mix with Inter/Noto Sans. **Source of truth: `erp/DESIGN.md`** + tokens in `erp/apps/web/src/app/globals.css`.
 
 ---
 

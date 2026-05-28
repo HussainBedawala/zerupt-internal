@@ -148,6 +148,8 @@ Check if this issue's changes warrant a codemap update by reviewing `git diff ma
 
 If update needed, say: **"This issue added [new routes/tables/module]. Run `/update-codemaps` to keep indexes fresh? (yes / skip)"**
 
+**Migration reminder:** if this issue added a migration file under `packages/db/drizzle/` (tenant schema), flag it: **"This issue added migration `NNNN`. Existing tenant DBs are NOT migrated by code deploy — run `pnpm --filter @zerupt/api migrate:tenants --apply` at deploy time (PHASE 10). See `erp/docs/runbooks/migrate-tenants.md`."** This is a nudge only — do not run it inside `/work` (it's a fleet/release operation, not a per-issue step).
+
 ## PHASE 9: WRAP
 
 1. **Study topics**: write to `study/<phase>/<topic-kebab>/README.md` in root `/Zerupt/` repo. Concepts behind what was built, not implementation steps. Commit + push root repo.
@@ -159,7 +161,20 @@ If update needed, say: **"This issue added [new routes/tables/module]. Run `/upd
 
 `/work` ends at PR. To deploy: one-time `/setup-deploy`, then per release run gstack
 `/land-and-deploy` (merge → CI → deploy → verify) → `/canary` (post-deploy error/perf
-watch). For the Pacific Co go-live, the import **reconciliation gate** (eng plan §7:
+watch).
+
+**Tenant migration step (run when the release includes a new `packages/db/drizzle/` migration):**
+code auto-deploy does NOT migrate existing tenant DBs. After the code is deployed and
+before any "live" claim:
+1. `pnpm --filter @zerupt/api build`
+2. `pnpm --filter @zerupt/api migrate:tenants` — dry-run; confirm which tenants are behind.
+3. `pnpm --filter @zerupt/api migrate:tenants --apply` — apply pending migrations per tenant.
+4. Re-run the dry-run to confirm every tenant reports up-to-date.
+Runbook: `erp/docs/runbooks/migrate-tenants.md`. Do NOT run two `--apply` concurrently.
+For lock-heavy migrations (FK validation on populated high-write tables), pick a low-traffic
+window and notify the affected tenant first (manual — not automated).
+
+For the Pacific Co go-live, the import **reconciliation gate** (eng plan §7:
 trial balance / AR / AP / stock / bank all tie to Merpec, accountant signed off) is a
 hard gate BEFORE any "live" claim — never deploy a migration that hasn't reconciled.
 

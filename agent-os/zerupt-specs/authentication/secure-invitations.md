@@ -1,10 +1,8 @@
 # Secure Invitations
 
-## Objectives
-
-- Enable controlled onboarding without sharing credentials
-- Prevent token replay, brute-force acceptance, and stale invites
-- Keep invite actions fully auditable
+> Invite-token security model. Lifecycle states and admin UX live in
+> `agent-os/product/settings-admin/02-team-user-lifecycle.md` (Invitation Entity). This file
+> covers only the security/anti-abuse contract for the token itself.
 
 ## Invite Token Model
 
@@ -13,21 +11,6 @@
 - Short expiry window (recommended: 24-72 hours)
 - Token bound to tenant and invited email
 - Optional IP/device risk checks on acceptance
-
-## Invite States
-
-1. `issued`
-2. `delivered`
-3. `accepted`
-4. `expired`
-5. `revoked`
-
-## Admin Controls
-
-- Create invite with predefined role and branch scope
-- Resend invite with rate limits
-- Revoke invite before acceptance
-- Extend expiration only with explicit admin action
 
 ## Anti-Abuse Controls
 

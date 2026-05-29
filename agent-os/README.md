@@ -36,20 +36,21 @@ Each module has a README + numbered spec files covering architecture, data model
 
 ## User & Auth Management
 
-Cross-cutting control layer (not a separate module).
+Cross-cutting control layer (not a separate module). Product rules for users, roles, and
+invitations live in **Settings & Admin** (`product/settings-admin/02`, `03`). As-built auth
+specs and auth ADRs live in **`zerupt-specs/authentication/`**.
 
 | File | Purpose |
 |------|---------|
-| [user-auth-management/README.md](user-auth-management/README.md) | Overview |
-| [user-auth-management/architecture.md](user-auth-management/architecture.md) | Trust boundaries, JWT claims, Supabase Auth |
-| [user-auth-management/user-lifecycle.md](user-auth-management/user-lifecycle.md) | Invited → Active → Suspended → Offboarded |
-| [user-auth-management/authentication.md](user-auth-management/authentication.md) | Login methods, sessions, MFA, recovery |
-| [user-auth-management/authorization-rbac.md](user-auth-management/authorization-rbac.md) | Role/permission model, enforcement points |
-| [user-auth-management/secure-invitations.md](user-auth-management/secure-invitations.md) | Invitation model, abuse controls |
-| [user-auth-management/security-controls.md](user-auth-management/security-controls.md) | Encryption, rate limiting, IP restrictions |
-| [user-auth-management/compliance-and-regionalization.md](user-auth-management/compliance-and-regionalization.md) | GDPR, data residency |
-| [user-auth-management/operations-runbook.md](user-auth-management/operations-runbook.md) | Incident procedures, support playbooks |
-| [user-auth-management/provider-decision.md](user-auth-management/provider-decision.md) | Supabase Auth vs NextAuth vs Clerk |
+| [product/settings-admin/02-team-user-lifecycle.md](product/settings-admin/02-team-user-lifecycle.md) | User/invitation entities, state machine, branch & session rules |
+| [product/settings-admin/03-roles-permissions-policy.md](product/settings-admin/03-roles-permissions-policy.md) | Role/permission model, evaluation order, approval matrix |
+| [zerupt-specs/authentication/architecture.md](zerupt-specs/authentication/architecture.md) | As-built: token storage, security chain, route protection |
+| [zerupt-specs/authentication/auth-flows.md](zerupt-specs/authentication/auth-flows.md) | As-built: signup, login, OAuth, refresh, 401 retry, logout |
+| [zerupt-specs/authentication/secure-invitations.md](zerupt-specs/authentication/secure-invitations.md) | Invite-token security model, anti-abuse, audit events |
+| [zerupt-specs/authentication/security-controls.md](zerupt-specs/authentication/security-controls.md) | Detection rules, security test expectations |
+| [zerupt-specs/authentication/compliance-and-regionalization.md](zerupt-specs/authentication/compliance-and-regionalization.md) | GDPR, retention, regional rollout, SCIM path |
+| [zerupt-specs/authentication/operations-runbook.md](zerupt-specs/authentication/operations-runbook.md) | Incident playbooks, break-glass, key rotation |
+| [zerupt-specs/authentication/provider-decision.md](zerupt-specs/authentication/provider-decision.md) | ADR: Supabase Auth vs NextAuth vs Clerk |
 
 ---
 

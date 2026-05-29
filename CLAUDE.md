@@ -139,7 +139,7 @@ Development team → engineering linked to Phase projects. Marketing team → co
 | 5 | `onboarding/` | |
 | 6 | `dashboard/` + `reports/` | |
 | 7 | `agents/` | |
-| Auth | `user-auth-management/` (any phase) | |
+| Auth | `zerupt-specs/authentication/` (as-built) + `settings-admin/` (user/RBAC rules) | any phase |
 
 Always read the spec before building. **Branch:** `<prefix>/<DEV-XX>-<short-kebab>` where prefix is `phase-0`…`phase-8`, `phase-4a/4b/4c`, or `website`.
 

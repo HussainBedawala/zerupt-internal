@@ -125,18 +125,38 @@ provisioning, so the owner can test the product solo immediately after onboardin
 
 ## Step 6: POS Setup
 
-| Question | Input Type | Maps To |
-|----------|-----------|---------|
-| Will you use Point of Sale? | Yes/No | POS module activation |
-| POS terminals per branch | Number per branch | Register count |
-| Receipt printer type | Dropdown | Thermal 80mm, Thermal 58mm, A4, None (email only) | Receipt template config |
-| Bilingual receipts (Arabic + English)? | Yes/No | Receipt `isRtl` + bilingual template |
-| Payment methods accepted | Checkbox | Cash, K-Net, Visa/MC, Store Credit, Gift Cards | Payment method configuration |
+`usePOS` is a hard gate with no industry-derived default — the owner makes an explicit
+yes/no choice (DEV-292, 2026-05-30).
+
+| Question | Input Type | Validation | Maps To |
+|----------|-----------|------------|---------|
+| Will you use Point of Sale? | Yes/No | Required, no default | POS module activation |
+| How many checkout points do you have? | Number | Optional, 1–20, defaults to 1, skippable | `terminalsCount` (register estimate) |
+| Receipt printer type | Dropdown | Thermal 80mm, Thermal 58mm, A4, None (email only) | Receipt template config (tenant-wide) |
+| Bilingual receipts (Arabic + English)? | Yes/No | — | Receipt `isRtl` + bilingual template |
+| Payment methods accepted | Checkbox | ≥1 required, no duplicates, max 5 | Payment method configuration |
+
+### Payment methods (country-aware)
+
+Universal everywhere: **Cash, Visa/MC, Store Credit, Gift Cards**. The local debit rail
+**K-Net** is offered (and accepted server-side) **only when country = KW**. Other local
+rails (mada, Benefit, UPI, DuitNow, NETS, QRIS…) are a tracked follow-up — added per
+country once validated, not guessed now.
 
 ### Conditional Logic
 
-- If `usePOS = false`: skip entire step, no POS configuration created
-- If `bilingualReceipts = true`: set receipt template to bilingual layout
+- If `usePOS = false`: skip entire step, persist `{ usePOS: false }`, no POS config created.
+- If `bilingualReceipts = true`: set receipt template to bilingual layout.
+- Terminal counts are a single tenant-wide estimate (not per-branch) to keep self-serve
+  onboarding frictionless; exact per-device registers are configured later in POS settings
+  when a device first connects. Printer type is likewise a single tenant-wide value.
+
+### Design decisions (DEV-292, 2026-05-30)
+
+- **Single `terminalsCount`, not per-branch** — per-branch entry is a fiddly matrix mid-
+  onboarding and gates nothing (registers provision on demand when a device connects).
+- **Country fence on K-Net** — server-side, not just UI: requesting `knet` with country ≠ KW
+  is rejected (400); if step 1 is absent the fence fails closed as a 409 prerequisite error.
 
 ## Step 7: Data Sources
 
@@ -181,8 +201,8 @@ Step 4: Tax (conditional on country)
   |
   v
 Step 5: Team
-  -> Creates role entities
-  -> Queues invitations (sent after go-live)
+  -> Captures expectedUserCount only (license metadata)
+  -> Roles/invites de-scoped to Settings (see Step 5 notes)
   |
   v
 Step 6: POS
@@ -231,4 +251,4 @@ Answers are saved on every step transition (Next / Back) so progress is never lo
 |----------|--------|
 | Questionnaire answers → Configuration Pipeline | `02-configuration-pipeline.md` consumes the `answers` JSON |
 | Step 7 answers → Data Import phase | `03-ai-import-assistant.md` uses data source selections |
-| Step 5 invitations → Go-Live | `04-go-live.md` sends queued invitations |
+| Step 6 POS answers → Configuration Pipeline | `02-configuration-pipeline.md` creates registers + receipt templates when `usePOS=true` |

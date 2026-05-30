@@ -83,7 +83,7 @@ Conditionally rendered based on `tenant.countryCode`.
 |---------|---------|----------------|
 | KW | "Kuwait currently has no VAT. We'll set up your accounts VAT-ready." | Tax profile with `ZeroRated` default |
 | QA | "Qatar currently has no VAT. We'll configure VAT-ready." | Tax profile with `ZeroRated` default |
-| OM | "Oman currently has no VAT. We'll configure VAT-ready." | Tax profile with `ZeroRated` default |
+| OM | "Oman has 5% VAT. Are you VAT-registered?" | Tax profile with 5% standard rate |
 | SA | ZATCA registration status + VAT number | Tax profile with 15% standard rate, ZATCA flags |
 | AE | "UAE has 5% VAT. Are you VAT-registered?" | Tax profile with 5% standard rate |
 | BH | "Bahrain has 10% VAT. Are you VAT-registered?" | Tax profile with 10% standard rate |

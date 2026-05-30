@@ -168,6 +168,16 @@ country once validated, not guessed now.
 | Opening balances? | Yes/No | Triggers opening balance import |
 | Current system | Card select | Excel/Google Sheets, Another ERP (which?), Paper-based, Nothing | Sets import expectations and AI mapping hints |
 
+### Design decisions (DEV-292, 2026-05-30)
+
+- **Import flags are required booleans** — explicit yes/no per source, no "skipped"
+  ambiguity, so the data-import phase has a clean signal of intent.
+- **`currentSystemName` is optional free-text** (`another_erp` → which one). Kept as-is
+  regardless of `currentSystem` (no server-side clearing) and feeds AI column-mapping
+  hints downstream (DEV-293). Safe charset only (letters/numbers + `. / & -`), max 60.
+- Answers-only step: no migration, endpoint, seed, or cross-validation fence — entities
+  and import jobs materialize later in the configuration/import phases.
+
 ---
 
 ## Decision Tree (Appendix A from new-approach.md)

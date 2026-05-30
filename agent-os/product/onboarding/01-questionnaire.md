@@ -107,17 +107,21 @@ Conditionally rendered based on `tenant.countryCode`.
 
 | Question | Input Type | Maps To |
 |----------|-----------|---------|
-| How many people will use the system? | Number | License estimation metadata |
-| What roles do you need? | Checkbox | Owner (auto, not removable), Admin, Accountant, Sales Manager, Salesperson, Cashier, Warehouse Staff, Viewer | Pre-built role templates |
-| Invite team members now? | Optional repeater | Email + Role + Branch assignment | `Invitation` entities (queued, sent after go-live) |
+| How many people will use the system? | Number (1–500) | License estimation metadata |
 
-### AI Permission Suggestions
+That is the entire onboarding step. The Owner role is already seeded at tenant
+provisioning, so the owner can test the product solo immediately after onboarding.
 
-When the user selects roles, the system suggests permission sets based on the tenant's industry and module configuration. For example:
-- If POS is not enabled, Cashier role permissions exclude POS-specific keys
-- If multi-branch is enabled, branch-scoped permissions are suggested
+### Deliberately NOT in onboarding (de-scoped 2026-05-30, DEV-292)
 
-The user can accept the suggested permissions or customize them post-onboarding.
+- **Inviting team members** — adds friction during a self-serve free trial; owners
+  overwhelmingly want to test the product themselves before bringing in staff. Users
+  are added later from **Settings → Users** (existing Supabase invite + `userRoles` flow).
+- **Role selection / role templates / AI permission suggestions** — role definition
+  (name, permission keys, branch scope, member assignment) is inherently a Settings/RBAC
+  concern and is fully dynamic there via the existing `roles` module. Building static
+  onboarding "role templates" would duplicate that and quickly drift. The owner customises
+  roles in **Settings → Roles & Permissions** post-onboarding.
 
 ## Step 6: POS Setup
 

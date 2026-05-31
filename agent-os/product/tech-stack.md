@@ -227,6 +227,36 @@ Each plugin implements:
 - **LiteLLM** for provider portability (OpenAI/Anthropic/local).
 - **pgvector** inside each tenant DB (no external vector service by default).
 
+### AI cost & model-routing philosophy (decided)
+
+We are AI-native in *experience and outcome*, not in token spend. The intelligence is in
+the system's behaviour (it does the work, it learns, it advises) — delivered by the right
+tool at each layer, not by routing every action through an LLM. Three rules:
+
+1. **Deterministic-first.** Where a task is repetitive and exact (column mapping, validation,
+   GL posting, role binding), resolve it deterministically. The LLM is the *last rung* for
+   the ambiguous tail only. See the import resolution ladder in
+   `onboarding/03-ai-import-assistant.md`. The LLM never decides anything that posts to the
+   ledger.
+2. **Learn, don't re-infer.** Cache/learn results (e.g. source-fingerprint mapping cache) so
+   repeated work trends toward zero cost. The system gets *cheaper and smarter* with scale —
+   the opposite of a legacy ERP that makes you redo the work every time.
+3. **Route by task, not one model.** LiteLLM routing map:
+   - **Extraction / low-reasoning** (import mapping, fix suggestions, classification) →
+     **Claude Haiku** — cheap, fast.
+   - **Reasoning / judgment** (COA reconciliation advice, Copilot NLQ + "why?",
+     the "Next Move" advisor) → **Claude Sonnet**.
+   Default provider **Anthropic (Claude)**; LiteLLM keeps us portable. Never run a reasoning
+   model on what a regex resolves.
+
+**Cost guardrails:** per-import/per-request LLM call + token telemetry (Sentry/PostHog); a
+soft per-onboarding budget (~$1) whose breach signals a deterministic-path gap, not expected
+spend. Where the LLM is genuinely the right tool (advice, Copilot, the Next Move) we are
+*generous* with model quality — the discipline elsewhere is what funds it.
+
+**Graceful degradation everywhere:** if the AI service is down, deterministic paths keep
+working and LLM-only features fall back to templates/manual UI (see `agents/01-architecture.md`).
+
 ---
 
 ## 7) Reporting Platform Capability

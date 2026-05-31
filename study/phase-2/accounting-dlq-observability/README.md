@@ -60,6 +60,10 @@ Dead-lettered events are replayed by resetting status to `pending` with 0 attemp
 
 Events dead-lettered from the `@OnEvent` path (listener failure) vs the outbox poller path (processing failure) both end up in the same table and are indistinguishable at replay time — intentionally. The replay mechanism is identical either way.
 
+## RBAC on the DLQ Admin API
+
+`GET /tenant/accounting/dead-letters` and `POST /tenant/accounting/dead-letters/:id/retry` require `accounting.journal.read` and `accounting.journal.post` respectively. Any authenticated tenant user can see their tenant's accounting data — but only a user with journal posting rights can trigger a replay. This is correct because a replay posts a JE, and the same permission gate that protects manual JE posting should gate replays.
+
 ## What's NOT Covered
 
 - **Prometheus/StatsD counter**: the issue's minimum viable option. Not implemented — no metrics infrastructure is wired yet. The DLQ table serves as the observable signal: non-empty `dead_letter` rows = something failed.

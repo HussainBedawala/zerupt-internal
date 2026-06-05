@@ -2,28 +2,55 @@
 
 > What works offline, how transactions queue locally, and how sync resolves conflicts on reconnect.
 
-## Offline Capabilities
+## v1 Scope (DEV-394, decided 2026-06-05)
+
+**Architecture decision: one code path, local-first always.** The register cart never
+waits on the network — every cart action hits IndexedDB; every completed sale (and shift
+open/close event) enters the sync queue. Online just means the queue drains immediately.
+The server-side draft-cart API remains for back-office/audit but the register no longer
+depends on it mid-sale.
+
+- **Money:** client computes totals via a shared money module (`packages/shared`,
+  extracted from the API's POS totals/rounding code — single source, tested for parity).
+  Server **always recomputes** at sync; a mismatch is stored and flagged for review,
+  never silently accepted and never rejected (the sale already happened — cash is in
+  the drawer).
+- **Idempotency:** every offline-created entity carries a client-generated UUID
+  (`clientId`); server enforces a unique `(tenant_id, client_id)` index and returns the
+  existing record on duplicate replay.
+
+| In scope v1 | Online-only v1 (reason) |
+|---|---|
+| Full sale lifecycle (scan, line edit, discounts, hold/recall, cash + card pay) | Returns — the returns feature does not exist yet at all; will reuse this queue when built |
+| Shift open/close offline (queued events) | Void of an already-synced sale — server-side GL/inventory reversal can't be reasoned about offline |
+| Z-report computed locally from local data | Store credit / gift card tenders — stale balances allow double-spend across registers |
+| Void of an unsynced local sale (= remove from queue, confirmed + locally audited) | Customer lookup / creation — low frequency at register; additive follow-up on the same IndexedDB layer |
+| Catalog/price/tax cache + offline barcode scan | Coupon codes — deferred with discounts/coupons feature |
+| Offline receipts (local data, `OFF-` number) | |
+
+## Offline Capabilities (target; v1 column per scope above)
 
 | Feature | Offline Support | Notes |
 |---------|----------------|-------|
 | New sale transactions | Full | Prices, tax from local cache |
-| Returns (with receipt) | Full | If original transaction is in local cache |
+| Returns (with receipt) | Full (post-v1) | If original transaction is in local cache |
 | Returns (without receipt) | No | Requires server lookup |
 | Hold / Recall | Full | Local to register |
 | Void (before payment) | Full | |
-| Void (after payment) | Full | Manager PIN validated locally |
+| Void (after payment, unsynced) | Full | Removes from local queue; locally audited |
+| Void (after sync) | No (v1) | Online-only |
 | Cash payments | Full | |
 | Card payments | Depends | Terminal may have offline mode |
-| Store credit payments | Limited | Uses last-synced balance, reconciled on sync |
-| Gift card payments | Limited | Uses last-synced balance, reconciled on sync |
+| Store credit payments | No (v1) | Stale balance = double-spend risk |
+| Gift card payments | No (v1) | Stale balance = double-spend risk |
 | Discounts | Full | Thresholds + manager PINs cached locally |
-| Coupon codes | Limited | Uses locally cached coupon data |
+| Coupon codes | No (v1) | Deferred with coupons feature |
 | Price lookup | Full | Price lists cached locally |
 | Stock display | Stale | Shows last-synced stock levels |
-| Shift open/close | Full | Synced on reconnect |
-| Z-report generation | Full | Local calculation |
-| Customer lookup | Limited | Recently used customers cached |
-| New customer creation | Queued | Created on sync |
+| Shift open/close | Full | Queued events, synced on reconnect |
+| Z-report generation | Full | Local calculation via shared money module |
+| Customer lookup | No (v1) | Recently-used cache is a post-v1 follow-up |
+| New customer creation | No (v1) | Post-v1, queued on sync |
 
 ## Local Data Cache
 
@@ -88,13 +115,15 @@ Transactions created offline are stored in a local queue.
 | Duplicate `localId` | Idempotent — server rejects duplicate, returns existing record |
 | Customer not found | New customer record created from offline data |
 
-## Transaction Numbering
+## Transaction Numbering (decided 2026-06-05)
 
-1. Online: server assigns sequential `transactionNumber`
-2. Offline: POS generates temporary number `OFF-{registerId}-{localSequence}`
-3. On sync: server assigns final sequential number (gaps are acceptable)
-4. Receipt shows offline number; reprint after sync shows final number
-5. Both numbers stored for audit trail
+1. Device assigns `OFF-{registerCode}-{shiftNumber}-{localSequence}` at completion time
+   (local-first: assigned even when online, since the cart never waits on the network)
+2. On sync: server assigns the final sequential `transactionNumber` under the existing
+   per-shift advisory lock (gaps are acceptable)
+3. Receipt shows the offline number; reprint after sync shows the final number
+4. Both numbers stored for audit trail (`offline_number` column alongside
+   `transaction_number`; `client_id` UUID is the idempotency key)
 
 ## Offline Detection
 

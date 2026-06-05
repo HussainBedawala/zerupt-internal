@@ -43,8 +43,11 @@ CR  Merchandise Inventory (1141)      [same]
 DR  Sales Returns (4200)              [net return amount]
 DR  Output Tax Payable (2131)         [tax on returned items]
 CR  Cash Register (1112)              [cash refund]
-CR  Customer Deposits (2151)          [if refund to store credit]
+CR  Store Credit Liability (2153)     [if refund to store credit]
 ```
+> **Symmetry invariant:** store-credit issuance (CR 2153 here) must use the same account
+> as store-credit redemption (DR 2153 in `pos.transaction.completed` / `pos.void.completed`).
+> 2151 Customer Deposits is a separate obligation (advance receipts) and must not be used here.
 
 **COGS reversal:**
 ```

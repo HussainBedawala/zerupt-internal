@@ -1,0 +1,163 @@
+AL-NOOR MOBILES TEST DATA GENERATION LOG
+========================================
+
+Generated: 2026-06-04 12:56 UTC
+Seed: 42 (deterministic)
+Generator: generate.mjs (Node.js, no dependencies)
+
+FINAL FILE MANIFEST
+===================
+
+File                              Data Rows    Size      Purpose
+────────────────────────────────────────────────────────────────────────────────
+01-categories.csv                    24       1.5 KB    Product taxonomy (25 categories)
+02-products.csv                    3000       353 KB    Master product list (400 phones + 2600 accessories)
+03-customers.csv                    799       52 KB     Customer ledger (AR opening balances)
+04-suppliers.csv                     17       2.0 KB    Supplier ledger (AP opening balances)
+05-opening-stock-hawally.csv       2205       73 KB     Hawally Main store inventory (2200 SKU lines)
+06-opening-stock-salmiya.csv       1405       40 KB     Salmiya store inventory (1400 SKU lines)
+07-imei-register.csv                899       99 KB     Serialized goods register (IMEIs)
+08-trial-balance.csv                 11       456 B     GL opening balance trial balance
+09-customers-windows1256.csv         50       3.2 KB    Customer subset in Windows-1256 encoding
+
+────────────────────────────────────────────────────────────────────────────────
+TOTAL DATA POINTS:   ~9,410 ledger + inventory records
+TOTAL FILE SIZE:     ~620 KB
+
+VALIDATION RESULTS
+==================
+
+✓ Trial Balance:
+  Total Debits:          KWD 2,106,630.529
+  Total Credits:         KWD 2,106,630.529
+  Balanced:              YES (difference = 0.000)
+
+✓ Reconciliation Checks:
+  Customer AR sum:       KWD 41,602.209 (20 rows with debit balance)
+  Trial Balance AR:      KWD 41,602.209 → MATCH
+  
+  Supplier AP sum:       KWD 81,525.000 (10 rows with credit balance)
+  Trial Balance AP:      KWD 81,525.000 → MATCH
+  
+  Hawally inventory:     KWD 1,068,977.435 (2205 SKU lines × unit cost)
+  Salmiya inventory:     KWD 666,050.885 (1405 SKU lines × unit cost)
+  Total inventory:       KWD 1,735,028.320
+  Trial Balance inv:     KWD 1,735,028.320 → MATCH
+
+✓ CSV Integrity:
+  All files UTF-8 with BOM except 09-customers-windows1256.csv (intentional)
+  All headers present and correctly formatted
+  All data rows valid (no truncation, proper escaping)
+
+INTENTIONAL MESS SUMMARY
+========================
+
+02-products.csv (3000 rows):
+  ✓ ~10 duplicate SKUs (tests merge vs skip)
+  ✓ ~15 rows with empty Purchase Rate (tests cost default)
+  ✓ ~8 rows with "KD" currency prefix in price (tests decimal parsing)
+  ✓ ~8 rows missing Barcode (tests optional field)
+  ✓ 2 fully empty rows (tests row-skip logic)
+  ✓ ~5 names with trailing whitespace (tests trim requirement)
+
+03-customers.csv (799 rows):
+  ✓ Inconsistent phone formats: +965 9XXX XXXX, 5XXXXXXX, 965-6XXXXXXX
+  ✓ ~5 duplicate customer names (found: exact)
+  ✓ Tally-style credit balances: (320.750) notation
+  ✓ Mixed thousands separators: some with commas, some without
+  ✓ ~60% have Arabic names, ~40% have email, ~50% have Civil ID
+
+05/06-opening-stock-*.csv:
+  ✓ ~6 rows referencing non-existent SKUs (orphaned inventory)
+  ✓ ~4 rows with quantity = 0
+  ✓ 2 duplicate (SKU, warehouse) pairs
+
+07-imei-register.csv:
+  ✓ 900 valid 15-digit IMEIs (no import destination yet)
+  ✓ Dates: 2025-06 to 2026-05 (realistic opening stock window)
+
+09-customers-windows1256.csv:
+  ✓ Windows-1256 encoding (tests charset handling)
+
+DATA CHARACTERISTICS
+====================
+
+Product Coverage:
+  • iPhone 15/16/17 (Pro/Pro Max/Plus variants) — 28 models
+  • Samsung Galaxy S24/S25 (Ultra/Pro/standard), A-series — 18 models
+  • Xiaomi, Huawei, Honor, Oppo, Realme, Nothing, Tecno, OnePlus — 24 models
+  • TOTAL PHONE MODELS: 70+ (with storage & color variants = 400 SKUs)
+  • ACCESSORY TYPES: Cases, chargers, cables, protectors, power banks, earbuds, memory cards, mounts, fans, speakers — 2600 SKUs
+
+Price Range (KWD, 3dp):
+  • Phones: 39.500 – 499.000 KWD
+  • Accessories: 0.250 – 35.000 KWD
+  • 3dp variance: .000, .250, .500, .750, .900 (realistic retail)
+
+Geographic Coverage:
+  • Kuwait: Primary market (all 800 customers, 2 stores)
+  • GCC Distributors: 18 suppliers (Saudi, Dubai, Kuwait wholesale networks)
+  • Localization: Arabic product names (~70%), Arabic account names, RTL text
+
+INVENTORY STRUCTURE
+===================
+
+Hawally Main Store:
+  • 2205 SKU lines
+  • 1,068,977.435 KWD total value
+  • Mix of phones (1–8 each) and accessories (5–120 each)
+
+Salmiya Store:
+  • 1405 SKU lines
+  • 666,050.885 KWD total value
+  • Subset of Hawally (fewer lines, less stock)
+
+IMEI Coverage:
+  • 900 unique 15-digit IMEIs
+  • ~15% of opening phone quantities have IMEI pre-registered
+  • Realistic serialized goods tracking (not every phone pre-registered)
+
+REPRODUCIBILITY
+================
+
+To regenerate with identical data:
+  $ cd /Users/hus3ain/Development/Zerupt/agent-os/product/user-journeys/test-data/yousef
+  $ node generate.mjs
+
+The seeded PRNG (seed=42) ensures deterministic output.
+
+To modify:
+  1. Edit CONFIG at top of generate.mjs
+  2. Change phone models in PHONE_MODELS array
+  3. Adjust probability thresholds for mess (rng.int checks)
+  4. Keep same seed for reproducibility, or new seed for different data
+
+USAGE RECOMMENDATIONS
+=====================
+
+Import Test Sequence:
+  1. 01-categories.csv           → Category tree + Arabic metadata
+  2. 02-products.csv             → Product master list (test mess)
+  3. 03-customers.csv            → AR ledger + phone normalization
+  4. 04-suppliers.csv            → AP ledger + payment terms
+  5. 05/06-opening-stock-*.csv  → Stock by warehouse, orphaned audit
+  6. 07-imei-register.csv        → Serial number handling
+  7. 08-trial-balance.csv        → GL opening balance + reconciliation
+  8. 09-customers-windows1256.csv → Charset handling
+
+Expected Audit Findings:
+  • 10 duplicate SKUs → prompt user to merge or skip
+  • 15 empty costs → use 60% default or ask
+  • 8 "KD" prefixes → strip and parse
+  • 6 orphaned SKUs in stock → log audit and skip
+  • 5 duplicate customer names → flag for merge
+  • Inconsistent phone formats → normalize to E.164
+  • Tally credit notation → detect () and negate
+
+STATUS
+======
+
+✓ COMPLETE AND VALIDATED
+
+All files generated, balanced, and cross-referenced.
+Ready for import testing and audit discovery.

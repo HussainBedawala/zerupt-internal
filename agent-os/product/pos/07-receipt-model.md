@@ -135,3 +135,95 @@
 2. "VOID" / "ملغية" watermark across receipt
 3. Void reason, voided by, void timestamp printed
 4. Original transaction number referenced
+
+---
+
+## Invoice Document Formats & Print Architecture
+
+### Document Types
+
+| Format | Trigger / When Offered | Width | Notes |
+|--------|----------------------|-------|-------|
+| `thermal_80mm` | Default at all registers; sale, return, exchange, void, reprint | 48 chars / 80mm roll | Main receipt format; bilingual, QR, barcode |
+| `thermal_58mm` | Registers configured with 58mm hardware | 32 chars / 58mm roll | Narrower layout; same data, condensed labels |
+| `a4` | Customer-linked transaction **or** cashier requests full invoice | A4 portrait | Bilingual tax invoice (see below) |
+| `dot_matrix` | Register set to `dot_matrix`; continuous-form wholesale/B2B outlets | 80-col ESC/P | Carbon-copy single-pass (see below) |
+| `none` | Digital-only or no printer attached | — | Digital receipt only; no print path triggered |
+
+Per-register hardware config (stored in `register.printerConfig`):
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `printerType` | Enum | `thermal_80mm` \| `thermal_58mm` \| `a4` \| `dot_matrix` \| `none` |
+| `connection` | Enum | `browser` (window.print / BLE) \| `agent` (local print agent) |
+| `host` | String | IP/hostname for agent TCP forwarding; RFC1918 only |
+| `port` | Integer | Raw TCP port (default 9100 for ESC/POS printers) |
+| `cashDrawerConnected` | Boolean | Whether cash drawer is wired through printer kick pin |
+
+#### A4 Bilingual Tax Invoice
+
+- Rendered **on-demand** from `pos_transactions` data — not a separate document stored independently.
+- Uses the **same transaction number** as the receipt (no separate invoice series).
+- Reuses the existing `Sales → TaxDocument` layout (bilingual header, line items, VAT summary, QR).
+- Customer block (name, VAT number, address) populated from `customerId` when linked; falls back to "Walk-in / عميل عابر".
+- Cashier can trigger from the post-sale screen or from transaction history (manager/cashier with reprint permission).
+- Output path: PDF via browser print dialog (A4 page) or emailed via Resend as PDF attachment.
+
+#### ESC/P Continuous-Form Dot-Matrix Invoice
+
+- Protocol: ESC/P (Epson Standard Code for Printers) — character-mode, not raster.
+- Form geometry: 80 columns, default 33-line form length (11-inch fanfold); configurable per register.
+- Single-pass carbon-copy — the printer strikes through all carbon layers simultaneously; no second print pass.
+- Arabic on dot-matrix: transliteration or English-only fallback (ESC/P has no Unicode support; full Arabic requires a raster approach not practical on 9/24-pin heads at POS speed).
+- Offered at: wholesale outlets, distributors, B2B counters where pre-printed continuous forms are in use.
+
+---
+
+### Print Architecture
+
+#### Local Print Agent
+
+Browsers cannot open raw TCP sockets to printers. A lightweight local agent bridges this gap.
+
+| Property | Value |
+|----------|-------|
+| Transport | WebSocket, `ws://127.0.0.1:9723` |
+| Origin enforcement | CSWSH check — agent rejects connections from origins other than the Zerupt web app |
+| Target restriction | RFC1918 addresses only (192.168.x.x, 10.x.x.x, 172.16–31.x.x); agent refuses public IPs (SSRF guard) |
+| Forwarding | Raw TCP to `host:port` (typically 9100) — passes ESC/POS or ESC/P byte streams unchanged |
+| Installation | Per-workstation binary; auto-starts with OS; no cloud component |
+
+#### ESC/POS Raster Approach for Arabic
+
+ESC/POS printers do not carry Arabic fonts. Arabic text is shaped in the browser and rendered as a bitmap:
+
+1. Browser renders Arabic text to an off-screen `<canvas>` using system Arabic font.
+2. Canvas pixel data converted to 1bpp (1-bit-per-pixel) monochrome bitmap.
+3. Bitmap transmitted to printer via `GS v 0` raster graphics command.
+4. Math: for 80mm printer at 203 dpi → printable width ≈ 576 dots; image width must be a multiple of 8 bytes (72 bytes/row).
+
+This approach handles full Unicode Arabic shaping (right-to-left, ligatures, diacritics) without requiring printer-side font support.
+
+#### Cash Drawer Kick Rule
+
+The cash drawer pulse (`ESC p` command) is sent **only when**:
+
+1. Payment method is `Cash` (full or partial cash component), **AND**
+2. `register.printerConfig.cashDrawerConnected = true`.
+
+Card-only, wallet, or digital payments do not trigger the drawer. Managers can trigger a manual kick from the register settings screen (logged in audit trail).
+
+#### Fallback Chain
+
+```
+1. Local print agent available?
+   YES → send raw ESC/POS or ESC/P bytes via WebSocket → TCP 9100
+   NO  ↓
+2. window.print() (browser dialog)
+   → for thermal: receipt rendered as narrow print-CSS page
+   → for A4: full invoice HTML rendered to A4 print layout
+   NO PRINTER (type = none) ↓
+3. Digital receipt only (email / SMS / WhatsApp)
+```
+
+The cashier is notified if the agent is unreachable; the transaction is never blocked by print failure.

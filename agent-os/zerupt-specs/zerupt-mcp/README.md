@@ -1,9 +1,32 @@
+---
+title: zerupt-mcp — Zerupt Product-Knowledge MCP Server
+status: as-built
+version: 0.1.0
+updated: 2026-06-07
+code: tools/zerupt-mcp/ (repo zerupt-internal)
+production_url: https://mcp.zerupt.com/mcp (Railway; pending first deploy)
+audience: developers + anyone connecting an AI agent (Claude Code, claude.ai, opencode, n8n, custom)
+---
+
 # zerupt-mcp — The Zerupt Product-Knowledge MCP Server
 
-> Complete reference for developers AND for anyone wiring an AI agent (Claude Code,
-> claude.ai, opencode, ChatGPT, n8n, custom agents) into Zerupt's product knowledge.
-> Code lives at `tools/zerupt-mcp/` in this repo (zerupt-internal).
-> Last updated: 2026-06-07 · Server version 0.1.0 · Commit `0c10fe6`.
+## TL;DR (for agents and humans in a hurry)
+
+- **What:** read-only MCP server exposing Zerupt product knowledge (specs, as-built
+  codemaps, code search, marketing/GTM brief) to any MCP-capable AI agent.
+- **Connect:** `https://mcp.zerupt.com/mcp` + header `Authorization: Bearer <token>`
+  (remote, any client) — or stdio locally: `node tools/zerupt-mcp/dist/index.js` with
+  `LOCAL_CONTENT_ROOT=/Users/hus3ain/Development/Zerupt`. Setup recipes: §8.
+- **Tools (7):** `marketing_context` (call FIRST for marketing/sales/support work) ·
+  `product_overview` · `list_modules` · `get_codemap` (as-built truth) ·
+  `get_module_spec` (design intent) · `search` (specs|docs|code|all) · `read_file`.
+- **Resources (4):** mission, design system, content style guide, marketing context.
+- **Golden rule:** codemaps = what EXISTS; specs = what is PLANNED. Never publish a
+  capability claim not backed by a codemap.
+- **Safety:** cannot write anything; allowlisted paths only; secrets scrubbed from
+  every response; 50KB cap; per-agent revocable tokens; 60 req/min.
+- **Content freshness:** reads live from GitHub with a 5-min cache — push to main and
+  every connected agent sees it, no redeploy.
 
 ---
 

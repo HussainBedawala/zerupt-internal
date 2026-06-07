@@ -6,7 +6,7 @@
 
 Zerupt is marketed and built as an **agentic AI retail ERP**. The AI is not a feature bolted on — it is the product's identity. Every retail owner who tastes Zerupt should feel they hired a team, not bought software.
 
-The customer-facing identity: **Zee, your AI partner** — one persona managing a named team of six agents, each with a specific job (see `04-zee-and-the-team.md`). Customers say "Zee found me 8,000 dirhams," not "the dead stock report showed."
+The customer-facing identity: **Zee, your AI partner** — one persona managing a named team of six agents, each with a specific job (see `04-zee-and-the-team.md`; per-agent responsibility contracts in `agents/`). Customers say "Zee found me 8,000 dirhams," not "the dead stock report showed."
 
 ## The Staged Identity (trust ladder = autonomy ladder)
 

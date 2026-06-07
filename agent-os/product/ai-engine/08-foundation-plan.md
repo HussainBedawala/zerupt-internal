@@ -73,6 +73,8 @@ F0 (bedrock)
 
 ## E. Reality Check vs June 15 (8 days, solo, MVP close-out in parallel)
 
+> **OVERRULED 2026-06-07 (founder):** with a parallel agent team building 24/7, BOTH Mira (slices 1–5) and Sami ship fully for June 15 — no halfway versions. The cut below is retained only as the fallback if quality gates fail near the deadline (Sami's Founding-50 flag remains the risk valve). F0.4/F0.5/F0.6 remain Phase B.
+
 F0 (7.5d) + F1 (≈5 slices) + F2 (≈6d) does not fit in 8 days. The honest cut:
 
 - **MVP-critical F0 subset (~3 d):** F0.1 routing + F0.2 health/no-silent-degradation + F0.3 file retention + F0.7 corrections table. Defer F0.4/F0.5 (OWN-tier plumbing — needed for Phase B, not for launch) and F0.6 (narration can ship as fast polling first, SSE in Phase B).

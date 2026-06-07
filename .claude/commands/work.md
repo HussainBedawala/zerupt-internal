@@ -119,7 +119,9 @@ Run in order — do not proceed until all pass:
 4. `pnpm turbo test`
 5. `git status` — no unintended files
 
-**E2E trigger** (run if ANY): milestone completion, major UI changes, auth changes, layout/i18n changes, or labels contain `E2E`/`Integration`/`Settings`/`Security`. Run: `cd erp/apps/web && pnpm test:e2e`. Skip for: docs-only, study files, backend-only, CI/config. 
+**E2E trigger** (run if ANY): milestone completion, major UI changes, auth changes, layout/i18n changes, or labels contain `E2E`/`Integration`/`Settings`/`Security`. Skip for: docs-only, study files, backend-only, CI/config.
+- Run TARGETED, not the whole suite — see "Agent quickstart" at the end of `erp/apps/web/e2e/README.md` for the project-per-change table. Typical: `cd erp/apps/web && pnpm exec playwright test --project=<suite>`; add `--project=responsive` for layout/CSS/i18n changes; `--project=lifecycle` + a fresh-DB `drizzle-kit migrate` (scratch DB) for ANY schema/provisioning change.
+- UI changes MUST ship testid-registry updates in the same commit (`src/lib/testids/` + component + `e2e/pages/` page object) — see "E2E Testing" in `erp/apps/web/CLAUDE.md`.
 - Use the `e2e` command (/e2e.md) to verify.
 
 ## PHASE 7.5: EXPLORATORY QA (user-facing issues only)

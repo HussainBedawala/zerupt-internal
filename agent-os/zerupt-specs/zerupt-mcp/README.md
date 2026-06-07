@@ -4,7 +4,7 @@ status: as-built
 version: 0.1.0
 updated: 2026-06-07
 code: tools/zerupt-mcp/ (repo zerupt-internal)
-production_url: https://mcp.zerupt.com/mcp (Railway; pending first deploy)
+production_url: https://mcp.zerupt.com/mcp (Railway; LIVE as of 2026-06-07)
 audience: developers + anyone connecting an AI agent (Claude Code, claude.ai, opencode, n8n, custom)
 ---
 
@@ -310,7 +310,16 @@ curl -s -X POST https://mcp.zerupt.com/mcp \
   `zerupt-internal`, **Root Directory = `tools/zerupt-mcp`** (Dockerfile auto-detected;
   healthcheck `/healthz` configured in `railway.json`).
 - Env vars: `GITHUB_TOKEN`, `MCP_TRANSPORT=http`, `MCP_TOKENS`.
-- Domain: `mcp.zerupt.com` (Railway custom domain → CNAME in DNS).
+- Domain: `mcp.zerupt.com` (Railway custom domain → CNAME `mcp` → the service's
+  `*.up.railway.app` target in Namecheap Advanced DNS; plus the per-domain
+  `_railway-verify` TXT that "Show DNS records" lists — make sure its Host is for THIS
+  domain, not another service's e.g. `_railway-verify.api`).
+- **Port gotcha (cost a debugging round 2026-06-07):** the app listens on
+  `process.env.PORT` which Railway injects as **8080**. The custom domain's **target
+  port** must be set to 8080 to match (Settings → Networking → edit domain). A mismatch
+  yields `502 Application failed to respond` on the custom domain while the
+  auto-configured generated `*.up.railway.app` domain still works (it auto-targets the
+  right port). If you hardcode a different `PORT` var, set the domain target port to match.
 - Deploys automatically on push to `zerupt-internal` main.
 - Logs: one JSON line per request with token *name*, method, latency.
 
@@ -369,12 +378,3 @@ tools/zerupt-mcp/
   railway.json              healthcheck /healthz
   README.md                 quick-start (this doc is the deep reference)
 ```
-
-## 12. Review & quality record
-
-Built 2026-06-07. Reviewed by security-reviewer + code-reviewer subagents: 29 findings
-(3 CRITICAL, 9 HIGH, 9 MEDIUM, 8 LOW) — all fixed same-session (timing-safe auth,
-symlink escape, listDir allowlist bypass, per-request server lifecycle, LRU cache cap,
-fetch timeouts, non-root container, ReDoS-safe scrub patterns, fail-fast config).
-66/66 vitest tests green; stdio + HTTP smoke tests passed (initialize, tools/list = 7
-tools, valid read, 401 on bad token).

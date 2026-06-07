@@ -165,6 +165,12 @@ export function buildServer(backend: ContentBackend): McpServer {
       virtualPath: 'internal/agent-os/marketing-context.md',
       description: 'Zerupt marketing context: positioning, ICP, channels',
     },
+    {
+      name: 'brand',
+      uri: 'zerupt://internal/agent-os/brand/brand-foundation.md',
+      virtualPath: 'internal/agent-os/brand/brand-foundation.md',
+      description: 'Zerupt brand foundation: identity, voice, visual system, and positioning',
+    },
   ];
 
   for (const resource of RESOURCES) {

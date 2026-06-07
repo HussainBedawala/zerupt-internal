@@ -1,128 +1,85 @@
-# Tech Stack
-
-Compact, implementation-facing stack reference for AI agents. This is the source-of-truth for major technical choices.
+---
+title: Tech Stack
+description: Implementation-facing stack reference for AI agents. Source of truth for major technical choices.
+updated: 2026-06-07
+---
 
 ## TL;DR (10 Critical Decisions)
 
-1. Frontend is `Next.js 15 + React 19` on Vercel; backend is `NestJS` on Railway.
+1. Frontend is `Next.js 16.1.6 + React 19` on Vercel; backend is `NestJS` on Railway.
 2. Architecture is a **modular monolith first**, with extraction only when scaling pressure is proven.
-3. Auth is **centralized Supabase Auth**; JWT includes tenant context for backend routing.
+3. Auth is **centralized Supabase Auth**; JWT includes `tenant_id` for backend routing.
 4. Multi-tenancy uses **one PostgreSQL database per tenant** plus a **Central Admin DB** for platform metadata.
-5. Tenant DB connections are resolved by middleware + cache, then injected as tenant-scoped Drizzle instances.
-6. Background automation uses **BullMQ workers in NestJS**; FastAPI handles AI plugin capabilities.
+5. Tenant DB connections resolved by middleware + cache, injected as tenant-scoped Drizzle instances.
+6. Background jobs use **pg-boss on Neon** (zero-polling, ^10.4.2); Upstash Redis for cache only.
 7. AI follows a **plugin contract** (`name`, `description`, `invoke`, `health`) and uses LiteLLM for provider portability.
 8. Vector search uses **pgvector inside each tenant DB** (no separate vector platform by default).
-9. Reporting is JSON-defined (`ReportDefinition`) and executed via tenant-safe SQL, pre-aggregation, and export pipelines.
-10. Security and delivery baselines are non-negotiable: strict tenant isolation, immutable audit logs, dynamic RBAC, staged CI/CD with migration safety.
+9. Reporting is JSON-defined (`ReportDefinition`) executed via tenant-safe SQL, pre-aggregation, and export pipelines.
+10. Security baselines are non-negotiable: strict tenant isolation, immutable audit logs, dynamic RBAC, staged CI/CD with migration safety.
 
 ---
 
 ## 1) Architecture Snapshot
 
 ```
-┌─────────────────────────────────────────────────────────────────────┐
-│                          Vercel (CDN/Edge)                          │
-│  ┌───────────────────────────────────────────────────────────────┐  │
-│  │                   Next.js 15 (React 19)                       │  │
-│  │          UI · SSR · API Routes · Middleware                    │  │
-│  └──────────────────────┬────────────────────────────────────────┘  │
-└─────────────────────────┼──────────────────────────────────────────┘
-                          │ REST API
-┌─────────────────────────┼──────────────────────────────────────────┐
-│                    Railway (Containers)                             │
-│  ┌──────────────────────┴────────────────────────────────────────┐  │
-│  │              NestJS Modular Monolith (apps/api)               │  │
-│  │  ┌─────────┐ ┌─────────┐ ┌─────────┐ ┌──────────┐           │  │
-│  │  │   POS   │ │  Sales  │ │Purchase │ │Inventory │           │  │
-│  │  └─────────┘ └─────────┘ └─────────┘ └──────────┘           │  │
-│  │  ┌─────────┐ ┌─────────┐ ┌──────────────────────┐           │  │
-│  │  │  Acctg  │ │  Auth   │ │  Report Engine       │           │  │
-│  │  └─────────┘ └─────────┘ └──────────────────────┘           │  │
-│  │  ┌──────────────────────────────────────────────┐            │  │
-│  │  │  AgentModule (BullMQ workers)                │            │  │
-│  │  │  Accounting Guardian · Inventory Sentinel    │            │  │
-│  │  │  Compliance Watcher · Onboarding Coach       │            │  │
-│  │  │  SuggestionService                           │            │  │
-│  │  └──────────────────────────────────────────────┘            │  │
-│  │  ┌──────────────────────────────────────────────┐            │  │
-│  │  │  OnboardingModule                            │            │  │
-│  │  │  Questionnaire · ConfigPipeline · Provisioning│           │  │
-│  │  └──────────────────────────────────────────────┘            │  │
-│  │  ┌──────────────────────────────────────────────┐            │  │
-│  │  │  TenantContextMiddleware + WebSocket Gateway  │           │  │
-│  │  │  Tenant Router · Socket.io                    │           │  │
-│  │  └──────────────────────────────────────────────┘            │  │
-│  └──────────────────────┬────────────────────────────────────────┘  │
-│                         │                                           │
-│  ┌──────────────────────┴────────────────────────────────────────┐  │
-│  │              FastAPI AI Service (apps/ai)                     │  │
-│  │  ┌─────────┐ ┌─────────┐ ┌──────────┐ ┌──────────┐          │  │
-│  │  │   NLQ   │ │Anomaly  │ │ Import   │ │ Report   │          │  │
-│  │  │ Plugin  │ │ Plugin  │ │ Assist   │ │ Assist   │          │  │
-│  │  └─────────┘ └─────────┘ └──────────┘ └──────────┘          │  │
-│  │                  Plugin Registry                              │  │
-│  └───────────────────────────────────────────────────────────────┘  │
-└─────────────────────────┬──────────────────────────────────────────┘
-                          │
-┌─────────────────────────┼──────────────────────────────────────────┐
-│                   Database Layer                                    │
-│                                                                     │
-│  ┌──────────────────────┐  ┌─────────────────────────────────────┐ │
-│  │  Central Admin DB    │  │  Per-Tenant Databases               │ │
-│  │  (Single Instance)   │  │  (One PostgreSQL per tenant)        │ │
-│  │                      │  │                                     │ │
-│  │  - tenants           │  │  ┌──────────┐ ┌──────────┐         │ │
-│  │  - tenant_databases  │  │  │Tenant A  │ │Tenant B  │ ...     │ │
-│  │  - plans             │  │  │+pgvector │ │+pgvector │         │ │
-│  │  - subscriptions     │  │  └──────────┘ └──────────┘         │ │
-│  │  - user_tenant_map   │  │                                     │ │
-│  │  - provisioning_jobs │  │                                     │ │
-│  └──────────────────────┘  └─────────────────────────────────────┘ │
-│                                                                     │
-│  ┌──────────────┐  ┌──────────────┐                                │
-│  │ Supabase Auth│  │Supabase      │                                │
-│  │ (Centralized)│  │Storage (S3)  │                                │
-│  │ JWT + tenant │  │Tenant-prefixed│                               │
-│  └──────────────┘  └──────────────┘                                │
-└────────────────────────────────────────────────────────────────────┘
+┌──────────────────────────────────────────────────────┐
+│                  Vercel (CDN/Edge)                    │
+│   Next.js 16.1.6 (React 19) — UI · SSR · Middleware  │
+└────────────────────┬─────────────────────────────────┘
+                     │ REST API
+┌────────────────────┼─────────────────────────────────┐
+│              Railway (Containers)                     │
+│  NestJS Modular Monolith (apps/api)                   │
+│  ┌──────┐ ┌──────┐ ┌──────────┐ ┌──────────────────┐ │
+│  │ POS  │ │Sales │ │Purchase  │ │Inventory / Acctg │ │
+│  └──────┘ └──────┘ └──────────┘ └──────────────────┘ │
+│  ┌─────────────────────────────────────────────────┐  │
+│  │  AI/Agent module → pg-boss workers (see §5)     │  │
+│  └─────────────────────────────────────────────────┘  │
+│  ┌─────────────────────────────────────────────────┐  │
+│  │  TenantContextMiddleware · WebSocket/Socket.io  │  │
+│  └──────────────────────┬──────────────────────────┘  │
+│  FastAPI AI Service (apps/ai) — plugin execution      │
+└────────────────────┬────────────────────────────────-─┘
+                     │
+┌────────────────────┼─────────────────────────────────┐
+│              Database Layer                           │
+│  Central Admin DB (Neon)   Per-Tenant DBs (Neon)      │
+│  tenants · plans ·         one Postgres per tenant    │
+│  subscriptions · jobs      + pgvector per tenant      │
+│  Supabase Auth (JWT)       Supabase Storage (S3)      │
+└──────────────────────────────────────────────────────┘
 ```
 
-- **Web**: Next.js 15 (React 19) on Vercel
-- **Core API**: NestJS modular monolith on Railway
-- **AI service**: FastAPI plugin service on Railway
-- **Search**: Meilisearch
-- **Cache/queues**: Upstash Redis + BullMQ
-- **Auth + files**: Supabase Auth + Supabase Storage
-- **Databases**:
-  - **Central Admin DB**: tenant registry, plans, subscription/billing, tenant DB metadata, user-tenant mapping, provisioning jobs. Full schema: `settings-admin/13-database-architecture.md`.
-  - **Per-tenant PostgreSQL DBs** (one DB per tenant): all business data + pgvector + audit trail
+**Summary:**
 
-### Why modular monolith (not microservices)
-
-1. ERP transactions cross modules by default (sales/inventory/accounting/POS).
-2. Solo CTO + fast delivery requires low ops complexity.
-3. Per-module pricing is entitlement/RBAC logic, not a service boundary.
-4. Future extraction remains possible module-by-module via existing event contracts.
+| Layer | Hosting | Tech |
+|---|---|---|
+| Frontend | Vercel | Next.js 16.1.6 + React 19 |
+| API | Railway | NestJS modular monolith |
+| AI service | Railway | FastAPI + LiteLLM |
+| Jobs/queue | Neon (pg-boss) | pg-boss ^10.4.2 — zero-polling |
+| Cache | Upstash | Redis (@upstash/redis) |
+| Auth + files | Supabase | Supabase Auth + Storage |
+| Databases | Neon | Admin DB + per-tenant DBs + pgvector |
 
 ---
 
-## 2) Monorepo Structure (Target)
+## 2) Monorepo Structure
 
-```txt
+```
 erp/
 ├── apps/
-│   ├── web/             # Next.js frontend
-│   ├── api/             # NestJS modular monolith
-│   └── ai/              # FastAPI AI service
+│   ├── web/        # Next.js frontend
+│   ├── api/        # NestJS modular monolith
+│   └── ai/         # FastAPI AI service
 ├── packages/
-│   ├── shared/          # Shared types/constants/zod schemas
-│   ├── db/              # Drizzle schema for tenant DBs
-│   ├── db-admin/        # Drizzle schema for central admin DB
-│   ├── tenant-context/  # tenant router + request context utilities
-│   └── ui/              # shared UI components
-├── turbo.json
-├── package.json
-└── docker-compose.yml   # local redis/meilisearch (DBs on Neon)
+│   ├── shared/     # Types, constants, Zod schemas
+│   ├── db/         # Drizzle schema — tenant DBs
+│   ├── db-admin/   # Drizzle schema — central admin DB
+│   ├── tenant-context/  # tenant router + request context
+│   └── ui/         # shared UI components
+└── turbo.json
 ```
 
 ---
@@ -131,245 +88,129 @@ erp/
 
 ### Frontend
 
-| Tool | Purpose |
-|---|---|
-| Next.js 15 + React 19 | App shell, SSR, routing, middleware |
-| TypeScript | Strict typing |
-| shadcn/ui + Tailwind | Accessible UI + RTL-ready styling (CSS logical properties) |
-| tailwindcss-rtl | RTL utility class variants (`rtl:`, `ltr:`) |
-| TanStack Query | Server-state caching and freshness |
-| Zustand | Local UI state |
-| next-intl | Full i18n: locale routing, translations, formatting. Launch: `ar`, `en`. Phase 2: `hi`, `ms`. See `settings-admin/14-internationalization.md`. |
-| Intl APIs | Locale-aware number/currency/date/relative-time formatting |
-| Noto Fonts | Arabic, Devanagari, and Latin script support |
-| React Hook Form + Zod | Shared form validation contracts |
-| @react-pdf/renderer | Client-side PDF (simple docs) |
+| Tool | Version | Purpose |
+|---|---|---|
+| Next.js | 16.1.6 | App shell, SSR, routing, middleware |
+| React | 19 | UI |
+| TypeScript | strict | Typing |
+| shadcn/ui + Tailwind | v4 | Accessible UI; CSS logical properties for RTL (no tailwindcss-rtl) |
+| TanStack Query | ^5 | Server-state caching |
+| Zustand | ^5 | Local UI state |
+| next-intl | ^4.8.3 | i18n: locale routing, translations. Launch: `ar`, `en` |
+| IBM Plex Sans / Mono | — | Latin, Arabic, Devanagari (same family) + monospace |
+| React Hook Form + Zod | — | Form validation |
 
 ### Backend
 
-| Tool | Purpose |
-|---|---|
-| NestJS | ERP domain modules + APIs |
-| Drizzle ORM | ORM/migrations for admin + tenant DBs (lightweight, type-safe, first-class pgvector + Neon support) |
-| NestJS EventEmitter | Cross-module side effects/events |
-| BullMQ + Upstash Redis | Jobs, schedulers, async processing |
-| FastAPI | AI plugin execution, LLM orchestration |
+| Tool | Version | Purpose |
+|---|---|---|
+| NestJS | ^11 | ERP domain modules + APIs |
+| Drizzle ORM | ^0.45 | ORM/migrations — admin + tenant DBs |
+| NestJS EventEmitter | — | Cross-module side effects |
+| pg-boss | ^10.4.2 | Job queue on Neon Postgres — zero-polling workers |
+| @upstash/redis | ^1.36 | Cache only (not queue) |
+| FastAPI | 0.136 | AI plugin execution, LLM orchestration |
+
+### AI Service (FastAPI / Python)
+
+| Tool | Version | Purpose |
+|---|---|---|
+| FastAPI | 0.136.3 | Plugin server |
+| LiteLLM | 1.86.2 | Provider-portable LLM routing |
+| pgvector | 0.3.2 | Vector ops inside tenant DBs |
+| pydantic | 2.x | Validation |
 
 ---
 
 ## 4) Auth + Tenant Routing (Critical Path)
 
-### Decision
+**Supabase Auth** (single centralized project) — JWT carries `tenant_id`.
 
-- **Supabase Auth (single centralized auth project)** is the default.
-
-### Why over NextAuth
-
-- NestJS APIs need first-class token validation outside Next.js.
-- Supabase JWT works across frontend/backend with less custom glue.
-- JWT carries `tenant_id` for DB routing and authorization context.
-
-### Request flow
-
-1. User logs in via Supabase Auth and receives JWT (`tenant_id` claim).
-2. NestJS `TenantContextMiddleware` validates token and extracts tenant.
-3. Middleware resolves tenant DB connection (Redis cache, fallback to Central Admin DB lookup).
-4. Request gets tenant-scoped Drizzle instance.
-5. Domain modules execute without embedding tenancy logic in every service.
+Request flow:
+1. User logs in → Supabase Auth issues JWT with `tenant_id` claim.
+2. NestJS `TenantContextMiddleware` validates token, extracts tenant.
+3. Middleware resolves tenant DB connection (Redis cache → Central Admin DB fallback).
+4. Request gets tenant-scoped Drizzle instance injected via `TENANT_DB` DI token.
+5. Domain modules execute without embedding tenancy logic.
 
 ---
 
-## 5) Agent + Onboarding Architecture
+## 5) Agent Architecture
 
-### Agent execution model
+> **Canonical spec:** `agent-os/product/ai-engine/` (redesigned 2026-06-07 — Zee + named team).
+> The old BullMQ worker / named-service list in this doc is superseded. Read the ai-engine spec.
 
-- Agents run in **NestJS BullMQ workers** (not in FastAPI) because they need business DB access and deterministic rule checks.
-- FastAPI is called only when an agent needs LLM-generated explanations or ML-heavy assistance.
-
-### Agent module (NestJS)
-
-- `AccountingGuardianService`
-- `InventorySentinelService`
-- `ComplianceWatcherService`
-- `OnboardingCoachService`
-- `SuggestionService` (create/accept/dismiss/rate)
-
-### Onboarding module (NestJS)
-
-- `QuestionnaireService`
-- `ConfigPipelineService`
-- `TenantProvisioningService`
-- `COATemplateService` (industry + country -> full COA)
+Key decisions:
+- Agents run as **pg-boss workers** (not BullMQ, not FastAPI) — business DB access + deterministic rules.
+- FastAPI called only when agent needs LLM inference.
+- **AI cost philosophy:** deterministic-first → learn/cache → route by task (Haiku for extraction, Sonnet for reasoning). LLM is the last rung.
 
 ---
 
-## 6) AI Service Architecture (FastAPI)
-
-### Plugin model
-
-Each plugin implements:
-
-- `name`
-- `description`
-- `invoke(context, params)`
-- `health()`
-
-### Initial plugins
-
-- `NLQPlugin` (natural language -> tenant-scoped SQL)
-- `ImportAssistPlugin` (import column mapping)
-- `AnomalyPlugin` (abnormal trends)
-- `ReorderPlugin` (replenishment suggestions)
-- `ReportAssistPlugin` (natural language -> report definition JSON)
-
-### LLM + vector strategy
-
-- **LiteLLM** for provider portability (OpenAI/Anthropic/local).
-- **pgvector** inside each tenant DB (no external vector service by default).
-
-### AI cost & model-routing philosophy (decided)
-
-We are AI-native in *experience and outcome*, not in token spend. The intelligence is in
-the system's behaviour (it does the work, it learns, it advises) — delivered by the right
-tool at each layer, not by routing every action through an LLM. Three rules:
-
-1. **Deterministic-first.** Where a task is repetitive and exact (column mapping, validation,
-   GL posting, role binding), resolve it deterministically. The LLM is the *last rung* for
-   the ambiguous tail only. See the import resolution ladder in
-   `onboarding/03-ai-import-assistant.md`. The LLM never decides anything that posts to the
-   ledger.
-2. **Learn, don't re-infer.** Cache/learn results (e.g. source-fingerprint mapping cache) so
-   repeated work trends toward zero cost. The system gets *cheaper and smarter* with scale —
-   the opposite of a legacy ERP that makes you redo the work every time.
-3. **Route by task, not one model.** LiteLLM routing map:
-   - **Extraction / low-reasoning** (import mapping, fix suggestions, classification) →
-     **Claude Haiku** — cheap, fast.
-   - **Reasoning / judgment** (COA reconciliation advice, Copilot NLQ + "why?",
-     the "Next Move" advisor) → **Claude Sonnet**.
-   Default provider **Anthropic (Claude)**; LiteLLM keeps us portable. Never run a reasoning
-   model on what a regex resolves.
-
-**Cost guardrails:** per-import/per-request LLM call + token telemetry (Sentry/PostHog); a
-soft per-onboarding budget (~$1) whose breach signals a deterministic-path gap, not expected
-spend. Where the LLM is genuinely the right tool (advice, Copilot, the Next Move) we are
-*generous* with model quality — the discipline elsewhere is what funds it.
-
-**Graceful degradation everywhere:** if the AI service is down, deterministic paths keep
-working and LLM-only features fall back to templates/manual UI (see `agents/01-architecture.md`).
-
----
-
-## 7) Reporting Platform Capability
-
-### ReportDefinition (JSON contract)
-
-Core fields:
-
-- `entity`, `columns`, `filters`, `groupings`, `calculations`, `sort`, `visualization`
-
-### Pipeline
-
-1. UI builds definition
-2. JSON stored
-3. Query builder compiles tenant-safe SQL + RBAC filters
-4. Nightly pre-aggregations via BullMQ
-5. Render table/chart/KPI
-6. Export PDF/Excel/CSV
-7. Schedule via cron jobs + Resend
-
----
-
-## 8) Infra, Ops, and Integrations
+## 6) Infra & Integrations
 
 ### Hosting
 
 | Service | Responsibility |
 |---|---|
 | Vercel | Next.js frontend |
-| Railway | NestJS API, FastAPI, Meilisearch |
+| Railway | NestJS API + FastAPI AI (port 8080) |
 | Supabase | Auth (JWT, users, MFA) + Storage (S3) |
-| Neon | All PostgreSQL — admin DB + per-tenant DBs + pgvector |
-| Upstash | Redis cache + BullMQ backend |
-
-**Production database architecture (decided March 2026):**
-
-```
-Supabase → Auth only (JWT, users, MFA)
-Neon     → All PostgreSQL (admin DB + per-tenant DBs + pgvector)
-Railway  → Compute only (API + AI + Meilisearch)
-Upstash  → Redis (cache + BullMQ)
-```
-
-**Why Neon for all databases (not Supabase Postgres):**
-- Neon's database-per-tenant model on shared compute costs ~$20/mo for 1,000 tenants
-- Scale-to-zero compute means idle tenant DBs cost nothing
-- `CREATE DATABASE` works via SQL — no API needed for provisioning
-- Pooled (PgBouncer) and direct endpoints per database out of the box
-- pgvector supported natively for AI layer (Phase 7)
-- Supabase Postgres would require one project per tenant (~$25/tenant/mo) or RLS (complexity risk)
+| Neon | All Postgres — admin DB + per-tenant DBs + pgvector + pg-boss queue |
+| Upstash | Redis cache |
 
 ### Payments
 
-- Stripe (global)
-- Tap / MyFatoorah (GCC rails)
-- Razorpay (India)
+- Stripe (global) · Tap / MyFatoorah (GCC) · Razorpay (India)
 
-### Observability + notifications + exports
+### Observability + Exports
 
-- Sentry (errors/perf)
-- PostHog (product analytics + feature flags)
-- Uptime Kuma (uptime/status)
-- Resend (transactional email)
-- Socket.io gateway (in-app live notifications/suggestion cards)
-- Puppeteer + ExcelJS + @react-pdf/renderer (export stack)
+- Sentry · PostHog · Resend · Socket.io (live notifications) · Puppeteer + ExcelJS (export stack)
 
 ---
 
-## 9) Security Baseline
+## 7) Reporting
 
-- Dedicated DB per tenant (hard isolation), plus `tenantId` on entities for defense-in-depth.
-- Centralized JWT auth with refresh rotation and MFA roadmap.
+`ReportDefinition` JSON contract: `entity`, `columns`, `filters`, `groupings`, `calculations`, `sort`, `visualization`.
+
+Pipeline: UI builds definition → stored as JSON → query builder compiles tenant-safe SQL → nightly pre-aggregations via pg-boss → render table/chart/KPI → export PDF/Excel/CSV → schedule via cron + Resend.
+
+---
+
+## 8) Security Baseline
+
+- Dedicated DB per tenant (hard isolation) + `tenantId` on entities for defense-in-depth.
+- Centralized JWT auth with refresh rotation; MFA roadmap.
 - API hardening: rate limits, input validation, CORS.
-- Encryption: TLS in transit, encrypted-at-rest credentials/secrets.
+- Encryption: TLS in transit, encrypted-at-rest secrets.
 - Immutable audit log for data/permission mutations.
-- Dynamic RBAC/permissions per tenant (not hardcoded global roles).
+- Dynamic RBAC per tenant (not hardcoded global roles).
 - Module entitlement enforced in API middleware.
 
 ---
 
-## 10) Testing + CI/CD
-
-### Testing matrix
+## 9) Testing + CI/CD
 
 | Layer | Tooling | Scope |
 |---|---|---|
-| Unit | Vitest / Jest / pytest | pure logic + calculations |
-| Integration | Supertest + Drizzle test instances | module + DB behavior |
-| E2E | Playwright | critical user/business flows |
-| Load | k6 | POS/report throughput and concurrency |
+| Unit | Vitest (web) / Jest (api) / pytest (ai) | Pure logic |
+| Integration | Supertest + Drizzle test instances | Module + DB |
+| E2E | Playwright | Critical user/business flows |
+| Load | k6 | POS/report throughput |
 
-### Delivery flow
+**Coverage:** 80%+ general · 100% financial/accounting · 100% auth/security.
 
-`push -> lint + type-check + test + build -> preview deploy`  
-`release -> full tests -> production deploy`
-
-Required controls:
-
-- Turborepo selective caching
-- PR preview environments
-- Drizzle migrations for admin DB in CI
-- Rolling tenant DB migrations in batches with circuit breaker
-- Feature flags for gradual rollouts
+Delivery: `push → lint + typecheck + test + build → preview deploy` → `release → full tests → production deploy`.
 
 ---
 
-## 11) Non-Negotiable Principles
+## 10) Non-Negotiable Principles
 
 1. Modular monolith first; extract only when scaling pressure proves it.
 2. API-first contracts; frontend is a consumer.
 3. Multi-tenant by default via tenant context routing.
-4. Event-driven side effects between modules.
+4. Event-driven side effects between modules (NestJS EventEmitter).
 5. JSON metadata for configurable behavior (reports, dashboards, permissions).
 6. Managed services over custom infrastructure.
-7. Region-ready from day one (tax, COA templates, currency, compliance for GCC/India/SEA).
-8. Native-language-first: full multilingual support with proper RTL/LTR layouts. See `settings-admin/14-internationalization.md`.
+7. Region-ready from day one (GCC/India/SEA — tax, COA, currency, compliance).
+8. Native-language-first: full ar/en from day one, proper RTL/LTR via CSS logical properties.

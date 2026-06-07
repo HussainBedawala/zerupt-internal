@@ -2,7 +2,24 @@
 
 The world's first agentic AI retail ERP. Signup to live with real data in under 2 hours. MENA, Southeast Asia, India. Built by Hussain, solo founder.
 
-- **Website:** zerupt.com (launching Eid 2026, March 19) · **Linear:** Zerupt (Development, Marketing) · **Socials:** @hussainbuildswithai (personal), @zerupt.erp (company)
+- **Website:** zerupt.com (launching June 15, 2026 — MVP) · **Linear:** Zerupt (Development, Marketing) · **Socials:** @hussainbuildswithai (personal), @zerupt.erp (company)
+
+---
+
+## Model & Subagent Policy (CRITICAL — cost control)
+
+**Default to delegating work to subagents, and match the model to the task.** Do NOT do everything inline on the default/Opus model — large models burn cost and main-context budget when a smaller one would do the job. For any non-trivial task or question:
+
+1. **Delegate to a subagent** (via the Agent tool) so the heavy reading/searching stays out of main context — keep the main loop lean.
+2. **Pick the cheapest model that can do the job well** by assigning `model` on the Agent call:
+
+| Task complexity | Model |
+|------------------|-------|
+| Search, file lookup, listing, mechanical edits, simple Q&A | `haiku` |
+| Standard coding, reviews, docs, multi-file changes, most `/work` steps | `sonnet` |
+| Hard architecture, tricky debugging, deep reasoning, financial/accounting correctness | `opus` (only when genuinely needed) |
+
+3. **Never reach for Opus by default.** Justify Opus before using it; prefer Sonnet, fall back to Haiku for trivial work. When unsure, start smaller and escalate only if the smaller model struggles.
 
 ---
 

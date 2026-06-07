@@ -1,4 +1,9 @@
-# Zerupt Marketing Context (curated digest)
+---
+title: Zerupt Marketing Context (curated digest)
+description: Hand-curated brief for marketing/sales agents connecting via zerupt-mcp.
+updated: 2026-06-07
+source_of_truth: "agent-os/brand/brand-foundation.md"
+---
 
 > Purpose: single hand-curated brief for marketing/sales agents connecting via zerupt-mcp.
 > Sources of truth on conflict: Linear "Offer" doc (pricing/offer) > `agent-os/offer.md` >
@@ -7,10 +12,10 @@
 
 ## What Zerupt is (one breath)
 
-The world's first agentic AI retail ERP. A retail owner signs up and is **live with their
-real data in under 2 hours** — no consultants, no implementation project. Built for MENA
-first (proper Arabic, GCC VAT/ZATCA), then Southeast Asia and India. Solo founder: Hussain.
-Launching Eid 2026 (March 19) at zerupt.com.
+The world's first agentic AI retail **business brain**. A retail owner signs up and is
+**live with their real data in under 2 hours** — no consultants, no implementation project.
+Built for MENA first (proper Arabic, GCC VAT/ZATCA), then Southeast Asia and India. Solo
+founder: Hussain. Launching June 15, 2026 at zerupt.com.
 
 ## Positioning rules (hard)
 
@@ -33,7 +38,8 @@ broken Arabic, slow checkout, no invoice/barcode customization, VAT/ZATCA anxiet
 big switching blocker: **fear of losing old data on migration**. Our self-serve migration
 import (with free done-for-you migration in the offer) kills that objection.
 
-- **Beachhead: GCC only** (Kuwait, Saudi, UAE, Bahrain, Oman, Qatar). India/SEA = phase 2.
+- **Primary ICP:** independent/SME owner-operator across MENA, India, and SEA.
+- **GTM beachhead: GCC** (Kuwait, Saudi, UAE, Bahrain, Oman, Qatar). India/SEA = phase 2 in rollout — not excluded from the brand's audience.
 - These users are NOT tech-savvy. Marketing must feel safe, simple, and concrete.
 
 ## Pricing & offer (locked 2026-06, v1 hypothesis pending prospect validation)
@@ -83,9 +89,11 @@ NEVER promise a spec-only feature as available today.
 - Voice: confident, warm, concrete, zero enterprise jargon. Speak to a shop owner, not a
   CFO. Arabic-first respect (never machine-translated-feeling copy).
 - Visual: warm cream `#F9F7F5` canvas, ink `#141310`, citron `#979C1A` accent (fill only,
-  never text on light), olive for data viz. IBM Plex Sans (Latin+Arabic+Devanagari) +
-  IBM Plex Mono. Premium, editorial, dark-first. Never violet/teal, never Inter/Noto.
-- Full rules: `erp/DESIGN.md` + `agent-os/content-style-guide.md`.
+  never text on light), olive `#747818`/`#454729` + sage `#ADAB92` for data viz. IBM Plex
+  Sans (Latin+Arabic+Devanagari) + IBM Plex Mono. Premium, editorial, dark-first. Never
+  violet/teal, never Inter/Noto.
+- **Brand authority (canonical):** `agent-os/brand/brand-foundation.md` (MCP resource: `brand`).
+  Engineering token spec: `erp/DESIGN.md`. Copy voice: `agent-os/content-style-guide.md`.
 
 ## Never say / always say
 

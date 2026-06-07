@@ -67,6 +67,8 @@ If payment within `paymentTerms.discountDays`:
 | Net paid | `allocatedAmount - discountAmount` |
 | Account | Purchase Discount Income (4810) |
 
+In a multi-currency settlement the discount leg (4810) is valued at the **bill's invoice rate**, never the payment rate, so no FX gain/loss leaks through the discount — only the cash leg carries realized FX.
+
 See `accounting/07-event-mappings.md` → `purchase.payment.posted` early discount entry.
 
 ---

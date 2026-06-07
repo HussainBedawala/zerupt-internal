@@ -22,6 +22,6 @@
 - Partial flows supported: partial receipt, partial return, partial payment
 - Multi-currency — transaction currency per supplier/PO, functional currency for accounting (see `accounting/03-multi-currency.md`)
 - Tax per line using tax model (see `accounting/02-tax-model.md`)
-- Manager PIN required for: PO approval above threshold, over-receipt beyond tolerance, manual landed-cost override, return override, payment override
+- Manager PIN required for: PO approval above threshold, over-receipt beyond tolerance, manual landed-cost override, return override, payment override. The approving manager (`approvedBy`) must be a **different user** than the one performing the action (segregation of duties) AND must hold the permission that gates that action (e.g. `purchase.payment.post`); the PIN alone is not sufficient. All verification failures return one generic 422 (no credential probing).
 - Purchase does not create journal entries or stock movements directly — it emits events consumed by Accounting and Inventory engines
 - `validatePeriod(date)` called before all financial posting actions (see `accounting/08-period-control.md`)

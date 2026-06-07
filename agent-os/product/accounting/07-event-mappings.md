@@ -170,13 +170,17 @@ DR  Merchandise Inventory (1141)      [estimated from PO, FN]
 CR  GRN Accrual (2121)                [same, FN]
 ```
 
-**When invoice arrives later:**
+**When invoice arrives later (bill built from the GRN):**
 ```
-DR  GRN Accrual (2121)                [accrued amount]
+DR  GRN Accrual (2121)                [accrued amount = Σ matched-line net]
 DR  Input Tax Recoverable (1162)      [tax from invoice]
 DR/CR  Inventory                      [price variance, if any]
 CR  Trade Payables (2111)             [invoice total]
 ```
+GRN-linked bill lines copy the receipt's price and carry **no discount** — a
+discount is rejected (422) on a linked line because the GRN credited 2121 at the
+undiscounted cost, so a discount would strand the difference in 2121. The accrued
+amount cleared equals the full matched-line net subtotal.
 
 ### `purchase.landedCost.allocated` — Landed Cost
 

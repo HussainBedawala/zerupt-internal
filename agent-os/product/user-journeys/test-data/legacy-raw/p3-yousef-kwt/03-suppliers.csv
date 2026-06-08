@@ -1,0 +1,19 @@
+SupCode,SupplierName,ContactPerson,Mobile,Email,Country,City,OpeningBalance,Blacklisted,Status,Remarks
+S001,Local General Purchase,,,,,Kuwait,0.000,N,Active,generic local
+S002,AL-YOUSIFI ELECTRONICS/YSF/001,Khalid Al-Yousifi,+96522440100,,Kuwait,Kuwait City,8500.000,N,Active,main apple dist
+S003,TECHNO STAR TRADING/TST/018,Mohammed Jassim,96522331400,,Kuwait,Shuwaikh,3200.500,N,Active,samsung dist
+S004,GULF ELITE MOBILE(Dubai)/GEM/007,Rashid Al-Balushi,+97150112233,gem@gmail.com,UAE,Dubai,12400.000,N,Active,parallel import
+S005,AL-DAWAA DIGITAL/ADD/033,,96522880200,,Kuwait,Hawally,0.000,N,Active,accessories only
+S006,CHINA SOURCE DIRECT/CSD/099,,+8613312345678,csd@trade.cn,China,Shenzhen,4500.750,N,Active,accessories OEM
+S007,XPHONE GLOBAL(HK)/XPG/044,,+85291234567,,HongKong,Kowloon,6700.000,N,Active,xiaomi/realme
+S008,OPPO MIDDLE EAST DIST/OME/002,Sarah,97144001234,oppo@me.ae,UAE,Dubai,1800.000,N,Active,
+S009,HUAWEI TECH(KWT)/HTC/011,Ahmad,,hwkwt@huawei.com,Kuwait,Shuwaikh,0.000,Y,In Active,sanctioned - do not order
+S010,AL-SAYER MOBILES/ASM/055,Jassim Al-Sayer,+96522660300,,Kuwait,Farwaniya,2100.000,N,Active,
+S011,ANKER DISTRIBUTION(UAE)/AND/016,,97155004400,,UAE,Dubai,980.500,N,Active,
+S012,TP-LINK OFFICIAL(MENA)/TPL/020,,97143001100,tplink@me.ae,UAE,Dubai,450.000,N,Active,
+S013,RETURN/WARRANTY CLAIMS,,,,,,0.000,N,Active,dummy for returns
+S014,MOBILE KINGDOM DUBAI/MKD/088,Bilal,+97150998877,,UAE,Dubai,5400.000,N,Active,iphones grey
+S015,AL-SAIF TRADING/AST/077,Ibrahim,96522112200,,Kuwait,Salmiya,1200.000,Y,In Active,blacklisted bounced cheque
+S016,TECH PLUS ACCESSORIES(KWT)/TPA/031,,96522440600,,Kuwait,Kuwait City,0.000,N,Active,
+S017,LOCAL PURCHASE MISC,,,,,Kuwait,,0.000,N,Active,petty cash items
+S018,BASEUS DISTRIBUTION/BAS/009,,97142001200,,UAE,Dubai,670.000,N,Active,

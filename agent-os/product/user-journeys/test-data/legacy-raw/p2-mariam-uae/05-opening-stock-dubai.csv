@@ -1,0 +1,99 @@
+SKU,Item Name,Qty On Hand,Unit Cost (AED),Total Value (AED),Location,Notes
+ABAYA-CLASSIC-BLK-S,Abaya Classic Black Small,12,85.00,1020.00,Dubai,
+ABAYA-CLASSIC-BLK-M,Abaya Classic Black Medium,18,85.00,1530.00,Dubai,
+ABAYA-CLASSIC-BLK-L,Abaya Classic Black Large,9,85.00,765.00,Dubai,
+ABAYA-CLASSIC-BLK-XL,Abaya Classic Black XL,4,85.00,340.00,Dubai,
+ABAYA-CLS-BLK-52,Abaya Classic Black 52,3,0.00,0.00,Dubai,WAC=0 cost not entered
+ABAYA-CLS-BLK-54,Abaya Classic Black 54,7,85.00,595.00,Dubai,
+ABAYA-CLS-BLK-56,Abaya Classic Black 56,5,85.00,425.00,Dubai,
+ABAYA-CLS-BLK-58,Abaya Classic Black 58,2,90.00,180.00,Dubai,
+ABAYA-CLASSIC-NVY-S,Abaya Classic Navy S,6,85.00,510.00,Dubai,
+ABAYA-CLASSIC-NVY-M,Abaya Classic Navy M,11,85.00,935.00,Dubai,
+ABAYA-CLS-NVY-54,Abaya Classic Navy 54,4,0.00,0.00,Dubai,cost missing
+ABAYA-CLS-NVY-56,Abaya Classic Navy 56,3,85.00,255.00,Dubai,
+ABAYA-CLS-BRG-M,Abaya Classic Burgundy M,8,88.00,704.00,Dubai,
+ABAYA-CLS-BRG-L,Abaya Classic Burgundy L,4,88.00,352.00,Dubai,
+ABAYA-CLS-BRG-56,Abaya Classic Burgundy 56,2,88.00,176.00,Dubai,
+ABAYA-BFLY-BLK-S,Abaya Butterfly Black S,5,100.00,500.00,Dubai,
+ABAYA-BFLY-BLK-M,Abaya Butterfly Black M,14,100.00,1400.00,Dubai,
+ABAYA-BFLY-BLK-L,Abaya Butterfly Black L,8,100.00,800.00,Dubai,
+ABAYA-BFLY-BLK-54,Abaya Butterfly Black 54,3,0.00,0.00,Dubai,WAC=0
+ABAYA-BFLY-BLK-56,Abaya Butterfly Black 56,6,100.00,600.00,Dubai,
+ABAYA-BFLY-BLK-58,Abaya Butterfly Black 58,1,105.00,105.00,Dubai,
+ABAYA-BFLY-NVY-M,Abaya Butterfly Navy M,9,100.00,900.00,Dubai,
+ABAYA-BFLY-NVY-L,Abaya Butterfly Navy L,4,100.00,400.00,Dubai,
+ABAYA-BFLY-NVY-56,Abaya Butterfly Navy 56,-1,0.00,0.00,Dubai,NEGATIVE STOCK - bad stocktake; WAC=0
+ABAYA-BFLY-OLV-M,Abaya Butterfly Olive M,6,105.00,630.00,Dubai,
+ABAYA-BFLY-OLV-L,Abaya Butterfly Olive L,3,105.00,315.00,Dubai,
+ABAYA-BFLY-RSG-M,Abaya Butterfly Rose Gold M,7,110.00,770.00,Dubai,
+ABAYA-BFLY-RSG-L,Abaya Butterfly Rose Gold L,4,110.00,440.00,Dubai,
+ABAYA-KIM-BLK-S,Abaya Kimono Black S,3,120.00,360.00,Dubai,
+ABAYA-KIM-BLK-M,Abaya Kimono Black M,9,120.00,1080.00,Dubai,
+ABAYA-KIM-BLK-L,Abaya Kimono Black L,5,120.00,600.00,Dubai,
+ABAYA-KIM-BLK-54,Abaya Kimono Black 54,2,0.00,0.00,Dubai,WAC missing
+ABAYA-KIM-BLK-56,Abaya Kimono Black 56,4,120.00,480.00,Dubai,
+ABAYA-KIM-BGE-M,Abaya Kimono Beige M,6,122.00,732.00,Dubai,
+ABAYA-KIM-BGE-L,Abaya Kimono Beige L,4,122.00,488.00,Dubai,
+ABAYA-KIM-MRN-54,Abaya Kimono Maroon 54,2,125.00,250.00,Dubai,
+ABAYA-OPN-BLK-S,Abaya Open Front Black S,4,140.00,560.00,Dubai,
+ABAYA-OPN-BLK-M,Abaya Open Front Black M,10,140.00,1400.00,Dubai,
+ABAYA-OPN-BLK-L,Abaya Open Front Black L,6,140.00,840.00,Dubai,
+ABAYA-OPN-BLK-54,Abaya Open Black 54,3,0.00,0.00,Dubai,WAC=0
+ABAYA-OPN-BLK-56,Abaya Open Black 56,2,140.00,280.00,Dubai,
+ABAYA-OPN-DSR-M,Abaya Open Dusty Rose M,5,148.00,740.00,Dubai,
+ABAYA-OPN-DSR-L,Abaya Open Dusty Rose L,3,148.00,444.00,Dubai,
+ABAYA-OPN-DSR-56,Abaya Open Dusty Rose 56,1,0.00,0.00,Dubai,WAC=0
+ABAYA-OPN-CML-M,Abaya Open Camel M,4,150.00,600.00,Dubai,
+ABAYA-OPN-CML-L,Abaya Open Camel L,2,150.00,300.00,Dubai,
+ABAYA-LUX-EMB-BLK-M,Abaya Luxury Embroidered Black M,3,280.00,840.00,Dubai,
+ABAYA-LUX-EMB-BLK-L,Abaya Luxury Embroidered Black L,2,280.00,560.00,Dubai,
+ABAYA-LUX-EMB-BLK-54,Abaya Luxury Embroidered Black 54,1,0.00,0.00,Dubai,WAC=0
+ABAYA-LUX-EMB-NVY-M,Abaya Luxury Embroidered Navy M,2,285.00,570.00,Dubai,
+ABAYA-LUX-EMB-NVY-L,Abaya Luxury Embroidered Navy L,1,285.00,285.00,Dubai,
+ABAYA-CHF-OVL-BLK-M,Abaya Chiffon Overlay Black M,5,165.00,825.00,Dubai,
+ABAYA-CHF-OVL-BLK-L,Abaya Chiffon Overlay Black L,3,165.00,495.00,Dubai,
+ABAYA-CHF-OVL-BLK-56,Abaya Chiffon Overlay Black 56,2,0.00,0.00,Dubai,WAC=0
+ABAYA-CHF-OVL-NUD-M,Abaya Chiffon Overlay Nude M,4,170.00,680.00,Dubai,
+ABAYA-CHF-OVL-BLS-M,Abaya Chiffon Overlay Blush M,3,170.00,510.00,Dubai,
+ABAYA-SPT-JRS-BLK-S,Abaya Sporty Jersey Black S,8,70.00,560.00,Dubai,
+ABAYA-SPT-JRS-BLK-M,Abaya Sporty Jersey Black M,15,70.00,1050.00,Dubai,
+ABAYA-SPT-JRS-BLK-L,Abaya Sporty Jersey Black L,10,70.00,700.00,Dubai,
+ABAYA-SPT-JRS-BLK-XL,Abaya Sporty Black XL,5,75.00,375.00,Dubai,
+ABAYA-SPT-JRS-GRY-M,Abaya Sporty Grey M,6,70.00,420.00,Dubai,
+ABAYA-SPT-JRS-GRY-L,Abaya Sporty Grey L,4,0.00,0.00,Dubai,WAC=0 cost never entered
+ABAYA-SPT-JRS-OLV-M,Abaya Sporty Olive M,3,72.00,216.00,Dubai,
+ABAYA-SPT-JRS-OLV-L,Abaya Sporty Olive L,2,72.00,144.00,Dubai,
+KIDS-ABAYA-BLK-68,Kids Abaya Black 6-8Y,10,50.00,500.00,Dubai,
+KIDS-ABAYA-BLK-810,Kids Abaya Black 8-10Y,7,50.00,350.00,Dubai,
+KIDS-ABAYA-BLK-1012,Kids Abaya Black 10-12Y,5,55.00,275.00,Dubai,
+KIDS-ABAYA-NVY-68,Kids Abaya Navy 6-8Y,6,50.00,300.00,Dubai,
+KIDS-ABAYA-NVY-810,Kids Abaya Navy 8-10Y,3,0.00,0.00,Dubai,WAC=0
+KIDS-ABAYA-NVY-1012,Kids Abaya Navy 10-12Y,4,55.00,220.00,Dubai,
+SHAYLA-BLK-CHF,Shayla Black Chiffon,30,18.00,540.00,Dubai,
+SHAYLA-BLK-GEO,Shayla Black Georgette,20,22.00,440.00,Dubai,
+SHAYLA-NVY-CHF,Shayla Navy Chiffon,15,18.00,270.00,Dubai,
+SHAYLA-NUD-CHF,Shayla Nude Chiffon,18,18.00,324.00,Dubai,
+SHAYLA-GRY-CHF,Shayla Grey Chiffon,12,0.00,0.00,Dubai,WAC=0
+SHAYLA-WHT-CHF,Shayla White Chiffon,8,18.00,144.00,Dubai,
+HIJ-JRS-INST-BLK,Hijab Jersey Instant Black,40,14.00,560.00,Dubai,
+HIJ-JRS-INST-NVY,Hijab Jersey Instant Navy,28,14.00,392.00,Dubai,
+HIJ-JRS-INST-GRY,Hijab Jersey Instant Grey,22,14.00,308.00,Dubai,
+HIJ-JRS-INST-NUD,Hijab Jersey Instant Nude,15,0.00,0.00,Dubai,WAC=0
+HIJ-JRS-INST-MRN,Hijab Jersey Instant Maroon,10,14.00,140.00,Dubai,
+HIJ-JRS-INST-OLV,Hijab Jersey Instant Olive,12,15.00,180.00,Dubai,
+UND-SLIP-BLK-SM,Under Abaya Slip Black S/M,20,22.00,440.00,Dubai,
+UND-SLIP-BLK-LXL,Under Abaya Slip Black L/XL,15,22.00,330.00,Dubai,
+UND-SLIP-NUD-SM,Under Abaya Slip Nude S/M,18,22.00,396.00,Dubai,
+UND-SLIP-NUD-LXL,Under Abaya Slip Nude L/XL,10,0.00,0.00,Dubai,WAC=0
+BELT-INN-BLK,Belt Inner Abaya Black,35,10.00,350.00,Dubai,
+BELT-INN-NUD,Belt Inner Abaya Nude,22,10.00,220.00,Dubai,
+ACC-STG-BAG,Abaya Storage Bag,50,12.00,600.00,Dubai,Dubai only stock
+ACC-TBOX,Tissue Box Cover,15,0.00,0.00,Dubai,WAC=0
+FAB-NIDA-BLK-M,Nida Fabric Black (m),45,12.00,540.00,Dubai,workshop
+FAB-NIDA-NVY-M,Nida Fabric Navy (m),30,12.00,360.00,Dubai,
+FAB-KNIDA-BLK-M,Korean Nida Black (m),60,16.00,960.00,Dubai,
+FAB-CRPE-BLK-M,Crepe Fabric Black (m),80,9.00,720.00,Dubai,
+FAB-CHF-BLK-M,Chiffon Fabric Black (m),90,8.00,720.00,Dubai,
+ABAYA-OPN-NUD-M-CLR,Abaya Open Nude M CLEARANCE,3,0.00,0.00,Dubai,clearance; cost written off
+ABAYA-OPN-NUD-L-CLR,Abaya Open Nude L CLEARANCE,1,0.00,0.00,Dubai,clearance; cost written off
+TOTAL,,,,,,"187,640.00 (approx)"

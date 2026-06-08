@@ -104,7 +104,7 @@ Net zero, but both reported on tax return.
 | Country | Setup |
 |---------|-------|
 | Kuwait (no VAT) | No tax codes. Default group = "No Tax" at 0%. |
-| UAE | One code: "VAT" 5% exclusive. |
+| UAE | One code: "VAT" 5% inclusive. |
 | Saudi Arabia | One code: "VAT" 15% exclusive. |
 | India | CGST 9% + SGST 9% (intra-state), IGST 18% (inter-state), Cess varies. |
 | USA | Codes per state/county/city. Rate by customer shipping address. |

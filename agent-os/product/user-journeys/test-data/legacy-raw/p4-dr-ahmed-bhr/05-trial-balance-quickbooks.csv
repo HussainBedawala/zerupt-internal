@@ -1,0 +1,53 @@
+Account,Account Type,Account Code,Debit (BHD),Credit (BHD),Notes
+Cash - Register 1,Bank & Cash,1010,4250.500,,petty cash + till float
+Bank - BBK Current Account,Bank & Cash,1020,18640.750,,main operating account
+Bank - HSBC Bahrain,Bank & Cash,1025,5200.000,,PDC clearing account
+Accounts Receivable,Accounts Receivable,1100,3478.950,,per customer aging
+Inventory Asset - Pharmaceuticals,Other Current Asset,1200,38420.650,,WAC may include zero-cost items
+Inventory Asset - Cosmetics/Derma,Other Current Asset,1210,12840.300,,
+Inventory Asset - Baby Care,Other Current Asset,1220,4520.150,,
+Inventory Asset - Supplements,Other Current Asset,1230,6210.800,,
+Inventory Asset - Devices,Other Current Asset,1240,2180.500,,
+PDC Receivable (Cheques Held),Other Current Asset,1310,0.000,,none currently
+Prepaid Rent,Other Current Asset,1320,2400.000,,6 months prepaid
+VAT Input Receivable - 10% (Purchases),Other Current Asset,1410,840.250,,input VAT claimable - NBR
+VAT Input Receivable - 0% (Purchases),Other Current Asset,1415,0.000,,zero rated inputs
+Fixtures & Equipment,Fixed Asset,1500,8500.000,,shelving fridge POS hardware
+Accumulated Depreciation - F&E,Fixed Asset,1510,,3200.000,
+Computer & POS System,Fixed Asset,1520,3200.000,,
+Accounts Payable,Accounts Payable,2010,,15233.050,per supplier aging
+PDC Payable - Cheques Issued (60-90 day),Other Current Liability,2100,,8420.500,post dated cheques to suppliers
+VAT Output Payable - 10% (Sales),Other Current Liability,2200,,2840.650,OTC + cosmetics + devices VAT collected
+VAT Output Payable - 0% (Sales),Other Current Liability,2205,0.000,,Rx drugs zero-rated output
+VAT Suspense / Miscategorized Items,Other Current Liability,2210,,280.000,*** items with unclear VAT status - NBR risk
+NBR VAT Payable (Net Settlement),Other Current Liability,2220,,0.000,reconciled monthly - currently zero
+Salary Payable,Other Current Liability,2300,,1800.000,pharmacist + 1 assistant
+Rent Payable,Other Current Liability,2310,,0.000,
+Opening Balance Equity,Equity,3000,,8420.150,
+Retained Earnings,Equity,3100,,42180.500,
+Owner Drawings,Equity,3200,18000.000,,YTD drawings Dr. Ahmed
+Drug Sales - Rx (Zero Rated),Income,4010,,85420.500,prescription drug revenue 0% VAT
+Drug Sales - OTC (10% VAT),Income,4020,,28400.650,OTC revenue taxable
+Cosmetic Sales (10% VAT),Income,4030,,12840.250,
+Supplement Sales (10% VAT),Income,4040,,8200.500,
+Baby Care Sales (10% VAT),Income,4050,,5640.300,
+Medical Devices (10% VAT),Income,4060,,3200.150,
+Consultation Income (Zero Rated),Income,4070,,840.000,professional services
+Delivery Income (10% VAT),Income,4080,,320.500,
+Other Income,Income,4090,,0.000,
+COGS - Pharmaceuticals,Cost of Goods Sold,5010,62840.300,,Rx + OTC combined
+COGS - Cosmetics,Cost of Goods Sold,5020,7840.200,,
+COGS - Supplements,Cost of Goods Sold,5030,4820.150,,
+COGS - Baby Care,Cost of Goods Sold,5040,3210.500,,
+COGS - Devices,Cost of Goods Sold,5050,1840.300,,
+COGS - Other,Cost of Goods Sold,5060,120.000,,
+Salaries & Benefits,Expense,6010,21600.000,,12 months x 1800
+Rent,Expense,6020,7200.000,,600 BHD/mo x 12
+Electricity & Utilities,Expense,6030,2400.000,,
+Telephone & Internet,Expense,6040,480.000,,
+Bank Charges,Expense,6050,180.500,,
+Depreciation,Expense,6060,1640.000,,
+Licensing & Professional Fees,Expense,6070,850.000,,NHRA pharmacy license + accountant
+Packaging & Bags,Expense,6080,420.000,,
+Miscellaneous Expense,Expense,6090,1240.800,,
+TOTAL,,, 311,170.350, 311,170.350,roughly balances - small rounding diff possible

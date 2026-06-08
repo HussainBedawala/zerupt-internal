@@ -1,0 +1,21 @@
+supplier_code,name,contact_person,mobile,email,address,trn,payment_terms,credit_limit,opening_balance,notes
+SUP-001,ALMARAI COMPANY LLC,Salesman Ahmed,,,,100177451900003,30 Days,50000.00,28450.00,weekly delivery
+SUP-002,NADEC - National Agri Dev Co,Mohammed Salim,055-XXXXXXX,,JAFZA,100234567890123,30 Days,30000.00,14200.00,
+SUP-003,RAINBOW DAIRY MENA,,,,,100345678901234,45 Days,20000.00,9800.00,order via distributor only
+SUP-004,NESTLE GULF LLC,,,nestle@nestlegulf.com,Dubai Investment Park,,30 Days,40000.00,21500.00,min order AED 2000
+SUP-005,PEPSI COLA INTL LLC GULF,Delivery Ramesh,,,Al Quoz Depot,,7 Days,15000.00,6750.00,COD mostly; some credit
+SUP-006,COCA COLA ARABIAN PENINSULA,Ahmad Delivery,056-xxxxxxx,,Al Quoz,,7 Days,15000.00,5200.00,
+SUP-007,INDOMIE WINGS FOOD IND - DIST,,,,,100456789012345,30 Days,10000.00,4100.00,
+SUP-008,INDIA GATE BASMATI RICE DIST,Santosh,,,,100567890123456,45 Days,25000.00,17800.00,bulk 1 ton min
+SUP-009,TIDE P&G GULF DISTRIBUTER,,,,,100678901234567,30 Days,20000.00,11200.00,promotions every 2 months
+SUP-010,HEINZ KRAFT FOODS GULF,,,,,100789012345678,30 Days,10000.00,3600.00,
+SUP-011,LOCAL PURCHASE - CASH,various,,,Al Quoz Vegetable Mandi,,COD,0,0.00,"vegetables/fruits; cash only; no TRN; NO INVOICE sometimes"
+SUP-012,MASAFI WATER CO,,,,,100890123456789,15 Days,8000.00,2900.00,
+SUP-013,AMERICANA FOODS GULF DIST,Faisal,055-xxxxxxx,,,100901234567890,30 Days,12000.00,5800.00,
+SUP-014,DETTOL RECKITT GULF,,,,Jebel Ali,101012345678901,30 Days,10000.00,4200.00,
+SUP-015,GARDENIA BAKERIES UAE,,,,,101123456789012,7 Days,5000.00,1800.00,daily bread delivery; fresh
+SUP-016,PAMPERS PROCTER GAMBLE,,,,,101234567890123,30 Days,15000.00,8900.00,
+SUP-017,LAYS FRITO-LAY GULF DIST,,,,,101345678901234,15 Days,8000.00,3100.00,
+SUP-018,GENERAL TRADING CO LLC,various,,generaltrading@email.com,Deira,,30 Days,20000.00,7400.00,"general FMCG; mixed brands; sometimes duplicate of other suppliers"
+SUP-019,AL RAWDAH POULTRY (EGGS),Driver direct,,,Al Quoz Mandi,,COD,0,0.00,cash eggs delivery 3x week; no formal PO
+SUP-020,UNKNOWN SUPPLIER,,,,,,,0,0.00,items imported by owner personally; no supplier on record

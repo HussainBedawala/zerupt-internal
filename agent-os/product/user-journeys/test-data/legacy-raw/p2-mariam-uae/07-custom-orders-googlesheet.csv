@@ -1,0 +1,31 @@
+Sr,Customer,Phone,Instagram,Order Date,Delivery Date,Style / Type,Fabric,Color,Measurements (free text),Embellishment,Total Price (AED),Deposit Paid (AED),Balance Due (AED),Payment Method (Deposit),Status,Notes
+1,Hind Al Shamsi,050 787 6565,@hind.bride,5/3/2026,25/3/2026,Open Front - wedding,Korean Nida,"Ivory, with gold"," chest 104, waist 86, hip 112, length 145, sleeve 62",Gold hand embroidery full front,2800.00,1400.00,1400.00,Cash,DELIVERED - final paid cash,WEDDING PACKAGE - 3 abayas total; this is piece 1
+2,Hind Al Shamsi,050 787 6565,,5/3/2026,25/3/2026,Butterfly Sleeves - wedding,Chiffon overlay nida,Ivory," same as order 1",,1800.00,,,,"DELIVERED","piece 2 of wedding order - deposit counted with order 1"
+3,Hind Al Shamsi,050 787 6565,,5/3/2026,25/3/2026,Classic - everyday,Nida,Black,"same as above - check order 1",,650.00,,,,"DELIVERED","piece 3"
+4,Noura M.,050-987-6543,@noura_m_style,12/1/2026,01/02/2026,Open Front Custom,Crepe,Dark Navy,"bust 98 waist 80 hip 108 length 148",,950.00,500.00,450.00,Bank Transfer,DELIVERED - BALANCE NOT COLLECTED,follow up!!
+5,Mona Hassan,+971 50 876 5432,,15/01/2026,10/2/2026,Kimono Style,Korean Nida,Emerald Green,"C=102 W=84 H=110 L=142 Slv=60",Sleeve cuffs embroidered,1200.00,600.00,600.00,Cash,DELIVERED,happy with result
+6,Habiba K.,056 765 4321,,2026-01-20,2026-02-05,Classic Abaya,Nida,Black,"chest 106, waist 88, hip 114, l=144",None,550.00,275.00,275.00,Cash,DELIVERED - PAID,monthly regular
+7,Habiba K.,056 765 4321,,20/02/2026,10/3/2026,Butterfly,Nida,Navy,"same measurements as Jan order",Subtle embroidery hem,750.00,375.00,375.00,Cash,DELIVERED,
+8,Dana Al Farsi,050 333 2222,@dana_modest_fashion,2/2/2026,28/2/2026,Open Front,Chiffon over Crepe,Dusty Rose,"bust=96 W=78 H=106 length 140","Stone work on sleeves",1600.00,800.00,800.00,Card,DELIVERED - BALANCE NOT COLLECTED,DM her on IG!!! URGENT
+9,"Reem (friend of Dana)",+971 55 098 7654,,02/02/2026,28/02/2026,Open Front,Chiffon,Blush,"roughly same as Dana - check",,1200.00,600.00,600.00,Cash,IN PROGRESS,,
+10,Fatima Al Rashidi,+971 50 123 4567,@fatima.abaya.love,10/2/2026,5/3/2026,Kimono VIP,Korean Nida,Black + Gold Piping,"chest 100 waist 82 hip 108 length 144 - she is tall","Full gold border piping",2200.00,1100.00,1100.00,Cash,DELIVERED - PAID,VIP wrap + gift card
+11,Lamia Darwish,,@lam_wears,15/02/2026,15/3/2026,Classic,Nida,Charcoal,"C 100 W 82 H 108 L 142",,500.00,250.00,250.00,Whatsapp Pay,DELIVERED,,
+12,ASMA JUMA,056-001-2345,,18/2/2026,15/3/2026,Butterfly Wide,Crepe,Burgundy,"sent voice note on whatsapp - approx 108/88/114/148",Embroidered cuffs,900.00,450.00,450.00,Cash,DELIVERED - PAID,
+13,Sawsan Al Amin,055 909 0123,,22/02/2026,20/3/2026,Open Front,Korean Nida,Olive,"exact: C=104 W=86 H=112 L=146",,1100.00,550.00,550.00,Cash,IN PROGRESS,
+14,Boutique Noor (wholesale),+971 4 345 6789,,1/3/2026,30/3/2026,Classic x10 (bulk),Nida,Black,"standard sizing S/M/L mixed - see bulk order form",,8500.00,4250.00,4250.00,Bank Transfer,DELIVERED - PARTIAL PAYMENT,balance 2000 still due - invoice sent
+15,Maitha,050 000 9898,,03/03/2026,,Classic,Nida,Black,"C=108 W=90",,600.00,300.00,300.00,Cash,PENDING FITTING,,delivery date not set - waiting for fitting
+16,Buthayna Saeed,0508887766,,5/3/2026,1/4/2026,Kimono,Chiffon,Nude + rose gold,"Bthyna C=102 W=82 H=110 L=143 - check notes","Rose gold trim",1400.00,700.00,700.00,Cash,IN PROGRESS,customer asked for URGENT by 20/3 - check with tailor
+17,Zahra Al Fardan,+971 56 123 0007,@zfardan_abayas,10/3/2026,10/4/2026,Open Front Luxury,Korean Nida,Pearl White,"C=98 W=80 H=106 L=141","Full Swarovski on collar - source crystals",3800.00,2000.00,1800.00,Card,IN PROGRESS,URGENT - she flies back to Doha April 12 DO NOT MISS
+18,Marwa Ibrahim,055 456 7890,,12/3/2026,5/4/2026,Butterfly,Nida,Navy,"B=100 W=84 H=110 L=144",None,750.00,375.00,375.00,Cash,IN PROGRESS,
+19,Iman Al Mazrouei,+971 55 900 0122,,15/3/2026,15/4/2026,Classic Wide,Crepe,Charcoal,"chest 106 W 88 H 112 L 146",,580.00,0.00,580.00,,"PENDING - NO DEPOSIT TAKEN",new customer - collect deposit at fitting
+20,Aseel Mohammed,055 654 3210,,18/3/2026,20/4/2026,Open Front,Nida,Black,"A=104 W=86 H=112 length=145",Stone border,950.00,500.00,450.00,Cash,IN PROGRESS,
+21,Samira Boutros,+971 50 234 5610,,20/3/2026,30/4/2026,Classic x5 (wholesale),Nida,Assorted,"S M L",None,2750.00,1375.00,1375.00,Bank Transfer,IN PROGRESS,b2b order - 5 pieces various colors confirm specs
+22,"Unknown customer",,,25/3/2026,,,Crepe,,,,,500.00,,,IN PROGRESS,walk-in customer - no contact taken - deposit in drawer labelled "crepe order march 25"
+23,Rawan Al Otaibi,+966 55 123 4567,@rawan_outfit_diaries,28/3/2026,05/05/2026,Butterfly Luxury,Korean Nida,Black + Silver,"she sent DM measurements - saved on IG","Silver embroidery + piping",2500.00,1250.00,1250.00,Bank Transfer,CONFIRMED,Saudi influencer - photograph for IG when ready
+24,Nouf Al Khalidi,+971 50 234 0011,@noufalstyle,01/04/2026,01/05/2026,Kimono Overlap,Chiffon,Sage Green,"C=96 W=78 H=104 L=140",Chiffon layers,1300.00,650.00,650.00,Cash,CONFIRMED,
+25,"Faridah (Sharjah outlet ref)",056 333 8877,,3/4/2026,15/5/2026,Classic,Nida,Black,"sent voice note - Ustadha Rahma has measurements",,550.00,275.00,275.00,Cash,CONFIRMED,Sharjah order - tailor Rahma handling
+26,Habiba K.,056 765 4321,,05/04/2026,01/05/2026,Open Front,Korean Nida,Olive,"SAME AS FEB ORDER + 2cm longer",,1100.00,550.00,550.00,Cash,CONFIRMED,3rd order this year - VIP
+27,Hessa Ahmed,0501234000,,10/4/2026,20/5/2026,Butterfly,Crepe,Wine Red,"C=110 W=92 H=116 L=148 (plus size)",,850.00,425.00,425.00,Cash,CONFIRMED,mention free hem alteration offer
+28,,,,,,,,,,,,,,,BLANK ROW,
+29,"walk in Sharjah 15 April",,,,,,Nida,Black,"approx medium",,400.00,200.00,200.00,Cash,COMPLETED PAID CASH,no name no contact
+30,Sheikha Fatima,+971 50 000 1111,,20/4/2026,30/5/2026,Luxury Full Custom,Korean Nida + Chiffon Overlay,"Ivory/Champagne","C=99 W=81 H=107 L=143 exact","Full hand embroidery + crystals - 2 weeks work",5500.00,2750.00,2750.00,Cash,IN PROGRESS,PRIORITY VIP - gift card + premium bag

@@ -6,10 +6,25 @@
 |--------|------------|--------------|
 | **WAC** (Weighted Average Cost) | All items | One cost per item. Recalculates on every inbound. |
 | **FIFO** (First In, First Out) | Batch-tracked items | Separate cost layers. Oldest consumed first. |
+| **Specific Identification** | Serial-tracked items | Each physical unit carries its own `acquisition_cost`. Outbound COGS = the sold unit's own cost — never the pool average. |
 
 Set at company level during onboarding. Item-level override allowed (batch items auto-FIFO).
 
-Changing an item's valuation method after transactions exist requires admin confirmation and a recalculation.
+Changing an item's valuation method after transactions exist requires admin confirmation and a recalculation. `trackingType` (none/serial/batch) is set ONCE at item creation and is **immutable** once any movement or serial exists.
+
+### Specific-Identification Costing (serial items)
+
+For a serial-tracked sale line, the document's confirm transaction claims the
+selected serials (`Available → Sold`) and sums their `acquisition_cost`. That
+exact sum is:
+- written to `cost_at_sale` (reporting), AND
+- passed to the cost engine as the COGS journal-entry total and the stock-ledger
+  outbound total — so **reporting and GL tie out by construction**.
+
+The WAC pool average is left untouched by a serial sale (the unit consumed is
+specific, not the average). The stock LEVEL still decrements by the specific cost,
+keeping materialized stock value exact (inbound value = qty × unit cost; outbound
+value = Σ specific serial costs).
 
 ---
 

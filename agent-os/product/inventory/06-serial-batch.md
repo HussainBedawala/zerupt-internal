@@ -58,6 +58,27 @@ Available → Reserved → Sold
 | COGS = serial's individual cost | Not WAC |
 | Return must reference the original serial | Validated against sale document |
 
+### Claim-at-Confirm Lifecycle (authoritative)
+
+Serial create / claim / return happens **atomically inside the document's own
+confirm transaction**, before any financial posting — NOT in an async event
+listener. This is the single source of truth for "who owns this unit".
+
+| Document confirm | Serial transition (in the SAME tx as the doc + stock move) |
+|------------------|------------------------------------------------------------|
+| GRN confirm | INSERT one `Available` unit per serial (cost = line unit cost). The `(tenant,item,serialNo)` unique constraint fires here, so two concurrent GRNs of the same serial → the second rolls back. |
+| Sales invoice confirm | Guarded UPDATE `Available/Reserved → Sold`, asserting rows-affected === qty. Two concurrent invoices for the same serial → exactly one commits, the other rolls back with **no financial posting**. Sums acquisition costs for specific-id COGS. |
+| Credit-note (goods return) confirm | Guarded UPDATE `Sold → Returned`, **relocating the unit to the return warehouse** and clearing the sale link. A never-sold serial rolls the confirm back. |
+| POS sale / return | Same claims, inside the POS confirm tx (`PosSerialNumbersService`). |
+
+The async inventory fan-out listener moves stock + posts the JE only; it **never
+mutates serials**. This eliminates double-sell, poison-retries, and partial
+commits that arise when serial state lives in a separate async transaction.
+
+Imported opening stock (CSV) creates `Available` serial rows inside the posting
+transaction (`purchaseDocType = 'opening'`), so imported serial stock is
+immediately sellable.
+
 ### Serial Number Entry
 
 **On GRN receipt:** Enter serial numbers one by one (manual) or scan (barcode/IMEI scanner). Count of serials must match received quantity.

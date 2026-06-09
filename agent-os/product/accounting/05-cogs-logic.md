@@ -52,11 +52,38 @@ Remaining:
   Layer 3: 40 @ 10.500
 ```
 
+## Specific Identification — For Serial-Tracked Items
+
+Serial-tracked items do NOT use the pool average. Each physical unit carries its
+own `acquisition_cost` (captured at receipt). When a serial unit is sold, COGS for
+that unit is its OWN acquisition cost — not WAC.
+
+- At sale confirm, the document atomically claims the selected serials
+  (`available → sold`) inside its own transaction and sums their acquisition
+  costs. That sum is written to `sales_invoice_lines.cost_at_sale` (reporting) AND
+  passed through the sale event as `cogsSpecificTotalCost`.
+- The cost engine posts THAT exact figure as the COGS journal entry and the stock
+  ledger total cost, so **reporting (`cost_at_sale`) === GL COGS by construction**
+  for serial lines. Non-serial lines are unchanged (WAC/FIFO).
+- A serial unit with a null/zero acquisition cost is rejected at sale confirm
+  (never post zero-cost COGS).
+
+```
+Receive serial A @ 10.000, serial B @ 20.000 (same item, WAC pool now (10+20)/2 = 15)
+Sell serial B:
+  COGS = 20.000  (B's own cost — NOT the 15.000 WAC)
+  cost_at_sale = 20.000  (ties out to GL)
+  WAC pool is untouched (specific-id consumes its own unit, not the average)
+```
+
+A serial goods return (`sold → returned`) relocates the unit to the return
+warehouse and reverses the original COGS via the sale-return inbound path.
+
 ## When COGS Fires
 
 | Event | Entry |
 |-------|-------|
-| Sales invoice confirmed | DR COGS / CR Inventory (per line item at WAC or FIFO) |
+| Sales invoice confirmed | DR COGS / CR Inventory (per line item at WAC, FIFO, or — for serial-tracked items — specific identification) |
 | POS transaction completed | DR COGS / CR Inventory (per line item) |
 | Credit note confirmed | DR Inventory / CR COGS (reversal) |
 | POS return completed | DR Inventory / CR COGS (reversal) |

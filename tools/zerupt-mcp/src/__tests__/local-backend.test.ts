@@ -8,28 +8,34 @@ let tmpRoot: string;
 let backend: LocalBackend;
 
 // Build a fixture directory structure that mirrors the virtual path model:
-// <tmpRoot>/                         ← LOCAL_CONTENT_ROOT (= "internal" root)
+// <tmpRoot>/                               ← LOCAL_CONTENT_ROOT (= "internal" root)
 //   agent-os/product/mission.md
-//   erp/docs/CODEMAPS/accounting.md
-//   erp/apps/api/src/app.ts
+//   agent-os/brand/brand-foundation.md
+//   agent-os/marketing/marketing-context.md
+//   agent-os/customers/personas/ksa-personas-spec.md
 
 beforeAll(async () => {
   tmpRoot = await mkdtemp(join(tmpdir(), 'zerupt-mcp-test-'));
   await mkdir(join(tmpRoot, 'agent-os', 'product'), { recursive: true });
-  await mkdir(join(tmpRoot, 'erp', 'docs', 'CODEMAPS'), { recursive: true });
-  await mkdir(join(tmpRoot, 'erp', 'apps', 'api', 'src'), { recursive: true });
+  await mkdir(join(tmpRoot, 'agent-os', 'brand'), { recursive: true });
+  await mkdir(join(tmpRoot, 'agent-os', 'marketing'), { recursive: true });
+  await mkdir(join(tmpRoot, 'agent-os', 'customers', 'personas'), { recursive: true });
 
   await writeFile(
     join(tmpRoot, 'agent-os', 'product', 'mission.md'),
     '# Mission\nZerupt is a retail ERP.',
   );
   await writeFile(
-    join(tmpRoot, 'erp', 'docs', 'CODEMAPS', 'accounting.md'),
-    '# Accounting Codemap\nRoutes, services, tables.',
+    join(tmpRoot, 'agent-os', 'brand', 'brand-foundation.md'),
+    '# Brand Foundation\nInk on cream.',
   );
   await writeFile(
-    join(tmpRoot, 'erp', 'apps', 'api', 'src', 'app.ts'),
-    'export const app = "hello";',
+    join(tmpRoot, 'agent-os', 'marketing', 'marketing-context.md'),
+    '# Marketing Context\nICP: MENA retail.',
+  );
+  await writeFile(
+    join(tmpRoot, 'agent-os', 'customers', 'personas', 'ksa-personas-spec.md'),
+    '# KSA Personas\nYousef, Noura.',
   );
 
   backend = new LocalBackend(tmpRoot);
@@ -40,19 +46,19 @@ afterAll(async () => {
 });
 
 describe('LocalBackend.getFile', () => {
-  it('reads internal/ path', async () => {
+  it('reads internal/agent-os/product/mission.md', async () => {
     const content = await backend.getFile('internal/agent-os/product/mission.md');
     expect(content).toContain('Zerupt is a retail ERP');
   });
 
-  it('reads erp/docs path', async () => {
-    const content = await backend.getFile('erp/docs/CODEMAPS/accounting.md');
-    expect(content).toContain('Accounting Codemap');
+  it('reads internal/agent-os/brand/brand-foundation.md', async () => {
+    const content = await backend.getFile('internal/agent-os/brand/brand-foundation.md');
+    expect(content).toContain('Ink on cream');
   });
 
-  it('reads erp/apps src path', async () => {
-    const content = await backend.getFile('erp/apps/api/src/app.ts');
-    expect(content).toContain('hello');
+  it('reads internal/agent-os/marketing/marketing-context.md', async () => {
+    const content = await backend.getFile('internal/agent-os/marketing/marketing-context.md');
+    expect(content).toContain('MENA retail');
   });
 
   it('throws on non-existent file', async () => {
@@ -68,8 +74,16 @@ describe('LocalBackend.getFile', () => {
   });
 
   it('throws on absolute path', async () => {
-    // Absolute paths fail allowlist check (starts with /)
     await expect(backend.getFile('/etc/passwd')).rejects.toThrow();
+  });
+
+  // erp paths are denied by the allowlist
+  it('throws on erp/docs paths (denied)', async () => {
+    await expect(backend.getFile('erp/docs/CODEMAPS/accounting.md')).rejects.toThrow(/not in allowlist/i);
+  });
+
+  it('throws on erp/apps src paths (denied)', async () => {
+    await expect(backend.getFile('erp/apps/api/src/app.ts')).rejects.toThrow(/not in allowlist/i);
   });
 });
 
@@ -79,32 +93,35 @@ describe('LocalBackend.listDir', () => {
     expect(entries).toContain('internal/agent-os/product/mission.md');
   });
 
-  it('lists erp/docs/CODEMAPS', async () => {
-    const entries = await backend.listDir('erp/docs/CODEMAPS');
-    expect(entries).toContain('erp/docs/CODEMAPS/accounting.md');
+  it('lists internal/agent-os/brand', async () => {
+    const entries = await backend.listDir('internal/agent-os/brand');
+    expect(entries).toContain('internal/agent-os/brand/brand-foundation.md');
   });
 
   it('throws on traversal in listDir', async () => {
     await expect(backend.listDir('internal/../etc')).rejects.toThrow();
   });
+
+  it('throws on erp/docs listDir (denied)', async () => {
+    await expect(backend.listDir('erp/docs/CODEMAPS')).rejects.toThrow(/not in allowlist/i);
+  });
 });
 
 describe('LocalBackend.search', () => {
-  it('finds text in specs scope', async () => {
-    const hits = await backend.search('retail ERP', 'specs');
+  it('finds text in product scope', async () => {
+    const hits = await backend.search('retail ERP', 'product');
     expect(hits.length).toBeGreaterThan(0);
     expect(hits[0]?.path).toContain('mission.md');
   });
 
-  it('finds text in docs scope', async () => {
-    const hits = await backend.search('Codemap', 'docs');
+  it('finds text in brand scope', async () => {
+    const hits = await backend.search('Ink on cream', 'brand');
     expect(hits.length).toBeGreaterThan(0);
   });
 
-  it('finds text in code scope', async () => {
-    const hits = await backend.search('hello', 'code');
+  it('finds text in all scope', async () => {
+    const hits = await backend.search('MENA retail', 'all');
     expect(hits.length).toBeGreaterThan(0);
-    expect(hits[0]?.path).toContain('app.ts');
   });
 
   it('returns empty for no match', async () => {
@@ -113,16 +130,22 @@ describe('LocalBackend.search', () => {
   });
 });
 
-describe('LocalBackend read_file tool integration', () => {
-  it('reads an allowlisted file via tool layer', async () => {
-    const { readFile } = await import('../tools/read-file.js');
-    const result = await readFile(backend, 'internal/agent-os/product/mission.md');
-    expect(result).toContain('Zerupt is a retail ERP');
+describe('LocalBackend agent-os tool integration', () => {
+  it('reads an agent-os file via get-brand tool', async () => {
+    const { getBrand } = await import('../tools/get-brand.js');
+    const result = await getBrand(backend, 'foundation');
+    expect(result).toContain('Ink on cream');
   });
 
-  it('returns access-denied message for blocked path', async () => {
-    const { readFile } = await import('../tools/read-file.js');
-    const result = await readFile(backend, 'internal/agent-os/.env');
-    expect(result).toMatch(/access denied|denied/i);
+  it('lists personas via list-personas tool', async () => {
+    const { listPersonas } = await import('../tools/list-personas.js');
+    const result = await listPersonas(backend);
+    expect(result).toContain('ksa-personas-spec');
+  });
+
+  it('gets a persona via get-persona tool', async () => {
+    const { getPersona } = await import('../tools/get-persona.js');
+    const result = await getPersona(backend, 'ksa');
+    expect(result).toContain('KSA Personas');
   });
 });

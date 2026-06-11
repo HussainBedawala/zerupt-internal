@@ -2,7 +2,7 @@ import type { ContentBackend } from '../content/backend.js';
 import { sanitiseResponse } from '../security.js';
 
 const BANNER =
-  '> **SPEC = design intent.** Cross-check `get_codemap` for what is actually built.';
+  '> **SPEC = design intent.** Cross-check Linear for what is actually built.';
 
 export async function getModuleSpec(
   backend: ContentBackend,
@@ -19,7 +19,7 @@ export async function getModuleSpec(
     if (file.includes('/') || file.includes('..') || file.includes('\\')) {
       return `Invalid file name: ${file}`;
     }
-    const virtualPath = `internal/agent-os/product/${module}/${file}`;
+    const virtualPath = `internal/agent-os/product/modules/${module}/${file}`;
     try {
       const content = await backend.getFile(virtualPath);
       return sanitiseResponse(`${BANNER}\n\n---\n\n${content}`);
@@ -30,7 +30,7 @@ export async function getModuleSpec(
   }
 
   // List the module directory
-  const dirPath = `internal/agent-os/product/${module}`;
+  const dirPath = `internal/agent-os/product/modules/${module}`;
   try {
     const entries = await backend.listDir(dirPath);
     const listing = entries.join('\n');

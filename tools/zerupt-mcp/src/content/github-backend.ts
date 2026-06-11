@@ -48,15 +48,13 @@ function cacheSet(key: string, value: unknown): void {
   cache.set(key, { value, expiresAt: Date.now() + CACHE_TTL_MS });
 }
 
-// Scope → GitHub search qualifiers
+// Scope → GitHub search qualifiers (agent-os only)
 const SCOPE_PATHS: Record<string, { repo: string; pathPrefix?: string }[]> = {
-  specs: [{ repo: REPO_INTERNAL, pathPrefix: 'agent-os' }],
-  docs: [
-    { repo: REPO_ERP, pathPrefix: 'docs' },
-    { repo: REPO_INTERNAL, pathPrefix: 'study' },
-  ],
-  code: [{ repo: REPO_ERP }],
-  all: [{ repo: REPO_INTERNAL }, { repo: REPO_ERP }],
+  brand: [{ repo: REPO_INTERNAL, pathPrefix: 'agent-os/brand' }],
+  marketing: [{ repo: REPO_INTERNAL, pathPrefix: 'agent-os/marketing' }],
+  product: [{ repo: REPO_INTERNAL, pathPrefix: 'agent-os/product' }],
+  customers: [{ repo: REPO_INTERNAL, pathPrefix: 'agent-os/customers' }],
+  all: [{ repo: REPO_INTERNAL, pathPrefix: 'agent-os' }],
 };
 
 interface GithubContentFile {

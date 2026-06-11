@@ -1,6 +1,8 @@
 # zerupt-mcp
 
-Read-only product-knowledge MCP server for [Zerupt](https://zerupt.com) — the world's first agentic AI retail ERP. Marketing/sales agents connect to it to learn what the product is, what each module does, what's actually built vs planned, and to search specs/code.
+Read-only marketing and product knowledge MCP server for [Zerupt](https://zerupt.com) — the world's first agentic AI retail ERP.
+
+**Scope:** serves ONLY content from `agent-os/` (brand, marketing, product specs, customer personas). The `erp/` code repository is intentionally NOT served — no codemaps, no source code, no erp docs. This keeps the surface clean and curated for marketing/content agents.
 
 ---
 
@@ -9,7 +11,7 @@ Read-only product-knowledge MCP server for [Zerupt](https://zerupt.com) — the 
 | Variable | Required | Default | Description |
 |----------|----------|---------|-------------|
 | `MCP_TRANSPORT` | No | `stdio` | `stdio` or `http` |
-| `GITHUB_TOKEN` | If no LOCAL_CONTENT_ROOT | — | Fine-grained PAT with read access to `zerupt-internal` + `zerupt-erp` repos |
+| `GITHUB_TOKEN` | If no LOCAL_CONTENT_ROOT | — | Fine-grained PAT with read access to `zerupt-internal` repo |
 | `LOCAL_CONTENT_ROOT` | If no GITHUB_TOKEN | — | Absolute path to local zerupt-internal root (e.g. `/Users/hus3ain/Development/Zerupt`) |
 | `MCP_TOKENS` | Yes (HTTP mode) | — | Comma-separated `name:token` pairs, e.g. `opencode:tok_abc,claudeai:tok_def` |
 | `PORT` | No | `3100` | HTTP server port |
@@ -113,22 +115,28 @@ Add to `MCP_TOKENS` as `clientname:token`.
 
 ## Available Tools
 
-| Tool | Description |
-|------|-------------|
-| `product_overview` | Product mission + tech stack digest |
-| `list_modules` | All ERP modules with codemap summaries (AS-BUILT) |
-| `get_module_spec` | Spec files for a module (design intent) |
-| `get_codemap` | AS-BUILT codemap for a module |
-| `search` | Scoped search: `specs`, `code`, `docs`, `all` |
-| `read_file` | Read any allowlisted virtual path |
-| `marketing_context` | Positioning, ICP, GTM context |
+| Tool | Args | Source | Description |
+|------|------|--------|-------------|
+| `product_overview` | — | `agent-os/product/mission.md` + `tech-stack.md` | Product mission + tech stack digest |
+| `get_brand` | `section?`: `foundation\|story\|design-system\|voice\|all` | `agent-os/brand/` + `marketing/content-style-guide.md` | Brand essentials — identity, story, design tokens, voice |
+| `list_personas` | — | `agent-os/customers/personas/` + `journeys/` | Lists all persona and journey files with headings |
+| `get_persona` | `name`: string | `agent-os/customers/` | Returns content of a matching persona or journey file |
+| `list_features` | `module?`: string, `status?`: `shipped\|planned\|all` | `agent-os/product/feature-catalog/` | Feature catalog — master index or per-module, filtered by status |
+| `get_module_spec` | `module`: string, `file?`: string | `agent-os/product/modules/{module}/` | Spec files for a module — list or read |
+| `get_website_info` | `doc?`: `digest\|seo\|experience\|copy\|all` | `agent-os/marketing/website/` | Website docs — digest, SEO, experience, copy |
+| `marketing_context` | — | `agent-os/marketing/marketing-context.md` | Positioning, ICP, GTM context |
+| `search` | `query`: string, `scope`: `brand\|marketing\|product\|customers\|all` | `agent-os/**` | Scoped full-text search across agent-os knowledge |
 
-### Path model
+**Intentionally NOT served:** `erp/` source code, codemaps, DESIGN.md, study notes. Use the erp repo directly for engineering context.
 
-- `internal/...` → zerupt-internal repo root
-- `erp/...` → zerupt-erp repo
+### Path model (agent-os only)
 
-**Allowlist:** `internal/agent-os/**`, `internal/study/**`, `erp/docs/**`, `erp/DESIGN.md`, `erp/README.md`, `erp/apps/*/src/**`, `erp/packages/*/src/**`
+All virtual paths must be under `internal/agent-os/`. The `internal/` prefix maps to the zerupt-internal repo root:
+
+- `internal/agent-os/brand/` → brand identity, design system, story
+- `internal/agent-os/marketing/` → marketing context, style guide, website docs
+- `internal/agent-os/product/` → mission, tech stack, feature catalog, module specs
+- `internal/agent-os/customers/` → personas, journeys, test data
 
 ---
 
@@ -138,7 +146,7 @@ Add to `MCP_TOKENS` as `clientname:token`.
 2. Set **Root Directory** to `tools/zerupt-mcp`
 3. Railway auto-detects the Dockerfile
 4. Set these environment variables in Railway:
-   - `GITHUB_TOKEN` — fine-grained PAT (read-only, both repos)
+   - `GITHUB_TOKEN` — fine-grained PAT (read-only, `zerupt-internal` repo only)
    - `MCP_TOKENS` — e.g. `opencode:tok_abc,claudeai:tok_def`
    - `MCP_TRANSPORT` — `http`
    - `PORT` — `3100` (Railway sets this automatically too)

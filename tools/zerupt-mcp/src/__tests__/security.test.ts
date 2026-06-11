@@ -25,23 +25,36 @@ describe('checkPathAllowed — allowlist', () => {
   it('allows internal/agent-os paths', () => {
     expect(checkPathAllowed('internal/agent-os/product/mission.md')).toBeNull();
   });
-  it('allows internal/study paths', () => {
-    expect(checkPathAllowed('internal/study/pos/overview.md')).toBeNull();
+  it('allows internal/agent-os brand paths', () => {
+    expect(checkPathAllowed('internal/agent-os/brand/brand-foundation.md')).toBeNull();
   });
-  it('allows erp/docs paths', () => {
-    expect(checkPathAllowed('erp/docs/CODEMAPS/accounting.md')).toBeNull();
+  it('allows internal/agent-os marketing paths', () => {
+    expect(checkPathAllowed('internal/agent-os/marketing/marketing-context.md')).toBeNull();
   });
-  it('allows erp/DESIGN.md exactly', () => {
-    expect(checkPathAllowed('erp/DESIGN.md')).toBeNull();
+  it('allows internal/agent-os customers paths', () => {
+    expect(checkPathAllowed('internal/agent-os/customers/personas/ksa-personas-spec.md')).toBeNull();
   });
-  it('allows erp/README.md exactly', () => {
-    expect(checkPathAllowed('erp/README.md')).toBeNull();
+  it('allows internal/agent-os feature-catalog paths', () => {
+    expect(checkPathAllowed('internal/agent-os/product/feature-catalog/pos.md')).toBeNull();
   });
-  it('allows erp/apps/*/src/** paths', () => {
-    expect(checkPathAllowed('erp/apps/api/src/modules/pos/pos.service.ts')).toBeNull();
+  // erp/ paths are intentionally DENIED — only agent-os is served
+  it('denies internal/study paths (not in scope)', () => {
+    expect(checkPathAllowed('internal/study/pos/overview.md')).not.toBeNull();
   });
-  it('allows erp/packages/*/src/** paths', () => {
-    expect(checkPathAllowed('erp/packages/db/src/schema/index.ts')).toBeNull();
+  it('denies erp/docs paths', () => {
+    expect(checkPathAllowed('erp/docs/CODEMAPS/accounting.md')).not.toBeNull();
+  });
+  it('denies erp/DESIGN.md', () => {
+    expect(checkPathAllowed('erp/DESIGN.md')).not.toBeNull();
+  });
+  it('denies erp/README.md', () => {
+    expect(checkPathAllowed('erp/README.md')).not.toBeNull();
+  });
+  it('denies erp/apps src paths', () => {
+    expect(checkPathAllowed('erp/apps/api/src/modules/pos/pos.service.ts')).not.toBeNull();
+  });
+  it('denies erp/packages src paths', () => {
+    expect(checkPathAllowed('erp/packages/db/src/schema/index.ts')).not.toBeNull();
   });
 });
 
@@ -49,8 +62,8 @@ describe('checkPathAllowed — denylist', () => {
   it('blocks .env files', () => {
     expect(checkPathAllowed('internal/agent-os/.env')).not.toBeNull();
   });
-  it('blocks .env.example even in allowed dir', () => {
-    expect(checkPathAllowed('erp/apps/api/src/.env.local')).not.toBeNull();
+  it('blocks .env.local even in allowed dir', () => {
+    expect(checkPathAllowed('internal/agent-os/.env.local')).not.toBeNull();
   });
   it('blocks .pem files', () => {
     expect(checkPathAllowed('internal/agent-os/certs/cert.pem')).not.toBeNull();
@@ -58,20 +71,20 @@ describe('checkPathAllowed — denylist', () => {
   it('blocks .key files', () => {
     expect(checkPathAllowed('internal/agent-os/private.key')).not.toBeNull();
   });
-  it('blocks node_modules', () => {
-    expect(checkPathAllowed('erp/apps/api/src/node_modules/foo')).not.toBeNull();
+  it('blocks node_modules inside agent-os', () => {
+    expect(checkPathAllowed('internal/agent-os/node_modules/foo')).not.toBeNull();
   });
   it('blocks .git', () => {
     expect(checkPathAllowed('internal/agent-os/.git/config')).not.toBeNull();
   });
-  it('blocks dist', () => {
-    expect(checkPathAllowed('erp/apps/api/src/dist/index.js')).not.toBeNull();
+  it('blocks dist inside agent-os', () => {
+    expect(checkPathAllowed('internal/agent-os/dist/index.js')).not.toBeNull();
   });
-  it('blocks coverage', () => {
-    expect(checkPathAllowed('erp/apps/api/src/coverage/lcov.info')).not.toBeNull();
+  it('blocks coverage inside agent-os', () => {
+    expect(checkPathAllowed('internal/agent-os/coverage/lcov.info')).not.toBeNull();
   });
-  it('blocks drizzle (meta)', () => {
-    expect(checkPathAllowed('erp/apps/api/src/drizzle/meta/0001.json')).not.toBeNull();
+  it('blocks drizzle (meta) inside agent-os', () => {
+    expect(checkPathAllowed('internal/agent-os/drizzle/meta/0001.json')).not.toBeNull();
   });
 });
 

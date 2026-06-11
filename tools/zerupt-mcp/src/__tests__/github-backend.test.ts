@@ -1,5 +1,5 @@
 /**
- * L5: GitHub backend focused tests — mock fetch, cache TTL, 403 warn, URL encoding.
+ * GitHub backend focused tests — mock fetch, cache TTL, 403 warn, URL encoding.
  */
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { GitHubBackend } from '../content/github-backend.js';
@@ -32,8 +32,8 @@ describe('GitHubBackend — URL encoding (H1)', () => {
     mockFetch.mockResolvedValueOnce(
       mockResponse(200, {
         type: 'file',
-        name: 'file.md',
-        path: 'erp/docs/CODEMAPS/accounting.md',
+        name: 'mission.md',
+        path: 'agent-os/product/mission.md',
         content: Buffer.from('hello').toString('base64'),
         encoding: 'base64',
         sha: 'abc',
@@ -41,12 +41,11 @@ describe('GitHubBackend — URL encoding (H1)', () => {
       }),
     );
 
-    await backend.getFile('erp/docs/CODEMAPS/accounting.md');
+    await backend.getFile('internal/agent-os/product/mission.md');
 
     const calledUrl = mockFetch.mock.calls[0]?.[0] as string;
-    // Path segments should be encoded — regular chars stay as-is
-    expect(calledUrl).toContain(`${GITHUB_API}/repos/HussainBedawala/zerupt-erp/contents/`);
-    expect(calledUrl).toContain('docs/CODEMAPS/accounting.md');
+    expect(calledUrl).toContain(`${GITHUB_API}/repos/HussainBedawala/zerupt-internal/contents/`);
+    expect(calledUrl).toContain('agent-os/product/mission.md');
   });
 
   it('encodes spaces and special chars in path segments', async () => {
@@ -56,7 +55,7 @@ describe('GitHubBackend — URL encoding (H1)', () => {
     mockFetch.mockResolvedValueOnce(mockResponse(404, null));
 
     try {
-      await backend.getFile('erp/docs/CODEMAPS/my file.md');
+      await backend.getFile('internal/agent-os/product/my file.md');
     } catch {
       // expected — file not found
     }
@@ -80,7 +79,7 @@ describe('GitHubBackend — 403/429 warn path (H9)', () => {
       text: async () => 'rate limited',
     } as Response);
 
-    const hits = await backend.search('hello', 'specs');
+    const hits = await backend.search('hello', 'product');
 
     expect(warnSpy).toHaveBeenCalled();
     expect(warnSpy.mock.calls[0]?.[0]).toContain('403');
@@ -99,7 +98,7 @@ describe('GitHubBackend — search query sanitisation (H2)', () => {
       mockResponse(200, { items: [] }),
     );
 
-    await backend.search('hello repo:evil/repo org:attacker', 'specs');
+    await backend.search('hello repo:evil/repo org:attacker', 'product');
 
     const calledUrl = mockFetch.mock.calls[0]?.[0] as string;
     // The injected qualifier must not appear raw in the URL

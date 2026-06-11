@@ -14,12 +14,13 @@ import type { ContentBackend, SearchHit, SearchScope } from './backend.js';
 const MAX_SEARCH_RESULTS = 30;
 const MAX_FILE_SIZE_BYTES = 5 * 1024 * 1024; // 5 MB guard
 
-// Scope → virtual path prefixes to scan
+// Scope → virtual path prefixes to scan (agent-os only)
 const SCOPE_ROOTS: Record<SearchScope, readonly string[]> = {
-  specs: ['internal/agent-os'],
-  docs: ['erp/docs', 'internal/study'],
-  code: ['erp/apps', 'erp/packages'],
-  all: ['internal/agent-os', 'internal/study', 'erp/docs', 'erp/apps', 'erp/packages'],
+  brand: ['internal/agent-os/brand'],
+  marketing: ['internal/agent-os/marketing'],
+  product: ['internal/agent-os/product'],
+  customers: ['internal/agent-os/customers'],
+  all: ['internal/agent-os'],
 };
 
 export class LocalBackend implements ContentBackend {
@@ -36,7 +37,6 @@ export class LocalBackend implements ContentBackend {
   /**
    * Resolve a virtual path to an absolute filesystem path.
    * internal/... → <root>/...  (strip "internal/" prefix — it's the root)
-   * erp/...      → <root>/erp/...
    */
   private resolveVirtual(virtualPath: string): string {
     const p = normalisePath(virtualPath);
@@ -46,7 +46,7 @@ export class LocalBackend implements ContentBackend {
     } else if (p === 'internal') {
       rel = '';
     } else {
-      // erp/... or erp/DESIGN.md etc.
+      // All other paths are treated as relative to root (denied by allowlist before reaching here)
       rel = p;
     }
     const abs = resolve(join(this.root, rel));

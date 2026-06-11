@@ -1,7 +1,7 @@
 import type { ContentBackend } from '../content/backend.js';
 import { sanitiseResponse } from '../security.js';
 
-const MARKETING_CONTEXT_PATH = 'internal/agent-os/marketing-context.md';
+const MARKETING_CONTEXT_PATH = 'internal/agent-os/marketing/marketing-context.md';
 
 export async function marketingContext(backend: ContentBackend): Promise<string> {
   try {
@@ -9,7 +9,7 @@ export async function marketingContext(backend: ContentBackend): Promise<string>
     return sanitiseResponse(content);
   } catch {
     return (
-      'Marketing context file (`internal/agent-os/marketing-context.md`) has not been written yet. ' +
+      'Marketing context file (`internal/agent-os/marketing/marketing-context.md`) has not been written yet. ' +
       'It will be created by a separate process. Try again later, or use `product_overview` for product identity context.'
     );
   }

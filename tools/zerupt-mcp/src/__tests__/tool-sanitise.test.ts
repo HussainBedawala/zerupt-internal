@@ -1,10 +1,10 @@
 /**
- * L5: tool error sanitisation tests — verify error paths go through sanitiseResponse.
+ * Tool error sanitisation tests — verify error paths go through sanitiseResponse (H4).
  */
 import { describe, it, expect } from 'vitest';
 import type { ContentBackend, SearchHit, SearchScope } from '../content/backend.js';
-import { getCodemap } from '../tools/get-codemap.js';
-import { readFile } from '../tools/read-file.js';
+import { getBrand } from '../tools/get-brand.js';
+import { listFeatures } from '../tools/list-features.js';
 
 /**
  * A backend that always throws with a message containing a simulated filesystem path.
@@ -22,20 +22,34 @@ const failingBackend: ContentBackend = {
   },
 };
 
-describe('get-codemap error sanitisation (H4)', () => {
-  it('returns a sanitised error string, not a raw exception', async () => {
-    const result = await getCodemap(failingBackend, 'nonexistent');
-    expect(result).toBeTruthy();
-    // Must not expose raw filesystem paths to the client
-    expect(result).not.toContain('/home/deploy');
-    // Must be a string the caller can use (not thrown)
+describe('get-brand error handling (H4)', () => {
+  it('returns a string result even when backend fails', async () => {
+    const result = await getBrand(failingBackend, 'foundation');
+    expect(typeof result).toBe('string');
+    expect(result.length).toBeGreaterThan(0);
+  });
+
+  it('does not throw on "all" when backend fails', async () => {
+    const result = await getBrand(failingBackend, 'all');
     expect(typeof result).toBe('string');
   });
 });
 
-describe('read-file access denied message', () => {
-  it('returns access-denied for a blocked path without throwing', async () => {
-    const result = await readFile(failingBackend, 'internal/agent-os/.env');
-    expect(result).toMatch(/access denied/i);
+describe('list-features error handling', () => {
+  it('returns a string result when catalog file is missing', async () => {
+    const result = await listFeatures(failingBackend, 'pos', 'all');
+    expect(typeof result).toBe('string');
+    expect(result).toContain('Could not read feature catalog');
+  });
+
+  it('returns a string result for master index when missing', async () => {
+    const result = await listFeatures(failingBackend);
+    expect(typeof result).toBe('string');
+    expect(result).toContain('Could not read feature catalog');
+  });
+
+  it('rejects invalid module names', async () => {
+    const result = await listFeatures(failingBackend, '../etc/passwd', 'all');
+    expect(result).toContain('Invalid module name');
   });
 });

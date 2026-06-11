@@ -1,5 +1,5 @@
 /**
- * Stdio smoke test: spawns the MCP server and calls tools/list + read_file via JSON-RPC over stdio.
+ * Stdio smoke test: spawns the MCP server and calls tools/list + curated marketing tools via JSON-RPC over stdio.
  * Run: node smoke-test.mjs
  */
 import { spawn } from 'node:child_process';
@@ -73,26 +73,30 @@ async function run() {
     console.log(`  - ${t.name}`);
   }
 
-  // 3. Call read_file on a known file
-  const readResult = await request('tools/call', {
-    name: 'read_file',
-    arguments: { path: 'internal/agent-os/product/mission.md' },
+  // 3. Call get_brand (curated marketing tool)
+  const brandResult = await request('tools/call', {
+    name: 'get_brand',
+    arguments: { section: 'foundation' },
   });
-  const content = readResult.content?.[0]?.text ?? '';
-  if (content.includes('not available') || content.length > 0) {
-    console.log(`✓ read_file(internal/agent-os/product/mission.md): ${content.slice(0, 80)}...`);
+  const content = brandResult.content?.[0]?.text ?? '';
+  if (content.length > 0) {
+    console.log(`✓ get_brand(foundation): ${content.slice(0, 80)}...`);
   } else {
-    console.log('✗ read_file returned empty content');
+    console.log('✗ get_brand returned empty content');
     process.exit(1);
   }
 
-  // 4. Call list_modules
+  // 4. Call list_features (the canonical feature catalog)
   const listResult = await request('tools/call', {
-    name: 'list_modules',
+    name: 'list_features',
     arguments: {},
   });
   const listText = listResult.content?.[0]?.text ?? '';
-  console.log(`✓ list_modules: ${listText.slice(0, 100)}...`);
+  if (!listText.length) {
+    console.log('✗ list_features returned empty content');
+    process.exit(1);
+  }
+  console.log(`✓ list_features: ${listText.slice(0, 100)}...`);
 
   // Done
   console.log('\n✓ Smoke test passed.');

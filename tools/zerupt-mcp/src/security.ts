@@ -5,19 +5,13 @@
 export const RESPONSE_SIZE_CAP = 50_000;
 export const TRUNCATION_SUFFIX = '\n\n...truncated, narrow your query';
 
-// Allowlist: glob-style prefixes that are permitted
+// Allowlist: only agent-os marketing/product knowledge is served
 const ALLOWLIST_PREFIXES: readonly string[] = [
   'internal/agent-os/',
-  'internal/study/',
-  'erp/docs/',
-  'erp/DESIGN.md',
-  'erp/README.md',
-  // code roots — erp/apps/*/src/** and erp/packages/*/src/**
-  // validated via regex below
 ];
 
-// Regex for code src allowlist
-const CODE_SRC_RE = /^erp\/(apps|packages)\/[^/]+\/src\//;
+// No erp code src allowlist — erp repo is intentionally NOT served
+const CODE_SRC_RE = /(?!)/; // Never matches
 
 // Denylist: path segment patterns that are always blocked
 const DENYLIST_SEGMENTS: readonly RegExp[] = [

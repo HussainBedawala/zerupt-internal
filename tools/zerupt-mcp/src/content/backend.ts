@@ -8,7 +8,7 @@ export interface SearchHit {
   readonly snippet: string;
 }
 
-export type SearchScope = 'specs' | 'code' | 'docs' | 'all';
+export type SearchScope = 'brand' | 'marketing' | 'product' | 'customers' | 'all';
 
 export interface ContentBackend {
   /**

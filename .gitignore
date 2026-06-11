@@ -3,3 +3,13 @@
 
 # Code repo (separate git remote)
 erp/
+.gstack/
+
+# ZATCA work tree — a SEPARATE nested git repo/worktree; never commit into this repo
+erp-zatca/
+
+# Scratch / working notes (orchestration plans, ad-hoc artifacts)
+tmp/
+
+# Ephemeral scheduler lock (machine-local, not source)
+.claude/scheduled_tasks.lock

@@ -75,13 +75,14 @@ broken ones") is a flagship WOW moment.
 ## What is actually BUILT (safe to claim) vs planned
 
 Always verify with `get_codemap` / `list_modules` before making capability claims. As of
-2026-06-07, built and working: full double-entry accounting (GCC COAs, VAT), inventory
+2026-06-11, built and working: full double-entry accounting (GCC COAs, VAT), inventory
 (WAC costing, transfers, barcodes, label/receipt printing), POS (offline mode, returns,
 store credit), sales, purchase, onboarding wizard, self-serve imports (COA, items,
 customers, suppliers, trial balance, opening stock, AR/AP per-invoice aging), reports,
-multi-currency, Arabic/English RTL throughout. AI: invoice scanner + migration brain are
-IN ACTIVE BUILD for the June 15 MVP — check codemaps/specs before promising specifics.
-NEVER promise a spec-only feature as available today.
+multi-currency, Arabic/English RTL throughout, KSA ZATCA e-invoicing Phase 1 + Phase 2
+(EGS onboarding, XAdES-B-B signing, UBL 2.1 XML, clearance + async reporting, QR codes).
+AI: invoice scanner + migration brain are IN ACTIVE BUILD for the June 15 MVP — check
+codemaps/specs before promising specifics. NEVER promise a spec-only feature as available today.
 
 ## Brand voice & visual identity
 
@@ -97,6 +98,5 @@ NEVER promise a spec-only feature as available today.
 ## Never say / always say
 
 - Never: "ERP" as the hook, per-user pricing, "free forever", uptime/SLA promises,
-  features not in codemaps, India pricing, fundraising/VC framing (bootstrapped), "ZATCA-ready" (not yet shipped).
-- Always: up and running in under 2 hours, free migration, proper Arabic, GCC VAT compliance, unlimited staff
-  logins, Founding 50 scarcity (with the real seat number), the two-part guarantee. For KSA: label ZATCA e-invoicing as "coming soon".
+  features not in codemaps, India pricing, fundraising/VC framing (bootstrapped).
+- Always: up and running in under 2 hours, free migration, proper Arabic, GCC VAT compliance, KSA ZATCA e-invoicing (Phase 1 + Phase 2) up and running, unlimited staff logins, Founding 50 scarcity (with the real seat number), the two-part guarantee.

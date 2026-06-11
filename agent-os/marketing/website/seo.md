@@ -55,7 +55,7 @@ Home page section order (single `<h1>`, then `<h2>` per section):
 4. **Product preview** — branded mockups (POS / your numbers / AI import). Not stock screenshots.
 5. **What it does** — outcome-framed capability cards (NOT "modules"; name by owner outcome).
 6. **"Your Next Move"** — the one differentiator moment; the single citron-meaning surface.
-7. **Comparison** — Zerupt vs SAP/NetSuite/Odoo/Foodics-Qoyod (price, setup time, Arabic/GCC VAT, AI). Note: include ZATCA e-invoicing axis as "coming soon (KSA)" — do not mark as available.
+7. **Comparison** — Zerupt vs SAP/NetSuite/Odoo/Foodics-Qoyod (price, setup time, Arabic/GCC VAT, AI, ZATCA e-invoicing). ZATCA Phase 1 + Phase 2 is shipped and claimable as a comparison axis for KSA.
 8. **Pricing teaser** — 3 tiers summary → link to `/pricing`.
 9. **Proof / Founding 50** — guarantee (2-part), scarcity counter, founder note.
 10. **FAQ** — 6–8 Q&A (FAQPage schema; objection handling + "2 hours, really?").

@@ -21,8 +21,8 @@ This is the canonical catalog of every Zerupt feature, audited as-built on 2026-
 | Data Import & Migration | 24 | 3 | [import.md](import.md) |
 | AI Engine (Zee / Mira / Sami) | 20 | 11 | [ai-engine.md](ai-engine.md) |
 | Business Knowledge Graph | 6 | 0 | [knowledge-graph.md](knowledge-graph.md) |
-| ZATCA E-Invoicing (Fatoora) | 0 | 10 | [zatca-compliance.md](zatca-compliance.md) |
-| **TOTAL** | **254** | **49** | |
+| ZATCA E-Invoicing (Fatoora) | 10 | 1 | [zatca-compliance.md](zatca-compliance.md) |
+| **TOTAL** | **264** | **39** | |
 
 ---
 
@@ -48,6 +48,7 @@ These are the highest-signal shipped features for brand positioning and paid cop
 10. **AI Column Mapping (5-Rung Resolution Ladder)** — Uploaded spreadsheets are auto-mapped to Zerupt fields using a deterministic ladder (exact → alias dictionary → content heuristics → learned cache → LLM). Arabic column headers supported. Your numbers never leave Zerupt.
 11. **Cheque Lifecycle Management** — Full post-dated cheque tracking (issued, deposited, cleared, bounced) with auto journal entries at every step — critical for GCC markets where PDCs are a primary payment instrument.
 12. **Immutable Audit Trail with Tamper Evidence** — Every create/update/delete/login/approval across the entire system is written to a tamper-evidenced audit log with daily chain hashes and before/after field diffs.
+13. **KSA ZATCA E-Invoicing (Phase 1 + Phase 2)** — Full Fatoora compliance built in: EGS device onboarding wizard, secp256k1 CSR generation, XAdES-B-B digital signing, UBL 2.1 KSA XML, Phase 1 and Phase 2 QR codes, ICV/PIH chain, clearance for B2B invoices, and async reporting for B2C POS receipts. No third-party ZATCA middleware required.
 
 ---
 
@@ -55,7 +56,7 @@ These are the highest-signal shipped features for brand positioning and paid cop
 
 The following high-interest items are **not shipped** as of 2026-06-11 and must not appear in marketing as available features:
 
-- **ZATCA E-Invoicing / Fatoora compliance** — Full implementation exists on a feature branch but is NOT merged to `main`. Zero ZATCA code is in production. Do not claim KSA e-invoicing compliance until the branch is merged and verified in production.
+- **ZATCA PCSID Renewal and CRL Handling** — The renewal API method exists in the client service but is not wired to any onboarding flow or controller. CRL handling has no implementation. This single ZATCA sub-feature remains planned; all other ZATCA features are shipped and claimable.
 - **Noor (Dead Stock Finder), Maya (Margin Watchdog), Tariq (Shrinkage Guard), Arjun (Stockout Predictor)** — AI money-found detector agents. Specced and named; the substrate (Money-Found Engine) is not yet built.
 - **Zee Daily Digest** — UI shell only; insight delivery pipeline not built.
 - **Copilot / Chat with Zee (NLQ)** — Not started; deliberately sequenced after months of earned trust data.

@@ -76,7 +76,7 @@ stop losing money blindly → **feel in control of my business instead of it con
 
 | Variable | Score | Lever |
 | -- | -- | -- |
-| Dream outcome | 9/10 | Real-time visibility + GCC VAT compliance (ZATCA e-invoicing coming soon) + multi-branch control + the "next move" advisor. |
+| Dream outcome | 9/10 | Real-time visibility + GCC VAT compliance + KSA ZATCA e-invoicing (Phase 1 + Phase 2) + multi-branch control + the "next move" advisor. |
 | **Perceived likelihood** | **4 to 8 (the bottleneck)** | Nobody believes "2 hours". Every ERP lied before. Fix with **proof**: recorded real onboardings, live demo, the speed guarantee, founding-customer testimonials. |
 | Time delay | 10/10 | **Under 2 hours** vs 6 to 18 months. Show their real P&L inside the first 30 min of onboarding. |
 | Effort | 8→9 | AI self-config + AI data import + Arabic-first + concierge onboarding for the founding cohort. |
@@ -97,7 +97,7 @@ Accounting (double-entry, multi-currency, period control) · Dashboard · Report
 | -- | -- | -- | -- |
 | 1 | **the 2-hour setup**: AI self-configures COA, tax profiles, branches, roles, numbering from a questionnaire | "Every ERP took months" | $8,000 |
 | 2 | **data migration autopilot**: AI maps your Excel/legacy columns, validates, previews, imports | "What about my years of data?" | $5,000 |
-| 3 | **GCC VAT compliance vault**: pre-built GCC VAT (5 to 15%), auto-updated, VAT return generation. KSA ZATCA e-invoicing: coming soon. | "What if I get tax wrong?" | $3,000/yr |
+| 3 | **GCC VAT compliance vault**: pre-built GCC VAT (5 to 15%), auto-updated, VAT return generation. KSA ZATCA e-invoicing Phase 1 + Phase 2 included. | "What if I get tax wrong?" | $3,000/yr |
 | 4 | **your numbers + copilot**: plain-language dashboard + natural-language questions | "I don't speak accounting, I just want my numbers" | $4,000/yr |
 | 5 | **your next move**: the agentic advisor, proactive recommendations to protect margin and grow | "Growth is luck and hustle" | the differentiator (see tiering) |
 | 6 | **5-minute staff setup**: role-based screens + AI permission suggestions | "My staff won't learn a new system" | $2,000 |
@@ -115,7 +115,7 @@ much of the AI advisor you get. Adding a shop = add-on (automatic expansion reve
 
 | Tier | SAR/mo | ≈ USD | What you get | + Each extra outlet |
 | -- | -- | -- | -- | -- |
-| **Starter** | **149** | ~$40 | Full core ERP + GCC VAT compliance + offline POS + plain-language dashboard. **AI = basic alerts only** (a *taste* of the advisor). KSA ZATCA e-invoicing: coming soon. | +SAR 99 |
+| **Starter** | **149** | ~$40 | Full core ERP + GCC VAT compliance + KSA ZATCA e-invoicing + offline POS + plain-language dashboard. **AI = basic alerts only** (a *taste* of the advisor). | +SAR 99 |
 | **Growth** ⭐ *Most Popular* | **349** | ~$95 | Everything + multi-outlet rollups, advanced reports, purchase/supplier automation, multi-currency, **full "Your Next Move" advisor (50 AI actions/mo)** | +SAR 149 |
 | **Pro** *(anchor)* | **699** | ~$185 | Everything + **unlimited AI actions**, agentic automations, priority support, deeper analytics | +SAR 249 |
 | **Chains** | Talk to us | Custom | Franchises / 5+ brands (custom). Anchors the ladder, captures high-WTP chains. | Custom |

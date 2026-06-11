@@ -1,0 +1,806 @@
+﻿Item Name,Arabic Name,SKU,Barcode,Category,Unit,Purchase Rate,Selling Price,Reorder Level,Track Serial,Status,Track Batch,Shelf Life Days
+Almarai Full Fat Milk 1L,ألماراي حليب كامل الدسم 1ل,BQ-00001,,Dairy,Piece,0.357,0.443,5,No,Active,Yes,18
+Almarai Full Fat Milk 2L,ألماراي حليب كامل الدسم 2ل,BQ-00002,9094361524330,Dairy,Piece,0.664,0.886,20,No,Active,Yes,16
+Almarai Low Fat Milk 1L,ألماراي حليب قليل الدسم 1ل,BQ-00003,9030072536552,Dairy,Piece,0.487,0.637,30,No,Active,Yes,21
+KDD Full Cream Milk 1L,كي دي دي حليب كامل 1ل,BQ-00004,6101001792354,Dairy,Piece,0.427,0.492,48,No,Active,Yes,16
+KDD Chocolate Milk 200ml,كي دي دي حليب شوكولاتة 200مل,BQ-00005,7414891815045,Dairy,Piece,0.179,0.228,15,No,Active,Yes,20
+KDD Laban 500ml,كي دي دي لبن 500مل,BQ-00006,5448711356613,Dairy,Piece,0.188,0.210,20,No,Active,Yes,12
+Almarai Laban 500ml,ألماراي لبن 500مل,BQ-00007,1554340724367,Dairy,Piece,0.269,0.360,30,No,Active,Yes,9
+Almarai Yoghurt Plain 170g,ألماراي زبادي سادة 170غ,BQ-00008,6269476239802,Dairy,Piece,0.164,0.209,30,No,Active,Yes,10
+Almarai Yoghurt Strawberry 170g,ألماراي زبادي فراولة 170غ,BQ-00009,4896941957063,Dairy,Piece,0.140,0.171,30,No,Active,Yes,18
+Nadec Full Fat Milk 1L,نادك حليب كامل 1ل,BQ-00010,9974112288793,Dairy,Piece,0.437,0.483,10,No,Active,Yes,16
+Nadec Butter 200g,نادك زبدة 200غ,BQ-00011,,Dairy,Piece,0.601,0.662,5,No,Active,Yes,18
+Almarai Butter 200g,ألماراي زبدة 200غ,BQ-00012,5569292514584,Dairy,Piece,0.653,0.836,10,No,Active,Yes,18
+Almarai Cheddar Slices 200g,ألماراي شرائح شيدر 200غ,BQ-00013,4621587638976,Dairy,Piece,0.901,1.012,10,No,Active,Yes,16
+Kraft Cheddar Slices 200g,كرافت شرائح شيدر 200غ,BQ-00014,5557283799629,Dairy,Piece,0.931,1.149,5,No,Active,Yes,13
+Almarai Cream Cheese 200g,ألماراي جبن كريمي 200غ,BQ-00015,3157520461129,Dairy,Piece,0.823,1.065,48,No,Active,Yes,7
+Philadelphia Cream Cheese 200g,فيلادلفيا جبن كريمي 200غ,BQ-00016,8943053606431,Dairy,Piece,1.392,1.568,12,No,Active,Yes,7
+Almarai Fresh Cream 200ml,ألماراي كريمة طازجة 200مل,BQ-00017,1456576783210,Dairy,Piece,0.586,0.708,10,No,Active,Yes,17
+Lurpak Butter Salted 200g,لورباك زبدة مملحة 200غ,BQ-00018,6065811339998,Dairy,Piece,1.378,1.744,10,No,Active,Yes,12
+Lurpak Butter Unsalted 200g,لورباك زبدة غير مملحة 200غ,BQ-00019,8421937187202,Dairy,Piece,1.128,1.377,5,No,Active,Yes,17
+Puck Cream Cheese Spread 500g,باك جبنة كريمية 500غ,BQ-00020,3813525716541,Dairy,Piece,1.219,1.359,5,No,Active,Yes,13
+Almarai Eggs 15pcs,ألماراي بيض 15 بيضة,BQ-00021,,Dairy,Tray,1.219,1.460,12,No,Active,Yes,17
+Almarai Eggs 30pcs,ألماراي بيض 30 بيضة,BQ-00022,1873942830599,Dairy,Tray,2.493,2.866,30,No,Active,Yes,12
+KDD Strawberry Milk 200ml,كي دي دي حليب فراولة 200مل,BQ-00023,4377962550148,Dairy,Piece,0.123,0.149,48,No,Active,Yes,8
+KDD Mango Drink 200ml,كي دي دي عصير مانجو 200مل,BQ-00024,4079486622242,Dairy,Piece,0.145,0.173,24,No,Active,Yes,20
+Almarai Strawberry Drink 200ml,ألماراي مشروب فراولة 200مل,BQ-00025,3976905697723,Dairy,Piece,0.176,0.203,20,No,Active,Yes,7
+Almarai Full Cream Milk 500ml,ألماراي حليب كامل 500مل,BQ-00026,5094964817631,Dairy,Piece,0.239,0.305,30,No,Active,Yes,16
+Borden Evaporated Milk 410g,بوردن حليب مبخر 410غ,BQ-00027,7830954635748,Dairy,Piece,0.439,0.582,15,No,Active,Yes,8
+Carnation Evaporated Milk 410g,كارنيشن حليب مبخر 410غ,BQ-00028,5077130539575,Dairy,Piece,0.400,0.495,5,No,Active,Yes,14
+Rainbow Evaporated Milk 170g,رينبو حليب مبخر 170غ,BQ-00029,3611216206103,Dairy,Piece,0.177,0.222,20,No,Active,Yes,9
+Almarai Mozzarella 200g,ألماراي موتزاريلا 200غ,BQ-00030,4325868799816,Dairy,Piece,1.033,1.240,48,No,Active,Yes,11
+Lay's Classic Chips 28g,لايز كلاسيك 28غ,BQ-00031,,Snacks,Piece,0.103,0.138,15,No,Active,No,69
+Lay's Paprika Chips 28g,لايز بابريكا 28غ,BQ-00032,5657020884798,Snacks,Piece,0.090,0.107,12,No,Active,No,173
+Cheetos Puffs 28g,شيتوس بافز 28غ,BQ-00033,2158614417770,Snacks,Piece,0.136,0.170,5,No,Active,No,75
+Pringles Original 165g,برينجلز أصلي 165غ,BQ-00034,5536982939112,Snacks,Piece,0.927,1.240,15,No,Active,No,113
+Pringles Sour Cream 165g,برينجلز كريمة حامضة 165غ,BQ-00035,9711690541123,Snacks,Piece,0.748,0.925,20,No,Active,No,72
+Oreo Original 137g,أوريو أصلي 137غ,BQ-00036,7112080750055,Snacks,Piece,0.516,0.692,12,No,Active,No,107
+Oreo Chocolate 137g,أوريو شوكولاتة 137غ,BQ-00037,4019360986538,Snacks,Piece,0.536,0.655,20,No,Active,No,179
+Digestive McVities 400g,ديجستيف مكفيتيز 400غ,BQ-00038,7733169039944,Snacks,Piece,0.989,1.200,24,No,Active,No,173
+Bahlsen Choco Leibniz 125g,بالسن شوكو ليبنيز 125غ,BQ-00039,6347249151207,Snacks,Piece,0.670,0.883,10,No,Active,No,82
+Americana Crackers 150g,أمريكانا كراكرز 150غ,BQ-00040,9998933230992,Snacks,Piece,0.218,0.290,5,No,Active,No,102
+Americana Wafer Chocolate 60g,أمريكانا ويفر شوكولاتة 60غ,BQ-00041,,Snacks,Piece,0.092,0.109,15,No,Active,No,60
+Americana Wafer Vanilla 60g,أمريكانا ويفر فانيلا 60غ,BQ-00042,2667113187257,Snacks,Piece,0.131,0.151,12,No,Active,No,132
+Sunbites Multigrain 25g,سانبايتس حبوب متعددة 25غ,BQ-00043,5932976891519,Snacks,Piece,0.229,0.266,20,No,Active,No,64
+Doritos Nacho Cheese 48g,دوريتوس ناشو جبن 48غ,BQ-00044,8514524506870,Snacks,Piece,0.238,0.269,20,No,Active,No,150
+Doritos Spicy 48g,دوريتوس حار 48غ,BQ-00045,5133948039263,Snacks,Piece,0.234,0.274,24,No,Active,No,118
+Stax Sour Cream 100g,ستاكس كريمة حامضة 100غ,BQ-00046,2848938650684,Snacks,Piece,0.475,0.584,12,No,Active,No,165
+Kuwaiti Halawa Bar 100g,حلاوة كويتية 100غ,BQ-00047,8892699260264,Snacks,Piece,0.159,0.206,30,No,Active,No,115
+Ritz Original 200g,ريتز أصلي 200غ,BQ-00048,5427588290069,Snacks,Piece,0.536,0.603,48,No,Active,No,136
+Kit Kat 4F 45g,كيت كات 4F 45غ,BQ-00049,9177004587603,Snacks,Piece,0.245,0.306,15,No,Active,No,99
+Twix 50g,تويكس 50غ,BQ-00050,6397862758021,Snacks,Piece,0.282,0.317,30,No,Active,No,141
+Snickers 50g,سنيكرز 50غ,BQ-00051,,Snacks,Piece,0.241,0.302,10,No,Active,No,133
+Mars Bar 51g,مارس 51غ,BQ-00052,3086421778425,Snacks,Piece,0.348,0.456,15,No,Active,No,164
+Bounty 57g,باونتي 57غ,BQ-00053,6637437648372,Snacks,Piece,0.231,0.285,5,No,Active,No,62
+Ferrero Rocher 3pcs,فيريرو روشيه 3حبات,BQ-00054,5822305381065,Snacks,Piece,0.686,0.810,30,No,Active,No,80
+Nutella 200g,نوتيلا 200غ,BQ-00055,4974651853321,Snacks,Piece,1.247,1.677,12,No,Active,No,126
+Nutella 400g,نوتيلا 400غ,BQ-00056,5598112735198,Snacks,Piece,1.742,2.333,48,No,Active,No,151
+Skippy Peanut Butter 340g,سكيبي زبدة فول سوداني 340غ,BQ-00057,5853620670037,Snacks,Piece,0.879,1.163,30,No,Active,No,77
+Kelloggs Corn Flakes 375g,كيلوغز كورن فليكس 375غ,BQ-00058,5218565103597,Snacks,Piece,0.929,1.140,5,No,Active,No,158
+Kelloggs Frosties 375g,كيلوغز فروستيز 375غ,BQ-00059,4315713904099,Snacks,Piece,0.992,1.256,20,No,Active,No,157
+Sunbulah Dates 500g,سنبلة تمر 500غ,BQ-00060,6220433049602,Snacks,Piece,0.711,0.823,12,No,Active,No,152
+Coca-Cola 330ml Can,كوكا كولا 330مل علبة,BQ-00061,,Beverages,Piece,0.168,0.214,30,No,Active,No,418
+Coca-Cola 1.5L Bottle,كوكا كولا 1.5ل زجاجة,BQ-00062,9893470073817,Beverages,Piece,0.217,0.271,15,No,Active,No,528
+Pepsi 330ml Can,بيبسي 330مل علبة,BQ-00063,5244271885138,Beverages,Piece,0.176,0.236,48,No,Active,No,567
+Pepsi 1.5L Bottle,بيبسي 1.5ل زجاجة,BQ-00064,3067233781097,Beverages,Piece,0.295,0.372,48,No,Active,No,317
+7UP 330ml Can,7أب 330مل علبة,BQ-00065,7616037533851,Beverages,Piece,0.155,0.177,15,No,Active,No,612
+Sprite 330ml Can,سبرايت 330مل علبة,BQ-00066,6152628144714,Beverages,Piece,0.181,0.242,30,No,Active,No,470
+Fanta Orange 330ml Can,فانتا برتقال 330مل علبة,BQ-00067,2337126709753,Beverages,Piece,0.169,0.194,24,No,Active,No,445
+Red Bull 250ml,ريد بول 250مل,BQ-00068,4398990982910,Beverages,Piece,0.727,0.900,12,No,Active,No,181
+Monster Energy 500ml,مونستر طاقة 500مل,BQ-00069,8560534330317,Beverages,Piece,0.934,1.157,12,No,Active,No,193
+Lipton Ice Tea Peach 500ml,ليبتون شاي خوخ بارد 500مل,BQ-00070,9582554599037,Beverages,Piece,0.324,0.375,15,No,Active,No,354
+Rani Float Orange 240ml,راني فلوت برتقال 240مل,BQ-00071,,Beverages,Piece,0.180,0.237,5,No,Active,No,643
+Rani Float Mango 240ml,راني فلوت مانجو 240مل,BQ-00072,8541064525023,Beverages,Piece,0.230,0.271,20,No,Active,No,715
+Almarai Orange Juice 1L,ألماراي عصير برتقال 1ل,BQ-00073,2783736691344,Beverages,Piece,0.739,0.970,48,No,Active,No,682
+Almarai Mango Juice 1L,ألماراي عصير مانجو 1ل,BQ-00074,4292209934908,Beverages,Piece,0.750,0.941,10,No,Active,No,382
+KDD Orange Juice 1L,كي دي دي عصير برتقال 1ل,BQ-00075,2723713386105,Beverages,Piece,0.701,0.908,30,No,Active,No,399
+Tropicana Orange 330ml,تروبيكانا برتقال 330مل,BQ-00076,5475815673824,Beverages,Piece,0.542,0.717,5,No,Active,No,193
+Vimto Cordial 710ml,فيمتو شراب 710مل,BQ-00077,9883911449927,Beverages,Piece,1.082,1.257,24,No,Active,No,286
+Tang Orange 500g,تانج برتقال 500غ,BQ-00078,3018945953343,Beverages,Piece,0.709,0.904,12,No,Active,No,585
+Nescafe Classic 200g,نسكافيه كلاسيك 200غ,BQ-00079,9934795065084,Beverages,Piece,2.145,2.890,20,No,Active,No,729
+Lipton Yellow Tea 100bags,ليبتون شاي أصفر 100 كيس,BQ-00080,6861502396874,Beverages,Piece,1.383,1.531,24,No,Active,No,508
+Miranda Orange 330ml Can,ميرندا برتقال 330مل علبة,BQ-00081,,Beverages,Piece,0.152,0.184,48,No,Active,No,537
+Mirinda Apple 330ml Can,ميرندا تفاح 330مل علبة,BQ-00082,5343095500022,Beverages,Piece,0.180,0.203,48,No,Active,No,315
+Mountain Dew 330ml Can,ماونتن ديو 330مل علبة,BQ-00083,6735818531131,Beverages,Piece,0.186,0.234,20,No,Active,No,263
+Aquafina 500ml,أكوافينا 500مل,BQ-00084,4535783791448,Beverages,Piece,0.053,0.066,12,No,Active,No,257
+Masafi Water 500ml,مصافي ماء 500مل,BQ-00085,6783520080382,Beverages,Piece,0.059,0.076,15,No,Active,No,601
+L'usine White Bread Loaf,لوزين خبز أبيض رغيف,BQ-00086,8797881285659,Bakery,Piece,0.255,0.300,10,No,Active,Yes,13
+L'usine Brown Bread Loaf,لوزين خبز أسمر رغيف,BQ-00087,1942736938362,Bakery,Piece,0.278,0.317,30,No,Active,Yes,10
+L'usine Burger Buns 6pcs,لوزين خبز برغر 6 حبات,BQ-00088,5887843232601,Bakery,Pack,0.279,0.319,10,No,Active,Yes,11
+L'usine Pita Bread 6pcs,لوزين خبز عربي 6 حبات,BQ-00089,6741513755638,Bakery,Pack,0.313,0.402,48,No,Active,Yes,12
+Americana Croissant 60g,أمريكانا كروسان 60غ,BQ-00090,5936076005920,Bakery,Piece,0.226,0.295,15,No,Active,Yes,12
+Americana Danish Pastry 60g,أمريكانا دانيش 60غ,BQ-00091,,Bakery,Piece,0.206,0.228,12,No,Active,Yes,5
+L'usine Cake Slices Choco 50g,لوزين كيك شوكولاتة 50غ,BQ-00092,9412982136942,Bakery,Piece,0.208,0.261,12,No,Active,Yes,5
+L'usine Brioche 6pcs,لوزين بريوش 6 حبات,BQ-00093,3477895634481,Bakery,Pack,0.549,0.657,24,No,Active,Yes,13
+Balila Sesame Ring (Kaak),بليلة كعك سمسم,BQ-00094,7488542441511,Bakery,Piece,0.052,0.061,30,No,Active,Yes,14
+Fresh Samoon Bread 10pcs,خبز سمون طازج 10 حبات,BQ-00095,9323696417501,Bakery,Pack,0.278,0.326,20,No,Active,Yes,11
+L'usine Hot Dog Buns 6pcs,لوزين خبز هوت دوج 6 حبات,BQ-00096,4325722089270,Bakery,Pack,0.252,0.302,12,No,Active,Yes,9
+Americana Maamoul Date 50g,أمريكانا معمول تمر 50غ,BQ-00097,1355298004113,Bakery,Piece,0.139,0.180,10,No,Active,Yes,6
+Glad Cling Wrap 30m,جلاد غطاء بلاستيك 30م,BQ-00098,2368608672870,Household,Roll,0.579,0.752,20,No,Active,No,
+Glad Bake & Cooking Paper 10m,جلاد ورق خبز 10م,BQ-00099,6645918170921,Household,Roll,0.491,0.583,24,No,Active,No,
+Glad Foil Wrap 30m,جلاد ورق ألومنيوم 30م,BQ-00100,8016805610852,Household,Roll,0.886,1.090,5,No,Active,No,
+Albal Aluminium Foil 20m,ألبال ورق ألومنيوم 20م,BQ-00101,,Household,Roll,0.733,0.835,20,No,Active,No,
+Tamr Garbage Bags 60L 20pcs,تمر أكياس قمامة 60ل 20 حبة,BQ-00102,5200210988288,Household,Pack,0.423,0.545,12,No,Active,No,
+Tamr Garbage Bags 90L 10pcs,تمر أكياس قمامة 90ل 10 حبة,BQ-00103,9279422450577,Household,Pack,0.580,0.729,30,No,Active,No,
+Viva Kitchen Towel 2-roll,فيفا مناشف مطبخ 2 رول,BQ-00104,8937208459014,Household,Pack,0.645,0.772,30,No,Active,No,
+Kleenex Facial Tissue 200 sheets,كلينكس مناديل وجه 200 ورقة,BQ-00105,8700923427939,Household,Box,0.561,0.680,12,No,Active,No,
+Panadol Tissue 100 sheets,مناديل بانادول 100 ورقة,BQ-00106,6967560956254,Household,Box,0.367,0.467,48,No,Active,No,
+Scotch Brite Sponge 2pcs,سكوتش برايت إسفنجة 2 حبة,BQ-00107,7363267677603,Household,Pack,0.456,0.573,30,No,Active,No,
+Comet Candles 10pcs,كوميت شموع 10 حبات,BQ-00108,3212022365769,Household,Pack,0.342,0.452,24,No,Active,No,
+Vileda Mop Refill,فيليدا ممسحة بديل,BQ-00109,9743528360035,Household,Piece,1.577,1.903,20,No,Active,No,
+Disposable Plates 25pcs,أطباق بلاستيك للاستعمال مرة 25,BQ-00110,9632355215726,Household,Pack,0.460,0.615,30,No,Active,No,
+Disposable Cups 50pcs,أكواب بلاستيك للاستعمال مرة 50,BQ-00111,,Household,Pack,0.433,0.583,5,No,Active,No,
+Toothpicks Box 200pcs,عود أسنان علبة 200 حبة,BQ-00112,5027904858579,Household,Box,0.159,0.199,15,No,Active,No,
+Matchbox,علبة كبريت,BQ-00113,7166879392927,Household,Piece,0.063,0.072,30,No,Active,No,
+Kitekat Canned Cat Food 400g,كيتيكات طعام قطط 400غ,BQ-00114,5082986417924,Household,Piece,0.895,1.196,20,No,Active,No,
+Bic Lighter,بيك ولاعة,BQ-00115,7263040645048,Household,Piece,0.145,0.181,24,No,Active,No,
+Saran Wrap 30m,ساران غطاء 30م,BQ-00116,4560339938849,Household,Roll,0.443,0.592,30,No,Active,No,
+Americana Tuna in Oil 170g,أمريكانا تونة بالزيت 170غ,BQ-00117,9102932623820,Canned Goods,Piece,0.256,0.302,10,No,Active,Yes,653
+Americana Tuna in Brine 170g,أمريكانا تونة بالماء 170غ,BQ-00118,6042925314046,Canned Goods,Piece,0.214,0.287,48,No,Active,Yes,643
+Del Monte Tomato Paste 135g,ديل مونت معجون طماطم 135غ,BQ-00119,1456546882865,Canned Goods,Piece,0.209,0.271,12,No,Active,Yes,680
+Heinz Baked Beans 415g,هاينز فاصوليا 415غ,BQ-00120,4089284591376,Canned Goods,Piece,0.713,0.873,24,No,Active,Yes,401
+Del Monte Sweet Corn 340g,ديل مونت ذرة حلوة 340غ,BQ-00121,,Canned Goods,Piece,0.370,0.426,30,No,Active,Yes,574
+Del Monte Green Peas 400g,ديل مونت بازيلاء 400غ,BQ-00122,1813358826329,Canned Goods,Piece,0.501,0.563,10,No,Active,Yes,602
+Heinz Tomato Ketchup 570g,هاينز كاتشب طماطم 570غ,BQ-00123,5436402971856,Canned Goods,Piece,0.886,1.050,20,No,Active,Yes,595
+Heinz Tomato Ketchup 325g,هاينز كاتشب طماطم 325غ,BQ-00124,2970626389607,Canned Goods,Piece,0.622,0.777,15,No,Active,Yes,309
+Maggi Chicken Broth 400g,ماجي مرق دجاج 400غ,BQ-00125,3797148596728,Canned Goods,Piece,0.606,0.741,48,No,Active,Yes,628
+Americana Luncheon Meat 340g,أمريكانا لانشيون 340غ,BQ-00126,2298585467971,Canned Goods,Piece,0.871,1.148,24,No,Active,Yes,691
+Americana Chicken Luncheon 340g,أمريكانا لانشيون دجاج 340غ,BQ-00127,5338163353502,Canned Goods,Piece,0.890,1.181,48,No,Active,Yes,651
+Pacific Sardines 425g,باسيفيك سردين 425غ,BQ-00128,3601035672239,Canned Goods,Piece,0.462,0.538,15,No,Active,Yes,431
+Hunts Tomato Sauce 425g,هانتس صلصة طماطم 425غ,BQ-00129,4424092806875,Canned Goods,Piece,0.434,0.529,48,No,Active,Yes,475
+Dole Sliced Pineapple 565g,دول أناناس شرائح 565غ,BQ-00130,6025977709330,Canned Goods,Piece,0.772,0.877,5,No,Active,Yes,538
+Kraft Peanut Butter Smooth 462g,كرافت زبدة فول سوداني ناعمة 462غ,BQ-00131,,Canned Goods,Piece,1.300,1.560,20,No,Active,Yes,726
+Al Rashidi Irma Basmati 5kg,الراشدي إيرما بسمتي 5كغ,BQ-00132,7553243460599,Rice & Grains,Bag,2.541,3.192,48,No,Active,No,589
+Al Rashidi Irma Basmati 10kg,الراشدي إيرما بسمتي 10كغ,BQ-00133,5036899921018,Rice & Grains,Bag,4.599,6.003,20,No,Active,No,215
+India Gate Basmati 5kg,انديا جيت بسمتي 5كغ,BQ-00134,9707708933856,Rice & Grains,Bag,3.571,4.751,20,No,Active,No,472
+India Gate Basmati 1kg,انديا جيت بسمتي 1كغ,BQ-00135,6005976242013,Rice & Grains,Bag,0.805,1.080,48,No,Active,No,701
+Egyptian Rice White 5kg,أرز مصري أبيض 5كغ,BQ-00136,3470391029492,Rice & Grains,Bag,1.936,2.501,12,No,Active,No,566
+Lentils Red 500g,عدس أحمر 500غ,BQ-00137,5347995399264,Rice & Grains,Bag,0.455,0.520,20,No,Active,No,408
+Chickpeas 500g,حمص 500غ,BQ-00138,1122773386072,Rice & Grains,Bag,0.450,0.552,30,No,Active,No,710
+Fava Beans Dry 500g,فول جاف 500غ,BQ-00139,4327259667683,Rice & Grains,Bag,0.340,0.427,12,No,Active,No,321
+Vermicelli 400g,شعيرية 400غ,BQ-00140,9339499793946,Rice & Grains,Pack,0.332,0.428,5,No,Active,No,566
+Spaghetti Barilla 500g,سباغيتي باريلا 500غ,BQ-00141,,Rice & Grains,Pack,0.828,1.106,30,No,Active,No,358
+Penne Barilla 500g,بيني باريلا 500غ,BQ-00142,1818042304832,Rice & Grains,Pack,0.858,1.051,10,No,Active,No,484
+Indomie Chicken Noodles 75g,إندومي نودلز دجاج 75غ,BQ-00143,1137847000500,Rice & Grains,Piece,0.123,0.142,10,No,Active,No,189
+Indomie Beef Noodles 75g,إندومي نودلز لحم 75غ,BQ-00144,2358640138292,Rice & Grains,Piece,0.137,0.165,5,No,Active,No,566
+Maggi 2-Minute Noodles 70g,ماجي نودلز دقيقتين 70غ,BQ-00145,5663271869299,Rice & Grains,Piece,0.104,0.137,10,No,Active,No,376
+Quaker Oats 500g,كويكر شوفان 500غ,BQ-00146,5758674318203,Rice & Grains,Pack,0.780,0.929,48,No,Active,No,293
+Flour Plain 1kg,دقيق أبيض 1كغ,BQ-00147,7809015850769,Rice & Grains,Bag,0.265,0.310,10,No,Active,No,345
+Sugar White 1kg,سكر أبيض 1كغ,BQ-00148,5912969385040,Rice & Grains,Bag,0.334,0.434,10,No,Active,No,508
+Sugar White 2kg,سكر أبيض 2كغ,BQ-00149,1049585212254,Rice & Grains,Bag,0.637,0.853,15,No,Active,No,377
+Americana Chicken Nuggets 400g,أمريكانا ناجتس دجاج 400غ,BQ-00150,7632796828635,Frozen,Bag,1.225,1.570,30,No,Active,Yes,147
+Americana Chicken Strips 400g,أمريكانا ستريبس دجاج 400غ,BQ-00151,,Frozen,Bag,1.685,1.874,20,No,Active,Yes,334
+Americana Burger Patties 6pcs,أمريكانا برجر دجاج 6 حبات,BQ-00152,3985166486585,Frozen,Pack,1.820,2.026,10,No,Active,Yes,97
+Al Kabeer Samosa Chicken 20pcs,الكبير سمبوسة دجاج 20 حبة,BQ-00153,2360406643245,Frozen,Pack,2.090,2.807,24,No,Active,Yes,199
+Al Kabeer Samosa Veg 20pcs,الكبير سمبوسة خضار 20 حبة,BQ-00154,9832916233921,Frozen,Pack,1.848,2.423,15,No,Active,Yes,315
+McCain French Fries 900g,مكين بطاطس مقلية 900غ,BQ-00155,9744301102356,Frozen,Bag,1.542,1.722,12,No,Active,Yes,103
+Americana Peas & Carrots 400g,أمريكانا بازيلاء وجزر 400غ,BQ-00156,3068454754073,Frozen,Bag,0.591,0.739,24,No,Active,Yes,289
+Americana Mixed Vegetables 400g,أمريكانا خضار مشكلة 400غ,BQ-00157,4199206080753,Frozen,Bag,0.738,0.863,20,No,Active,Yes,269
+Americana Corn Kernels 400g,أمريكانا ذرة 400غ,BQ-00158,4798955335980,Frozen,Bag,0.471,0.525,12,No,Active,Yes,268
+Kwality Vanilla Ice Cream 2L,كواليتي آيس كريم فانيلا 2ل,BQ-00159,6988658288260,Frozen,Tub,2.073,2.332,30,No,Active,Yes,116
+Kwality Chocolate Ice Cream 2L,كواليتي آيس كريم شوكولاتة 2ل,BQ-00160,4256694558076,Frozen,Tub,2.334,3.059,10,No,Active,Yes,225
+Magnum Classic Ice Cream Bar,ماجنوم كلاسيك آيس كريم,BQ-00161,,Frozen,Piece,0.556,0.625,12,No,Active,Yes,209
+Cornetto Vanilla 120ml,كورنيتو فانيلا 120مل,BQ-00162,3479309441521,Frozen,Piece,0.318,0.378,20,No,Active,Yes,130
+Americana Frozen Paratha 10pcs,أمريكانا باراتا مجمدة 10 حبات,BQ-00163,2550592661136,Frozen,Pack,1.003,1.201,20,No,Active,Yes,272
+Al Kabeer Shish Tawook 400g,الكبير شيش طاووق 400غ,BQ-00164,9061480020172,Frozen,Pack,2.385,2.986,10,No,Active,Yes,289
+Americana Escalope Chicken 400g,أمريكانا إسكالوب دجاج 400غ,BQ-00165,2411620507482,Frozen,Pack,1.871,2.411,15,No,Active,Yes,217
+Dove Soap Bar 135g,دوف صابون 135غ,BQ-00166,2691653909860,Personal Care,Piece,0.438,0.547,15,No,Active,No,
+Lux Soap Bar 125g,لوكس صابون 125غ,BQ-00167,3766627572709,Personal Care,Piece,0.197,0.257,15,No,Active,No,
+Lifebuoy Soap Bar 125g,لايفبوي صابون 125غ,BQ-00168,7846710476325,Personal Care,Piece,0.161,0.205,15,No,Active,No,
+Head & Shoulders Shampoo 200ml,هيد آند شولدرز شامبو 200مل,BQ-00169,5234900600975,Personal Care,Piece,1.098,1.422,5,No,Active,No,
+Pantene Shampoo 200ml,بانتين شامبو 200مل,BQ-00170,6484068096615,Personal Care,Piece,1.114,1.306,5,No,Active,No,
+Sunsilk Shampoo 350ml,سانسيلك شامبو 350مل,BQ-00171,,Personal Care,Piece,1.051,1.362,48,No,Active,No,
+Colgate Toothpaste 125ml,كولجيت معجون أسنان 125مل,BQ-00172,1721726953517,Personal Care,Piece,0.456,0.538,12,No,Active,No,
+Oral-B Toothbrush Medium,أورال-بي فرشاة أسنان متوسطة,BQ-00173,3641560439020,Personal Care,Piece,0.526,0.678,15,No,Active,No,
+Dettol Antiseptic 250ml,ديتول مطهر 250مل,BQ-00174,5133684185333,Personal Care,Piece,0.777,0.867,5,No,Active,No,
+Always Pads Regular 10pcs,أولويز فوط صحية 10 حبات,BQ-00175,6885924153029,Personal Care,Pack,0.467,0.514,30,No,Active,No,
+Gillette Sensor Excel Razor,جيليت ماكينة حلاقة سينسور,BQ-00176,3412763550877,Personal Care,Piece,1.569,1.970,10,No,Active,No,
+Nivea Body Lotion 400ml,نيفيا لوشن جسم 400مل,BQ-00177,5129966874141,Personal Care,Piece,1.753,2.243,15,No,Active,No,
+Vaseline Petroleum Jelly 250ml,فازلين جيلي بترولي 250مل,BQ-00178,2488056628964,Personal Care,Piece,0.792,0.893,20,No,Active,No,
+Panadol Extra 24 tablets,بانادول إكسترا 24 قرص,BQ-00179,5439003482460,Personal Care,Box,0.403,0.536,10,No,Active,No,
+Al Doha Black Pepper 100g,الدوحة فلفل أسود 100غ,BQ-00180,8239481002325,Spices,Pack,0.501,0.573,10,No,Active,No,196
+Al Doha Cumin 100g,الدوحة كمون 100غ,BQ-00181,,Spices,Pack,0.309,0.345,24,No,Active,No,291
+Al Doha Turmeric 100g,الدوحة كركم 100غ,BQ-00182,5464790610829,Spices,Pack,0.275,0.317,15,No,Active,No,324
+Al Doha Cinnamon 100g,الدوحة قرفة 100غ,BQ-00183,6456970956409,Spices,Pack,0.366,0.423,10,No,Active,No,284
+Al Doha Cardamom 50g,الدوحة هيل 50غ,BQ-00184,4458254089346,Spices,Pack,0.474,0.532,24,No,Active,No,313
+Maggi Chicken Seasoning 100g,ماجي بهار دجاج 100غ,BQ-00185,7277954999124,Spices,Pack,0.453,0.540,24,No,Active,No,258
+Knorr Chicken Stock Cube 24pcs,كنور مرقة دجاج مكعب 24 حبة,BQ-00186,9107614648062,Spices,Pack,0.791,0.927,15,No,Active,No,223
+Salt Iodized 1kg,ملح يودي 1كغ,BQ-00187,9382340398849,Spices,Pack,0.155,0.189,10,No,Active,No,181
+Maggi Arabic Kabsa Mix 50g,ماجي بهار كبسة عربي 50غ,BQ-00188,5866158465389,Spices,Pack,0.206,0.258,12,No,Active,No,227
+Sunflower Oil 1.8L,زيت عباد الشمس 1.8ل,BQ-00189,8988038155483,Spices,Bottle,1.167,1.412,15,No,Active,No,349
+Noor Vegetable Oil 1.8L,نور زيت نباتي 1.8ل,BQ-00190,8417140699690,Spices,Bottle,0.848,1.094,12,No,Active,No,226
+Extra Virgin Olive Oil 500ml,زيت زيتون بكر ممتاز 500مل,BQ-00191,,Spices,Bottle,1.938,2.530,12,No,Active,No,185
+White Vinegar 500ml,خل أبيض 500مل,BQ-00192,1549510669428,Spices,Bottle,0.372,0.461,10,No,Active,No,304
+Tomato Sauce Pomi 500g,صلصة طماطم بومي 500غ,BQ-00193,6343508670339,Spices,Piece,0.682,0.872,5,No,Active,No,282
+Ariel Powder Detergent 4kg,أريال مسحوق غسيل 4كغ,BQ-00194,4130832773866,Cleaning,Bag,3.017,3.426,24,No,Active,No,
+Ariel Liquid Detergent 2L,أريال سائل غسيل 2ل,BQ-00195,4473038291325,Cleaning,Bottle,2.447,3.295,10,No,Active,No,
+Tide Powder Detergent 3kg,تايد مسحوق غسيل 3كغ,BQ-00196,4475163648603,Cleaning,Bag,2.937,3.742,15,No,Active,No,
+Persil Powder Detergent 4kg,برسيل مسحوق غسيل 4كغ,BQ-00197,2302713553188,Cleaning,Bag,3.724,4.619,12,No,Active,No,
+Fairy Dish Liquid 500ml,فيري سائل جلي 500مل,BQ-00198,8458853703923,Cleaning,Bottle,0.839,0.964,24,No,Active,No,
+Sunlight Dish Liquid 500ml,سانلايت سائل جلي 500مل,BQ-00199,4246203663293,Cleaning,Bottle,0.638,0.734,48,No,Active,No,
+Flash All Purpose Cleaner 500ml,فلاش منظف متعدد الاستخدام 500مل,BQ-00200,5548604364041,Cleaning,Bottle,0.830,0.995,10,No,Active,No,
+Harpic Toilet Cleaner 500ml,هاربيك منظف مراحيض 500مل,BQ-00201,,Cleaning,Bottle,0.765,0.960,12,No,Active,No,
+Dettol Surface Cleaner 500ml,ديتول منظف أسطح 500مل,BQ-00202,1541398317785,Cleaning,Bottle,1.155,1.546,30,No,Active,No,
+Febreze Air Freshener 300ml,فيبريز معطر جو 300مل,BQ-00203,7339858815772,Cleaning,Bottle,1.298,1.707,15,No,Active,No,
+Domestos Bleach 750ml,دومستوس كلور 750مل,BQ-00204,5657943357247,Cleaning,Bottle,0.568,0.737,10,No,Active,No,
+Comfort Fabric Softener 1.4L,كومفورت منعم ملابس 1.4ل,BQ-00205,6380240026628,Cleaning,Bottle,1.374,1.547,10,No,Active,No,
+Pampers Active Baby S-3 54pcs,بامبرز أكتيف بيبي S-3 54 حبة,BQ-00206,5310727829579,Baby,Pack,3.955,4.799,48,No,Active,Yes,104
+Pampers Active Baby M-4 46pcs,بامبرز أكتيف بيبي M-4 46 حبة,BQ-00207,8952090509235,Baby,Pack,2.987,3.805,5,No,Active,Yes,89
+Pampers Active Baby L-5 40pcs,بامبرز أكتيف بيبي L-5 40 حبة,BQ-00208,1263982305070,Baby,Pack,3.615,4.027,10,No,Active,Yes,34
+Huggies Dry Comfort S-3 50pcs,هاجيز جاف كومفورت S-3 50 حبة,BQ-00209,9946981145301,Baby,Pack,2.768,3.646,48,No,Active,Yes,169
+Huggies Dry Comfort M-4 44pcs,هاجيز جاف كومفورت M-4 44 حبة,BQ-00210,6115139957051,Baby,Pack,2.959,3.588,15,No,Active,Yes,150
+Nestlé NAN Pro 1 400g,نستله نان برو 1 - 400غ,BQ-00211,,Baby,Tin,4.805,5.882,5,No,Active,Yes,137
+Nestlé NAN Pro 2 400g,نستله نان برو 2 - 400غ,BQ-00212,1498123892815,Baby,Tin,3.545,4.173,15,No,Active,Yes,98
+Aptamil Stage 1 400g,أبتاميل مرحلة 1 - 400غ,BQ-00213,8207565763965,Baby,Tin,5.197,6.292,30,No,Active,Yes,129
+Aptamil Stage 2 400g,أبتاميل مرحلة 2 - 400غ,BQ-00214,4996463501593,Baby,Tin,5.269,6.324,24,No,Active,Yes,50
+Nestlé Cerelac Wheat 250g,نستله سيريلاك قمح 250غ,BQ-00215,2168594657676,Baby,Pack,1.935,2.335,10,No,Active,Yes,138
+Nestlé Cerelac Rice 250g,نستله سيريلاك أرز 250غ,BQ-00216,7754204329103,Baby,Pack,1.944,2.334,15,No,Active,Yes,107
+Johnson Baby Shampoo 200ml,جونسون شامبو أطفال 200مل,BQ-00217,4594374732114,Baby,Bottle,1.013,1.124,15,No,Active,Yes,111
+Johnson Baby Lotion 200ml,جونسون لوشن أطفال 200مل,BQ-00218,1943188792094,Baby,Bottle,1.032,1.330,30,No,Active,Yes,175
+Desitin Cream 57g,ديسيتين كريم 57غ,BQ-00219,7258825547294,Baby,Tube,1.650,1.890,48,No,Active,Yes,99
+Wet Wipes 80 sheets,مناديل مبللة 80 ورقة,BQ-00220,2642834539525,Baby,Pack,0.582,0.744,15,No,Active,Yes,40
+Lipton Yellow Label 100bags,ليبتون ييلو لاببل 100 كيس,BQ-00221,,Tea & Coffee,Box,1.178,1.521,5,No,Active,No,285
+Lipton Green Tea 50bags,ليبتون شاي أخضر 50 كيس,BQ-00222,8971150443656,Tea & Coffee,Box,0.983,1.240,24,No,Active,No,229
+Tapal Danedar Tea 500g,تاپل دانيدار شاي 500غ,BQ-00223,1578906033188,Tea & Coffee,Pack,1.616,1.967,12,No,Active,No,246
+Brooke Bond Red Label 450g,بروك بوند ريد لاببل 450غ,BQ-00224,6039467424852,Tea & Coffee,Pack,1.761,2.172,15,No,Active,No,348
+Nescafe 3in1 20 sachets,نسكافيه 3 في 1 - 20 كيس,BQ-00225,4035861819051,Tea & Coffee,Box,1.278,1.456,30,No,Active,No,302
+Nescafe Gold 200g,نسكافيه جولد 200غ,BQ-00226,9324491009349,Tea & Coffee,Jar,3.250,3.612,15,No,Active,No,191
+Lavazza Espresso 250g,لافازا اسبريسو 250غ,BQ-00227,5270775534212,Tea & Coffee,Pack,3.103,3.761,20,No,Active,No,206
+Coffeemate Creamer 400g,كوفيميت كريمر 400غ,BQ-00228,4865541342413,Tea & Coffee,Tin,1.969,2.495,20,No,Active,No,281
+Al Rifai Mint Tea 20bags,الرفاعي شاي نعناع 20 كيس,BQ-00229,5790806863689,Tea & Coffee,Box,0.552,0.729,10,No,Active,No,289
+Karak Chai Mix 500g,مزيج شاي كرك 500غ,BQ-00230,6461221784120,Tea & Coffee,Pack,1.628,2.104,5,No,Active,No,318
+Arabic Coffee Ground 250g,قهوة عربية مطحونة 250غ,BQ-00231,,Tea & Coffee,Pack,1.517,1.674,10,No,Active,No,233
+Hana Cardamom Coffee 500g,هنا قهوة هيل 500غ,BQ-00232,7284716774709,Tea & Coffee,Pack,2.774,3.212,12,No,Active,No,225
+Galaxy Chocolate Bar 100g,جالاكسي شوكولاتة 100غ,BQ-00233,9338621244765,Confectionery,Piece,0.563,0.698,12,No,Active,No,159
+Celebrations Box 186g,سيليبريشنز علبة 186غ,BQ-00234,4502418035408,Confectionery,Box,1.922,2.208,30,No,Active,No,326
+Kinder Bueno 43g,كيندر بوينو 43غ,BQ-00235,6983984006801,Confectionery,Piece,0.515,0.607,48,No,Active,No,116
+Kinder Surprise Egg 20g,كيندر مفاجأة 20غ,BQ-00236,7491392732830,Confectionery,Piece,0.255,0.282,12,No,Active,No,255
+Milky Way 52g,ميلكي واي 52غ,BQ-00237,1715062412200,Confectionery,Piece,0.298,0.336,48,No,Active,No,287
+Haribo Goldbears 80g,هاريبو دبب ذهبية 80غ,BQ-00238,3459977013524,Confectionery,Piece,0.467,0.616,5,No,Active,No,81
+Mentos Mint Roll 38g,مينتوس نعناع 38غ,BQ-00239,7194638141896,Confectionery,Piece,0.270,0.343,30,No,Active,No,124
+Skittles Original 45g,سكيتلز أصلي 45غ,BQ-00240,6616772240027,Confectionery,Piece,0.208,0.256,15,No,Active,No,210
+Starburst Fruit Chews 45g,ستاربيرست 45غ,BQ-00241,,Confectionery,Piece,0.228,0.268,30,No,Active,No,313
+Cadbury Dairy Milk 120g,كادبوري دايري ميلك 120غ,BQ-00242,9976335265906,Confectionery,Piece,0.610,0.688,12,No,Active,No,107
+Toblerone 100g,توبليرون 100غ,BQ-00243,3880167196504,Confectionery,Piece,0.914,1.053,5,No,Active,No,296
+Wrigley's Extra Spearmint 10pcs,ريغليز إكسترا نعناع 10 حبة,BQ-00244,9814734048210,Confectionery,Pack,0.259,0.348,12,No,Active,No,243
+Halawiyat Arabic Mix 250g,حلاويات عربية مشكلة 250غ,BQ-00245,8917831772472,Confectionery,Pack,1.071,1.245,12,No,Active,No,351
+Acqua Panna 500ml,أكوا بانا 500مل,BQ-00246,1550210600253,Water,Piece,0.221,0.279,48,No,Active,No,453
+Evian 500ml,إيفيان 500مل,BQ-00247,5019569424679,Water,Piece,0.269,0.301,20,No,Active,No,391
+Arwa Water 500ml,أروى ماء 500مل,BQ-00248,4609357562148,Water,Piece,0.061,0.076,12,No,Active,No,595
+Arwa Water 1.5L,أروى ماء 1.5ل,BQ-00249,1605369667056,Water,Piece,0.082,0.090,12,No,Active,No,417
+Masafi Water 1.5L,مصافي ماء 1.5ل,BQ-00250,9569725356530,Water,Piece,0.158,0.195,12,No,Active,No,425
+Oasis Water 330ml,أوسيس ماء 330مل,BQ-00251,,Water,Piece,0.097,0.126,15,No,Active,No,505
+Oasis Water 1.5L,أوسيس ماء 1.5ل,BQ-00252,7364011860685,Water,Piece,0.114,0.140,12,No,Active,No,630
+Safa Water 500ml,صفا ماء 500مل,BQ-00253,5574992076726,Water,Piece,0.074,0.084,24,No,Active,No,727
+Safa Water 5L,صفا ماء 5ل,BQ-00254,2815457243239,Water,Piece,0.245,0.316,20,No,Active,No,639
+Al Ain Water 500ml,العين ماء 500مل,BQ-00255,3352587682427,Water,Piece,0.090,0.107,15,No,Active,No,719
+Al Ain Water 1.5L,العين ماء 1.5ل,BQ-00256,6483378693461,Water,Piece,0.095,0.112,24,No,Active,No,408
+Sparkling Water Perrier 330ml,مياه بيريه فوارة 330مل,BQ-00257,6344363785814,Water,Piece,0.535,0.595,20,No,Active,No,631
+Coca-Cola Zero 330ml Can,كوكا كولا زيرو 330مل,BQ-00258,6365586356027,Beverages,Piece,0.153,0.195,24,No,Active,No,377
+Pepsi Max 330ml Can,بيبسي ماكس 330مل علبة,BQ-00259,8194436912424,Beverages,Piece,0.182,0.235,30,No,Active,No,407
+Almarai UHT Milk 200ml,ألماراي حليب UHT 200مل,BQ-00260,2786775730550,Dairy,Piece,0.126,0.146,48,No,Active,Yes,9
+Almarai Labneh 500g,ألماراي لبنة 500غ,BQ-00261,,Dairy,Piece,0.852,1.017,48,No,Active,Yes,18
+Cheetos Cheese Puffs 50g,شيتوس بافز جبن 50غ,BQ-00262,5289167986251,Snacks,Piece,0.213,0.278,24,No,Active,No,144
+Kelloggs Special K 375g,كيلوغز سبيشال K 375غ,BQ-00263,2294922182336,Snacks,Piece,1.033,1.394,15,No,Active,No,158
+Sprite Zero 330ml Can,سبرايت زيرو 330مل,BQ-00264,6252171496860,Beverages,Piece,0.121,0.136,12,No,Active,No,601
+Dettol Soap 125g,ديتول صابون 125غ,BQ-00265,5781467858236,Personal Care,Piece,0.222,0.290,12,No,Active,No,
+Colgate 360 Toothbrush,كولجيت 360 فرشاة أسنان,BQ-00266,1116884851828,Personal Care,Piece,0.711,0.830,48,No,Active,No,
+Al Doha Mixed Spices 100g,الدوحة بهارات مشكلة 100غ,BQ-00267,5252585842506,Spices,Pack,0.399,0.470,30,No,Active,No,242
+Indomie Shrimp Noodles 75g,إندومي نودلز روبيان 75غ,BQ-00268,5834638278698,Rice & Grains,Piece,0.123,0.160,12,No,Active,No,532
+Americana Beef Nuggets 400g,أمريكانا ناجتس لحم 400غ,BQ-00269,1362811965402,Frozen,Bag,1.210,1.614,12,No,Active,Yes,151
+Puck Cream Cheese 120g,باك جبن كريمي 120غ,BQ-00270,7659156200010,Dairy,Piece,0.526,0.598,20,No,Active,Yes,19
+Del Monte Tomato Paste 70g,ديل مونت معجون طماطم 70غ,BQ-00271,,Canned Goods,Piece,0.110,0.127,5,No,Active,Yes,720
+Barilla Fusilli 500g,باريلا فوزيلي 500غ,BQ-00272,2378829831723,Rice & Grains,Pack,0.600,0.796,30,No,Active,No,602
+Fairy Dish Liquid 1L,فيري سائل جلي 1ل,BQ-00273,3346566491993,Cleaning,Bottle,1.053,1.402,12,No,Active,No,
+Ariel Powder 2kg,أريال مسحوق 2كغ,BQ-00274,7465878010028,Cleaning,Bag,2.064,2.386,24,No,Active,No,
+Pampers Newborn N 42pcs,بامبرز مولود جديد N 42 حبة,BQ-00275,8464951984817,Baby,Pack,2.854,3.282,12,No,Active,Yes,42
+Huggies Newborn N 30pcs,هاجيز مولود جديد N 30 حبة,BQ-00276,4051636495860,Baby,Pack,2.435,3.165,10,No,Active,Yes,49
+Nestlé Cerelac Honey 250g,نستله سيريلاك عسل 250غ,BQ-00277,6901634798385,Baby,Pack,1.745,2.119,30,No,Active,Yes,124
+Galaxy Caramel 100g,جالاكسي كراميل 100غ,BQ-00278,1933721164241,Confectionery,Piece,0.454,0.605,20,No,Active,No,212
+Haribo Worms 80g,هاريبو ديدان 80غ,BQ-00279,6266873388551,Confectionery,Piece,0.421,0.498,48,No,Active,No,280
+Lipton Earl Grey 50bags,ليبتون إيرل جراي 50 كيس,BQ-00280,6546942776534,Tea & Coffee,Box,0.843,1.087,30,No,Active,No,182
+Nescafe Dolce Gusto Caps 16pcs,نسكافيه دولتشي جوستو 16 كبسولة,BQ-00281,,Tea & Coffee,Box,3.155,4.074,15,No,Active,No,228
+Arwa Water 330ml,أروى ماء 330مل,BQ-00282,6153944166377,Water,Piece,0.051,0.060,5,No,Active,No,392
+Saudi Dates Sukkari 500g,تمر سكري سعودي 500غ,BQ-00283,2303833775687,Snacks,Pack,2.058,2.700,30,No,Active,No,160
+Lay's Max Cheese Chips 28g,لايز ماكس جبن 28غ,BQ-00284,4075614979257,Snacks,Piece,0.167,0.193,20,No,Active,No,175
+Weetabix 430g,ويتابيكس 430غ,BQ-00285,3128509204369,Snacks,Pack,1.217,1.356,12,No,Active,No,100
+Uncle Toby's Oats 500g,أونكل توبيز شوفان 500غ,BQ-00286,3277117795310,Snacks,Pack,1.303,1.495,15,No,Active,No,134
+Libby's Tomato Juice 250ml,ليبيز عصير طماطم 250مل,BQ-00287,5660980152199,Beverages,Piece,0.347,0.460,30,No,Active,No,683
+Al Ain Sparkling 500ml,العين فوارة 500مل,BQ-00288,3478312204591,Water,Piece,0.178,0.229,30,No,Active,No,418
+Bounty Bar Multipack 3x57g,باونتي 3 × 57غ,BQ-00289,2684558517765,Confectionery,Pack,0.705,0.838,24,No,Active,No,209
+Hershey's Chocolate Syrup 623g,هيرشيز شراب شوكولاتة 623غ,BQ-00290,3776165505871,Snacks,Piece,1.834,2.160,15,No,Active,No,89
+Philadelphia Light 200g,فيلادلفيا لايت 200غ,BQ-00291,,Dairy,Piece,1.248,1.496,48,No,Active,Yes,10
+Almarai Greek Yoghurt 170g,ألماراي زبادي يوناني 170غ,BQ-00292,7761171312537,Dairy,Piece,0.332,0.431,20,No,Active,Yes,17
+KDD Laban Up Strawberry 200ml,كي دي دي لبن أب فراولة 200مل,BQ-00293,3257073659915,Dairy,Piece,0.117,0.144,20,No,Active,Yes,10
+Americana Falafel Mix 400g,أمريكانا خليط فلافل 400غ,BQ-00294,5195577149512,Frozen,Pack,0.924,1.208,12,No,Active,Yes,336
+Americana Pizza Mini 2pcs,أمريكانا بيتزا صغيرة 2 حبة,BQ-00295,3342600416392,Frozen,Pack,1.079,1.440,10,No,Active,Yes,216
+Uncle Ben's Rice Express 250g,أنكل بنز أرز سريع 250غ,BQ-00296,2368885305011,Rice & Grains,Pack,0.623,0.778,15,No,Active,No,609
+Instant Noodles Cup Nissin,نيسين نودلز فوري كوب,BQ-00297,8191079023526,Rice & Grains,Piece,0.359,0.449,15,No,Active,No,651
+Heinz White Vinegar 473ml,هاينز خل أبيض 473مل,BQ-00298,4008412050083,Spices,Bottle,0.510,0.605,15,No,Active,No,263
+Al Doha Chilli Powder 100g,الدوحة بودرة فلفل حار 100غ,BQ-00299,5757102409610,Spices,Pack,0.293,0.355,30,No,Active,No,338
+Knorr Beef Stock 24pcs,كنور مرقة لحم 24 حبة,BQ-00300,4140601806575,Spices,Pack,0.602,0.781,20,No,Active,No,219
+Olive Oil Borges 500ml,زيت زيتون بورجيز 500مل,BQ-00301,,Spices,Bottle,1.771,1.974,24,No,Active,No,241
+Persil Liquid 2L,برسيل سائل 2ل,BQ-00302,2452304121805,Cleaning,Bottle,2.504,3.168,12,No,Active,No,
+Vanish Gold Oxi Action 500g,فانيش جولد أوكسي 500غ,BQ-00303,2346981967100,Cleaning,Pack,1.671,1.853,24,No,Active,No,
+Ajax Powder Scourer 500g,أجاكس مسحوق تنظيف 500غ,BQ-00304,7222588698146,Cleaning,Pack,0.337,0.425,20,No,Active,No,
+Flash Spray 500ml,فلاش رذاذ 500مل,BQ-00305,3663667920278,Cleaning,Bottle,0.946,1.097,12,No,Active,No,
+Air Wick Freshener 300ml,إير ويك معطر جو 300مل,BQ-00306,9246491509955,Cleaning,Bottle,1.180,1.419,48,No,Active,No,
+Nivea Men Deo Roll-On 50ml,نيفيا مزيل رجالي رول أون 50مل,BQ-00307,6775322514120,Personal Care,Piece,0.999,1.204,15,No,Active,No,
+Dove Deo Spray 150ml,دوف مزيل رذاذ 150مل,BQ-00308,8603512725327,Personal Care,Piece,0.938,1.140,10,No,Active,No,
+Panadol Flu Max 24 capsules,بانادول فلو ماكس 24 كبسولة,BQ-00309,3384312400128,Personal Care,Box,0.712,0.950,20,No,Active,No,
+Oral-B Kids Toothbrush,أورال-بي فرشاة أسنان أطفال,BQ-00310,9707712242612,Personal Care,Piece,0.369,0.423,24,No,Active,No,
+Dove Shampoo 400ml,دوف شامبو 400مل,BQ-00311,,Personal Care,Piece,1.108,1.241,24,No,Active,No,
+Head & Shoulders 400ml,هيد آند شولدرز 400مل,BQ-00312,6381248036399,Personal Care,Piece,1.251,1.544,5,No,Active,No,
+Sensodyne Toothpaste 75ml,سينسوداين معجون أسنان 75مل,BQ-00313,3513216756517,Personal Care,Piece,1.130,1.319,20,No,Active,No,
+Gillette Fusion Blades 4pcs,جيليت فيوجن شفرات 4 حبات,BQ-00314,4769287547795,Personal Care,Pack,2.317,2.868,20,No,Active,No,
+Johnson Baby Powder 100g,جونسون بودرة أطفال 100غ,BQ-00315,1302727063652,Baby,Bottle,0.797,0.901,5,No,Active,Yes,157
+Pampers Active Baby XL-6 34pcs,بامبرز XL-6 34 حبة,BQ-00316,3461381116416,Baby,Pack,3.899,5.172,15,No,Active,Yes,37
+Huggies Ultra Comfort M-4 50pcs,هاجيز ألترا كومفورت M-4 50 حبة,BQ-00317,3593391146045,Baby,Pack,4.085,5.400,5,No,Active,Yes,173
+Nestlé NAN Pro 3 400g,نستله نان برو 3 - 400غ,BQ-00318,6182311925571,Baby,Tin,3.950,4.673,5,No,Active,Yes,153
+Aptamil Stage 3 400g,أبتاميل مرحلة 3 - 400غ,BQ-00319,1614900194806,Baby,Tin,4.853,6.158,48,No,Active,Yes,146
+Sudocrem 125g,سودوكريم 125غ,BQ-00320,2058863324346,Baby,Jar,1.313,1.709,5,No,Active,Yes,108
+Wet Wipes Aloe 80 sheets,مناديل مبللة ألوي فيرا 80 ورقة,BQ-00321,,Baby,Pack,0.751,0.993,10,No,Active,Yes,139
+Dettol Wipes 12 sheets,ديتول مناديل مبللة 12 ورقة,BQ-00322,4073231375543,Personal Care,Pack,0.363,0.454,10,No,Active,No,
+Kleenex Toilet Tissue 4-roll,كلينكس مناديل حمام 4 رول,BQ-00323,4405250604962,Household,Pack,0.809,1.064,10,No,Active,No,
+Al-Ain Water 5L,العين ماء 5ل,BQ-00324,4377631402108,Water,Piece,0.203,0.269,10,No,Active,No,521
+Volvic Water 500ml,فولفيك ماء 500مل,BQ-00325,4291920532938,Water,Piece,0.347,0.450,10,No,Active,No,582
+Perrier Water 750ml,بيريه ماء فوار 750مل,BQ-00326,9671273119281,Water,Piece,0.669,0.840,12,No,Active,No,714
+S.Pellegrino 500ml,سان بيليجرينو 500مل,BQ-00327,7356998376548,Water,Piece,0.592,0.722,30,No,Active,No,730
+Crystal Water 1.5L,كريستال ماء 1.5ل,BQ-00328,2357242409838,Water,Piece,0.094,0.111,15,No,Active,No,491
+Al Rabie Orange Juice 200ml,الربيع عصير برتقال 200مل,BQ-00329,1392216595355,Beverages,Piece,0.121,0.142,12,No,Active,No,627
+Al Rabie Mango Juice 200ml,الربيع عصير مانجو 200مل,BQ-00330,4409419424133,Beverages,Piece,0.129,0.149,30,No,Active,No,389
+Al Rabie Apple Juice 200ml,الربيع عصير تفاح 200مل,BQ-00331,,Beverages,Piece,0.137,0.156,20,No,Active,No,361
+Lacnor Orange Juice 1L,لاكنور عصير برتقال 1ل,BQ-00332,8422579831909,Beverages,Piece,0.778,0.900,15,No,Active,No,689
+Lacnor Mango Juice 1L,لاكنور عصير مانجو 1ل,BQ-00333,5192655454855,Beverages,Piece,0.852,1.104,48,No,Active,No,392
+Minute Maid Orange 330ml Can,مينيت مايد برتقال 330مل,BQ-00334,2464446010533,Beverages,Piece,0.276,0.311,12,No,Active,No,380
+Schweppes Tonic Water 330ml,شويبس ماء تونيك 330مل,BQ-00335,9279171247035,Beverages,Piece,0.201,0.245,24,No,Active,No,379
+Gatorade Blue 500ml,جاتوريد أزرق 500مل,BQ-00336,9596995115745,Beverages,Piece,0.670,0.765,24,No,Active,No,472
+Pocari Sweat 500ml,بوكاري سويت 500مل,BQ-00337,5477666829712,Beverages,Piece,0.605,0.777,30,No,Active,No,645
+Almarai Strawberry Yoghurt 180g,ألماراي زبادي فراولة 180غ,BQ-00338,2306881953263,Dairy,Piece,0.186,0.241,12,No,Active,Yes,18
+Almarai Peach Yoghurt 180g,ألماراي زبادي خوخ 180غ,BQ-00339,3214767604600,Dairy,Piece,0.143,0.163,48,No,Active,Yes,14
+Lactalis Brie 125g,لاكتاليس بري 125غ,BQ-00340,1564311964204,Dairy,Piece,1.472,1.660,12,No,Active,Yes,7
+Happy Cow Cream Cheese 12pcs,هابي كاو جبن كريمي 12 حبة,BQ-00341,,Dairy,Pack,0.824,1.011,12,No,Active,Yes,10
+Kiri Cream Cheese Squares 8pcs,كيري جبن كريمي مربعات 8 حبة,BQ-00342,7450920120347,Dairy,Pack,1.033,1.343,30,No,Active,Yes,7
+Lurpak Spreadable 250g,لورباك قابل للدهن 250غ,BQ-00343,3265105576720,Dairy,Piece,1.507,1.724,30,No,Active,Yes,8
+Del Monte Peas 200g,ديل مونت بازيلاء 200غ,BQ-00344,2618121673585,Canned Goods,Piece,0.412,0.502,15,No,Active,Yes,451
+Heinz Mushroom Soup 400g,هاينز شوربة فطر 400غ,BQ-00345,8471551564289,Canned Goods,Piece,0.721,0.895,15,No,Active,Yes,384
+Knorr Minestrone Soup 58g,كنور شوربة مينيسترونه 58غ,BQ-00346,7660462511237,Canned Goods,Piece,0.372,0.417,5,No,Active,Yes,486
+Pacific Mackerel 425g,باسيفيك ماكريل 425غ,BQ-00347,9507318208692,Canned Goods,Piece,0.565,0.735,5,No,Active,Yes,624
+Heinz Pasta Sauce 350g,هاينز صلصة باستا 350غ,BQ-00348,9773449845379,Canned Goods,Piece,0.797,1.018,15,No,Active,Yes,532
+Al Doha Garam Masala 100g,الدوحة جرام ماسالا 100غ,BQ-00349,1503990495810,Spices,Pack,0.542,0.611,5,No,Active,No,288
+Tabasco Hot Sauce 60ml,تاباسكو صلصة حارة 60مل,BQ-00350,1743792992550,Spices,Bottle,1.066,1.407,5,No,Active,No,225
+Maggi Oyster Sauce 260g,ماجي صلصة محار 260غ,BQ-00351,,Spices,Bottle,0.586,0.743,12,No,Active,No,289
+Soy Sauce Kikkoman 150ml,صلصة صويا كيكومان 150مل,BQ-00352,3872094824444,Spices,Bottle,0.966,1.273,48,No,Active,No,295
+Vinegar Apple Cider 500ml,خل تفاح 500مل,BQ-00353,2762657139450,Spices,Bottle,0.462,0.540,20,No,Active,No,293
+India Gate Extra Long Basmati 2kg,انديا جيت بسمتي طويل 2كغ,BQ-00354,8259508834918,Rice & Grains,Bag,1.801,2.338,12,No,Active,No,652
+Royal Long Grain Rice 5kg,رويال أرز حبة طويلة 5كغ,BQ-00355,7948170480551,Rice & Grains,Bag,2.125,2.605,15,No,Active,No,442
+Quaker Instant Oats 1kg,كويكر شوفان فوري 1كغ,BQ-00356,5923377286409,Rice & Grains,Pack,1.424,1.677,20,No,Active,No,552
+Mama Noodles Chicken 90g,ماما نودلز دجاج 90غ,BQ-00357,4409766763914,Rice & Grains,Piece,0.194,0.248,24,No,Active,No,481
+Corn Flour Maizena 400g,دقيق ذرة مايزينا 400غ,BQ-00358,8070488886442,Rice & Grains,Pack,0.489,0.653,15,No,Active,No,309
+Brown Sugar 1kg,سكر أسمر 1كغ,BQ-00359,3639919469831,Rice & Grains,Bag,0.331,0.373,48,No,Active,No,356
+Baking Powder 100g,باكينج بودر 100غ,BQ-00360,7193468049168,Rice & Grains,Pack,0.176,0.218,10,No,Active,No,512
+Almarai Milk 250ml,ألماراي حليب 250مل,BQ-00361,,Dairy,Piece,0.218,0.242,15,No,Active,Yes,8
+KDD Milk 2L,كي دي دي حليب 2ل,BQ-00362,4094346296973,Dairy,Piece,0.630,0.764,15,No,Active,Yes,9
+Almarai Yoghurt Mango 170g,ألماراي زبادي مانجو 170غ,BQ-00363,6714862503344,Dairy,Piece,0.162,0.185,48,No,Active,Yes,9
+Almarai Yoghurt Blueberry 170g,ألماراي زبادي بلوبيري 170غ,BQ-00364,3528232286451,Dairy,Piece,0.154,0.203,48,No,Active,Yes,15
+Puck Labneh 500g,باك لبنة 500غ,BQ-00365,3451212755171,Dairy,Piece,0.816,0.930,24,No,Active,Yes,11
+Lurpak Butter Salted 400g,لورباك زبدة مملحة 400غ,BQ-00366,5778065914055,Dairy,Piece,1.834,2.372,48,No,Active,Yes,13
+Almarai Halloumi 200g,ألماراي جبن حلومي 200غ,BQ-00367,8679771728813,Dairy,Piece,1.262,1.582,20,No,Active,Yes,20
+Kraft Singles Cheese 150g,كرافت جبن فردي 150غ,BQ-00368,5537278292234,Dairy,Piece,0.766,1.017,24,No,Active,Yes,9
+Almarai Cottage Cheese 200g,ألماراي جبن قريش 200غ,BQ-00369,9045780405402,Dairy,Piece,0.723,0.901,12,No,Active,Yes,7
+Anchor Butter 250g,آنكور زبدة 250غ,BQ-00370,9607516411691,Dairy,Piece,1.765,2.056,12,No,Active,Yes,13
+President Butter 250g,بريزيدينت زبدة 250غ,BQ-00371,,Dairy,Piece,1.476,1.717,5,No,Active,Yes,20
+Lay's BBQ Chips 28g,لايز بي بي كيو 28غ,BQ-00372,5050834135152,Snacks,Piece,0.139,0.181,5,No,Active,No,172
+Cheetos Crunchy 28g,شيتوس كرانشي 28غ,BQ-00373,7912977266358,Snacks,Piece,0.101,0.114,24,No,Active,No,93
+Pringles Cheese 165g,برينجلز جبن 165غ,BQ-00374,3045124476775,Snacks,Piece,0.746,0.936,48,No,Active,No,163
+Oreo Golden 137g,أوريو ذهبي 137غ,BQ-00375,8412115419749,Snacks,Piece,0.572,0.704,12,No,Active,No,97
+Digestive Chocolate McVities 400g,ديجستيف شوكولاتة مكفيتيز 400غ,BQ-00376,7352318915072,Snacks,Piece,0.878,1.171,10,No,Active,No,112
+Nutella 750g,نوتيلا 750غ,BQ-00377,9334380500484,Snacks,Piece,3.186,3.923,5,No,Active,No,116
+Kelloggs Rice Krispies 340g,كيلوغز رايس كريسبيز 340غ,BQ-00378,9109602514887,Snacks,Piece,1.183,1.528,24,No,Active,No,66
+Kelloggs Crunchy Nut 500g,كيلوغز كرانشي نات 500غ,BQ-00379,2025576242944,Snacks,Piece,1.483,1.892,12,No,Active,No,104
+Pepperidge Farm Milano 150g,ميلانو بيبريدج فارم 150غ,BQ-00380,4176973864203,Snacks,Piece,1.487,1.808,15,No,Active,No,88
+Twix King Size 75g,تويكس كبير الحجم 75غ,BQ-00381,,Snacks,Piece,0.400,0.452,5,No,Active,No,125
+M&M's Peanut 45g,إم آند إم فول سوداني 45غ,BQ-00382,3378023958997,Snacks,Piece,0.377,0.490,20,No,Active,No,112
+Kit Kat Chunky 40g,كيت كات تشانكي 40غ,BQ-00383,4454909707885,Snacks,Piece,0.235,0.309,10,No,Active,No,87
+Coca-Cola Diet 330ml Can,كوكا كولا دايت 330مل,BQ-00384,1392882826738,Beverages,Piece,0.180,0.237,15,No,Active,No,544
+Pepsi Diet 330ml Can,بيبسي دايت 330مل,BQ-00385,6334765452658,Beverages,Piece,0.164,0.205,10,No,Active,No,696
+Fanta Grape 330ml Can,فانتا عنب 330مل,BQ-00386,3989537630230,Beverages,Piece,0.181,0.204,30,No,Active,No,235
+Mirinda Lemon 330ml Can,ميرندا ليمون 330مل,BQ-00387,1008346462389,Beverages,Piece,0.190,0.232,20,No,Active,No,327
+Coca-Cola 500ml Bottle,كوكا كولا 500مل,BQ-00388,1734783203108,Beverages,Piece,0.169,0.210,30,No,Active,No,200
+Pepsi 500ml Bottle,بيبسي 500مل,BQ-00389,8658706887159,Beverages,Piece,0.171,0.195,12,No,Active,No,459
+7UP 1.5L Bottle,7أب 1.5ل,BQ-00390,9002306989859,Beverages,Piece,0.321,0.355,48,No,Active,No,441
+Almarai Apple Juice 1L,ألماراي عصير تفاح 1ل,BQ-00391,,Beverages,Piece,0.711,0.811,12,No,Active,No,717
+Almarai Guava Juice 1L,ألماراي عصير جوافة 1ل,BQ-00392,9949066569097,Beverages,Piece,0.733,0.901,30,No,Active,No,506
+KDD Mango Juice 1L,كي دي دي عصير مانجو 1ل,BQ-00393,1520731694065,Beverages,Piece,0.663,0.779,20,No,Active,No,533
+Tropicana Mango 330ml,تروبيكانا مانجو 330مل,BQ-00394,8962218320928,Beverages,Piece,0.409,0.510,30,No,Active,No,194
+Tang Mango 500g,تانج مانجو 500غ,BQ-00395,8561854966217,Beverages,Piece,0.605,0.795,15,No,Active,No,317
+Tang Strawberry 500g,تانج فراولة 500غ,BQ-00396,6946339565794,Beverages,Piece,0.694,0.828,30,No,Active,No,322
+Vimto Zero 710ml,فيمتو زيرو 710مل,BQ-00397,5731933262199,Beverages,Piece,1.163,1.530,15,No,Active,No,320
+Boost Energy 250ml,بوست طاقة 250مل,BQ-00398,8807229368714,Beverages,Piece,0.529,0.631,24,No,Active,No,342
+Lipton Ice Tea Lemon 500ml,ليبتون شاي ليمون 500مل,BQ-00399,6203949850518,Beverages,Piece,0.274,0.309,10,No,Active,No,636
+L'usine White Bread Small,لوزين خبز أبيض صغير,BQ-00400,4661250345874,Bakery,Piece,0.155,0.174,15,No,Active,Yes,4
+L'usine Toast Bread,لوزين خبز توست,BQ-00401,,Bakery,Piece,0.342,0.420,10,No,Active,Yes,5
+Americana Croissant Chocolate 60g,أمريكانا كروسان شوكولاتة 60غ,BQ-00402,5977716588415,Bakery,Piece,0.153,0.189,12,No,Active,Yes,3
+L'usine Bun Cinnamon 60g,لوزين بن قرفة 60غ,BQ-00403,9360013230005,Bakery,Piece,0.133,0.154,10,No,Active,Yes,7
+L'usine Mini Croissant 30g,لوزين ميني كروسان 30غ,BQ-00404,3164387257769,Bakery,Piece,0.129,0.169,15,No,Active,Yes,11
+Balila Date Kaak 50g,بليلة كعك تمر 50غ,BQ-00405,2300664789741,Bakery,Piece,0.101,0.135,30,No,Active,Yes,3
+Pita Bread Wholemeal 6pcs,خبز عربي قمح كامل 6 حبات,BQ-00406,6112328362884,Bakery,Pack,0.263,0.316,20,No,Active,Yes,9
+Scotch Brite Heavy Sponge,سكوتش برايت إسفنجة ثقيلة,BQ-00407,3271924994653,Household,Piece,0.359,0.442,12,No,Active,No,
+Glad Zipper Bags 25pcs,جلاد أكياس سحاب 25 حبة,BQ-00408,8695825175149,Household,Pack,0.565,0.624,15,No,Active,No,
+Tamr Garbage Bags 45L 20pcs,تمر أكياس قمامة 45ل 20 حبة,BQ-00409,5122125628869,Household,Pack,0.541,0.693,30,No,Active,No,
+Paper Plates Square 25pcs,أطباق ورقية مربعة 25 حبة,BQ-00410,5136981512885,Household,Pack,0.384,0.457,15,No,Active,No,
+Viva Paper Towel 4-roll,فيفا مناشف 4 رول,BQ-00411,,Household,Pack,1.181,1.516,30,No,Active,No,
+Tissues Pocket Kleenex,كلينكس مناديل جيب,BQ-00412,3412411196622,Household,Pack,0.217,0.273,24,No,Active,No,
+Candles White 12pcs,شموع بيضاء 12 حبة,BQ-00413,8578111380338,Household,Pack,0.214,0.282,10,No,Active,No,
+Broom Handle Plastic,عصا مكنسة بلاستيك,BQ-00414,2928791843587,Household,Piece,1.034,1.142,30,No,Active,No,
+Dust Pan,جارف غبار,BQ-00415,8135513256303,Household,Piece,0.599,0.790,30,No,Active,No,
+Del Monte Tomato Paste 200g,ديل مونت معجون طماطم 200غ,BQ-00416,5806577749783,Canned Goods,Piece,0.340,0.448,5,No,Active,Yes,429
+Heinz Cream of Tomato Soup 400g,هاينز كريم شوربة طماطم 400غ,BQ-00417,4163174336776,Canned Goods,Piece,0.708,0.920,15,No,Active,Yes,406
+Del Monte Fruit Cocktail 415g,ديل مونت كوكتيل فواكه 415غ,BQ-00418,4994591020047,Canned Goods,Piece,0.539,0.666,15,No,Active,Yes,678
+Americana Corned Beef 340g,أمريكانا لحم بقر معلب 340غ,BQ-00419,4649589913664,Canned Goods,Piece,1.159,1.504,15,No,Active,Yes,213
+Al Watan Tomato Juice 250ml,الوطن عصير طماطم 250مل,BQ-00420,1440925837960,Canned Goods,Piece,0.358,0.442,48,No,Active,Yes,702
+Pacific Crab Meat 170g,باسيفيك سلطعون 170غ,BQ-00421,,Canned Goods,Piece,0.703,0.885,12,No,Active,Yes,289
+India Gate Sella Basmati 2kg,انديا جيت سيلا بسمتي 2كغ,BQ-00422,4872525906888,Rice & Grains,Bag,1.779,2.269,20,No,Active,No,483
+Tilda Pure Basmati 5kg,تيلدا بسمتي خالص 5كغ,BQ-00423,9280748681398,Rice & Grains,Bag,4.814,6.018,5,No,Active,No,532
+Egyptian Rice Short Grain 2kg,أرز مصري حبة قصيرة 2كغ,BQ-00424,8974852009443,Rice & Grains,Bag,0.977,1.278,24,No,Active,No,408
+Lentils Green 500g,عدس أخضر 500غ,BQ-00425,9988113973056,Rice & Grains,Bag,0.379,0.420,24,No,Active,No,442
+Moong Dal 500g,موج دال 500غ,BQ-00426,6393709124764,Rice & Grains,Bag,0.399,0.535,20,No,Active,No,374
+Urad Dal 500g,أوراد دال 500غ,BQ-00427,5845817616907,Rice & Grains,Bag,0.539,0.650,10,No,Active,No,318
+Penne Rigate Barilla 500g,بيني ريغاتي باريلا 500غ,BQ-00428,6638737842906,Rice & Grains,Pack,0.870,1.090,12,No,Active,No,202
+Tagliatelle Barilla 500g,تاجلياتيلي باريلا 500غ,BQ-00429,3498148896265,Rice & Grains,Pack,0.733,0.981,24,No,Active,No,384
+Rigatoni Barilla 500g,ريغاتوني باريلا 500غ,BQ-00430,5697312972042,Rice & Grains,Pack,0.893,1.205,5,No,Active,No,708
+Nissin Cup Noodles Chicken,نيسين كوب نودلز دجاج,BQ-00431,,Rice & Grains,Piece,0.248,0.316,15,No,Active,No,521
+Indomie Spicy Noodles 75g,إندومي نودلز حار 75غ,BQ-00432,7741381823550,Rice & Grains,Piece,0.148,0.181,20,No,Active,No,531
+Bread Flour Strong 1kg,دقيق خبز قوي 1كغ,BQ-00433,1251033664448,Rice & Grains,Bag,0.348,0.431,12,No,Active,No,417
+Icing Sugar 500g,سكر بودرة 500غ,BQ-00434,5393383543239,Rice & Grains,Bag,0.422,0.514,12,No,Active,No,308
+Americana Chicken Kiev 400g,أمريكانا دجاج كييف 400غ,BQ-00435,7307787546189,Frozen,Pack,1.722,1.901,20,No,Active,Yes,116
+Americana Fish Fillets 400g,أمريكانا فيليه سمك 400غ,BQ-00436,2654916304862,Frozen,Pack,1.606,1.785,48,No,Active,Yes,122
+McCain Wedges 900g,مكين ويدجز 900غ,BQ-00437,2121195032959,Frozen,Bag,1.711,1.944,48,No,Active,Yes,283
+Americana Mozzarella Sticks 400g,أمريكانا عيدان موتزاريلا 400غ,BQ-00438,1777799100847,Frozen,Pack,1.911,2.283,15,No,Active,Yes,313
+Al Kabeer Chicken Biryani 400g,الكبير كباب دجاج 400غ,BQ-00439,6595160661498,Frozen,Pack,2.107,2.510,20,No,Active,Yes,172
+Kwality Strawberry Ice Cream 2L,كواليتي آيس كريم فراولة 2ل,BQ-00440,3058702120557,Frozen,Tub,2.051,2.345,15,No,Active,Yes,343
+Magnum Almond Ice Cream Bar,ماجنوم لوز آيس كريم,BQ-00441,,Frozen,Piece,0.523,0.604,15,No,Active,Yes,335
+Cornetto Chocolate 120ml,كورنيتو شوكولاتة 120مل,BQ-00442,7751854938222,Frozen,Piece,0.398,0.517,15,No,Active,Yes,162
+Americana Frozen Spring Rolls 20pcs,أمريكانا ربيع ملفوف 20 حبة,BQ-00443,3056649029953,Frozen,Pack,1.491,1.900,10,No,Active,Yes,166
+Sunsilk Conditioner 200ml,سانسيلك بلسم 200مل,BQ-00444,9429222034523,Personal Care,Piece,0.856,0.998,24,No,Active,No,
+Pantene Conditioner 200ml,بانتين بلسم 200مل,BQ-00445,7656005155527,Personal Care,Piece,0.858,0.996,5,No,Active,No,
+Dove Body Wash 250ml,دوف غسول جسم 250مل,BQ-00446,6710823540808,Personal Care,Piece,1.286,1.463,30,No,Active,No,
+Lifebuoy Hand Wash 250ml,لايفبوي غسول يد 250مل,BQ-00447,1619928305735,Personal Care,Piece,0.590,0.771,20,No,Active,No,
+Dettol Hand Wash 250ml,ديتول غسول يد 250مل,BQ-00448,7151119185378,Personal Care,Piece,0.787,1.000,24,No,Active,No,
+Colgate Max Fresh Toothpaste 125ml,كولجيت ماكس فريش 125مل,BQ-00449,9541966856922,Personal Care,Piece,0.487,0.598,12,No,Active,No,
+Signal Toothpaste 75ml,سيجنال معجون أسنان 75مل,BQ-00450,2070484158350,Personal Care,Piece,0.414,0.461,20,No,Active,No,
+Oral-B Pro-Health Toothbrush,أورال-بي برو هيلث فرشاة أسنان,BQ-00451,,Personal Care,Piece,0.677,0.794,12,No,Active,No,
+Always Pads Night 8pcs,أولويز فوط ليلية 8 حبات,BQ-00452,7079120036913,Personal Care,Pack,0.445,0.546,48,No,Active,No,
+Comfort Sport Deo Spray 150ml,كومفورت مزيل رذاذ 150مل,BQ-00453,8652839691145,Personal Care,Piece,1.014,1.266,10,No,Active,No,
+Vaseline Aloe Lotion 400ml,فازلين لوشن ألوي 400مل,BQ-00454,6109944530762,Personal Care,Piece,1.198,1.485,12,No,Active,No,
+Al Doha Fenugreek 100g,الدوحة حلبة 100غ,BQ-00455,8780392712913,Spices,Pack,0.227,0.304,15,No,Active,No,311
+Al Doha Coriander 100g,الدوحة كزبرة 100غ,BQ-00456,1235424383543,Spices,Pack,0.382,0.513,12,No,Active,No,271
+Al Doha Nutmeg 50g,الدوحة جوزة الطيب 50غ,BQ-00457,1564260203856,Spices,Pack,0.438,0.505,30,No,Active,No,302
+Al Doha Cloves 50g,الدوحة قرنفل 50غ,BQ-00458,9162805216154,Spices,Pack,0.467,0.580,10,No,Active,No,266
+Al Doha Dried Lime 100g,الدوحة ليمي مجفف 100غ,BQ-00459,3462472980841,Spices,Pack,0.287,0.373,5,No,Active,No,295
+Noor Corn Oil 1.8L,نور زيت ذرة 1.8ل,BQ-00460,6450248927809,Spices,Bottle,1.081,1.241,15,No,Active,No,319
+Borges Olive Oil 1L,بورجيز زيت زيتون 1ل,BQ-00461,,Spices,Bottle,2.705,3.306,24,No,Active,No,273
+Red Wine Vinegar 500ml,خل نبيذ أحمر 500مل,BQ-00462,5067319970345,Spices,Bottle,0.537,0.650,48,No,Active,No,266
+Ariel 3in1 Pods 12pcs,أريال 3 في 1 كبسولة 12 حبة,BQ-00463,2675081579713,Cleaning,Pack,1.719,1.988,24,No,Active,No,
+Tide Liquid 2L,تايد سائل 2ل,BQ-00464,9666663946351,Cleaning,Bottle,2.412,3.229,15,No,Active,No,
+Sunlight Bar Soap 400g,سانلايت صابون بار 400غ,BQ-00465,2475305040599,Cleaning,Pack,0.460,0.560,20,No,Active,No,
+Harpic Power Plus 750ml,هاربيك باور بلس 750مل,BQ-00466,3832748668501,Cleaning,Bottle,1.104,1.466,30,No,Active,No,
+Flash Liquid Soap 500ml,فلاش صابون سائل 500مل,BQ-00467,9368782360339,Cleaning,Bottle,0.695,0.808,15,No,Active,No,
+Mr Muscle Kitchen Cleaner 500ml,مستر ماسل منظف مطبخ 500مل,BQ-00468,2607082541566,Cleaning,Bottle,1.043,1.263,10,No,Active,No,
+Glade Air Freshener 300ml,جليد معطر جو 300مل,BQ-00469,1953455825103,Cleaning,Bottle,1.248,1.645,10,No,Active,No,
+Domestos Extended Germ Kill 750ml,دومستوس كلور مقوى 750مل,BQ-00470,6356584837427,Cleaning,Bottle,0.801,0.967,48,No,Active,No,
+Pampers Baby Wipes 72pcs,بامبرز مناديل أطفال 72 ورقة,BQ-00471,,Baby,Pack,0.848,1.096,12,No,Active,Yes,168
+Huggies Baby Wipes 56pcs,هاجيز مناديل أطفال 56 ورقة,BQ-00472,7828501782845,Baby,Pack,0.765,0.999,48,No,Active,Yes,88
+Nestlé NAN Pro HA1 400g,نستله نان برو هايبو-ألرجينيك 1 - 400غ,BQ-00473,3978734438307,Baby,Tin,4.157,5.288,48,No,Active,Yes,139
+Aptamil Follow On 2 400g,أبتاميل متابعة 2 - 400غ,BQ-00474,4916433689417,Baby,Tin,4.262,5.662,20,No,Active,Yes,102
+Nestlé Cerelac Oats 250g,نستله سيريلاك شوفان 250غ,BQ-00475,9050234117079,Baby,Pack,1.763,2.273,10,No,Active,Yes,156
+Pigeon Baby Bottle 240ml,بيجون زجاجة رضاعة 240مل,BQ-00476,6624101298628,Baby,Piece,2.236,2.581,24,No,Active,Yes,159
+Farlin Baby Bottle 120ml,فارلين زجاجة رضاعة 120مل,BQ-00477,3322346934583,Baby,Piece,1.532,1.979,48,No,Active,Yes,105
+Johnson Baby Oil 200ml,جونسون زيت أطفال 200مل,BQ-00478,2556212306022,Baby,Bottle,0.907,1.213,10,No,Active,Yes,118
+Lipton Chamomile Tea 25bags,ليبتون شاي بابونج 25 كيس,BQ-00479,1982322060270,Tea & Coffee,Box,0.771,0.904,12,No,Active,No,209
+Tapal Family Mixture Tea 450g,تاپل شاي عائلي 450غ,BQ-00480,4749076960375,Tea & Coffee,Pack,1.742,2.210,20,No,Active,No,330
+Nestle Milo 400g,نستله ميلو 400غ,BQ-00481,,Tea & Coffee,Tin,1.982,2.392,5,No,Active,No,228
+Ovaltine 400g,أوفالتين 400غ,BQ-00482,9201936411904,Tea & Coffee,Tin,1.864,2.336,30,No,Active,No,337
+Bru Instant Coffee 100g,برو قهوة فورية 100غ,BQ-00483,1011801145505,Tea & Coffee,Jar,1.240,1.588,30,No,Active,No,353
+Hana Green Cardamom 250g,هنا هيل أخضر 250غ,BQ-00484,5481476008659,Tea & Coffee,Pack,1.490,1.751,12,No,Active,No,252
+Galaxy Ripple 50g,جالاكسي ريبل 50غ,BQ-00485,9252411922672,Confectionery,Piece,0.449,0.578,20,No,Active,No,194
+Cadbury Caramel 120g,كادبوري كراميل 120غ,BQ-00486,3168235666118,Confectionery,Piece,0.938,1.174,10,No,Active,No,80
+Kinder Joy 20g,كيندر جوي 20غ,BQ-00487,2877832755679,Confectionery,Piece,0.398,0.531,24,No,Active,No,237
+Smarties Tube 38g,سمارتيز أنبوب 38غ,BQ-00488,5686203599674,Confectionery,Piece,0.231,0.283,48,No,Active,No,283
+Wonka Nerds 46g,وونكا نيردز 46غ,BQ-00489,7257751622237,Confectionery,Piece,0.406,0.545,10,No,Active,No,340
+Chupa Chups Lollipop,تشوبا تشوبس مصاصة,BQ-00490,5677114190533,Confectionery,Piece,0.100,0.120,5,No,Active,No,309
+Cadbury Roses Box 252g,كادبوري روزيز علبة 252غ,BQ-00491,,Confectionery,Box,2.553,3.434,30,No,Active,No,124
+Luxury Dates Box 500g,علبة تمر فاخرة 500غ,BQ-00492,2127044650027,Confectionery,Box,2.788,3.138,20,No,Active,No,350
+San Benedetto Water 500ml,سان بنيديتو ماء 500مل,BQ-00493,5296309977537,Water,Piece,0.240,0.308,48,No,Active,No,450
+Aquafina 1.5L,أكوافينا 1.5ل,BQ-00494,6144963608821,Water,Piece,0.122,0.162,20,No,Active,No,541
+Nestle Pure Life 500ml,نستله بيور لايف 500مل,BQ-00495,4437328422907,Water,Piece,0.100,0.131,5,No,Active,No,664
+Nestle Pure Life 1.5L,نستله بيور لايف 1.5ل,BQ-00496,2635594184510,Water,Piece,0.122,0.141,12,No,Active,No,376
+Masafi Water 330ml,مصافي ماء 330مل,BQ-00497,2045808570925,Water,Piece,0.081,0.094,20,No,Active,No,448
+Safa Sparkling 500ml,صفا فوارة 500مل,BQ-00498,8871182365808,Water,Piece,0.248,0.324,5,No,Active,No,663
+Voss Still Water 375ml,فوس ماء صافٍ 375مل,BQ-00499,1753087555058,Water,Piece,0.698,0.832,20,No,Active,No,575
+Evian 1.5L,إيفيان 1.5ل,BQ-00500,2399736081482,Water,Piece,0.613,0.815,5,No,Active,No,477
+Baraka Water 500ml,بركة ماء 500مل,BQ-00501,,Water,Piece,0.074,0.084,5,No,Active,No,370
+Oasis Lemon Water 500ml,أوسيس ماء ليمون 500مل,BQ-00502,7682925288798,Water,Piece,0.088,0.100,10,No,Active,No,403
+Almarai Milk Skimmed 1L,ألماراي حليب خالي الدسم 1ل,BQ-00503,9372448533540,Dairy,Piece,0.443,0.576,10,No,Active,Yes,19
+Almarai Milk Full Fat 4L,ألماراي حليب كامل 4ل,BQ-00504,8410028193844,Dairy,Piece,1.441,1.645,24,No,Active,Yes,12
+Saudia Full Cream Milk 1L,سعودية حليب كامل 1ل,BQ-00505,4028185741277,Dairy,Piece,0.325,0.417,15,No,Active,Yes,11
+Tropicana OJ 1L,تروبيكانا عصير برتقال 1ل,BQ-00506,7957708135014,Beverages,Piece,1.289,1.608,30,No,Active,No,722
+Almarai Yoghurt Apricot 170g,ألماراي زبادي مشمش 170غ,BQ-00507,6501932786311,Dairy,Piece,0.141,0.175,5,No,Active,Yes,13
+President Cream Cheese 150g,بريزيدينت جبن كريمي 150غ,BQ-00508,2950701993890,Dairy,Piece,0.998,1.249,48,No,Active,Yes,15
+President Brie 125g,بريزيدينت بري 125غ,BQ-00509,9920411901548,Dairy,Piece,1.741,2.111,30,No,Active,Yes,14
+Castello Blue Cheese 150g,كاستيلو جبن أزرق 150غ,BQ-00510,5274960771435,Dairy,Piece,1.597,2.051,12,No,Active,Yes,15
+Philadelphia Full Fat 200g,فيلادلفيا كامل الدسم 200غ,BQ-00511,,Dairy,Piece,1.166,1.373,48,No,Active,Yes,15
+Almarai Sour Cream 200ml,ألماراي كريمة حامضة 200مل,BQ-00512,3245358355576,Dairy,Piece,0.508,0.627,5,No,Active,Yes,14
+Galaxy Caramel Crunch 100g,جالاكسي كراميل كرانش 100غ,BQ-00513,3713242604862,Confectionery,Piece,0.482,0.645,24,No,Active,No,67
+Lindor Swiss Ball 3pcs,ليندور كرة سويسرية 3 حبات,BQ-00514,1241947492817,Confectionery,Pack,0.982,1.147,5,No,Active,No,103
+After Eight Mint Choco 300g,آفتر إيت شوكولاتة نعناع 300غ,BQ-00515,9944546447601,Confectionery,Box,2.596,3.468,48,No,Active,No,133
+Quality Street 220g,كواليتي ستريت 220غ,BQ-00516,5879750743974,Confectionery,Box,1.843,2.366,15,No,Active,No,177
+Haribo Strawberry 80g,هاريبو فراولة 80غ,BQ-00517,7641353450482,Confectionery,Piece,0.556,0.655,24,No,Active,No,77
+Starburst Tropical 45g,ستاربيرست تروبيكال 45غ,BQ-00518,1440419443184,Confectionery,Piece,0.319,0.405,15,No,Active,No,94
+Mentos Spearmint 38g,مينتوس سبيرمنت 38غ,BQ-00519,8698541037505,Confectionery,Piece,0.235,0.276,30,No,Active,No,157
+Pez Dispenser + Refill,بيز موزع + إعادة تعبئة,BQ-00520,4852500678971,Confectionery,Piece,0.448,0.568,48,No,Active,No,63
+Coca-Cola 2L Bottle,كوكا كولا 2ل زجاجة,BQ-00521,,Beverages,Piece,0.463,0.610,20,No,Active,No,604
+Pepsi 2L Bottle,بيبسي 2ل زجاجة,BQ-00522,6689615286886,Beverages,Piece,0.404,0.521,24,No,Active,No,643
+7UP 2L Bottle,7أب 2ل زجاجة,BQ-00523,3524522196268,Beverages,Piece,0.355,0.398,24,No,Active,No,214
+Sprite 2L Bottle,سبرايت 2ل زجاجة,BQ-00524,5456643576966,Beverages,Piece,0.438,0.588,30,No,Active,No,210
+Fanta Orange 2L Bottle,فانتا برتقال 2ل,BQ-00525,9245097350096,Beverages,Piece,0.521,0.678,24,No,Active,No,634
+Mountain Dew 1.5L Bottle,ماونتن ديو 1.5ل,BQ-00526,1348665223922,Beverages,Piece,0.317,0.378,5,No,Active,No,501
+Mirinda Orange 1.5L Bottle,ميرندا برتقال 1.5ل,BQ-00527,5292715385789,Beverages,Piece,0.300,0.405,48,No,Active,No,507
+Lipton Ice Tea Mango 500ml,ليبتون شاي مانجو 500مل,BQ-00528,5088253706460,Beverages,Piece,0.315,0.354,5,No,Active,No,251
+Nestea Lemon 500ml,نستي ليمون 500مل,BQ-00529,1322627860121,Beverages,Piece,0.278,0.342,5,No,Active,No,458
+Oasis Mango 500ml,أوسيس مانجو 500مل,BQ-00530,8245295985369,Beverages,Piece,0.335,0.373,48,No,Active,No,729
+Redbull 473ml XL,ريد بول 473مل XL,BQ-00531,,Beverages,Piece,1.349,1.672,20,No,Active,No,228
+Monster Ultra 500ml,مونستر ألترا 500مل,BQ-00532,4749776497250,Beverages,Piece,0.843,0.989,12,No,Active,No,298
+Burn Energy 250ml,بيرن طاقة 250مل,BQ-00533,2450389592442,Beverages,Piece,0.838,1.035,10,No,Active,No,494
+Power Horse Energy 500ml,باور هورس طاقة 500مل,BQ-00534,7335353507194,Beverages,Piece,0.826,1.011,15,No,Active,No,643
+Masafi Water 5L,مصافي ماء 5ل,BQ-00535,1996298647020,Water,Piece,0.420,0.479,10,No,Active,No,522
+Al Ain Water 5L,العين ماء 5ل,BQ-00536,7624990563141,Water,Piece,0.436,0.572,10,No,Active,No,464
+Crystal Water 5L,كريستال ماء 5ل,BQ-00537,7726667185081,Water,Piece,0.287,0.335,20,No,Active,No,526
+Arwa Water 5L,أروى ماء 5ل,BQ-00538,7261454734485,Water,Piece,0.271,0.363,5,No,Active,No,707
+Nestle Pure Life 5L,نستله بيور لايف 5ل,BQ-00539,6379460386000,Water,Piece,0.339,0.419,5,No,Active,No,575
+San Benedetto Sparkling 500ml,سان بنيديتو فوارة 500مل,BQ-00540,6494969262508,Water,Piece,0.234,0.281,5,No,Active,No,384
+Schweppes Sparkling 500ml,شويبس فوارة 500مل,BQ-00541,,Water,Piece,0.248,0.285,30,No,Active,No,548
+L'usine Sandwich Bread Whole,لوزين خبز ساندوتش قمح كامل,BQ-00542,5950257995398,Bakery,Piece,0.262,0.350,12,No,Active,Yes,7
+Americana Cheese Croissant 60g,أمريكانا كروسان جبن 60غ,BQ-00543,8421972093638,Bakery,Piece,0.157,0.179,10,No,Active,Yes,8
+L'usine Donuts 2pcs,لوزين دونات 2 حبة,BQ-00544,7131994708208,Bakery,Pack,0.265,0.306,48,No,Active,Yes,13
+L'usine Muffin Chocolate 80g,لوزين مافن شوكولاتة 80غ,BQ-00545,6374906847951,Bakery,Piece,0.174,0.232,15,No,Active,Yes,10
+Fresh Pita Bread 10pcs,خبز عربي طازج 10 حبات,BQ-00546,1690338612068,Bakery,Pack,0.496,0.580,24,No,Active,Yes,9
+Shawarma Bread Large 5pcs,خبز شاورما كبير 5 حبات,BQ-00547,9393340596929,Bakery,Pack,0.303,0.383,48,No,Active,Yes,14
+Al Kabeer Chicken Shawarma 400g,الكبير شاورما دجاج 400غ,BQ-00548,9672329559689,Frozen,Pack,2.029,2.671,20,No,Active,Yes,353
+Americana Shrimp Tempura 400g,أمريكانا روبيان تيمبورا 400غ,BQ-00549,8040940923849,Frozen,Pack,2.277,2.584,5,No,Active,Yes,300
+Al Kabeer Lamb Kebab 400g,الكبير كباب ضأن 400غ,BQ-00550,7939514078432,Frozen,Pack,2.956,3.556,12,No,Active,Yes,257
+McCain Sweet Potato Fries 500g,مكين بطاطا حلوة 500غ,BQ-00551,,Frozen,Bag,1.352,1.824,24,No,Active,Yes,310
+Americana Corn Dogs 500g,أمريكانا كورن دوج 500غ,BQ-00552,6519318785518,Frozen,Pack,1.799,2.224,5,No,Active,Yes,213
+Kwality Mango Ice Cream 2L,كواليتي آيس كريم مانجو 2ل,BQ-00553,2221510783769,Frozen,Tub,2.275,2.572,12,No,Active,Yes,92
+Magnum White Ice Cream,ماجنوم أبيض آيس كريم,BQ-00554,3996474214596,Frozen,Piece,0.694,0.813,15,No,Active,Yes,212
+Twister Ice Cream Bar,تويستر آيس كريم,BQ-00555,1693175142398,Frozen,Piece,0.392,0.463,30,No,Active,Yes,305
+Paddle Pop Lion Bar,بادل بوب ليون,BQ-00556,6276716536143,Frozen,Piece,0.232,0.312,30,No,Active,Yes,359
+Calippo Orange Sorbet,كاليبو برتقال سوربيه,BQ-00557,1523227317724,Frozen,Piece,0.442,0.534,20,No,Active,Yes,136
+Americana Mixed Seafood 400g,أمريكانا ميكس مأكولات بحرية 400غ,BQ-00558,4724196292925,Frozen,Bag,2.560,3.368,48,No,Active,Yes,223
+Del Monte Mango Slices 415g,ديل مونت شرائح مانجو 415غ,BQ-00559,6683790109353,Canned Goods,Piece,0.690,0.881,30,No,Active,Yes,290
+Heinz Spaghetti in Sauce 400g,هاينز سباغيتي بالصلصة 400غ,BQ-00560,9717717994935,Canned Goods,Piece,0.690,0.786,48,No,Active,Yes,442
+Knorr Chicken Broth Tetra 500ml,كنور مرق دجاج 500مل,BQ-00561,,Canned Goods,Piece,0.761,1.004,48,No,Active,Yes,180
+Dole Peach Slices 415g,دول شرائح خوخ 415غ,BQ-00562,9803086090367,Canned Goods,Piece,0.529,0.669,30,No,Active,Yes,529
+Pacific Salmon 213g,باسيفيك سلمون 213غ,BQ-00563,4930166438221,Canned Goods,Piece,1.225,1.408,15,No,Active,Yes,185
+Kraft Cheese Spread 230g,كرافت جبن قابل للدهن 230غ,BQ-00564,3794469417771,Canned Goods,Piece,0.795,0.958,24,No,Active,Yes,415
+Americana Turkey Luncheon 340g,أمريكانا لانشيون ديك رومي 340غ,BQ-00565,2719957145163,Canned Goods,Piece,0.979,1.261,12,No,Active,Yes,599
+Hero Strawberry Jam 340g,هيرو مربى فراولة 340غ,BQ-00566,8650415942305,Canned Goods,Piece,1.054,1.275,24,No,Active,Yes,195
+Smucker Grape Jam 340g,سمكرز مربى عنب 340غ,BQ-00567,8118092828430,Canned Goods,Piece,0.725,0.860,5,No,Active,Yes,342
+Al Rashidi Honey 250g,الراشدي عسل 250غ,BQ-00568,8494298079749,Canned Goods,Piece,1.736,1.951,48,No,Active,Yes,339
+Baladna Honey 500g,بلدنا عسل 500غ,BQ-00569,3060790012823,Canned Goods,Piece,2.907,3.902,12,No,Active,Yes,212
+India Gate Super Basmati 2kg,انديا جيت سوبر بسمتي 2كغ,BQ-00570,6384959624847,Rice & Grains,Bag,1.712,1.902,48,No,Active,No,518
+Khazana Basmati 5kg,خزانة بسمتي 5كغ,BQ-00571,,Rice & Grains,Bag,2.987,3.546,30,No,Active,No,577
+Egyptian Rice White 2kg,أرز مصري أبيض 2كغ,BQ-00572,8588880204362,Rice & Grains,Bag,1.104,1.418,20,No,Active,No,706
+Black Lentils 500g,عدس أسود 500غ,BQ-00573,7329020365374,Rice & Grains,Bag,0.429,0.545,24,No,Active,No,527
+Split Chickpeas 500g,حمص مقشر 500غ,BQ-00574,1456335288006,Rice & Grains,Bag,0.531,0.613,24,No,Active,No,374
+Coarse Bulgur 500g,برغل خشن 500غ,BQ-00575,8026637868257,Rice & Grains,Bag,0.459,0.526,24,No,Active,No,584
+Farfalle Barilla 500g,فارفالي باريلا 500غ,BQ-00576,7619336198316,Rice & Grains,Pack,0.665,0.778,15,No,Active,No,537
+Linguine Barilla 500g,لينجويني باريلا 500غ,BQ-00577,3027257542824,Rice & Grains,Pack,0.930,1.132,12,No,Active,No,639
+Orzo Pasta 500g,شعيرية أوريزو 500غ,BQ-00578,3528393130982,Rice & Grains,Pack,0.610,0.793,15,No,Active,No,691
+Mama Noodles Tom Yum 90g,ماما نودلز توم يم 90غ,BQ-00579,6753233613446,Rice & Grains,Piece,0.131,0.158,10,No,Active,No,397
+Indomie Special Chicken 75g,إندومي دجاج خاص 75غ,BQ-00580,4527772037312,Rice & Grains,Piece,0.133,0.154,30,No,Active,No,237
+Nissin Cup Noodles Seafood,نيسين كوب نودلز بحري,BQ-00581,,Rice & Grains,Piece,0.218,0.257,20,No,Active,No,220
+Cake Mix Pillsbury 500g,خلطة كيك بيلسبري 500غ,BQ-00582,1490357340779,Rice & Grains,Pack,0.876,1.032,20,No,Active,No,186
+Pancake Mix 400g,خلطة بان كيك 400غ,BQ-00583,4675440008984,Rice & Grains,Pack,0.869,1.084,24,No,Active,No,569
+Semolina Fine 1kg,سميد ناعم 1كغ,BQ-00584,2927488365443,Rice & Grains,Bag,0.210,0.256,10,No,Active,No,535
+Corn Starch 400g,نشا 400غ,BQ-00585,6660604545613,Rice & Grains,Pack,0.432,0.532,48,No,Active,No,338
+Brown Rice 1kg,أرز بني 1كغ,BQ-00586,7641493667149,Rice & Grains,Bag,0.557,0.658,20,No,Active,No,212
+Al Doha Seven Spices 100g,الدوحة سبع بهارات 100غ,BQ-00587,4569028669968,Spices,Pack,0.456,0.537,15,No,Active,No,244
+Al Doha Paprika 100g,الدوحة بابريكا 100غ,BQ-00588,9131549621000,Spices,Pack,0.394,0.491,20,No,Active,No,252
+Al Doha Dried Thyme 50g,الدوحة زعتر مجفف 50غ,BQ-00589,6008823056938,Spices,Pack,0.186,0.242,5,No,Active,No,239
+Al Doha Sumac 100g,الدوحة سماق 100غ,BQ-00590,6582655402598,Spices,Pack,0.432,0.521,20,No,Active,No,278
+Al Doha Hawaij Mix 50g,الدوحة مزيج هوايج 50غ,BQ-00591,,Spices,Pack,0.367,0.446,10,No,Active,No,230
+Tabasco Green Sauce 60ml,تاباسكو صلصة خضراء 60مل,BQ-00592,2611031478270,Spices,Bottle,0.928,1.042,15,No,Active,No,289
+Frank's RedHot Sauce 148ml,فرانكس صلصة حارة 148مل,BQ-00593,2762423625914,Spices,Bottle,1.378,1.519,48,No,Active,No,274
+Heinz Mayonnaise 270g,هاينز مايونيز 270غ,BQ-00594,5888662360375,Spices,Piece,0.684,0.879,24,No,Active,No,332
+Hellmann's Mayonnaise 270g,هيلمانز مايونيز 270غ,BQ-00595,3320973704336,Spices,Piece,1.087,1.316,12,No,Active,No,249
+Best Foods Mayo Light 270g,بيست فودز مايونيز لايت 270غ,BQ-00596,3797093860805,Spices,Piece,0.918,1.043,24,No,Active,No,301
+Knorr Hollandaise Sauce Mix,كنور مزيج صلصة هولانديز,BQ-00597,1095480740070,Spices,Pack,0.889,1.016,15,No,Active,No,205
+Colman's Mustard 190g,كولمانز خردل 190غ,BQ-00598,2526425429852,Spices,Piece,0.895,1.036,15,No,Active,No,182
+Worcestershire Sauce 150ml,صلصة ورسترشاير 150مل,BQ-00599,3211144273402,Spices,Bottle,0.910,1.208,15,No,Active,No,355
+Lyle's Golden Syrup 454g,ليلز شيرة ذهبية 454غ,BQ-00600,7239238548325,Spices,Tin,1.196,1.361,30,No,Active,No,335
+Maple Syrup 250ml,شيرة القيقب 250مل,BQ-00601,,Spices,Bottle,1.504,1.927,30,No,Active,No,180
+Sesame Oil 250ml,زيت سمسم 250مل,BQ-00602,1421964185545,Spices,Bottle,0.795,0.907,15,No,Active,No,211
+Pomegranate Molasses 250ml,دبس رمان 250مل,BQ-00603,5832286216085,Spices,Bottle,0.559,0.664,12,No,Active,No,233
+Lemon Juice Concentrate 250ml,عصير ليمون مركز 250مل,BQ-00604,2046055719722,Spices,Bottle,0.515,0.677,20,No,Active,No,220
+Ariel Pods 3in1 16pcs,أريال كبسولات 3في1 - 16 حبة,BQ-00605,9906135921599,Cleaning,Pack,2.181,2.521,48,No,Active,No,
+Lenor Fabric Softener 1L,لينور منعم ملابس 1ل,BQ-00606,7868688442511,Cleaning,Bottle,1.293,1.595,24,No,Active,No,
+Bold Powder Detergent 3kg,بولد مسحوق غسيل 3كغ,BQ-00607,8817194623872,Cleaning,Bag,3.258,4.105,20,No,Active,No,
+Sunlight Lemon Dish Liquid 1L,سانلايت ليمون جلي 1ل,BQ-00608,8216033629840,Cleaning,Bottle,0.788,0.932,24,No,Active,No,
+Mr Muscle Bathroom Spray 500ml,مستر ماسل رذاذ حمام 500مل,BQ-00609,5447950187604,Cleaning,Bottle,1.033,1.275,5,No,Active,No,
+Pledge Multi Surface Spray 300ml,بليدج رذاذ متعدد الأسطح 300مل,BQ-00610,7679914106847,Cleaning,Bottle,1.192,1.597,12,No,Active,No,
+Scotch Brite Scouring Pad,سكوتش برايت لوح تنظيف,BQ-00611,,Cleaning,Piece,0.229,0.284,48,No,Active,No,
+Vileda Mop Bucket Set,فيليدا ممسحة مع دلو,BQ-00612,9921352204401,Household,Set,4.264,5.672,15,No,Active,No,
+Steel Wool 3pcs,سلك تنظيف 3 حبات,BQ-00613,5514762754784,Cleaning,Pack,0.168,0.206,5,No,Active,No,
+Flash Floor Cleaner 1L,فلاش منظف أرضيات 1ل,BQ-00614,7599372942000,Cleaning,Bottle,0.873,0.975,15,No,Active,No,
+Gillette Blue3 Disposable 3pcs,جيليت بلو3 شفرات 3 حبات,BQ-00615,1086629167431,Personal Care,Pack,1.030,1.380,30,No,Active,No,
+Bic Shaver 3pcs,بيك شفرات 3 حبات,BQ-00616,3469979719026,Personal Care,Pack,0.565,0.683,20,No,Active,No,
+Clearasil Acne Wash 150ml,كليراسيل غسول حب الشباب 150مل,BQ-00617,8114048767602,Personal Care,Piece,1.545,1.795,24,No,Active,No,
+Neutrogena Hydra Boost 50ml,نيتروجينا هايدرا بوست 50مل,BQ-00618,8382780426647,Personal Care,Piece,2.625,3.178,5,No,Active,No,
+Olay Total Effects 50ml,أوليه توتال إيفكتس 50مل,BQ-00619,4969345023157,Personal Care,Piece,3.384,4.185,24,No,Active,No,
+Sunscreen SPF50 150ml,واقي شمس SPF50 150مل,BQ-00620,9349631165852,Personal Care,Piece,1.588,1.974,15,No,Active,No,
+Band-Aid Assorted 20pcs,باند إيد متنوعة 20 حبة,BQ-00621,,Personal Care,Pack,0.592,0.704,30,No,Active,No,
+Strepsils Lemon 24pcs,ستريبسلز ليمون 24 حبة,BQ-00622,1370992554118,Personal Care,Pack,0.513,0.671,12,No,Active,No,
+Gaviscon Suspension 150ml,جافيسكون معلق 150مل,BQ-00623,9843295613769,Personal Care,Piece,1.653,2.173,12,No,Active,No,
+Rennie Antacid 36pcs,ريني مضاد حموضة 36 حبة,BQ-00624,8019038512138,Personal Care,Pack,0.966,1.175,48,No,Active,No,
+Pampers Swim Pants M-4 12pcs,بامبرز بنطال سباحة M-4 12 حبة,BQ-00625,1251308664213,Baby,Pack,1.287,1.416,12,No,Active,Yes,134
+Huggies XL-5 Pull Ups 28pcs,هاجيز XL-5 بول-أبز 28 حبة,BQ-00626,9383917233906,Baby,Pack,3.042,3.639,48,No,Active,Yes,116
+Nestlé Gerber Banana 113g,نستله جيربر موز 113غ,BQ-00627,6107209633104,Baby,Jar,0.462,0.542,10,No,Active,Yes,108
+Nestlé Gerber Pear 113g,نستله جيربر كمثرى 113غ,BQ-00628,6677837675670,Baby,Jar,0.635,0.719,30,No,Active,Yes,88
+Aptamil Pepti 1 400g,أبتاميل بيبتي 1 - 400غ,BQ-00629,2803045237204,Baby,Tin,5.731,7.008,24,No,Active,Yes,43
+Nutramigen 400g,نوترامجين 400غ,BQ-00630,5071036097593,Baby,Tin,7.452,9.334,12,No,Active,Yes,46
+Mam Baby Bottle 260ml,مام زجاجة رضاعة 260مل,BQ-00631,,Baby,Piece,2.197,2.742,15,No,Active,Yes,100
+Avent Classic Baby Bottle 260ml,أفنت كلاسيك زجاجة 260مل,BQ-00632,9125483176670,Baby,Piece,2.414,3.114,48,No,Active,Yes,154
+Wipes Pampers Sensitive 72pcs,مناديل بامبرز حساسة 72 ورقة,BQ-00633,4880416651489,Baby,Pack,0.922,1.156,12,No,Active,Yes,86
+Lipton Hibiscus Tea 25bags,ليبتون شاي كركديه 25 كيس,BQ-00634,5953262716997,Tea & Coffee,Box,0.829,1.040,15,No,Active,No,211
+Nescafe Classic 500g,نسكافيه كلاسيك 500غ,BQ-00635,3472359167411,Tea & Coffee,Jar,4.648,5.172,48,No,Active,No,350
+Lavazza Rossa 250g,لافازا روسا 250غ,BQ-00636,2254630168434,Tea & Coffee,Pack,3.684,4.391,10,No,Active,No,208
+Illy Coffee Espresso 250g,إيلي قهوة اسبريسو 250غ,BQ-00637,3671841489151,Tea & Coffee,Pack,4.864,6.306,10,No,Active,No,282
+Coffeemate Creamer Vanilla 400g,كوفيميت كريمر فانيلا 400غ,BQ-00638,3375928839435,Tea & Coffee,Tin,1.815,2.176,48,No,Active,No,201
+Barista Oat Milk 1L,بريستا حليب شوفان 1ل,BQ-00639,4491764219477,Tea & Coffee,Piece,1.452,1.705,20,No,Active,No,307
+Gladfield Filter Coffee 250g,جلادفيلد قهوة فلتر 250غ,BQ-00640,5797859577229,Tea & Coffee,Pack,2.182,2.856,24,No,Active,No,316
+Dallmayr Espresso 500g,دالماير اسبريسو 500غ,BQ-00641,,Tea & Coffee,Pack,5.936,6.747,30,No,Active,No,276
+Green Tea Matcha Powder 100g,بودرة ماتشا شاي أخضر 100غ,BQ-00642,5922081444179,Tea & Coffee,Pack,1.935,2.309,24,No,Active,No,254
+Glad Freezer Bags 20pcs,جلاد أكياس تجميد 20 حبة,BQ-00643,8114001833135,Household,Pack,0.797,0.991,24,No,Active,No,
+Albal Heavy Foil 20m,ألبال فويل ثقيل 20م,BQ-00644,6265254459576,Household,Roll,0.558,0.641,10,No,Active,No,
+Glad Press n Seal 30m,جلاد برس أند سيل 30م,BQ-00645,3406770728994,Household,Roll,0.951,1.098,5,No,Active,No,
+Kleenex Mansize Tissue 80pcs,كلينكس مناديل كبيرة 80 ورقة,BQ-00646,2826732719782,Household,Box,0.472,0.587,12,No,Active,No,
+Viva Multi-Use Cloth 20pcs,فيفا قماش متعدد الاستخدام 20 حبة,BQ-00647,8826122687663,Household,Pack,0.639,0.709,12,No,Active,No,
+Scotch Magic Tape 3pcs,سكوتش لاصق شفاف 3 حبات,BQ-00648,5911190139595,Household,Pack,0.486,0.587,24,No,Active,No,
+Staples Rubber Bands 100pcs,مطاطات 100 حبة,BQ-00649,6707688120193,Household,Pack,0.174,0.227,48,No,Active,No,
+AA Battery Duracell 4pcs,دوراسيل بطارية AA 4 حبات,BQ-00650,4922082997858,Household,Pack,0.989,1.103,5,No,Active,No,
+AAA Battery Duracell 4pcs,دوراسيل بطارية AAA 4 حبات,BQ-00651,,Household,Pack,0.856,1.037,20,No,Active,No,
+9V Battery Duracell 1pc,دوراسيل بطارية 9V حبة,BQ-00652,7416961690410,Household,Piece,0.576,0.637,10,No,Active,No,
+Energizer AA 4pcs,إنيرجايزر بطارية AA 4 حبات,BQ-00653,2865274451905,Household,Pack,0.668,0.820,20,No,Active,No,
+Energizer AAA 4pcs,إنيرجايزر بطارية AAA 4 حبات,BQ-00654,7757929070852,Household,Pack,0.832,0.947,10,No,Active,No,
+Insect Repellent Raid 300ml,ريد طارد حشرات 300مل,BQ-00655,4518389559118,Household,Bottle,1.266,1.608,5,No,Active,No,
+Cockroach Bait Raid,ريد طعم صراصير,BQ-00656,4144349393201,Household,Piece,0.828,1.081,48,No,Active,No,
+Fly Catcher Strips 4pcs,شرائط قاطعة ذباب 4 حبات,BQ-00657,3069865319412,Household,Pack,0.349,0.468,10,No,Active,No,
+Naphthalene Balls 200g,كرات النفتالين 200غ,BQ-00658,5975233040982,Household,Pack,0.358,0.408,20,No,Active,No,
+Air Freshener Glade Gel 150g,جليد جل معطر 150غ,BQ-00659,7560872593428,Household,Piece,0.706,0.910,12,No,Active,No,
+Candle Decorative Set,شموع ديكور طقم,BQ-00660,6009660463547,Household,Set,0.650,0.787,10,No,Active,No,
+Coffee Paper Filter 100pcs,فلتر ورق قهوة 100 حبة,BQ-00661,,Household,Pack,0.462,0.620,15,No,Active,No,
+Toothpick Bamboo 500pcs,عود سمك بامبو 500 حبة,BQ-00662,7139888744801,Household,Box,0.290,0.377,20,No,Active,No,
+Nail Brush Plastic,فرشاة أظافر بلاستيك,BQ-00663,8847229983657,Household,Piece,0.256,0.330,24,No,Active,No,
+Sponge Cloth 2pcs,إسفنجة قماشية 2 حبة,BQ-00664,7115317124407,Household,Pack,0.222,0.263,20,No,Active,No,
+Ketchup Al Alali 500g,كاتشب العلالي 500غ,BQ-00665,9290493546985,Canned Goods,Piece,0.495,0.573,5,No,Active,Yes,195
+Hunts Tomato Ketchup 570g,هانتس كاتشب طماطم 570غ,BQ-00666,5095322027103,Canned Goods,Piece,0.702,0.841,10,No,Active,Yes,546
+Al Alali Tuna 185g,العلالي تونة 185غ,BQ-00667,9911053372547,Canned Goods,Piece,0.268,0.300,20,No,Active,Yes,275
+Del Monte Mixed Fruit 415g,ديل مونت فاكهة مشكلة 415غ,BQ-00668,4570385280996,Canned Goods,Piece,0.640,0.726,20,No,Active,Yes,397
+Americana Baked Beans 415g,أمريكانا فاصوليا بالصلصة 415غ,BQ-00669,7933496133890,Canned Goods,Piece,0.460,0.600,10,No,Active,Yes,596
+Heinz Onion Gravy 400g,هاينز مرق بصل 400غ,BQ-00670,7258064030436,Canned Goods,Piece,0.567,0.745,20,No,Active,Yes,597
+Balsamic Vinegar 250ml,خل بلسمي 250مل,BQ-00671,,Spices,Bottle,0.928,1.195,12,No,Active,No,277
+Coconut Milk Chaokoh 400ml,حليب جوز هند 400مل,BQ-00672,2216391211608,Spices,Piece,0.467,0.614,48,No,Active,No,279
+Fish Sauce Tiparos 300ml,صلصة سمك 300مل,BQ-00673,5779875495703,Spices,Bottle,0.541,0.698,15,No,Active,No,249
+Oyster Sauce Lee Kum Kee 255g,صلصة محار 255غ,BQ-00674,1569088146556,Spices,Bottle,0.588,0.762,48,No,Active,No,266
+Sweet Chilli Sauce 350g,صلصة فلفل حلو 350غ,BQ-00675,6040287893731,Spices,Bottle,0.723,0.830,30,No,Active,No,330
+Peanut Sauce 250ml,صلصة فول سوداني 250مل,BQ-00676,8804174334742,Spices,Bottle,0.585,0.683,24,No,Active,No,198
+Al Doha Star Anise 25g,الدوحة يانسون نجمي 25غ,BQ-00677,5457862552953,Spices,Pack,0.280,0.324,24,No,Active,No,244
+Al Doha Coriander Seeds 100g,الدوحة بذور كزبرة 100غ,BQ-00678,2988529906375,Spices,Pack,0.347,0.427,12,No,Active,No,263
+Al Doha White Pepper 100g,الدوحة فلفل أبيض 100غ,BQ-00679,7653996625216,Spices,Pack,0.340,0.409,12,No,Active,No,345
+Almarai Mango Nectar 1L,ألماراي نكتار مانجو 1ل,BQ-00680,6636012228205,Beverages,Piece,0.733,0.862,30,No,Active,No,313
+KDD Guava Juice 1L,كي دي دي عصير جوافة 1ل,BQ-00681,,Beverages,Piece,0.738,0.887,24,No,Active,No,727
+Almarai Pomegranate Juice 1L,ألماراي عصير رمان 1ل,BQ-00682,6809252772480,Beverages,Piece,0.735,0.918,24,No,Active,No,704
+Nestle Nesquik Chocolate 400g,نستله نسكويك شوكولاتة 400غ,BQ-00683,1769846080802,Beverages,Piece,1.787,2.042,24,No,Active,No,712
+Horlicks Malt Drink 500g,هورليكس مشروب شعير 500غ,BQ-00684,1802852682769,Beverages,Piece,2.384,3.143,5,No,Active,No,457
+Ribena Blackcurrant 288ml,ريبينا كشمش 288مل,BQ-00685,2782164076576,Beverages,Piece,0.470,0.538,10,No,Active,No,359
+Rose Milk Syrup 750ml,شراب حليب الورد 750مل,BQ-00686,9403520770370,Beverages,Piece,0.680,0.869,20,No,Active,No,378
+Vimto Cordial 300ml,فيمتو شراب صغير 300مل,BQ-00687,1061158070340,Beverages,Piece,0.531,0.623,20,No,Active,No,392
+Aloe Vera Drink 500ml,مشروب ألوي فيرا 500مل,BQ-00688,2072480388218,Beverages,Piece,0.507,0.632,24,No,Active,No,210
+Kombucha Original 330ml,كومبوشا أصلي 330مل,BQ-00689,7440990678966,Beverages,Piece,0.752,0.828,5,No,Active,No,702
+Al Ain Strawberry Milk 200ml,العين حليب فراولة 200مل,BQ-00690,4363077155547,Dairy,Piece,0.197,0.260,5,No,Active,Yes,16
+KDD Banana Milk 200ml,كي دي دي حليب موز 200مل,BQ-00691,,Dairy,Piece,0.160,0.193,48,No,Active,Yes,13
+Almarai Salted Butter Spread 200g,ألماراي زبدة مالحة للدهن 200غ,BQ-00692,5871762800728,Dairy,Piece,0.768,0.962,20,No,Active,Yes,18
+Lurpak Cook's Range Butter 250g,لورباك زبدة للطهي 250غ,BQ-00693,2511809425428,Dairy,Piece,1.406,1.558,10,No,Active,Yes,13
+Kirkland Mozzarella 500g,كيركلاند موتزاريلا 500غ,BQ-00694,9942665607202,Dairy,Piece,1.957,2.316,20,No,Active,Yes,16
+Americana Ice Cream Sandwich,أمريكانا ساندوتش آيس كريم,BQ-00695,2671711317030,Frozen,Piece,0.221,0.243,24,No,Active,Yes,359
+Nestlé Drumstick Vanilla,نستله درمستيك فانيلا,BQ-00696,7307910213246,Frozen,Piece,0.396,0.530,10,No,Active,Yes,159
+Al Kabeer Chicken Patties 400g,الكبير باتيز دجاج 400غ,BQ-00697,1240879862569,Frozen,Pack,1.494,1.904,12,No,Active,Yes,244
+Americana Cheeseburger Patties,أمريكانا باتيز تشيز برجر,BQ-00698,7583414227934,Frozen,Pack,2.074,2.757,10,No,Active,Yes,332
+McCain Crinkle Cut Fries 900g,مكين فريز كرينكل كت 900غ,BQ-00699,2220746362581,Frozen,Bag,1.534,1.836,10,No,Active,Yes,335
+Americana Breaded Mushroom 400g,أمريكانا فطر مغطى بالفتات 400غ,BQ-00700,7311302294023,Frozen,Pack,1.660,2.015,15,No,Active,Yes,158
+L'usine Honey Cake 50g,لوزين كيك عسل 50غ,BQ-00701,,Bakery,Piece,0.143,0.162,48,No,Active,Yes,7
+L'usine Coconut Cake 50g,لوزين كيك جوز هند 50غ,BQ-00702,7145720705389,Bakery,Piece,0.121,0.151,20,No,Active,Yes,13
+Americana Swiss Roll 60g,أمريكانا سويس رول 60غ,BQ-00703,4293096614535,Bakery,Piece,0.122,0.155,10,No,Active,Yes,10
+Sesame Bread Sticks 150g,عصي خبز سمسم 150غ,BQ-00704,1392264265334,Bakery,Pack,0.314,0.354,15,No,Active,Yes,7
+Lemon Zest Muffin 80g,مافن ليمون 80غ,BQ-00705,4322632000083,Bakery,Piece,0.177,0.234,20,No,Active,Yes,12
+Garlic Bread Frozen 250g,خبز الثوم مجمد 250غ,BQ-00706,2509146153228,Bakery,Pack,0.767,1.012,30,No,Active,Yes,14
+Briwat Biscuit 200g,بريوات بسكويت 200غ,BQ-00707,4787673292215,Snacks,Pack,0.603,0.762,48,No,Active,No,168
+Tiger Biscuit 200g,بسكويت تايغر 200غ,BQ-00708,1278467271011,Snacks,Pack,0.454,0.583,12,No,Active,No,68
+Arnotts Tim Tam 200g,أرنوتس تيم تام 200غ,BQ-00709,9021607656730,Snacks,Pack,1.295,1.566,5,No,Active,No,123
+Mikado Sticks 75g,ميكادو عيدان شوكولاتة 75غ,BQ-00710,4615342737641,Snacks,Piece,0.579,0.666,10,No,Active,No,162
+M&M's Crispy 45g,إم آند إم كريسبي 45غ,BQ-00711,,Snacks,Piece,0.309,0.395,5,No,Active,No,76
+Coca-Cola 330ml Can 6-Pack,كوكا كولا 330مل 6 علب,BQ-00712,9449062286410,Beverages,Pack,0.752,0.969,10,No,Active,No,258
+Pepsi 330ml Can 6-Pack,بيبسي 330مل 6 علب,BQ-00713,4492783458903,Beverages,Pack,0.684,0.853,5,No,Active,No,465
+7UP 330ml Can 6-Pack,7أب 330مل 6 علب,BQ-00714,7432103506289,Beverages,Pack,0.892,1.030,24,No,Active,No,440
+Sprite 330ml Can 6-Pack,سبرايت 330مل 6 علب,BQ-00715,2976907666306,Beverages,Pack,0.980,1.166,48,No,Active,No,263
+Fanta Orange 330ml 6-Pack,فانتا برتقال 6 علب,BQ-00716,6434446420986,Beverages,Pack,0.691,0.828,20,No,Active,No,591
+Arwa Water 500ml 12-Pack,أروى ماء 500مل 12 قارورة,BQ-00717,2852571857860,Water,Carton,0.711,0.906,24,No,Active,No,519
+Masafi Water 500ml 12-Pack,مصافي ماء 500مل 12 قارورة,BQ-00718,5083117638714,Water,Carton,0.709,0.930,15,No,Active,No,563
+Al Ain Water 500ml 12-Pack,العين ماء 500مل 12 قارورة,BQ-00719,9258216178975,Water,Carton,0.851,0.945,10,No,Active,No,660
+Oasis Water 1.5L 6-Pack,أوسيس ماء 1.5ل 6 قوارير,BQ-00720,5238769662333,Water,Carton,0.843,1.028,30,No,Active,No,521
+Safa Water 1.5L 6-Pack,صفا ماء 1.5ل 6 قوارير,BQ-00721,,Water,Carton,0.468,0.552,5,No,Active,No,496
+Rani Float Mixed Fruit 240ml,راني فلوت فواكه مشكلة 240مل,BQ-00722,9722613499965,Beverages,Piece,0.232,0.301,30,No,Active,No,217
+Rani Apple Juice 240ml,راني عصير تفاح 240مل,BQ-00723,5953683008672,Beverages,Piece,0.263,0.316,10,No,Active,No,383
+KDD Laban 1L,كي دي دي لبن 1ل,BQ-00724,6335296949138,Dairy,Piece,0.371,0.428,10,No,Active,Yes,12
+Almarai Laban 1L,ألماراي لبن 1ل,BQ-00725,9979112305678,Dairy,Piece,0.501,0.663,10,No,Active,Yes,21
+Lacnor Apple Juice 1L,لاكنور عصير تفاح 1ل,BQ-00726,8127273374004,Beverages,Piece,0.638,0.765,30,No,Active,No,582
+Lacnor Guava Juice 1L,لاكنور عصير جوافة 1ل,BQ-00727,8520020175026,Beverages,Piece,0.847,0.936,24,No,Active,No,644
+Minute Maid Mango 330ml,مينيت مايد مانجو 330مل,BQ-00728,7895666878204,Beverages,Piece,0.358,0.416,12,No,Active,No,205
+Pocari Sweat 330ml,بوكاري سويت 330مل,BQ-00729,2492083073128,Beverages,Piece,0.461,0.582,5,No,Active,No,570
+Gatorade Orange 500ml,جاتوريد برتقالي 500مل,BQ-00730,9850024077575,Beverages,Piece,0.563,0.739,10,No,Active,No,429
+Gatorade Lemon-Lime 500ml,جاتوريد ليمون لايم 500مل,BQ-00731,,Beverages,Piece,0.683,0.887,20,No,Active,No,446
+Nescafe 3in1 Sweet 20 sachets,نسكافيه 3 في 1 حلو 20 كيس,BQ-00732,8319859080482,Tea & Coffee,Box,1.379,1.746,30,No,Active,No,204
+Nescafe Decaf 200g,نسكافيه ديكاف 200غ,BQ-00733,2363936910172,Tea & Coffee,Jar,2.881,3.834,12,No,Active,No,193
+Lipton Peppermint 25bags,ليبتون نعناع 25 كيس,BQ-00734,7943438556743,Tea & Coffee,Box,0.660,0.887,12,No,Active,No,321
+Lipton Ginger Lemon 25bags,ليبتون زنجبيل ليمون 25 كيس,BQ-00735,7294740124838,Tea & Coffee,Box,0.658,0.763,5,No,Active,No,304
+Brooke Bond D Tea 450g,بروك بوند D شاي 450غ,BQ-00736,1153070016065,Tea & Coffee,Pack,1.320,1.692,5,No,Active,No,216
+Milo 3in1 Sachet 30pcs,ميلو 3 في 1 - 30 كيس,BQ-00737,4238335308851,Tea & Coffee,Box,2.666,2.955,12,No,Active,No,323
+Karak Cardamom Tea 500g,شاي كرك هيل 500غ,BQ-00738,1364861764013,Tea & Coffee,Pack,1.515,1.985,10,No,Active,No,298
+Arabic Coffee Medium Roast 250g,قهوة عربية تحميص متوسط 250غ,BQ-00739,1974628208670,Tea & Coffee,Pack,1.239,1.502,12,No,Active,No,284
+Americana Hot Dog Beef 340g,أمريكانا هوت دوج لحم 340غ,BQ-00740,4110165102407,Canned Goods,Piece,1.011,1.160,30,No,Active,Yes,495
+Heinz BBQ Sauce 220g,هاينز صلصة بي بي كيو 220غ,BQ-00741,,Canned Goods,Piece,0.934,1.102,12,No,Active,Yes,462
+Del Monte Kidney Beans 400g,ديل مونت فاصوليا 400غ,BQ-00742,2111799648730,Canned Goods,Piece,0.609,0.678,30,No,Active,Yes,195
+Knorr Vegetable Broth 400g,كنور مرقة خضار 400غ,BQ-00743,4375692942412,Canned Goods,Piece,0.531,0.692,48,No,Active,Yes,340
+Pacific Tuna Chunk 185g,باسيفيك تونة قطع 185غ,BQ-00744,2590039483737,Canned Goods,Piece,0.384,0.480,24,No,Active,Yes,528
+Americana Chipolata Sausage 340g,أمريكانا سجق تشيبولاتا 340غ,BQ-00745,2075530133210,Canned Goods,Piece,0.989,1.230,24,No,Active,Yes,716
+Al Doha Bay Leaves 10g,الدوحة ورق غار 10غ,BQ-00746,5093107710592,Spices,Pack,0.257,0.331,10,No,Active,No,194
+Al Doha Saffron 1g,الدوحة زعفران 1غ,BQ-00747,5078830733196,Spices,Pack,2.211,2.705,15,No,Active,No,240
+Knorr Tomato Powder 50g,كنور بودرة طماطم 50غ,BQ-00748,6689312004484,Spices,Pack,0.215,0.281,30,No,Active,No,183
+Sunflower Oil 5L,زيت عباد الشمس 5ل,BQ-00749,6315152603900,Spices,Bottle,3.664,4.348,48,No,Active,No,348
+Canola Oil 1.8L,زيت الكانولا 1.8ل,BQ-00750,9568412978900,Spices,Bottle,1.441,1.736,5,No,Active,No,271
+Al Doha Dried Ginger 100g,الدوحة زنجبيل مجفف 100غ,BQ-00751,,Spices,Pack,0.290,0.360,48,No,Active,No,203
+Maggi Cream of Mushroom Soup 63g,ماجي شوربة فطر كريمية 63غ,BQ-00752,7148106500972,Spices,Pack,0.323,0.431,10,No,Active,No,266
+Lay's Salt & Vinegar 28g,لايز ملح وخل 28غ,BQ-00753,1312521334271,Snacks,Piece,0.104,0.134,12,No,Active,No,91
+Cheetos Jumbo Puffs 60g,شيتوس جمبو بافز 60غ,BQ-00754,8930622376501,Snacks,Piece,0.364,0.454,24,No,Active,No,92
+Pringles Ranch 165g,برينجلز رانش 165غ,BQ-00755,4864267651457,Snacks,Piece,0.893,1.145,15,No,Active,No,89
+Oreo Double Stuf 137g,أوريو دبل ستاف 137غ,BQ-00756,1234591664513,Snacks,Piece,0.574,0.737,30,No,Active,No,119
+Ritz Cheese Crackers 200g,ريتز جبن كراكر 200غ,BQ-00757,4111719920299,Snacks,Piece,0.560,0.738,15,No,Active,No,85
+Kelloggs Honey Loops 375g,كيلوغز حلقات عسل 375غ,BQ-00758,8306460449006,Snacks,Piece,1.026,1.242,10,No,Active,No,150
+Skippy Chunky PB 340g,سكيبي زبدة فول سوداني حبيبات 340غ,BQ-00759,8792446201900,Snacks,Piece,0.967,1.261,20,No,Active,No,169
+Sunbulah Medjool Dates 500g,سنبلة تمر مجدول 500غ,BQ-00760,6872128003509,Snacks,Pack,2.229,2.582,24,No,Active,No,150
+Bahlsen Waffeletten 100g,بالسن وافيليتن 100غ,BQ-00761,,Snacks,Piece,0.786,0.867,12,No,Active,No,178
+Americana Wafer Hazelnut 60g,أمريكانا ويفر هيزلنوت 60غ,BQ-00762,3253633925924,Snacks,Piece,0.158,0.177,20,No,Active,No,135
+Galaxy Smooth Milk 110g,جالاكسي حليب ناعم 110غ,BQ-00763,2177714457502,Confectionery,Piece,0.647,0.842,15,No,Active,No,114
+Cadbury Fruit & Nut 120g,كادبوري فاكهة ومكسرات 120غ,BQ-00764,9230161236599,Confectionery,Piece,0.748,0.999,12,No,Active,No,177
+Rafaello 3pcs,رافايلو 3 حبات,BQ-00765,3462749462109,Confectionery,Piece,0.707,0.846,20,No,Active,No,202
+Ferrero Rocher 6pcs,فيريرو روشيه 6 حبات,BQ-00766,5619927520398,Confectionery,Pack,0.922,1.179,24,No,Active,No,287
+Bounty Coconut Dark 57g,باونتي جوز هند داكن 57غ,BQ-00767,6840488460613,Confectionery,Piece,0.260,0.327,15,No,Active,No,76
+Snickers XL 75g,سنيكرز XL 75غ,BQ-00768,9904825503239,Confectionery,Piece,0.571,0.731,5,No,Active,No,240
+Haribo Happy Cola 80g,هاريبو كولا سعيدة 80غ,BQ-00769,3229233910329,Confectionery,Piece,0.608,0.721,12,No,Active,No,230
+Mentos Fruit Roll 38g,مينتوس فواكه 38غ,BQ-00770,5056516202166,Confectionery,Piece,0.163,0.211,48,No,Active,No,114
+Trident Spearmint 14pcs,ترايدنت سبيرمنت 14 حبة,BQ-00771,,Confectionery,Pack,0.217,0.271,20,No,Active,No,141
+Cadbury Miniature Heroes 250g,كادبوري أبطال صغار 250غ,BQ-00772,3785014677094,Confectionery,Box,2.233,2.488,5,No,Active,No,180
+Pampers Baby Dry XL-5 36pcs,بامبرز بيبي دراي XL-5 36 حبة,BQ-00773,6213374217273,Baby,Pack,2.815,3.277,12,No,Active,Yes,179
+Huggies Pull-Ups L-4 32pcs,هاجيز بول-أبز L-4 32 حبة,BQ-00774,2641692077741,Baby,Pack,2.899,3.819,30,No,Active,Yes,114
+Nestlé NAN Comfort 400g,نستله نان كومفورت 400غ,BQ-00775,6705548176309,Baby,Tin,4.697,6.286,24,No,Active,Yes,147
+Beechnut Baby Food Carrot 113g,بيتشنات طعام أطفال جزر 113غ,BQ-00776,5529048654716,Baby,Jar,0.597,0.699,15,No,Active,Yes,40
+Heinz Baby Rice Cereal 125g,هاينز حبوب أرز أطفال 125غ,BQ-00777,6249814023729,Baby,Pack,0.771,0.854,15,No,Active,Yes,153
+Johnsons Baby Wash 500ml,جونسون غسول أطفال 500مل,BQ-00778,2866724604973,Baby,Bottle,1.020,1.347,30,No,Active,Yes,108
+Cetaphil Baby Gentle Wash 200ml,سيتافيل غسول أطفال لطيف 200مل,BQ-00779,2491691139526,Baby,Bottle,3.126,3.836,48,No,Active,Yes,148
+Mustela Baby Cream 100ml,موستيلا كريم أطفال 100مل,BQ-00780,1849823617143,Baby,Tube,2.946,3.752,24,No,Active,Yes,87
+Dove Bar Soap 6-Pack,دوف صابون 6 حبات,BQ-00781,,Personal Care,Pack,1.698,2.134,30,No,Active,No,
+Lifebuoy Bar Soap 4-Pack,لايفبوي صابون 4 حبات,BQ-00782,3747998916544,Personal Care,Pack,0.586,0.748,48,No,Active,No,
+Colgate Toothpaste 2+1 promo,كولجيت معجون أسنان عرض 2+1,BQ-00783,6909343496430,Personal Care,Pack,1.189,1.565,10,No,Active,No,
+Oral-B Toothbrush 3-Pack,أورال-بي فرشاة أسنان 3 حبات,BQ-00784,9978070074692,Personal Care,Pack,1.268,1.505,20,No,Active,No,
+Head & Shoulders 600ml,هيد آند شولدرز 600مل,BQ-00785,2691955719143,Personal Care,Piece,1.808,2.344,15,No,Active,No,
+Dove Body Wash 500ml,دوف غسول جسم 500مل,BQ-00786,7635094959987,Personal Care,Piece,1.892,2.306,15,No,Active,No,
+Pantene Shampoo 400ml,بانتين شامبو 400مل,BQ-00787,9916535158175,Personal Care,Piece,1.215,1.588,10,No,Active,No,
+Always Ultra Pads 14pcs,أولويز ألترا فوط 14 حبة,BQ-00788,6121600214624,Personal Care,Pack,0.802,0.910,24,No,Active,No,
+Dettol Soap Multi 6-Pack,ديتول صابون متعدد 6 حبات,BQ-00789,5136135638458,Personal Care,Pack,1.382,1.583,24,No,Active,No,
+Vicks VapoRub 25ml,فيكس فيبوروب 25مل,BQ-00790,1790413079317,Personal Care,Piece,0.618,0.757,15,No,Active,No,
+Betadine Antiseptic 125ml,بيتادين مطهر 125مل,BQ-00791,,Personal Care,Piece,1.127,1.282,10,No,Active,No,
+Ariel Pods 3in1 32pcs,أريال كبسولات 3 في 1 - 32 حبة,BQ-00792,4020024661440,Cleaning,Pack,3.169,3.747,10,No,Active,No,
+Persil Color Powder 3kg,برسيل مسحوق ملون 3كغ,BQ-00793,2340689498465,Cleaning,Bag,2.850,3.788,15,No,Active,No,
+Comfort Concentrate 750ml,كومفورت مركز 750مل,BQ-00794,1957991241477,Cleaning,Bottle,1.163,1.542,24,No,Active,No,
+Fairy Ultra Concentrate 320ml,فيري ألترا مركز 320مل,BQ-00795,8761967313708,Cleaning,Bottle,0.828,1.077,12,No,Active,No,
+Harpic Lavender 500ml,هاربيك لافندر 500مل,BQ-00796,5781912138918,Cleaning,Bottle,0.970,1.229,24,No,Active,No,
+Domestos Bleach Thick 1L,دومستوس كلور سميك 1ل,BQ-00797,1304696743842,Cleaning,Bottle,1.038,1.346,15,No,Active,No,
+Cillit Bang Spray 500ml,سيليت بانج رذاذ 500مل,BQ-00798,5027800807729,Cleaning,Bottle,1.150,1.493,5,No,Active,No,
+Glad Tall Kitchen Bags 20pcs,جلاد أكياس مطبخ طويلة 20 حبة,BQ-00799,2417723436141,Household,Pack,0.539,0.626,15,No,Active,No,
+Albal Foil 30m,ألبال ورق 30م,BQ-00800,3208070049062,Household,Roll,1.017,1.189,5,No,Active,No,
+Kleenex Dinner Napkins 200pcs,كلينكس مناديل عشاء 200 ورقة,BQ-00801,,Household,Pack,0.938,1.141,20,No,Active,No,
+Sandwich Zip Bags 25pcs,أكياس سحاب ساندوتش 25 حبة,BQ-00802,8214682668214,Household,Pack,0.428,0.472,30,No,Active,No,
+Scotch Brite Cloth 1pcs,سكوتش برايت قماش 1 حبة,BQ-00803,1414671592414,Household,Piece,0.375,0.498,24,No,Active,No,
+Fairy Dish Liquid 2L,فيري سائل جلي 2ل,BQ-00804,9276110115228,Cleaning,Bottle,2.399,3.022,30,No,Active,No,
+Ariel Liquid 3L,أريال سائل 3ل,BQ-00805,2372321990085,Cleaning,Bottle,3.006,3.312,5,No,Active,No,

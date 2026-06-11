@@ -1,77 +1,51 @@
-# Merpec Agent OS — Product Specifications Index
+<!-- Zerupt internal knowledge base | Structure map | Updated: 2026-06-11 -->
+# Zerupt — Internal Knowledge Base (`agent-os`)
 
-Single source of truth for the Merpec retail ERP product design, architecture, and implementation specs.
+This folder is the **single source of truth** for everything non-code about Zerupt:
+brand, marketing, customers, product features, and as-built engineering specs.
+The **Zerupt MCP server** (`/tools/zerupt-mcp`) serves this content — and *only* this
+content — to AI agents (marketing, product, dev). Nothing here should reach into the
+code repo; if an agent needs a fact about the product, it lives here.
 
----
-
-## Strategic Documents
-
-| File | Purpose |
-|------|---------|
-| [product/mission.md](product/mission.md) | Market position, competitive analysis, Year 1 targets |
-| [product/roadmap.md](product/roadmap.md) | Phase 1 (MVP), Phase 2 (Growth), Phase 3 (Scale) |
-| [product/tech-stack.md](product/tech-stack.md) | Full architecture: frontend, backend, DB, AI, hosting, CI/CD |
-| [product/ai-ml-opportunities.md](product/ai-ml-opportunities.md) | 10 AI/ML integration points with methods and guardrails |
-| [product/solo-cto-study-guide.md](product/solo-cto-study-guide.md) | Operating model, learning paths, system audit checklist |
-| [product/legacy-modules.md](product/legacy-modules.md) | Legacy Merpec module reference |
+> **Golden rule for marketing:** only claim features marked `shipped` in
+> [`product/feature-catalog/`](product/feature-catalog/README.md). `planned` = roadmap, never advertise it as available.
 
 ---
 
-## Module Specifications
+## Top-level map
 
-Each module has a README + numbered spec files covering architecture, data models, workflows, cross-module contracts, and event mappings.
-
-| Module | Path | Key Specs |
-|--------|------|-----------|
-| **Accounting** | [product/accounting/](product/accounting/) | Architecture, tax model, multi-currency, COA, COGS, event mappings, period control, year-end, bank recon |
-| **Sales** | [product/sales/](product/sales/) | Customer model, quotation/SO/invoice lifecycle, credit notes, payments, cross-module contracts |
-| **Purchase** | [product/purchase/](product/purchase/) | Supplier model, PO lifecycle, GRN, landed costs, returns, payments |
-| **Inventory** | [product/inventory/](product/inventory/) | Item model, location hierarchy, stock ledger, cost engine, movements, serial/batch, pricing, counting, reorder |
-| **POS** | [product/pos/](product/pos/) | Register sessions, transaction lifecycle, payments, discounts, returns, offline mode, receipts, Z-report |
-| **Dashboard** | [product/dashboard/](product/dashboard/) | Information architecture, KPI catalog, widgets, actions, filters, alerts, role defaults, performance |
-| **Reports** | [product/reports/](product/reports/) | Report definitions, builder, templates, query engine, export/scheduling |
-| **Settings & Admin** | [product/settings-admin/](product/settings-admin/) | Organisation, team, roles, branches, currency, tax config, numbering, notifications, audit trail, imports |
+| Folder | What lives here | Primary audience |
+|--------|-----------------|------------------|
+| **`brand/`** | Identity, positioning, voice, visual system. The 100%-correct source of truth everything else must align to. | Everyone |
+| **`marketing/`** | GTM context, offer, content style guide, build-in-public plan, and the `website/` sub-tree (specs + SEO + live digest). | Marketing agents |
+| **`customers/`** | Who we sell to: `personas/`, `journeys/`, `testing-checklists/`, and `test-data/` fixtures. | Marketing + Product |
+| **`product/`** | What we've built: `mission.md`, `tech-stack.md`, `system-architecture.md`, `feature-catalog/` (canonical feature list), and `modules/` (per-module design specs). | Product + Marketing |
+| **`engineering/`** | Deep as-built technical specs (accounting internals, auth, DB architecture, tenant provisioning, knowledge-graph, ZATCA, MCP). | Dev agents |
+| **`ops/`** | Runbooks (e.g. provisioning recovery). | Ops |
 
 ---
 
-## User & Auth Management
+## Where to find specific things
 
-Cross-cutting control layer (not a separate module). Product rules for users, roles, and
-invitations live in **Settings & Admin** (`product/settings-admin/02`, `03`). As-built auth
-specs and auth ADRs live in **`zerupt-specs/authentication/`**.
-
-| File | Purpose |
-|------|---------|
-| [product/settings-admin/02-team-user-lifecycle.md](product/settings-admin/02-team-user-lifecycle.md) | User/invitation entities, state machine, branch & session rules |
-| [product/settings-admin/03-roles-permissions-policy.md](product/settings-admin/03-roles-permissions-policy.md) | Role/permission model, evaluation order, approval matrix |
-| [zerupt-specs/authentication/architecture.md](zerupt-specs/authentication/architecture.md) | As-built: token storage, security chain, route protection |
-| [zerupt-specs/authentication/auth-flows.md](zerupt-specs/authentication/auth-flows.md) | As-built: signup, login, OAuth, refresh, 401 retry, logout |
-| [zerupt-specs/authentication/secure-invitations.md](zerupt-specs/authentication/secure-invitations.md) | Invite-token security model, anti-abuse, audit events |
-| [zerupt-specs/authentication/security-controls.md](zerupt-specs/authentication/security-controls.md) | Detection rules, security test expectations |
-| [zerupt-specs/authentication/compliance-and-regionalization.md](zerupt-specs/authentication/compliance-and-regionalization.md) | GDPR, retention, regional rollout, SCIM path |
-| [zerupt-specs/authentication/operations-runbook.md](zerupt-specs/authentication/operations-runbook.md) | Incident playbooks, break-glass, key rotation |
-| [zerupt-specs/authentication/provider-decision.md](zerupt-specs/authentication/provider-decision.md) | ADR: Supabase Auth vs NextAuth vs Clerk |
+| I need… | Go to |
+|---------|-------|
+| Brand positioning / the "enemy" / the "Next Move" moment | `brand/brand-foundation.md`, `brand/brand-story.md` |
+| Colors, typography, logo usage (marketing-facing) | `brand/design-system.md` |
+| Voice, tone, always-say / never-say | `marketing/content-style-guide.md` |
+| Positioning, ICP, pricing guardrails | `marketing/marketing-context.md` |
+| The Grand Slam Offer | `marketing/offer.md` |
+| Every feature, by module, with status + who-it's-for | `product/feature-catalog/` |
+| A module's design intent (how it's meant to work) | `product/modules/{module}/` |
+| Customer personas / journeys | `customers/personas/`, `customers/journeys/` |
+| Current website pages, SEO, structure | `marketing/website/digest.md` (snapshot), `marketing/website/seo.md` (plan) |
+| Deep as-built engineering detail | `engineering/{area}/` |
 
 ---
 
-## Implementation Specs
+## Maintenance rules
 
-| Spec | Path | Status |
-|------|------|--------|
-| Accounting Engine | [specs/2026-02-27-accounting-engine-spec/](specs/2026-02-27-accounting-engine-spec/) | Completed |
-| Settings & Admin | [specs/2026-02-28-0128-settings-admin-specs/](specs/2026-02-28-0128-settings-admin-specs/) | Completed |
-| User Auth Management | [specs/2026-02-28-1200-user-auth-management/](specs/2026-02-28-1200-user-auth-management/) | Completed |
-
----
-
-## Standards
-
-| File | Purpose |
-|------|---------|
-| [standards/index.yml](standards/index.yml) | System-wide standards index (to be populated) |
-
----
-
-## Related: merpec-frontend (Design Reference)
-
-The `../merpec-frontend/` directory contains a Design OS app with 151 React preview components and per-section UI specs. It is a **design reference**, not production code. When specs differ, this directory (agent-os) is the canonical source for domain logic and backend. merpec-frontend is authoritative for UI flows and component design.
+- **Brand is canonical.** When any doc conflicts with `brand/`, brand wins — fix the other doc.
+- **Feature catalog is audited, not aspirational.** Regenerate `product/feature-catalog/` after major feature work; mark new things `shipped` only when they're in production code.
+- **Website digest is a snapshot.** Regenerate `marketing/website/digest.md` when the live site changes.
+- **Codemaps stay in the code repo** (`erp/docs/CODEMAPS/`) — a dev-efficiency tool for coding agents, not marketing content, intentionally not duplicated here.
+- **Keep it clean.** Dated audit/working notes don't belong here — delete them (git history retains) once their fixes land.

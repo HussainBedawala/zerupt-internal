@@ -146,17 +146,19 @@ Development team → engineering linked to Phase projects. Marketing team → co
 
 ### /work Reference Data
 
-| Phase | Spec (`agent-os/product/{path}`) | Also read |
+| Phase | Spec (`agent-os/product/modules/{path}`) | Also read |
 |-------|------|-----------|
-| 0 | `tech-stack.md` + `roadmap.md` | `erp/.env.example` |
+| 0 | `agent-os/product/tech-stack.md` | `erp/.env.example` |
 | 1 | `settings-admin/` | |
 | 2 | `accounting/` | |
 | 3 | `inventory/` | |
 | 4A/4B/4C | `pos/`, `sales/`, `purchase/` | |
 | 5 | `onboarding/` | |
 | 6 | `dashboard/` + `reports/` | |
-| 7 | `ai-engine/` (canonical 2026-06; old `agents/` archived) | |
-| Auth | `zerupt-specs/authentication/` (as-built) + `settings-admin/` (user/RBAC rules) | any phase |
+| 7 | `ai-engine/` (canonical 2026-06) | |
+| Auth | `agent-os/engineering/authentication/` (as-built) + `modules/settings-admin/` (user/RBAC rules) | any phase |
+
+> Note: module design specs live under `agent-os/product/modules/`; as-built technical specs under `agent-os/engineering/`; the canonical feature list is `agent-os/product/feature-catalog/`.
 
 Always read the spec before building. **Branch:** `<prefix>/<DEV-XX>-<short-kebab>` where prefix is `phase-0`…`phase-8`, `phase-4a/4b/4c`, or `website`.
 

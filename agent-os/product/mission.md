@@ -60,11 +60,11 @@ Build the smartest, most beautiful, most trustworthy system a retail owner has e
 
 ## Why It Wins
 
-- **Signup to live in under 2 hours.** AI handles configuration, data import, and setup. No implementation partner. No consultant. No months-long project.
+- **Up and running on your real numbers in under 2 hours.** AI handles configuration, data import, and setup. No implementation partner. No consultant. No months-long project.
 - **Agentic, not just automated.** The system watches, advises, and acts — not just stores data and waits for queries.
 - **Built for the owner, not the accountant.** Every surface is designed for a non-technical, time-starved operator. Radical simplicity over feature completeness.
 - **Language-first.** Arabic RTL from day one. IBM Plex Sans covers Latin, Arabic, and Devanagari in one family. MENA/India/SEA tax compliance baked in — not bolted on.
-- **10 years of real retail operations.** Every workflow and edge case comes from production use across real retail businesses. No generic AI guessing — domain patterns are learned.
+- **Built from 10 years of family retail-industry experience.** Every workflow reflects real GCC retail reality, not generic software assumptions. No generic AI guessing — domain patterns are learned from the inside.
 
 ---
 

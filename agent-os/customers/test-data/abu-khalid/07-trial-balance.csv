@@ -1,0 +1,14 @@
+﻿Particulars,Group,Opening Debit (SAR),Opening Credit (SAR),Period Debit (SAR),Period Credit (SAR),Closing Balance (SAR),Dr/Cr
+ABU KHALID - CAPITAL ACCOUNT,Capital Account,,450000.00,,,450000.00,Cr
+ABU KHALID - DRAWINGS,Capital Account,12000.00,,,,12000.00,Dr
+RETAINED EARNINGS,Reserves & Surplus,,125000.00,,,125000.00,Cr
+AL RAJHI BANK LOAN - 100234567890,Bank Loan,,80000.00,,,80000.00,Cr
+Sundry Creditors,Sundry Creditors,,145600.00,,,145600.00,Cr
+Cash in Hand - AL-OLAYA,Cash,42000.00,,,,42000.00,Dr
+Bank - AL RAJHI CURRENT,Bank,198500.00,,,,198500.00,Dr
+Bank - RIYAD BANK,Bank,87350.00,,,,87350.00,Dr
+Sundry Debtors,Sundry Debtors,339750.00,,,,339750.00,Dr
+Inventory - AL-OLAYA,Inventory,312450.00,,,,312450.00,Dr
+Prepaid Rent (مدفوع مقدما),Current Assets,15000.00,,,,15000.00,Dr
+Furniture & Fixtures,Fixed Assets,28500.00,,,,28500.00,Dr
+Owner Capital / Suspense,Capital Account,,235840.00,,,235840.00,Cr

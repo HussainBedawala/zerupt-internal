@@ -7,6 +7,9 @@ The **Zerupt MCP server** (`/tools/zerupt-mcp`) serves this content — and *onl
 content — to AI agents (marketing, product, dev). Nothing here should reach into the
 code repo; if an agent needs a fact about the product, it lives here.
 
+> **Connecting an agent to the MCP?** See [`engineering/zerupt-mcp/access-guide.md`](engineering/zerupt-mcp/access-guide.md)
+> for the live URL, auth, per-client setup, and the full tool list.
+
 > **Golden rule for marketing:** only claim features marked `shipped` in
 > [`product/feature-catalog/`](product/feature-catalog/README.md). `planned` = roadmap, never advertise it as available.
 

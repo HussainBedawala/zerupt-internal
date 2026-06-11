@@ -93,7 +93,7 @@ Add to `MCP_TOKENS` as `clientname:token`.
   "mcpServers": {
     "zerupt": {
       "type": "http",
-      "url": "https://zerupt-mcp.up.railway.app/mcp",
+      "url": "https://mcp.zerupt.com/mcp",
       "headers": {
         "Authorization": "Bearer <your-token>"
       }
@@ -107,7 +107,7 @@ Add to `MCP_TOKENS` as `clientname:token`.
 ## Claude.ai Remote MCP Setup
 
 1. Go to **Claude.ai → Settings → Integrations → Add MCP server**
-2. Server URL: `https://zerupt-mcp.up.railway.app/mcp`
+2. Server URL: `https://mcp.zerupt.com/mcp`
 3. Add header: `Authorization: Bearer <your-token>`
 4. Save and test with the `product_overview` tool.
 

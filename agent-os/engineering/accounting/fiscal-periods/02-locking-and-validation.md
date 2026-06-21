@@ -34,6 +34,33 @@ Called by ALL financial modules before any transaction. Returns `ValidatePeriodR
 
 Date normalization: midnight UTC date-only string to avoid MENA/India/SEA timezone mismatches with Postgres DATE columns.
 
+## Soft-Lock Override Threading (both JEs must post)
+
+When a document confirms into a **SoftLocked** period, the originating service must call
+`assertSoftLockOverrideAllowed` and build an authorized override via
+`buildSoftLockOverride(...)` (`apps/api/src/accounting-events/helpers/soft-lock-override.ts`).
+The override is then threaded onto **every** `accounting.post` the document produces so the
+posting engine posts into the soft-locked period instead of dead-lettering.
+
+Several documents emit **TWO** JEs from **ONE** domain event — the financial leg AND a
+separate inventory-engine leg:
+
+| Document | Financial-leg JE (accounting listener) | Inventory-leg JE (inventory engine) |
+|----------|----------------------------------------|-------------------------------------|
+| Sales invoice | AR / Revenue / Output-Tax | COGS / Inventory |
+| Sales credit note | Sales-Returns / AR / Output-Tax | COGS reversal (Inventory / COGS) |
+| Purchase return | AP 2111 / 1192 clearing / variance | 1192 → 1141 inventory relief |
+
+The override MUST reach BOTH. The chain: service → domain event payload
+(`softLockOverride`) → `inventory-domain.listener` copies it onto the `Stock*Payload` →
+`inventory-event.listener` sets it on the COGS / reversal / purchase-return-relief
+`accounting.post` via `withSoftLockOverride`. Missing it on the inventory leg = the
+document shows posted while its COGS/inventory JE silently dead-letters (clearing/COGS drift).
+
+POS sales carry no override (real-time, open period → `undefined`). The negative-stock COGS
+true-up fires on a later cost-establishing receipt and is NOT threaded with the original
+override (separate event/period).
+
 ## Batch Operations
 
 - **Batch lock:** Sets all non-target periods to target status in one UPDATE. Audited per-period.

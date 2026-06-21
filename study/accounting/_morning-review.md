@@ -6,6 +6,23 @@ the ACTION LIST at the bottom.
 
 ---
 
+## Addendum (2026-06-22) — systemic soft-lock override fix (merged d95f69eb)
+
+While finishing the Layer-5 backlog a CRITICAL systemic gap was found and fixed:
+**8 user posting flows** (sales invoice / receipt / credit-note; purchase invoice /
+payment / return / GRN / landed-cost) accepted a `softLockOverrideReason` to post into a
+**soft-locked** period but never (a) verified the override was *permitted* (so the soft
+lock was bypassable by any user just by typing a reason) nor (b) threaded the override to
+the posting engine (so the JE silently **dead-lettered** while the document showed posted).
+All now call `assertSoftLockOverrideAllowed` (owner/policy gated) before any side effect and
+thread `softLockOverride` through to the engine so the JE actually posts. The **inventory
+accounting leg** (COGS / COGS-reversal / purchase-return 1192→1141 relief), fired via a
+second event, had the same hole (its domain-event Zod schema stripped the field) — fixed end
+to end so BOTH JEs post. `journal-reversal` was already correct. Closes the systemic item
+flagged at the end of the Layer-5 review. No migration; verified by 1838 tests + clean boot.
+
+---
+
 ## Layer 0 — Ledger Foundation (merged bcfc9cd5)
 
 **What it is:** The single posting primitive. Every economic event becomes one balanced,

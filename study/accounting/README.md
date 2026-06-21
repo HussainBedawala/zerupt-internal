@@ -16,12 +16,12 @@ We are perfecting accounting top-down, foundation first. The chapters mirror tha
 | **1** | `layer-1-chart-of-accounts/` | Account types, normal balances, hierarchy, classification, system roles, seeded COA | Every posting and report keys off correct account typing. |
 | **2** | `layer-2-posting-pipeline/` | Business events → JE payloads → outbox → poster → ledger. POS, sales, purchase, inventory, cheques, FX. | One audited chokepoint = audit one place, not five. |
 | 3 | `layer-3-subledgers-valuation/` | AR/AP control vs subledger (party), inventory WAC→COGS, VAT/GST | Where "balanced GL but wrong detail" bugs hide. |
-| 4 | `layer-4-period-balance/` | Trial balance, opening balances, period close, FX (TBD) | Integrity over time. |
+| 4 | `layer-4-period-balance/` | Trial balance, opening balances, period close, year-end, FX (IAS 21) | Integrity over time. |
 | 5 | `layer-5-reporting/` | P&L, Balance Sheet, Cash Flow (TBD) | Pure derivation from the ledger. |
 
-Layers 0–3 are hardened and merged. We are currently on **Layer 4** (period & balance integrity).
-Layer 3 chapters: `layer-3-subledgers-valuation/00-orientation.md` … `07-reconciliation-and-tie-outs.md`
-(concepts) + `09-how-zerupt-implements-layer-3.md` (as-built).
+Layers 0–4 are hardened and merged. **Layer 5 (reporting) is next.**
+Layer 4 chapters: `layer-4-period-balance/00-orientation.md` … `06-the-close-checklist.md`
+(concepts) + `09-how-zerupt-implements-layer-4.md` (as-built).
 
 ## Layer 0 chapters (read in order)
 

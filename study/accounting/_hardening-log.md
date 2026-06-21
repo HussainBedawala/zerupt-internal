@@ -38,8 +38,66 @@
 > app-bootstrap test passed while the real boot still failed, so ALWAYS do a real boot check
 > (or boot-in-CI with Redis) as the DI gate, not just the metadata test.
 | 3 Sub-ledgers & valuation | ✅ ch00-07,09 | ✅ (AR/AP, inventory, tax) | ✅ | ✅ dev validated (trigger fired on real PG) + prod via Railway | ✅ 9acf650c |
-| 4 Period & balance integrity | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ |
+| 4 Period & balance integrity | ✅ ch00-06,09 | ✅ (TB/opening, period/close, FX) | ✅ | ✅ dev validated (cols + is_monetary backfill + 4830/7220 on real PG) + prod via Railway | ✅ 5d4a006f |
 | 5 Reporting | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ |
+
+## Layer 4 — work done (merge 5d4a006f, branch phase-2/layer-4-period-balance)
+
+**FX was the heavy area (audit found the unrealized reval was non-functional).**
+- Unrealized revaluation (IAS 21) now POSTS (was dead-lettering — its JE lines had no accountId):
+  offset leg carries the revalued account directly; gain/loss resolve via NEW mapping
+  `fx.unrealized_revaluation` → 4830 / 7220 (migration 0105). Revalues ONLY monetary FC balances
+  via new `accounts.is_monetary` flag (migration 0104; backfill validated on real PG — AR/AP/tax
+  monetary, inventory/PPE/prepay/equity non-monetary). Revalues AR/AP **per party** so the offset
+  line carries party and passes the Layer-3 control⇒party guard; cash/bank per-account no party.
+  Reverse-next-period + idempotent; fails loud on missing closing rate; book value counts
+  `['posted','reversed']` (reviewer-caught: it was the lone `posted`-only balance reader → phantom
+  gain/loss on reversed accounts).
+- Sales-side realized FX (the Layer-3 deferral): `exchangeRate` on salesInvoices (booking rate) +
+  salesReceiptVouchers (migration 0103); receipt honours payment currency+rate, per-allocation
+  realized FX mirroring the purchase reference; AR nets to zero in TC; functional invoices forced
+  to rate 1 (reviewer-caught guard).
+
+**Period & close:**
+- Soft-lock override now permission-gated (policy `allowSoftLockOverride` AND role membership /
+  Owner) on the manual + reversal post paths (was overridable by anyone with a free-text reason).
+- Year-end / hard-close gated on COMPLETE close runs across EVERY period (was: only the last
+  period checked); reopen restores each period's prior status (migration 0102 `status_before_close`).
+- Gated via direct `close_runs` table reads — NO new DI edge; the JournalPosting↔FiscalPeriod↔
+  YearEnd forwardRef cycle stays intact (verified by real boot).
+
+**Trial balance & reconciliation:**
+- Both recon services now count `['posted','reversed']` like the TB (a reversed control line no
+  longer shows a false tie-out mismatch).
+- Opening balances rejected when live (non-opening) transactions already exist on/after the opening
+  date. Frontend TB shows a loud out-of-balance banner; informational note for branch-scoped TB.
+
+**Already-correct (verified, NOT touched):** TB balances by construction (one header postingDate,
+exact Σdr=Σcr in functional+TC, DB CHECK); opening OBE plug + idempotency; hard-lock chokepoint +
+DB trigger 0098; year-end roll math; purchase realized FX (the reference impl); reval math/atomicity/
+idempotency; Decimal everywhere; DI cycle forwardRef.
+
+**Process:** reviewers caught 6 real issues unit tests missed (FX reversed-status book value =
+CRITICAL; functional-invoice rate guard; receipt "1.00" string compare; 0105 hardcoded depth;
+fiscal-period tenant_id defense-in-depth; BOOL_OR null→false) — all fixed. Audit C2 sub-claim
+("no unrealized FX account") was STALE — 4830/7220 already existed; only the mapping was missing.
+One concurrent-session stash appeared (obsolete duplicate, verified + dropped).
+
+## Layer 4 — DEFERRED / FLAGGED FOR FOUNDER (carry forward)
+1. **Write-off / bad-debt path** — still unbuilt (feature; needs permissioned audited action,
+   DR bad-debt / CR AR control WITH party). Period-close requirement.
+2. **Purchase-return inventory credit single-source** — flagged in Layer 3; needs a two-JE
+   clearing-account redesign (engine owns the inventory-relief leg).
+3. **GL-native multi-currency aging report** — aging still reads `invoices.balance`; rewrite to
+   derive from GL party lines per (party, currency) in **Layer 5 (reporting)**.
+4. **FX triangulation beyond USD** — reval/realized FX assume a USD pivot; multi-pivot deferred.
+5. **Reval composite index** `(tenant_id, currency, posting_date)` on journal_entry_lines — perf,
+   safe to add before scale (reviewer: acceptable for MVP).
+6. **`Owner` system-role bypass** uses a bare string in fiscal-period + permission.service —
+   consistent today; extract a shared constant when convenient.
+7. Migration note: editing `0105` (depth fix) changes its hash; on the next dev `drizzle-kit
+   migrate` it harmlessly re-runs (NOT EXISTS idempotent). Prod applies the corrected version on
+   the merge deploy.
 
 ## Layer 3 — work done (merge 9acf650c, branch phase-2/layer-3-subledgers-valuation)
 

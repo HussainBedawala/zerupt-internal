@@ -39,7 +39,7 @@
 > (or boot-in-CI with Redis) as the DI gate, not just the metadata test.
 | 3 Sub-ledgers & valuation | ✅ ch00-07,09 | ✅ (AR/AP, inventory, tax) | ✅ | ✅ dev validated (trigger fired on real PG) + prod via Railway | ✅ 9acf650c |
 | 4 Period & balance integrity | ✅ ch00-06,09 | ✅ (TB/opening, period/close, FX) | ✅ | ✅ dev validated (cols + is_monetary backfill + 4830/7220 on real PG) + prod via Railway | ✅ 5d4a006f |
-| 5 Reporting | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ |
+| 5 Reporting | ✅ ch00-09 | ✅ (P&L, BS, CFS, aging, write-off, purchase-return, FX-on-cash) | ✅ | ✅ migrations 0106-0109 dev validated + prod via Railway pre-deploy | ✅ merged (layer-5-closeouts) |
 
 ## Layer 4 — work done (merge 5d4a006f, branch phase-2/layer-4-period-balance)
 
@@ -83,21 +83,92 @@ fiscal-period tenant_id defense-in-depth; BOOL_OR null→false) — all fixed. A
 ("no unrealized FX account") was STALE — 4830/7220 already existed; only the mapping was missing.
 One concurrent-session stash appeared (obsolete duplicate, verified + dropped).
 
-## Layer 4 — DEFERRED / FLAGGED FOR FOUNDER (carry forward)
-1. **Write-off / bad-debt path** — still unbuilt (feature; needs permissioned audited action,
-   DR bad-debt / CR AR control WITH party). Period-close requirement.
-2. **Purchase-return inventory credit single-source** — flagged in Layer 3; needs a two-JE
-   clearing-account redesign (engine owns the inventory-relief leg).
-3. **GL-native multi-currency aging report** — aging still reads `invoices.balance`; rewrite to
-   derive from GL party lines per (party, currency) in **Layer 5 (reporting)**.
-4. **FX triangulation beyond USD** — reval/realized FX assume a USD pivot; multi-pivot deferred.
-5. **Reval composite index** `(tenant_id, currency, posting_date)` on journal_entry_lines — perf,
-   safe to add before scale (reviewer: acceptable for MVP).
-6. **`Owner` system-role bypass** uses a bare string in fiscal-period + permission.service —
-   consistent today; extract a shared constant when convenient.
-7. Migration note: editing `0105` (depth fix) changes its hash; on the next dev `drizzle-kit
-   migrate` it harmlessly re-runs (NOT EXISTS idempotent). Prod applies the corrected version on
-   the merge deploy.
+## Layer 5 — work done (merged layer-5-closeouts; commit hash to be added by founder's session)
+
+**Aging rewrite (CRITICAL fixes from audit):**
+- Both AR and AP aging rewritten from `invoices.balance` (denormalized) to GL-native derivation
+  from `journal_entry_lines` on the system-role-resolved control account, per `(party, currency)`.
+- Aging now ties to the TB control balance by construction: `grandTotalFunctional = Σ(debit−credit)`
+  on the control account. Old report had zero tie guarantee.
+- Multi-currency native: one row per `(party, currency)` in transaction currency; functional
+  grand total for TB reconciliation.
+- Opening-import party lines (no invoice row) now appear in aging — they were silently dropped.
+- `due_date` dimension added to `journal_entry_lines` via migration 0106; backfill from invoice
+  tables via system-role-resolved control accounts (never hardcoded codes). Posting plumbing
+  threads `dueDate` + `sourceDocumentDate` through `build-je-payload.ts` + listeners + `postDirect`.
+- FIFO settlement layer added: credits applied oldest-charge-first; per-party net preserved;
+  `grandTotalFunctional` unaffected.
+
+**P&L hardening:**
+- Closing-JE exclusion added (HIGH): year-end closing sweep previously included → net profit
+  would read zero on a closed FY. Fixed via `NOT IN (closing_entry_id subquery)`, mirroring CFS.
+- Date column aligned to `journalEntryLines.postingDate` (LOW): matches TB scoping exactly.
+- Test 20 (new): asserts closing JE is excluded; net profit = operating result, not zero.
+
+**Balance Sheet hardening:**
+- Contra-asset sign fixed (HIGH): `closingBalance()` was `normalBalance`-driven → accumulated
+  depreciation shown as positive, overstating total assets by 2× accum. dep. After fix: sign
+  driven by `type` (debit−credit for asset/expense, credit−debit for liability/equity/income).
+  A contra-asset now carries a negative balance within the asset section, correctly netting PP&E.
+- 4 new spec tests covering accumulated depreciation fixture; BS equation verified with contra.
+
+**Cash Flow Statement hardening:**
+- IAS 7 `effectOfFxOnCash` line added (MEDIUM-2): FX revaluation on foreign cash accounts was
+  folded into operating section. Now extracted as a dedicated reconciling line. Footing unchanged
+  (same arithmetic, amount reclassified between buckets). 2 new tests (multi-ccy case + zero for
+  single-ccy). `reconciles` remains true by construction.
+- BS↔CFS cash reconciliation: pinning test added (test 26) proving `closingCash = cash-assets −
+  overdraft`; IAS 7 comment documenting the relationship. No logic change.
+
+**New feature — AR write-off:**
+- New module: `sales/receivable-writeoff/` (service + controller + DTO + 18 tests).
+- JE: DR 6430 Impairment Loss / CR 1131 AR control (party-tagged). Resolved via account mapping.
+- Owner-gated (`OWNER_ONLY_KEYS`), `@Audited` + explicit `auditLog.append`, throttled 5/min.
+- Cannot exceed open balance (re-read inside tx); idempotent via UUIDv5 eventId; race-safe.
+- Migration 0108: bad_debt→6430 + receivable→1131 mappings.
+
+**New feature — purchase-return two-JE clearing:**
+- Two self-balancing JEs via clearing account 1192 (Purchase Return Clearing):
+  - AP-side: DR payable/accrual / CR clearing (doc cost) + purchase_variance (5210) + tax legs.
+  - Inventory-side: DR clearing (doc cost) / CR inventory at ENGINE WAC + purchase_variance (5210).
+- Inventory relieved at WAC (not document cost); variance correctly to 5210 (not COGS 5100).
+- Migration 0109: adds accounts 1192 + 5210 to COA template + 5 account mappings.
+- Dead DLQ leg (`inventory.purchase_return` with no mapping) now live and correct.
+
+**Performance indexes — migration 0107:**
+- `jel_control_party_aging_idx` — partial composite on `(account_id, party_id, currency)
+  WHERE party_id IS NOT NULL`: covers the aging control-account + party filter.
+- Three additional indexes for P&L/BS date-range scans, entity-status joins, and the
+  closing-JE subquery.
+
+**Audit findings — real vs false-positive:**
+| Finding | Real? | Action |
+|---------|-------|--------|
+| Aging reads `invoices.balance`, not GL (CRITICAL×2) | REAL | Full GL-native rewrite |
+| BS contra-asset sign wrong (HIGH) | REAL | Fix `closingBalance()` to be type-driven |
+| P&L includes closing JEs (HIGH) | REAL | Exclusion subquery added |
+| CFS no IAS 7 FX-on-cash line (MEDIUM) | REAL | `effectOfFxOnCash` line added |
+| GL has no `due_date` column for aging (HIGH) | REAL | Migration 0106 + posting plumbing |
+| `sql.raw(asOf)` SQL injection in aging (CRITICAL from reviewers) | REAL | Replaced with bound parameter |
+| Aging missing `accounts.tenantId` defense-in-depth (MEDIUM from reviewers) | REAL | Added to join condition |
+| Partial payments bucket to wrong age without FIFO (MEDIUM from reviewers) | REAL | `settleAndBucket()` helper added |
+| CFS MEDIUM-1 (cash pool vs BS definition) | NOT-A-BUG | IAS 7 correct; pinning test added |
+| BALANCE_AFFECTING_JE_STATUSES includes "reversed" on aging (MEDIUM from DB reviewer) | NOT-A-BUG | Confirmed correct; explanatory comment added |
+
+**Reviewer-caught issues fixed before merge:**
+1. `sql.raw` injection in AR/AP aging — CRITICAL; fixed to bound parameter.
+2. Missing `accounts.tenantId` in `resolveControlAccountIds` join — MEDIUM; added.
+3. Partial-payment bucket mis-distribution — MEDIUM; FIFO settlement layer built.
+4. `groupBy` on `sql()` expression reference identity — LOW; comment added.
+
+## Layer 4 — DEFERRED / FLAGGED FOR FOUNDER (carry forward → all resolved in Layer 5)
+1. **Write-off / bad-debt path** — ✅ DONE (Layer 5, migration 0108, DR 6430/CR 1131, Owner-gated).
+2. **Purchase-return inventory credit single-source** — ✅ DONE (Layer 5, two-JE clearing, migration 0109).
+3. **GL-native multi-currency aging report** — ✅ DONE (Layer 5, migration 0106, full GL rewrite).
+4. **FX triangulation beyond USD** — ⏳ DEFERRED by founder decision → Linear issue DEV-427.
+5. **Reval composite index** — ✅ DONE (migration 0107, `jel_control_party_aging_idx`).
+6. **`Owner` system-role bypass bare string** — minor; consistent across codebase; extract constant when convenient (not a correctness issue).
+7. Migration 0105 hash note — resolved on merge deploy.
 
 ## Layer 3 — work done (merge 9acf650c, branch phase-2/layer-3-subledgers-valuation)
 
@@ -172,6 +243,16 @@ GL per-customer/supplier sub-ledger was structurally empty (masked because aging
 4. Golden test suite (Layer 0 freeze): T1 multi-currency post, T2 FNC sentinel, T3 header-account reject (auto path), T5 year-end self-balance, T6 purchase/inventory listener balance, T8 cross-entity reject, T9 FX fallback.
 5. Reviewers: accounting-reviewer + nestjs-reviewer + database-reviewer; fix all findings.
 6. Apply migrations dev tenant DB; prod via Railway pre-deploy on merge. Verify from actual DB.
+
+## REMAINING OPEN ITEMS (honest, short)
+
+| # | Item | Status | Action |
+|---|------|--------|--------|
+| 1 | **FX triangulation beyond USD** (EUR/KWD without a USD pivot) | DEFERRED | DEV-427 — founder to schedule; not MVP-blocking |
+| 2 | **Prod migrations 0106-0109** | PENDING OPS | Apply via Railway pre-deploy hook on merge of layer-5-closeouts; same as all prior layers |
+| 3 | **`Owner` bare-string constant** in fiscal-period + permission.service | COSMETIC | Extract shared constant when convenient; no correctness impact |
+| 4 | **`batchLockPeriods` close-run gate** | EXCLUDED | Bulk admin path explicitly outside audit scope (Layer 4 note); not used by normal close flow |
+| 5 | **User-created accounts `deriveIsMonetary`** | DEFERRED | New user accounts default `true` (conservative); `deriveIsMonetary` not called for user-created accounts; safe for MVP |
 
 ## Notes for morning review
 (to be appended per layer)

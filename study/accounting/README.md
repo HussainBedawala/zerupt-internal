@@ -19,9 +19,19 @@ We are perfecting accounting top-down, foundation first. The chapters mirror tha
 | 4 | `layer-4-period-balance/` | Trial balance, opening balances, period close, year-end, FX (IAS 21) | Integrity over time. |
 | 5 | `layer-5-reporting/` | P&L, Balance Sheet, Cash Flow (TBD) | Pure derivation from the ledger. |
 
-Layers 0–4 are hardened and merged. **Layer 5 (reporting) is next.**
-Layer 4 chapters: `layer-4-period-balance/00-orientation.md` … `06-the-close-checklist.md`
-(concepts) + `09-how-zerupt-implements-layer-4.md` (as-built).
+**All layers 0–5 are hardened and merged. The accounting module is complete.**
+
+| Layer | Concepts | As-built chapter | Merged |
+|-------|----------|-----------------|--------|
+| 0 Ledger foundation | ✅ ch00-08 | ✅ ch09 | ✅ bcfc9cd5 |
+| 1 Chart of Accounts | ✅ ch00-08 | ✅ ch09 | ✅ a8becbff |
+| 2 Posting pipeline | ✅ ch00-08 | ✅ ch09 | ✅ 293610b4 |
+| 3 Sub-ledgers & valuation | ✅ ch00-07 | ✅ ch09 | ✅ 9acf650c |
+| 4 Period & balance integrity | ✅ ch00-06 | ✅ ch09 | ✅ 5d4a006f |
+| 5 Reporting | ✅ ch00-08 | ✅ ch09 | ✅ merged (layer-5-closeouts) |
+
+Layer 5 as-built chapter: `layer-5-reporting/09-how-zerupt-implements-layer-5.md`
+Full overnight review: `_morning-review.md` | Running log: `_hardening-log.md`
 
 ## Layer 0 chapters (read in order)
 

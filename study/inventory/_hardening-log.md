@@ -241,6 +241,86 @@ sweep 97 suites / 1940 tests green.
 - M1-nestjs: leaky public seam (6 StockAdjustmentsService methods made public for cross-service tx reuse) —
   ACCEPTED (same-module, minimal change); revisit with an AdjustmentPostingCore collaborator if it spreads.
 
+### Layer 5 — Reporting (IN PROGRESS, branch phase-3/layer-5-reporting) — FINAL LAYER
+
+**Audit findings** (full: /tmp/inventory-hardening/layer-5-audit.md): all 5 report families EXIST but
+tie-to-ledger + as-of are the systemic gaps. F1 CRIT (valuation + stock-levels read ONLY
+materialized_stock_levels cache, never reconcile to Σledger, no drift flag), F3 CRIT (movement ledger orders
+AND date-filters by createdAt not occurredAt → backdated entries mis-periodised + excluded; correct
+occurredAt index exists, unused), F2 HIGH (no as-of/point-in-time valuation — asOfDate echoed only; year-end
+stock value impossible), F4 HIGH (running balance resets to 0 per page; sourceModule filtered AFTER
+pagination while meta.total counts unfiltered → pagination lies), F5 HIGH (expiry report reads qtyRemaining
+projection + excludes already-expired stock → expired on-shelf stock invisible), F6 HIGH (slow-moving/
+dead-stock aging report ABSENT), F7 MED (no standalone count-variance report), F8 MED (reorder uses on_hand
+only, ignores ATP reserved+incoming), F9 MED (no legal-entity dimension in valuation/stock-levels/reorder),
+F10 MED (in-app pagination/unbounded fetch in reorder; per-page count in ledger), F11 LOW (negative on-hand
+silently folded into valuation total), F12 LOW (reorder imports PurchaseOrdersService = inventory→purchase
+UP dependency, packaging violation).
+
+**Locked decisions for Layer 5 hardening:**
+1. **F1 + F2 (tie valuation to ledger + as-of):** the permanent answer is ledger-derived valuation. As-of
+   qty = Σ ledger.quantity WHERE occurredAt ≤ asOf; as-of VALUE = Σ signed ledger.total_cost WHERE
+   occurredAt ≤ asOf, grouped by (item,warehouse) — this is the moving-average running inventory value, ties
+   to the ledger BY CONSTRUCTION and is historically correct (no "current WAC × old qty" approximation).
+   Use sle_item_warehouse_occurred_at_idx. For the "now" valuation keep the materialized cache for speed BUT
+   cross-check against detectQuantityVariances and surface a "ledger drift detected" flag per drifting row +
+   a summary banner (reuse the recon detector; do NOT silently show a drifting cache).
+2. **F3 + F4 (movement ledger):** order by occurredAt (createdAt tiebreak) + date-range filter on occurredAt;
+   seed page running-balance with opening = Σ ledger.quantity WHERE occurredAt < window-start (one indexed
+   query); push sourceModule into SQL WHERE (map module→docType in-list) so count + page + filter agree.
+3. **F5 (expiry):** add an "expired (not yet written off)" bucket (expiryDate < today AND qtyRemaining > 0);
+   tie displayed qty to Σledger by batch_id where attribution present.
+4. **F6 (aging):** NEW slow-moving/dead-stock report built from the ledger — max(occurredAt) per
+   (item,warehouse) over outbound movement types, bucketed by age. Pure read over the occurredAt index.
+5. **F7:** count-variance report endpoint aggregating POSTED count lines (countedQty − systemQty × WAC).
+6. **F8:** reorder effective-available = on_hand − reserved_qty + incoming(open PO + inTransit); suggest off
+   ATP. **F10:** reorder → SQL LIMIT/OFFSET + SQL count (no in-app slice); ledger keep count but optional.
+7. **F9:** add optional legalEntityId filter to valuation/stock-levels/reorder. **F11:** surface negative-value
+   count/flag in valuation summary.
+8. **F12 (reorder→purchase UP dep) = FOUNDER DECISION / DEFERRED packaging item** — not a correctness bug,
+   not a report; event-ifying PO creation is an architectural change for a dedicated packaging pass. Surface,
+   don't fix this layer.
+Reports are read-only and don't pull inventory UP (boundary clean except F12). No migration expected (reports
+are queries); add count_date / occurredAt indexes only if a reviewer flags a real scan.
+
+**Layer 5 COMPLETE (merged main 6b98fa34, migration 0115).** All locked decisions implemented across 5
+parallel harden waves (disjoint files): valuation tie-to-ledger + as-of (Σ signed total_cost), movement
+ledger occurredAt + seeded running balance + SQL sourceModule, batch expiry expired-bucket + G4 scheduler ALS
+fix, NEW stock-aging report, NEW count-variance report, reorder ATP + SQL pagination. Reviewer panel (5:
+code/accounting/nestjs/db/api) — nestjs clean; the rest found blockers, all fixed in one fix wave:
+- **db C1 / code HIGH:** SQL injection in stock-aging (sql.raw `'${tenantId}'`) → bound param.
+- **accounting HIGH#1:** "now" valuation flagged only QUANTITY drift, not VALUE drift vs GL's Σ signed
+  total_cost → "now" path now values FROM the ledger (same as as-of); cache used only to flag qty+value drift.
+- **accounting HIGH#2:** F7/count varianceValue understated for zero-WAC found items (0 vs GL's resolved found
+  cost) → count post now values found legs at resolveFoundUnitCost (document + report match GL).
+- **api HIGH:** stock-aging double-nested {data:{data}} envelope → DTO field data→rows, return service result.
+- **db H2:** stock-aging ran the full-ledger CTE twice → single scan, page/total/summary derived in-app.
+- **db H3:** sequential per-entity drift detection → Promise.all. + asOf date-regex validation, pagination
+  tiebreaks, movement-ledger dateFrom≤dateTo refine, inArray for batch ledger, limit caps.
+- **MIGRATION 0115** (founder principle: permanent index, not deferred): sle_legal_entity_occurred_at_idx
+  (legal_entity_id, occurred_at) supports the as-of valuation + aging full-ledger aggregates at 10-yr scale.
+Gates: dev migrated + real-PG validated (index present); real `node dist/main` boot DI gate PASSED
+(stock-aging controller + both schedulers resolved); broad sweep 119 suites / 2372 tests green.
+**Layer 5 DEFERRED / founder follow-ups (surfaced, not bugs):**
+- **F12 — reorder.service imports PurchaseOrdersService (inventory→purchase UP dependency).** The ONE
+  remaining module-boundary violation blocking clean inventory packaging. Fix = event-ify PO creation / move
+  to a purchase-side orchestrator. Dedicated packaging pass (not a correctness bug).
+- IAS 2 NRV / lower-of-cost-and-NRV write-down still UNBUILT (Layer 3 deferral) — touches valuation+reporting.
+- Movement-ledger high-page OFFSET sub-scan (limit capped at 100; keyset pagination = future optimisation).
+- File-size: stock-counts.service.ts (>800 lines) + other tracked oversized services — mechanical extraction pass.
+- Permission-naming split (reports.operational.view vs inventory.stock.read) — RBAC-matrix consistency.
+
+## 🏁 PROGRAM COMPLETE (2026-06-27)
+All 6 layers (0,1,2a/2b/2c,3,4,5) audited + hardened + reviewer-panelled + dev-PG-validated + real-boot-gated
++ merged to main + pushed. The inventory module now runs as a standalone, ledger-true core: immutable
+append-only stock ledger with full batch/serial/bin dimensions; enforced movement attribution + FEFO;
+reservations/ATP; WAC valuation with crash-durable GL handoff via outbox; atomic period-aware counts;
+nightly reconciliation; and reports that tie to the ledger by construction. Remaining items are all
+founder-decision features or packaging/optimisation follow-ups (above), NOT correctness gaps.
+**TOP FOUNDER ACTIONS:** (1) verify live POS stock-relief end-to-end on a real dev tenant before go-live
+(Layer 3/4 — reviews were code/test-level); (2) decide F12 packaging fix + IAS 2 NRV; (3) go-live runbook
+items (0112 normalized-index dup pre-flight on populated tenants).
+
 ## Layer status
 
 | Layer | Study | Audit | Hardening | Migrations (dev+prod) | Merged to main |
@@ -252,7 +332,7 @@ sweep 97 suites / 1940 tests green.
 | 2c Transfer lifecycle + reversal | ✅ ch04/05 | ✅ (F5/F8/F9, code-only) | ✅ | n/a (no migration) | ✅ 6c08cea4 |
 | **3 Valuation & costing + GL handoff** | ✅ ch00-09 | ✅ (F1-F9 + POS-COGS critical) | ✅ | n/a (no migration) | ✅ b4dc47b5 |
 | **4 Counts & period integrity** | ✅ ch00-09 | ✅ (F1/F2 CRIT + F3-F9 + study G1-G8) | ✅ | ✅ migration 0114 dev validated on real PG (count_date timestamptz NOT NULL default now()) + prod via Railway | ✅ e38f96fb |
-| 5 Reporting | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ |
+| **5 Reporting** | ✅ ch00-09 | ✅ (F1/F3 CRIT + F2/F4/F5/F6 + F7-F12) | ✅ | ✅ migration 0115 dev validated on real PG (sle_legal_entity_occurred_at_idx present) + prod via Railway | ✅ 6b98fa34 |
 
 ## Process gates (from accounting program — apply here)
 - Real `node dist/main` boot is the DI gate, NOT just the metadata test (a prior layer shipped

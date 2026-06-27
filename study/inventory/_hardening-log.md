@@ -44,7 +44,7 @@
   promotions, stock-levels, stock-adjustments, transfers, stock-counts, reorder; services:
   inventory-costing, inventory-domain.listener, inventory-event.listener, landed-cost.listener.
 
-### Layer 1 — Master data (IN PROGRESS, branch phase-3/layer-1-master-data)
+### Layer 1 — Master data (✅ COMPLETE, merged main 067e70d1)
 
 **Audit findings** (full: /tmp/inventory-hardening/layer-1-audit.md). Conflict resolved by reading
 code: trackingType change IS hard-blocked (items.service.ts:481-493 throws) — study writer's
@@ -83,7 +83,7 @@ project_books_import_template). Before any go-live with real tenant data: run th
 dup probes per tenant as a pre-flight (Pacific Co reconciliation gate). Detection queries are in the
 0112 header comment.
 
-### Layer 2 — Movement engine + reservations/ATP (IN PROGRESS — SPLIT INTO SUB-LAYERS per founder)
+### Layer 2 — Movement engine + reservations/ATP (✅ COMPLETE — split into sub-layers; 2a 6e518eb1 / 2b 36097aed / 2c 6c08cea4)
 
 Founder ruling 2026-06-27: full scope, split into separately committed+merged+validated sub-layers.
 Audit (full: /tmp/inventory-hardening/layer-2-audit.md) — 2 CRITICAL + reservations gap. NOTE: the
@@ -128,8 +128,8 @@ dev-PG validate → real boot → merge, before the next.
   91 suites / 1861 tests green.
 - KNOWN follow-ons (deliberate, not debt): GRN/sales builders don't yet forward batchNo/serials
   (those channels take the logged fallback for tracked items; POS fully attributed); serial/lot
-  RETIREMENT on adjustment-decrease + batch transfer_in lot-threading belong to 2c. NOT yet:
-  reviewers, dev-PG validation, real `node dist/main` boot, commit/merge.
+  RETIREMENT on adjustment-decrease + batch transfer_in lot-threading handled in 2c.
+- Reviewers + dev-PG validation + real boot + merge all subsequently DONE (merged main 6e518eb1).
 
 ### Tracked follow-ups (file-size hygiene — pre-existing, deferred to avoid risky financial refactors mid-layer)
 - apps/api/src/sales/orders/sales-orders.service.ts (~1284 lines)
@@ -172,7 +172,7 @@ cost. Reviewer-caught: costAtSale mixed per-unit/total semantics (regression, fi
 normalized per-unit); POS costs-Map mutation; shared cost helper. F5 NRV/write-down DEFERRED (founder
 decision — IAS 2 lower-of-cost-and-NRV not built).
 
-### Layer 4 — Counts & period integrity (IN PROGRESS, branch phase-3/layer-4-counts-period)
+### Layer 4 — Counts & period integrity (✅ COMPLETE, merged main e38f96fb)
 
 **Audit findings** (full: /tmp/inventory-hardening/layer-4-audit.md): F1 CRIT (count posts variance as a
 blind DELTA vs LIVE on-hand, not set-to-counted → sales during the count silently leave on-hand wrong),
@@ -241,7 +241,7 @@ sweep 97 suites / 1940 tests green.
 - M1-nestjs: leaky public seam (6 StockAdjustmentsService methods made public for cross-service tx reuse) —
   ACCEPTED (same-module, minimal change); revisit with an AdjustmentPostingCore collaborator if it spreads.
 
-### Layer 5 — Reporting (IN PROGRESS, branch phase-3/layer-5-reporting) — FINAL LAYER
+### Layer 5 — Reporting (✅ COMPLETE, merged main 6b98fa34) — FINAL LAYER
 
 **Audit findings** (full: /tmp/inventory-hardening/layer-5-audit.md): all 5 report families EXIST but
 tie-to-ledger + as-of are the systemic gaps. F1 CRIT (valuation + stock-levels read ONLY
@@ -346,7 +346,7 @@ items (0112 normalized-index dup pre-flight on populated tenants).
 
 ## Per-layer work log
 
-### Layer 0 — Stock ledger foundation (IN PROGRESS, branch phase-3/layer-0-stock-ledger-hardening)
+### Layer 0 — Stock ledger foundation (✅ COMPLETE, merged main 310967be)
 
 **Audit findings** (full: /tmp/inventory-hardening/layer-0-audit.md):
 - F1 CRITICAL — ledger has no batch/serial/bin dimension
@@ -398,7 +398,7 @@ OR ...` exclusion to both schema + migration (mirrors the existing nonzero-check
 - nestjs review (1 HIGH, 1 LOW): F1 attribution not threaded by callers → chokepoint dormant + batch
   recon could false-positive; F9 tenantId passed inconsistently.
 
-**Review-fix wave (in progress):** migration hardening (NOT VALID+VALIDATE, batch indexes, event_id
+**Review-fix wave (✅ applied):** migration hardening (NOT VALID+VALIDATE, batch indexes, event_id
 NOT NULL); LEDGER_INSERT_COLUMNS 19→20; F9 tenantId on remaining FOR UPDATE callers; batch-recon
 false-positive guard (only compare where attribution present; else informational note); FIFO
 activation guard (block FIFO until Layer 3 — WAC only).

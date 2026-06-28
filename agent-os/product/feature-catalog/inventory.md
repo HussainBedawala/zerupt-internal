@@ -5,12 +5,12 @@
 
 ---
 
-## Item Model — Flat & Matrix Items
+## Item Model — Flat Items (Matrix planned)
 
-- **Status:** shipped
-- **Description:** Every sellable product is an item with a SKU, name (bilingual EN/AR), category, unit of measure, and optional weight/dimensions. Matrix items auto-generate variants from up to three attribute axes (e.g., Size × Color), with each variant carrying its own unique SKU and barcode.
-- **Who it's for:** Retailers managing simple catalogues (flat items) or apparel/footwear businesses needing size-color grids (matrix items).
-- **Constraints / notes:** Tracking type (serial/batch/none) and valuation method are set once at item creation and are immutable once any movement exists. Matrix parent items have up to 3 axes.
+- **Status:** flat items `shipped` · matrix/variant items `planned` (NOT built)
+- **Description:** Every sellable product is a flat item with a SKU, name (bilingual EN/AR), category, unit of measure, and optional weight/dimensions. Matrix items (auto-generating Size × Color style variants) are designed in the module spec but NOT implemented: the `items.type`/`parentItemId` columns exist as a forward-compat stub, but there is no `item_attributes` table, the API rejects non-flat types (`items.service.ts` G1 guard throws `BadRequestException`), and there is no web/POS variant support. Today a clothing shop represents variants as separate flat items (e.g. `TSHIRT-RED-M`, `TSHIRT-RED-L`).
+- **Who it's for:** Retailers managing catalogues as flat items. Apparel/footwear size-color grids are a planned enhancement.
+- **Constraints / notes:** Tracking type (serial/batch/none) and valuation method are set once at item creation and are immutable once any movement exists. Matrix design (≤3 axes) lives in `modules/inventory/01-item-model.md`; implementing it requires the `item_attributes` table + variant generation + lifting the API guard.
 
 ---
 

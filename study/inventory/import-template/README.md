@@ -32,6 +32,21 @@ posted. Mirrors `apps/api/src/books-import/` 1:1.
    `[run:<id>]` reason tag + skip-seeded on resume, `createOrReuseWarehouse` so resume doesn't
    re-create warehouses, advisory lock + re-read around the 1141 post.
 
+## Follow-up backlog (create as Linear issues)
+
+**[Tech debt] Make inventory-import column-driven (single registry).**
+Today adding/changing one import column touches ~7 places (contract, sheet builder, parser, row
+type, apply, en+ar labels, tests). Refactor to ONE declarative column registry: each column defined
+once (`key`, `type` → width/format/validation, `label`/`help` keys, `example`, `visible(ctx)`,
+`apply` target). Generator + parser + apply + visibility all derive from it. Then a future column =
+1 registry entry + 2 translations, no parser/generator edits, no fixture churn. Scope: inventory-import
+first; pattern likely generalizes to books-import. Deferred 2026-06-28 (founder: finish v3 first, move
+forward). Module = Inventory, Type = Improvement, Backend.
+
+**[Bug] Feature catalog matrix-items flag was wrong.** Fixed in this pass (catalog now marks matrix
+`planned`). Real follow-up = BUILD matrix/variant items (item_attributes table + variant generation +
+lift the items.service G1 guard + web/POS variant pickers). Until then, variants = separate flat items.
+
 ## Status
 Committed + merged to main **locally, not pushed**. All gates green (typecheck, i18n, 400+ jest,
 5-reviewer panel, real-PG migrate, boot-DI). Founder TODO before push: real-editor xlsx round-trip

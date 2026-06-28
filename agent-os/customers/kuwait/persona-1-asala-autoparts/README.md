@@ -259,12 +259,37 @@ None. This is a straightforward single-shop setup. We have no custom workflows, 
 | `suppliers.csv` | 2 local suppliers with opening AP balances | 2 | AP total = KWD 3,500.000. |
 | `logo-asala.png` | Shop logo (PNG) | n/a | Upload to Settings. Appears at top of 80mm receipt. |
 | `logo-asala.svg` | Shop logo (SVG variant) | n/a | Alternative format; SVG accepted for logo uploads. |
-| `inventory-import-items.csv` | Items sheet for Zerupt inventory import template (DEV-430) | 150 | Matches current template column order including Brand, Part Number, Reorder Level, Valuation Method, Wholesale Price, and 3 pack groups. |
-| `inventory-import-categories.csv` | Categories sheet for Zerupt inventory import template | 8 | Category codes: FLT, BRK, OIL, BAT, BLT, ELC, WIP, TYR. |
-| `inventory-import-opening-stock.csv` | Opening Stock sheet for Zerupt inventory import template | 150 | One warehouse column (Main Warehouse -- Shuwaikh). |
+| `inventory-import-items.csv` | Items sheet for Zerupt inventory import template (DEV-430 v3 ADAPTIVE) | 150 | v3 column set for auto_parts industry (EN primary, AR secondary). Hidden: Tax Group, Tracking, Valuation Method. Shown: Part Number, Wholesale Price. One pack group only. |
+| `inventory-import-categories.csv` | Categories sheet for Zerupt inventory import template (v3) | 8 | Headers: Code, Name (primary), Name (secondary), Parent Code. Category codes: FLT, BRK, OIL, BAT, BLT, ELC, WIP, TYR. |
+| `inventory-import-opening-stock.csv` | Opening Stock sheet for Zerupt inventory import template (v3) | 150 | Headers: SKU, Unit Cost, Main Warehouse - Shuwaikh. One warehouse column. No Batches sheet (no batch-tracked items). |
 
 ---
 
-## Inventory import template notes
+## Inventory import template notes (v3 ADAPTIVE column set)
 
-**Opening Stock - Batches sheet:** Not applicable to Al-Asala Auto Parts. Auto parts are simple (no-tracking) items and are not batch-tracked. The Batches sheet is used by pharmacy, cosmetics, and food personas where lot numbers and expiry dates are required. Do not generate a batches CSV for this persona.
+**Template version:** DEV-430 v3 ADAPTIVE. The generator resolves column visibility per tenant industry and flags. All three CSV files below match the EXACT column order the v3 generator emits for this tenant.
+
+**Column visibility (auto_parts, Kuwait - no VAT, no batch items):**
+
+| Column | Shown? | Reason |
+|---|---|---|
+| Name (primary) | Yes | Always on |
+| Name (secondary) | Yes | Tenant has Arabic as secondary language |
+| SKU | Yes | Always on |
+| Barcode | Yes | Always on |
+| Category Code | Yes | Always on |
+| Tax Group | No | hasNonDefaultTaxGroup = false (Kuwait has no VAT) |
+| Tracking | No | Always hidden in v3 (trackingType = false) |
+| Cost | Yes | Always on |
+| Sell Price | Yes | Always on |
+| Base Unit | Yes | Always on |
+| Brand | Yes | Always on |
+| Part Number | Yes | auto_parts is in PART_NUMBER_INDUSTRIES |
+| Reorder Level | Yes | Always on |
+| Valuation Method | No | Always hidden in v3 (valuationMethod = false) |
+| Wholesale Price | Yes | auto_parts is in WHOLESALE_PRICE_INDUSTRIES |
+| Pack Name / Factor / Barcode / Sell Price | Yes (1 group) | PACK_COLUMN_GROUPS = 1 |
+
+**Opening Stock - Batches sheet:** Not generated. hasBatchTrackedItems = false. Auto parts are simple (no-tracking) items. There is no batches CSV for this persona and none should be created.
+
+**How to use the CSVs:** The app only accepts the downloaded XLSX template (it rejects raw CSV upload). Download the inventory template from Zerupt for this tenant, open it, and paste the rows from these CSV files into the matching sheets. The CSV column order matches the XLSX sheet column order exactly for this tenant configuration, so paste-by-column works directly.

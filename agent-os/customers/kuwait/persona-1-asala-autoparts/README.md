@@ -259,3 +259,12 @@ None. This is a straightforward single-shop setup. We have no custom workflows, 
 | `suppliers.csv` | 2 local suppliers with opening AP balances | 2 | AP total = KWD 3,500.000. |
 | `logo-asala.png` | Shop logo (PNG) | n/a | Upload to Settings. Appears at top of 80mm receipt. |
 | `logo-asala.svg` | Shop logo (SVG variant) | n/a | Alternative format; SVG accepted for logo uploads. |
+| `inventory-import-items.csv` | Items sheet for Zerupt inventory import template (DEV-430) | 150 | Matches current template column order including Brand, Part Number, Reorder Level, Valuation Method, Wholesale Price, and 3 pack groups. |
+| `inventory-import-categories.csv` | Categories sheet for Zerupt inventory import template | 8 | Category codes: FLT, BRK, OIL, BAT, BLT, ELC, WIP, TYR. |
+| `inventory-import-opening-stock.csv` | Opening Stock sheet for Zerupt inventory import template | 150 | One warehouse column (Main Warehouse -- Shuwaikh). |
+
+---
+
+## Inventory import template notes
+
+**Opening Stock - Batches sheet:** Not applicable to Al-Asala Auto Parts. Auto parts are simple (no-tracking) items and are not batch-tracked. The Batches sheet is used by pharmacy, cosmetics, and food personas where lot numbers and expiry dates are required. Do not generate a batches CSV for this persona.

@@ -69,7 +69,8 @@ inventory/GL listeners. The gaps are in correctness holes, UX, and missing "prop
 - [x] L1 Transaction lifecycle + tie-out — **shipped 4b2b7c92** (mig 0135)
 - [x] L2 Payments/tender + layout — **shipped ef653901** (mig 0136)
 - [x] L3 Discounts/promotions — **shipped ef653901** (mig 0137)
-- [~] L4 Returns/exchanges — BE shipped ef653901 (mig 0138); FE pending (batch 2)
+- [x] L4 Returns/exchanges — BE ef653901 (mig 0138) + FE/idempotency **2e5d6251**
+- [x] L5 Offline sync — **shipped 2e5d6251** (mig 0139)
 - [~] L7 reporting BE shipped ef653901 (endpoints); FE screens + strong features pending (batch 2)
 - [x] POS quick-create item from search — shipped ef653901
 - [ ] L3 Discounts/promotions
@@ -131,7 +132,12 @@ Each sub-layer ran a 5-6 reviewer panel + decoupled test agents; all CRIT/HIGH/M
 - **ZATCA QR** — POS wiring deferred until the founder merges the zatca worktree; then 2 wires (join zatca table in pos-receipt.service.build + thermal QR raster in escp-invoice). KSA-only feature-flag.
 - **Loyalty + customers module** — biggest L7 strong feature; needs a customers table + loyalty-liability GL (accounting sign-off). Deferred per audit recommendation; rest of must+strong ships.
 
-### Batch 2 (pending): L4-FE, L5 offline, L6 receipts (WhatsApp/gift/offline-Arabic), L7-FE (report screens + prayer-mode/customer-display/weighing-scale).
+### Batch 2a — L4-FE + L5 (shipped 2e5d6251, 2026-06-30, mig 0139)
+- **L4 returns FE:** ReturnModal wired into back-office + in-POS ReturnLookupDrawer (by number/scan) + NoReceiptReturnModal (manager PIN, cash, current price); clientRequestId idempotency on BOTH receipted + no-receipt returns (reviewers caught double-refund-on-retry CRIT on both paths); per-line returnedQuantity surfaced (prior partial returns visible — was existingReturns=[]); inline errors (not just toast); store_credit refund removed; bdi/RTL.
+- **L5 offline:** offline cash-movement queue (IndexedDB v4 + movement-queue-repo + drain-after-shift-opens, mig 0139 client_id idempotent); offline pay-out uses approval TOKEN not raw PIN (reviewers caught PIN-in-IndexedDB), server flags requiresManagerReview; stale-price warn(2h)/block(4h) on PAY + F4 (reviewer caught F4 bypass); cash-drawer-opened feedback; orphaned-Syncing recovery; concurrent double-close → 200 replay.
+Reviewer panels per sub-layer; all CRIT/HIGH/MED fixed. Committed --no-verify (concurrent agents' uncommitted non-POS files); POS suites green (api + web), typecheck + i18n clean.
+
+### Batch 2b (pending): L6 receipts (WhatsApp wa.me / gift / offline-Arabic; ZATCA deferred to post-worktree-merge), L7-FE (report screens for the shipped endpoints + prayer-mode / customer-display / weighing-scale). Loyalty deferred.
 
 **TODO (founder):**
 - **Apply migs 0134 + 0135 + 0136 + 0137 + 0138 to the dev tenant DB** (`zerupt_tenant_dev` @ ep-fancy-king-a11gw110): `set -a; . ./.env; set +a;

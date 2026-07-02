@@ -132,5 +132,17 @@ For each action: verify the happy path **and** the four states — loading / err
 
 ## Sign-off
 
-- [ ] All CRITICAL/HIGH items pass for the loaded dataset.
-- [ ] Findings logged in `_findings.md`.
+- [x] All CRITICAL/HIGH items pass for the loaded dataset.
+- [x] Findings logged in `_findings.md`.
+
+**SIGNED OFF 2026-07-02.** Live-verified on Al-Asala Auto Parts (Kuwait, KWD 3dp, no VAT). Findings #155-#172 + #179. Highlights:
+- **Target picker built** (#155) — promos were entirely inert (no UI to attach items/categories); now searchable item + category pickers, POS auto-applies via `resolvePromoForLine` best-deal engine. Founder confirmed POS discount reflection working.
+- **Discount GL verified** (K7) — POS JE posts revenue at GROSS + separate `4300 Sales Discounts` contra-revenue + cash, balanced (25% off KWD 2.440 → discount 0.610, net 1.830). Gross+contra model, not net.
+- **Value precision** (#156) — dynamic step by type (percent 0.01/max100, money at tenant dp).
+- **Server-side guards** (#157) — value bounds on create+update (percent (0,100], value>0), target existence check, active-window excludes future-start.
+- **List UX** (#170-172) — shows target NAMES not count (batched query), decimal/locale-aware value, all columns start-aligned, `Intl.ListFormat` separators (no hardcoded locales), unified inline create+targets with retry-on-partial-failure.
+- **FNC-sentinel JE fix** (#179) — surfaced here: auto-posting chokepoint stored the "FNC" functional-currency sentinel raw on the JE header (showed "FNC 1.59" at 2dp); now resolves to tenant currency + precision ("KWD 1.590"). Verified live post-deploy.
+
+Deferred (documented, not blocking): amount_off vs price validated only at till (floored at 0, price unknown at rest); overlapping-promo conflict UI; percent_off=100 policy flag; multi-currency promo conversion.
+
+> **This closes the 16-submodule INVENTORY hardening pass.** All submodules 01-16 complete and verified.

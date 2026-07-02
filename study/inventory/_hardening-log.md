@@ -413,3 +413,19 @@ activation guard (block FIFO until Layer 3 — WAC only).
 - Serial-tracked specific-cost valuation (WAC pool incompatible w/ specific-ID COGS for serials).
 - FIFO cost-layer consumption ordering by occurred_at (cost layers lack occurred_at; FIFO guarded
   off until then). Ledger-level FIFO/reports already order by occurredAt.
+
+---
+
+## Persona live-testing pass — COMPLETE 2026-07-02
+
+The 16-submodule persona-driven live-testing + hardening pass (storekeeper/owner personas, real
+Al-Asala Auto Parts data: Kuwait, KWD 3dp, no VAT, 150 items / 8 categories / KWD 190,717.320) is
+**COMPLETE**. All submodules 01-16 verified on PROD with founder screenshots + JE tie-outs.
+Findings #1-#179 in `agent-os/product/testing/inventory/_findings.md`.
+
+**Final submodule 16 (Promotions)** — signed off (see `16-promotions.md`). Core wins: built the
+missing target picker (promos were inert), verified discount GL (gross revenue + 4300 contra +
+cash, balanced), added server-side value/target/window guards, made list show target names +
+locale-aware, and fixed a promotions-surfaced FNC-sentinel bug in the central JE auto-posting
+chokepoint (header stored "FNC" at 2dp → now resolves to tenant currency at correct precision).
+Commits: c21ce381, f9048399, c6a82f8c. All reviewed (nestjs/accounting/frontend), specs green.

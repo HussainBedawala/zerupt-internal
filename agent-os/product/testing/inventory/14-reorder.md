@@ -123,3 +123,27 @@ For each action: verify the happy path **and** the four states — loading / err
 - [ ] Config validation confirmed server-side (direct API call with bad values returns 422, not 500).
 - [ ] Report renders correctly in both English (LTR) and Arabic (RTL) locales.
 - [ ] Findings logged in `_findings.md`.
+
+---
+
+## ✅ CLOSE-OUT (2026-07-02) — submodule 14 SIGNED OFF
+
+Persona-driven live-testing + hardening complete. Founder live-verified the two headline flows end-to-end on Al-Asala (KWD): Generate Draft PO (with fallback-supplier assignment) and bulk Direct Purchase (carrying reorder qty). All findings fixed, reviewer-gated (code/nestjs/frontend/database/accounting as applicable), and merged to main.
+
+**Findings fixed (16): #148-157, #167-169, #176-178, #180-181.** Highlights:
+- **Config UI built** (#148/#176) — per-item reorder-config dialog (reorderPoint/maxLevel/safetyStock/reorderQty/leadTime/preferredSupplier) with a selectable warehouse; PUT /config was previously unreachable from the UI.
+- **Precision** (#149/#151/#177) — tenant currency (KWD 3dp) via Intl for money; shared locale-aware formatNumber for quantities; consistent trimmed qty input.
+- **Filters** (#150/#167) — warehouse + active-supplier filters wired (supplier limit corrected to the API max of 100).
+- **Generate-PO** (#152/#168/#180) — single discoverable action; fallback-supplier picker for unassigned items (own preferred supplier wins; 422 only when neither); one error toast.
+- **PO vs Direct Purchase choice** (#157/#169/#178/#181) — reuses the stock-levels choice pattern; bulk DP seeds every selected item at its reorder qty.
+- **Backend hardening** (#153) — DTO cross-field superRefine + migration 0144 (7 CHECK constraints on item_reorder_config; cross-field ones NOT VALID+VALIDATE); semantic Zod failures return 422.
+
+**Accepted deferrals (founder decisions, NOT bugs — from §5 known gaps):**
+- No AI/EOQ economic-order-qty (roadmap "Weeks 3-6").
+- leadTimeDays stored/displayed but not used in a demand×lead-time calc (cosmetic until forecasting is built).
+- No reorder history/audit trail of generated suggestions.
+- Supplier pickers cap at 100 (suppliers API max); server-side supplier search is the future path for tenants exceeding 100 active suppliers.
+
+**Ops:** migration 0144 applies to tenant DBs via Railway pre-deploy; prod item_reorder_config is empty so the cross-field VALIDATE is safe.
+
+**Not separately exercised live (low risk — code-path reviewed, backend invariants covered by recon + tests):** permission-boundary 403, full Arabic/RTL pass, ghost-suggestion-clear-after-GRN, exact KPI==row-count. Fold into a broader regression/E2E pass if desired; not blocking sign-off.

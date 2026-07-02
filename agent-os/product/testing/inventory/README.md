@@ -23,7 +23,7 @@ Inventory is a **ledger-first** module: every stock change is an immutable `stoc
 | 11 | [Serial Numbers](11-serial-numbers.md) | `/inventory/serial-numbers` |
 | 12 | [Batch / Lot Tracking](12-batches.md) | `/inventory/batches` |
 | 13 | [Valuation / Costing (WAC/FIFO)](13-valuation-costing.md) | `/reports/inventory-valuation` |
-| 14 | [Reorder / Min-Max](14-reorder.md) | `/inventory/reorder` |
+| 14 ✅ | [Reorder / Min-Max](14-reorder.md) | `/inventory/reorder` |
 | 15 | [Price Lists](15-price-lists.md) | `/inventory/price-lists` |
 | 16 | [Promotions](16-promotions.md) | `/inventory/promotions` |
 

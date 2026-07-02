@@ -125,10 +125,16 @@ For each action: verify the happy path **and** the four states — loading / err
 
 ---
 
-## Sign-off
+## Sign-off — CLOSED 2026-07-02
 
-- [ ] All CRITICAL/HIGH items pass for the loaded dataset.
-- [ ] Full receive-then-void recon verified: stock, PO received-qty, and GL all net to zero.
-- [ ] Void-after-bill block confirmed both in the UI (button hidden) and the API (409).
-- [ ] Over-receipt tolerance + PIN-approval path exercised at least once.
-- [ ] Findings logged in `_findings.md`.
+Closed by founder decision. State at close:
+
+- [x] **Findings logged + fixed:** #04-1 (receive-lines UI clarity — hide batch/expiry/serial for non-tracked items, plain-language ⓘ hints) FIXED live (`8de2d9ee`, `4dfc9d51`). This was the only defect surfaced.
+- [x] **Accounting/void/over-receipt invariants verified by CODE-READ (recon), balance-proofed against as-built logic** — NOT yet live-clicked on a confirmed PO:
+  - Confirm posts Dr Inventory 1141 / Cr GR-IR, credit leg = AP 2111 (party-tagged) when `hasSupplierInvoice`, else GRN Accrual 2121 (no party). Confirmed at `purchase-accounting.listener.ts:714-727`.
+  - Stock ledger (`grn_receipt`, at line unitCost) ties to the JE inventory debit (shared 6dp source). PO `receivedQty` increment + auto-transition. Gapless GRN- numbering under `FOR UPDATE`.
+  - Void = exact compensating reversal (stock + PO qty + GL net-zero, never hard-delete); billed GRN can NEVER be voided — server rejects 409 independent of the hidden button (`grns.service.ts:766-772`). Double-void idempotent.
+  - Over-receipt net-of-returns → different-manager PIN (SoD, `purchase.grn.confirm`), else 422. FX fail-loud 422 guard present (untestable on KWD-only).
+- [ ] **DEFERRED to founder:** the full live two-track click-through (receive full/partial/over, void unbilled, void-after-bill 409, double-confirm race) against a real confirmed PO. Two-track guide is written and ready if you want to run it later.
+
+> Net: 04-GRN closed on code-read verification + the one live UI fix. No wrong-number or broken-invariant defects found. Live exercise of the confirm/void GL path on a real PO remains the one open item, folded into the purchase hardening program's existing "verify a full purchase cycle end-to-end on a real dev tenant" go-live TODO.

@@ -1,5 +1,7 @@
 # InfoHint consolidation & reuse punch-list
 
+> **STATUS: CLOSED 2026-07-02.** Core consolidation complete — one hover-tip primitive app-wide (`InfoHint`), all duplicate implementations (onboarding `InfoTip` shim, reports local wrapper, ~11 ad-hoc `cursor-help`+Tooltip blocks) removed, dead imports swept, `?` help cursor. Only section **B (add ~33 brand-new jargon tips)** is left OPEN as optional future work — it needs fresh en/ar copy, so it's a deliberate editorial pass for later, not a bug.
+
 **Goal:** one hover-tip primitive across the whole web app (`@/components/info-hint` → `InfoHint`), and a plain-language explanation on every jargon column/field for our non-tech touch-tablet users.
 
 **Canonical component:** `apps/web/src/components/info-hint.tsx` — Radix-backed (tap + hover + keyboard, portal so it is never clipped in `overflow-hidden` tables, `dir="auto"` RTL). API: `<InfoHint text={t("...")} label?={aria} />`. Pass a resolved i18n key so ar/en stay in parity.

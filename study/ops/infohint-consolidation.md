@@ -5,9 +5,12 @@
 **Canonical component:** `apps/web/src/components/info-hint.tsx` — Radix-backed (tap + hover + keyboard, portal so it is never clipped in `overflow-hidden` tables, `dir="auto"` RTL). API: `<InfoHint text={t("...")} label?={aria} />`. Pass a resolved i18n key so ar/en stay in parity.
 
 ## Done
-- `InfoHint` upgraded to the Radix primitive; onboarding `InfoTip` collapsed into a thin shim over it (commit `9348a382`).
-- GRN receive-lines screen: ⓘ beside Ordered / Already received / Remaining / Qty to receive (commits `8de2d9ee`, `4dfc9d51`).
-- Inventory ad-hoc `cursor-help`+Tooltip blocks → InfoHint (item-form, price-lists, stock-counts ×3) — IN PROGRESS.
+- `InfoHint` upgraded to the Radix primitive (tap+hover+keyboard, portal, RTL); shows the `?` help cursor on hover (`9348a382`, `ef6203d2`).
+- GRN receive-lines screen: ⓘ beside Ordered / Already received / Remaining / Qty to receive (`8de2d9ee`, `4dfc9d51`).
+- **A2** Inventory ad-hoc `cursor-help`+Tooltip blocks → InfoHint (item-form, price-lists, stock-counts ×3; 9 sites, −85 lines) (`d8222239`).
+- **A1** All onboarding `InfoTip` callers (steps 1-4,6) + reports stock-movement-ledger migrated to `InfoHint`; the reports file's OWN duplicate Radix wrapper removed; **`InfoTip` shim DELETED**, zero references remain (`ef6203d2`).
+- **A3 (partial)** Converted accounts COA dialog (3), warehouses transit hint, go-live reconciliation to InfoHint. Dead `Info`/`Tooltip*` imports removed everywhere (lint clean) (`ef6203d2`).
+  - Deliberately SKIPPED as not per-field explainers (kept as-is): trial-balance branch-state note, invoice draft-numbering explainer, credit-note irreversible warning, exchange-rate approval banner, security auth-provider notice, localization multi-line per-user note.
 
 ## A. Existing duplicates to consolidate (~40)
 

@@ -102,9 +102,13 @@ For each action: verify the happy path **and** the four states — loading / err
 
 ---
 
-## Sign-off
+## Sign-off — ✅ SIGNED OFF 2026-07-02
 
-- [ ] All CRITICAL/HIGH items pass for the loaded dataset.
-- [ ] Dual-path equivalence verified: a direct purchase and an equivalent PO→GRN→bill post identical GL + stock outcomes.
-- [ ] Idempotent replay verified: re-submitting the same request never double-posts.
-- [ ] Findings logged in `_findings.md`.
+- [x] All CRITICAL/HIGH items pass for the loaded dataset. Zero-cost WAC guard shipped (#10, `a4b9d4c7`).
+- [x] Dual-path equivalence verified: a direct purchase and an equivalent PO→GRN→bill post identical GL + stock outcomes (founder-verified live; baseline tied out — 2111 = 3,524.500, 2121 = 0.000, supplier balances correct).
+- [x] Idempotent replay verified (code + live): re-submitting the same request never double-posts.
+- [x] Findings logged in `_findings.md` — all FIXED (#10, #17–20 + the testing-round fixes committed `9427be05`, `ddc89f58`, `8a9be57e`).
+
+> **Founder-verified live on Al-Asala (KWD). Closed out.** UX polish that surfaced during dual-path testing (bill/PO currency precision, GRN column/toast/alignment, direct-purchases list) shipped in the same session and applies module-wide.
+>
+> **Follow-up (2026-07-02, post-sign-off):** finding #18 (consistent searchable picker) grew into a full app-wide consolidation — every hand-rolled entity picker (all 18 sites across purchase/sales/invoices/inventory/journal/legal-entities) now runs on shared primitives (`searchable-combobox`, `async-combobox`, `multi-select-list`) + thin per-entity wrappers. Dead code deleted; typecheck/i18n/tests/build green; pushed to main. See [[project_combobox_consolidation]].

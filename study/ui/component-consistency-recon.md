@@ -199,6 +199,34 @@ Verified empirically (node ICU 78): Intl is correct for KWD/BHD/OMR/JOD/TND/LYD=
 ### ✅ P1-now — DONE (uncommitted)
 Display-only fix, zero math paths touched. `apps/web/src/lib/currency-precision.ts`: added `CURRENCY_DECIMALS_OVERRIDES = { IQD: 3 }` consulted before Intl (with doc comment noting math decimals live separately in `@zerupt/shared` and are intentionally untouched). `moneyDecimals` inherits it via delegation (money-format.ts unchanged). Tests: new `currency-precision.test.ts` + extended `money-format.test.ts` (IQD→3, GCC 3dp, 2dp set, JPY/KRW 0, junk→2, `formatMoneyAmount("1.5","IQD")="1.500"`). `pnpm --filter @zerupt/web typecheck` clean; vitest 2 files / 29 tests pass. → later routing GL/TB/JE/import display formatters to canonical is now non-regressive for all real-world currencies (KWD/SAR byte-identical; only IQD display corrects 0→3, no tested GCC tenant uses IQD).
 
+## 6. FULL CLOSEOUT — DONE 2026-07-03 (all phases shipped to main, verified GREEN)
+
+Executed A→H + purchase wave + dead-code sweep, each committed+pushed to `zerupt-erp` main. 17 commits (P1 `713f6d4f` + 16 below):
+- A `b40d7917` currency fallbacks (landed-cost payload bug + overview/tb-import) via shared resolveSelectedEntity
+- B `4690e359` widen ESLint decimals rule to locations+accounts
+- C `9e148b3d` extend MoneyInput (currency-prefix) + moneyStep + stepQtyByDecimals + house-rule docs
+- D1 `af6fea92` LegalEntityPicker + AccountPicker.headerOnly, drop native selects (taxation/account-dialog)
+- D2 `8009b94b` CurrencyPicker (pair-selector) + WarehouseCombobox (inventory form sites)
+- F `b289453f` dedup money formatters (GL/TB/JE/import previews → canonical, semantics preserved)
+- E-sales `a3ba718d` money/qty input swaps (record-payment/credit-note/invoice/direct-sale) + stale-closure fix
+- E-accounting `fc868dba` journal-entry + bank-rec money inputs (autosave-on-blur preserved)
+- E-inv-B `59a4239d` reorder/serial/promo/stock-counts-list decimals cleanup
+- E-inv-A `65dcde30` inventory form money/qty swaps (item-form/adjustment/transfer/price-list/serial/pack-units)
+- G `e251cbeb` remaining native selects → shared pickers (import/sami/tb) + Brand/Unit documented exceptions
+- stock-count `84cb2872` **correctness**: stepper respects item's real quantityDecimals (DB→DTO→web threading)
+- H `bc60ecc0` formatPercent primitive + route tax-rate/percent displays
+- PW-B `9e591ccd` purchase payments/landed-cost/supplier money inputs + landed-cost branch→BranchCombobox
+- PW-A `c0550e1c` purchase document-line money/qty + BillLineSearch quantityDecimals threading + return-qty fix
+- cleanup `4a99aef3` remove orphaned migration-matching money formatter
+
+**Final verification GREEN (this refactor):** web typecheck clean, production build passes, 2559 web tests pass, financial API suites all pass (tax-calc/journal-posting/currency-decimals-consistency/pos-transactions/sales/opening-balance/stock-counts), shared 451 pass. ~200+ new tests added across the phases (sales/inventory/purchase previously had ~zero on these paths).
+
+**NOT ours (concurrent session's in-flight work, flagged for that session):** `accounting-sections.ts` resolveActiveSection regression (commit `460a3485`, opening-balance-header work) and 28 purchase-returns.service.spec failures (`requireReturnApproval` WIP). Neither is in this refactor's commit range or scope.
+
+**Accepted design (not tech debt):** inventory transfer/adjustment/direct-sale qty inputs remain frontend-permissive (6dp) where the item-search shape doesn't expose decimals — server rounding is authoritative; purchase lines + stock-count (where it mattered) DO enforce per-item precision. Brand/Unit comboboxes kept as documented free-text exceptions. pos-transactions/display.ts + purchase KPI strips kept deliberately.
+
+---
+
 ### ✅ P1-later — DONE 2026-07-03 (uncommitted), proven GREEN
 Single authoritative ISO-4217 map now lives in `packages/shared/src/pos-money/currency.ts` (added IQD/JOD/LYD/TND=3, full ISO 0dp set, + app-convention IDR/LBP/YER=0 with comment). Collapsed onto it: `sales/invoices/currency.ts` + `purchase/invoices/currency.ts` (now re-export), `sales-orders.service.ts` inline map (deleted, imports shared), and web `getCurrencyDecimals` (delegates to shared; removed Intl + the redundant IQD override). Fixed the `pos-transactions.service.ts:1845` hardcoded `currencyDecimals:2` → `currencyDecimals(ctx.currency)` (no-receipt-return KWD/BHD/OMR tax now 3dp). Added drift-guard spec locking `country-currency.ts` + seed to the shared map.
 - **Decisions:** IDR/LBP/YER = 0dp (app convention, matches `country-currency.ts`, deviates from ISO's 2). `tenant_currencies.decimalPlaces` proven inert (CRUD-only) → left out of scope (wiring it would be a new behavior change).

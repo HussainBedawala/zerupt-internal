@@ -223,7 +223,11 @@ Executed A→H + purchase wave + dead-code sweep, each committed+pushed to `zeru
 
 **NOT ours (concurrent session's in-flight work, flagged for that session):** `accounting-sections.ts` resolveActiveSection regression (commit `460a3485`, opening-balance-header work) and 28 purchase-returns.service.spec failures (`requireReturnApproval` WIP). Neither is in this refactor's commit range or scope.
 
-**Accepted design (not tech debt):** inventory transfer/adjustment/direct-sale qty inputs remain frontend-permissive (6dp) where the item-search shape doesn't expose decimals — server rounding is authoritative; purchase lines + stock-count (where it mattered) DO enforce per-item precision. Brand/Unit comboboxes kept as documented free-text exceptions. pos-transactions/display.ts + purchase KPI strips kept deliberately.
+**Follow-ups also closed same day (2 more commits, tree GREEN):**
+- `15d7a227` — threaded real per-item `quantityDecimals` through the item-search shapes so transfer / adjustment / direct-sale qty inputs now ENFORCE the item's precision (pack-mode guarded). Only genuinely item-less/snapshot sites remain permissive by design (expense lines, GRN/return snapshots, POS 6dp-storage module, credit-note historical lines, reorder-config/suggestions where the dialog/API lack the item's decimals — all documented in-code).
+- `1e45d567` — removed orphaned `taxation/tax-group-combobox.tsx` (leftover from the earlier combobox project).
+
+**Kept deliberately (documented exceptions, not debt):** Brand/Unit free-text comboboxes, `pos-transactions/display.ts`, purchase KPI strips.
 
 ---
 

@@ -51,10 +51,10 @@ pnpm --filter @zerupt/api typecheck    # or test
 | Layer | Technology |
 |-------|-----------|
 | Frontend | Next.js 16.1.6 + React 19, TypeScript strict, shadcn/ui + Tailwind, TanStack Query, Zustand, next-intl v4 (ar/en) |
-| Backend | NestJS modular monolith, Drizzle ORM, BullMQ + Upstash Redis, NestJS EventEmitter |
+| Backend | NestJS modular monolith, Drizzle ORM, pg-boss queue on Neon (no Redis), NestJS EventEmitter |
 | AI Service | FastAPI (Python), LiteLLM, pgvector |
 | Database | Neon Serverless Postgres (admin DB + per-tenant DBs), Supabase Auth |
-| Hosting | Vercel (frontend), Railway (API + AI), Neon (Postgres), Supabase (Auth + Storage), Upstash (Redis) |
+| Hosting | Vercel (frontend), Railway (API + AI), Neon (Postgres), Supabase (Auth + Storage) |
 | Testing | Jest (API), Vitest (web), Playwright (E2E), pytest (AI) |
 | CI/CD | GitHub Actions, Turborepo, pnpm workspaces |
 

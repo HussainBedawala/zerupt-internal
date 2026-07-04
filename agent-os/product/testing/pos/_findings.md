@@ -103,3 +103,64 @@
 | 19 | 2026-07-04 | 01 Settings | LOW | Opening float didn't show 0.000 until focused. | FIXED bf1ffbbc — formats to currency decimals from first render |
 | 20 | 2026-07-04 | 01 Settings | LOW | Duplicate-code error shown in TWO places (toast + inline banner). | FIXED bf1ffbbc — single inline error near Code field, no toast |
 | 21 | 2026-07-04 | 01 Settings | HIGH | Could DEACTIVATE a register with an OPEN shift (server had no guard); till kept selling but register vanished from shift-open picker. | FIXED bf1ffbbc — server ConflictException guard (in a transaction, TOCTOU-safe) + UI blocks deactivate with reason; shift-open already rejected inactive registers |
+
+| # | Date | Submodule | Severity | Summary | Status |
+|---|------|-----------|----------|---------|--------|
+| 22 | 2026-07-04 | 01 Register/Session | HIGH | Opening a new shift right after closing one re-showed the Close Shift dialog on the fresh shift (stale `overlay:'close'` — bumpShiftVersion never reset it). | FIXED 3eee0a6b — overlay cleared on every shift open/close/reconcile; regression test added |
+| 23 | 2026-07-04 | 01 Register/Session | MEDIUM | Open Shift "opening float" was a raw number input (6dp `0.000000`, spinner arrows, unformatted "5"). | FIXED 3eee0a6b — shared MoneyInput at currency precision (KWD 3dp, no spinners) |
+
+## Live findings (2026-07-04, sale/receipt/settle dogfooding on shift #2)
+
+| # | Date | Submodule | Severity | Summary | Status |
+|---|------|-----------|----------|---------|--------|
+| 24 | 2026-07-04 | 06/09 Offline+Contracts | CRITICAL | Offline sale with a PACK-UNIT item fails to sync ("Request validation failed", retry loops) — stranded on-device forever. Sync ingest schema/service never learned pack units (unitPackId/unitQty), unlike the direct add-line path. | FIXED 728b6406 — sync schema + server-side pack resolution: base qty = unitQty×factor, pack discount folded via shared helpers; posts revenue/discount/COGS/stock identical to online; accounting-reviewed clean (2 passes) |
+| 25 | 2026-07-04 | 07 Receipt | HIGH | Pack-unit receipt line internally inconsistent: "1 × KWD 8.730" but line total "KWD 52.380" (pack qty × base price ≠ base total). | FIXED 728b6406 — pack-aware displayUnitPrice (lineTotal÷qty, no re-pricing) → "1 × 52.380 = 52.380" |
+| 26 | 2026-07-04 | 06 Offline | LOW | Sync-queue drawer showed money at 6dp (52.380000) instead of KWD 3dp. | FIXED 728b6406 — formatted via currency formatter |
+| 27 | 2026-07-04 | 03 Payment | MEDIUM | Two change-dues shown pre-complete (small "Change:" under Amount Due + big banner) — earlier dedup was incomplete. | FIXED 728b6406 — single CHANGE DUE banner |
+| 28 | 2026-07-04 | 03 Payment | MEDIUM | Tapping Pay auto-opened the amount keypad; cashier should choose (type / Exact / chip). | FIXED 728b6406 — autoOpen removed; opens on tap |
+| 29 | 2026-07-04 | 03 Payment | LOW | Numeric keypad dialog off-center with uneven padding. | FIXED 728b6406 — standard centered DialogContent + even gaps |
+| 30 | 2026-07-04 | 03 Payment | MEDIUM | Overpaying with only non-cash tenders gave no feedback (Complete silently disabled). | FIXED 728b6406 — inline warning "change only on cash" |
+| 31 | 2026-07-04 | 03 Payment | OPEN | On Account tender disabled with no customer attached (correct guard) — but is there any way to ATTACH a customer on the till? If not, On Account is unusable in practice. | OPEN — investigate customer-attach affordance on /pos |
+
+| # | Date | Submodule | Severity | Summary | Status |
+|---|------|-----------|----------|---------|--------|
+| 32 | 2026-07-04 | 07 Receipt | LOW | "Reprint receipt" dialog (sync-queue reprint, queue-reprint-dialog) shows "Send via WhatsApp" disabled even for a SYNCED sale that has a receipt token. The WhatsApp-enable fix (commit 3d2eb4ee) only covered the post-sale local-sale-receipt, not the reprint dialog. | OPEN — wire the same receiptToken→wa.me flow into the reprint dialog (submodule 07/10) |
+
+---
+
+## Tie-out re-recon + lifecycle code audit (2026-07-04 PM, PROD Asala `zerupt_tenant_al_asala_auto_parts_mqy1wpk2` @ `br-red-term`)
+
+> Submodule 02 autonomous re-run over all **12** completed transactions (was 11; new pack-unit sale `b9376bef` / B1SHUWAIKHREG1-2-1 on shift #2). Manual founder guide delivered: [`02-manual-test-guide.md`](02-manual-test-guide.md).
+
+**Three-way tie-out (POS ↔ GL ↔ stock): ✅ 12 of 12 now GREEN.** Every completed tx has ≥2 balanced journal entries (Σdebit−Σcredit = 0.000000 exact), a revenue JE (`pos.transaction.completed`/`pos.return.completed`), a COGS JE (`inventory.sale`/`sale_return`), and matching signed stock-ledger movements (sales negative, returns positive). Header arithmetic exact on all 12; transactionNumber unique + monotonic.
+
+**Finding #17 (CRITICAL) — RESOLVED on prod.** The two previously-broken transactions were **backfilled 2026-07-04** (verified live, not assumed):
+- **tx-5 (`9909384f`, serial return):** now has `inventory.sale_return` JE (DR 1141 / CR 5100 = 99.000, specific serial cost) + stock **+1** restock (backfilled 14:48). Ties out.
+- **tx-8 (`ec78893f`, batch sale):** now has COGS JE described "inventory.sale (backfill finding #17)" (DR 5100 / CR 1141 = **299.538459**, basis **B / current-WAC** per the runbook) + stock **−6/−5 = −11** across two lots (backfilled 16:25). Balanced, ties out.
+  - **Note (not a defect):** tx-8's backfilled COGS (299.538 on WAC basis) intentionally deviates from line `costAtSale`×qty (13.000×11 = 143.000). This was the documented [runbook](../../../../study/pos/11-tie-out-backfill-and-residual-runbook.md) basis-B decision (line costAtSale was stale/wrong), not a new tie-out break.
+
+**Pack-unit tie-out (commit 728b6406) — ✅ CONFIRMED END-TO-END** on real data (tx `b9376bef`): line stores **base qty 6** (unit_qty 1 pack × factor 6) @ 8.730; stock relief **−6 base units** (not −1 pack); COGS 28.620 (= 6 × 4.770 cost); revenue 52.380 = pack price. Findings #24/#25 verified live.
+
+**Lifecycle code audit (hold / recall / pay / void — `pos-transactions.service.ts`): no new CRITICAL/HIGH.**
+- `pay` — status-guarded UPDATE `WHERE status='draft'` (atomic double-tap no-op); empty-cart guard (`Cannot pay a transaction with no lines`); grand-total integrity assertion inside the tx; `assertBatchLotsAttributable` pre-completion oversell guard (finding #17 D1); receipt-token minted post-commit (no orphan admin-DB row).
+- `hold`/`recall` — guarded UPDATE on exact prior status → concurrent double-hold / double-recall are clean no-ops; `MAX_HELD_PER_REGISTER` enforced; held excluded from revenue by status filter.
+- `void` — guarded UPDATE on exact pre-read status (double-void safe); blocks void when a return already exists (no double-reversal); atomic outbox inserts for GL reversal + inventory restock; serials released atomically; draft-void emits nothing. Combined with the shipped `runDurableGated` durability, async-relief failures now dead-letter LOUDLY (no silent gap like the pre-fix #17 casualties).
+
+**Recon SQL note:** GL tables are `journal_entries` + `journal_entry_lines` (not `journal_lines`); join key `source_document_type='pos'` (lowercase), `source_document_id = transaction.id`. Tenant accounts: 1112 Cash Register, 4110 Product Sales, 4200 Sales Returns, 5100 COGS, 1141 Merchandise Inventory.
+
+**Verdict:** submodule 02 data-tie-out invariants all pass on the live dataset. No code fix required this pass (the one CRITICAL was already fixed + backfilled). Remaining work is the founder's manual UI run (hold/recall/void have zero live rows — created in the guide) + the open non-blocking items below.
+
+---
+
+## ✅ Submodule 01 — Register & Session — SIGNED OFF (2026-07-04)
+
+Live-tested on prod-test tenant Al Asala (KWD 3dp). All register-management + shift open/close + close-reconcile paths pass after the fixes below. Register-settings fully redesigned (Registers list + detail drawer, mirroring legal-entities). Commits: 574c576f · bf1ffbbc · 3eee0a6b (+ payment/receipt fixes 3d2eb4ee · 728b6406 verified incidentally).
+
+Findings resolved this submodule: #4 (dark dialogs), #7 (dup helper text), #9 (close-dialog scroll), #17 (settings UI redesign), #18 (auto-code), #19 (float 0.000), #20 (single inline error), #21 (deactivate open-shift guard + TOCTOU), #22 (stale close overlay), #23 (opening-float decimals). Structural DB invariants confirmed at baseline.
+
+**Deferred (need Manager user + approval PIN + 2nd cashier — SoD batch):**
+- Manager-approval-on-large-discrepancy at shift close.
+- Cross-cashier "you already have an open shift" (single-cashier tenant today).
+These carry into a dedicated SoD/RBAC test pass (with submodule that touches PIN approvals).
+
+**Open non-blocking:** #1 (grandTotal DB CHECK, LOW), #16 (verify close server-authoritative — now shows "live from server", re-confirm), #31 (customer-attach affordance for On Account — MEDIUM, likely a build), #32 (WhatsApp in reprint dialog, LOW).

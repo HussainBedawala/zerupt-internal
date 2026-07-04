@@ -40,4 +40,12 @@
 - SO is non-primary for Asala; if the UI is thin, note MEDIUM rather than block.
 
 ## Sign-off
-- [ ] All CRITICAL/HIGH pass. Findings logged.
+- [x] All CRITICAL/HIGH pass. Findings logged.
+
+**SIGNED OFF — 2026-07-04 (Al-Asala Auto Parts, prod).** Findings #18–27 all resolved (#27 display fixed; low-stock semantics tracked as DEV-443, inventory pass). Commits: b0d97142 (single-page create at PO parity + draft label + 3dp + searchable customer + breadcrumb), ba24b032 (warehouse combobox + header alignment), 55b0928e (3dp invoice line + blocked-customer re-check at confirm + test), 865ac93b (reserved/available on stock-levels).
+
+DB-verified invariants (prod Asala, branch br-red-term-a1vs9ndl):
+- Draft + confirmed SO post 0 journal_entry_lines / 0 stock_ledger_entries; 1131 held at 370.500.
+- Confirm reserves via `stock_reservations` (active) with no ledger movement; gapless `SO-####` assigned only at confirm.
+- Convert-to-invoice links back (`sales_invoices.source_order_id → SO`), produces a draft invoice, no GL/stock until invoice confirm (04).
+- Idempotent transitions (conditional WHERE-status UPDATE); confirmed-SO immutable (`requireDraft`); qty/price validated client+server; blocked-customer hard-blocked at create/update AND re-checked at confirm.

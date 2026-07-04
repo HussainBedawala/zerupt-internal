@@ -94,6 +94,8 @@ Each re-drive is one atomic engine transaction. If a run dead-letters, no partia
 
 ## Part 2 — Residual monitoring & reconciliation runbook
 
+> **UPDATE 2026-07-04 — R1 & R2 superseded by the "never-block-and-flag" decision.** The founder chose (B): tracked-item POS sales that exceed the *system's* lot count should **complete + relieve stock negative + flag for reconciliation** (the system count often lags physical reality; the till must never refuse a real sale). This **dissolves both R1 and R2** (no reservation machinery needed — the loud negative-stock flag is the honest signal) and **supersedes the block-at-completion guard** (`f48888ca`). Design/implementation handed off to a fresh agent (design-first). The monitoring queries below remain useful as a backstop until that lands.
+
 The shipped fix (erp `f48888ca`) blocks the common single-transaction batch/serial oversell at completion. Two residuals remain **by design** and now fail **loudly** (dead-letter) rather than silently — they need monitoring, not code, for MVP.
 
 ### Residual R1 — concurrent same-lot completions within the async fan-out window

@@ -42,5 +42,19 @@
 - Credit limits / payment terms / AR aging statements are out of scope for Asala — verify they are simply absent, not half-wired producing wrong numbers.
 
 ## Sign-off
-- [ ] All CRITICAL/HIGH pass for Asala.
-- [ ] Findings logged in `_findings.md`.
+- [x] All CRITICAL/HIGH pass for Asala.
+- [x] Findings logged in `_findings.md`.
+
+### Sign-off note — 2026-07-04 (Asala, prod dogfood)
+**SIGNED OFF.** 17 findings raised, **all FIXED** (0 open, 0 deferred) across commits `2c6380b3`, `b9037a50`, `40ed984a` on `main`. Reviewed by code/frontend/nestjs/accounting reviewers; reconcile invariant verified at the DB (**Σ party-tagged 1131 = KWD 370.500**, untagged = 0; a zero-opening new customer CUST-0005 posts **no** 1131 line).
+
+Highlights:
+- **AR statement** tab added — GL-authoritative, per-currency running balance, closing ties to `getBalance().byCurrency` by construction (single-currency renders unchanged).
+- **Sequence-collision** (imported CUST codes vs lazy `cus` sequence) fixed at the choke point (sequence born at `max+1`, no race) + prod data patch (`cus.next_number=5`).
+- **CSV formula-injection** hardened app-wide via shared `escapeCsvCell` (6 divergent copies migrated).
+- Form redesign: only **name** required, currency dropdown (hidden for single-currency), phone/email restored, tax-group field (hidden for no-VAT), one clean error toast, optional user code override.
+- Detail UX: **Block/Unblock** action added, card pencils removed, edit route created (was 404).
+
+**Carry-forward to 03/04:** verify a **blocked** customer is actually prevented from being sold to (enforcement lives at sale/invoice creation + the customer picker), parallel to the credit-limit gate. Blocked *status* + reason now exist and are settable; enforcement is untested.
+
+**Deferred to a VAT/multi-entity persona (not applicable to Asala, no debt for this dataset):** none — findings 6/13/14 (multi-currency) were fully implemented, not deferred.

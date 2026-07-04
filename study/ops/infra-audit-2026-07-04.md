@@ -1,6 +1,36 @@
 # Zerupt Infra, Cost & Risk Audit — 2026-07-04
 
-Four parallel read-only audits over real production infrastructure (Neon, Railway, Vercel/Sentry/Supabase, codebase cost sweep), triggered by the pre-launch security/performance push. Context: bootstrapped, ~30 days runway, June 15 launch shipped, live POS customers imminent. Nothing was modified.
+Four parallel read-only audits over real production infrastructure (Neon, Railway, Vercel/Sentry/Supabase, codebase cost sweep), triggered by the pre-launch security/performance push. Context: bootstrapped, ~30 days runway, June 15 launch shipped, live POS customers imminent.
+
+## ✅ EXECUTION STATUS — ALL P0–P2 ITEMS CLOSED (same day, 2026-07-04)
+
+Everything below P3 was fixed, verified, and shipped the same day. **Only P3 (the deep audit) remains — see the P3 section for its scope; it has NOT been run.**
+
+**Code (erp main, commits d40a86c2..072321c2, deployed via push):**
+- drizzle-orm 0.45.2 everywhere (SQLi GHSA-gpj5-g38j-94v9 closed)
+- Upstash fully removed: in-process tenant-credential cache (packages/tenant-context/src/tenant-cache.ts), always-on in-memory auth rate limiter (apps/web/src/lib/auth/rate-limit.ts); deps/env purged; CLAUDE.md updated
+- Neon pool crash fixed: pool.on('error') absorbs idle-socket drops, dead pools evicted + recreated on next request (ZERUPT-API-7 root cause = missing error listener)
+- AI import-classifier: provider-diverse chains (gemini→cerebras→groq), 0 same-model retries, stale Fireworks rungs removed, fallback logs downgraded (ZERUPT-AI-1/-2/-4/-5/-8)
+- Web: stale-chunk auto-reload + toast (both error boundaries + global), force-static robots/sitemap, bot-probe early 404s in proxy.ts (matcher rewritten from dot-exclusion to explicit asset-extension list)
+- Supabase storage: public-bucket allowlist (tenant-assets only), SVG blocked end-to-end (server + client + en/ar copy), shared magic-byte validation, cacheControl 3600
+- Sentry: init gated off local dev (api/web/ai), setUser({id}) + tenant_id tag, refresh-token errors → warning + clean redirect
+- Verified: api+web typecheck clean, i18n parity, AI 504/504, API 7605 passed; 13 failing suites proven pre-existing on pristine HEAD (bins, purchase-returns, zatca-document, import-resolution, data-export-worker, ai-import.client, entity-fields, items.service — an existing backlog item, NOT from this work). Opus code review: 1 HIGH found and fixed same session.
+
+**Infra (applied live + founder-confirmed):**
+- Neon prod + dev endpoints: suspend_timeout 0 → 300s (verified via API)
+- pg_stat_statements installed on all prod + dev databases
+- Railway: meilisearch service deleted; zerupt-internal watchPatterns scoped to /tools/zerupt-mcp/**; @zerupt/ai healthcheckPath /health set
+- Founder completed: Vercel Firewall deny rules (*.php, /.env*, /wp-*), Railway Upstash env vars deleted, Upstash account cancelled, Supabase bucket flags confirmed (tenant-assets public-read, import-files private)
+
+**Standing decisions (context for future sessions):**
+- API stays single-replica until live cashier traffic; revisit together with the in-memory tenant cache (per-instance) when scaling out
+- Neon autosuspend flips back to always-warm when live POS cashiers exist (the deliberate insurance premium)
+- Audit-log retention deferred by choice (MB scale today); revisit when Neon storage becomes a line item
+- Pre-existing API jest failures (list above) are an open backlog item for a maintenance pass
+
+---
+
+Original findings follow (historical record — statuses above supersede).
 
 ## Priority queue (fix in this order)
 

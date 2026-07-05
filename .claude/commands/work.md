@@ -73,7 +73,7 @@ Present implementation plan:
 - Your own recommendations and improvements, even if missing from the spec
 
 **Skill dispatch** (based on what the plan touches):
-- API design → use `api-design` skill
+- API design → use `api-reviewer` agent
 - DB changes → use `database-reviewer` agent
 - Neon provisioning → use `neon-postgres` skill
 
@@ -157,7 +157,7 @@ If update needed, say: **"This issue added [new routes/tables/module]. Run `/upd
 1. **Study topics**: write to `study/<phase>/<topic-kebab>/README.md` in root `/Zerupt/` repo. Concepts behind what was built, not implementation steps. Commit + push root repo.
 2. **Content check**: if content-worthy (visible feature, milestone hit, interesting problem) → read `agent-os/content-style-guide.md` → create Marketing team issue in Linear. Skip silently if not.
 3. **Context save**: at end of a work session (not every issue), run gstack `/context-save` so the next session resumes cleanly across days.
-4. **Next issue**: move next logical issue to "Todo". Ask: **"DEV-XX done. Next issue? (yes / done for today)"** → yes: restart from Phase 1 | done: run `/learn-eval`.
+4. **Next issue**: move next logical issue to "Todo". Ask: **"DEV-XX done. Next issue? (yes / done for today)"** → yes: restart from Phase 1 | done: capture anything durable in MEMORY.md + study logs, then wrap.
 
 ## PHASE 10: DEPLOY (after PR merged — optional, once a pipeline exists)
 

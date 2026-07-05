@@ -11,15 +11,15 @@ The world's first agentic AI retail ERP. Signup to live with real data in under 
 **Default to delegating work to subagents, and match the model to the task.** Do NOT do everything inline on the default/Opus model — large models burn cost and main-context budget when a smaller one would do the job. For any non-trivial task or question:
 
 1. **Delegate to a subagent** (via the Agent tool) so the heavy reading/searching stays out of main context — keep the main loop lean.
-2. **Pick the cheapest model that can do the job well** by assigning `model` on the Agent call:
+2. **Pick the cheapest model that can do the job well** by assigning `model` on the Agent call. Match by capability TIER, not by model name — model IDs churn every few months, the tiers don't. Swap only the right-hand column when the lineup changes.
 
-| Task complexity | Model |
-|------------------|-------|
-| Search, file lookup, listing, mechanical edits, simple Q&A | `haiku` |
-| Standard coding, reviews, docs, multi-file changes, most `/work` steps | `sonnet` |
-| Hard architecture, tricky debugging, deep reasoning, financial/accounting correctness | `opus` (only when genuinely needed) |
+| Capability tier (durable) | Use for | Current model (swap as lineup changes) |
+|------|------|------|
+| **Cheap/fast** | Search, file lookup, listing, mechanical edits, simple Q&A | `haiku` |
+| **Standard** | Standard coding, reviews, docs, multi-file changes, most `/work` steps | `sonnet` |
+| **Top** | Hard architecture, tricky debugging, deep reasoning, financial/accounting correctness | `opus` (justify before using) |
 
-3. **Never reach for Opus by default.** Justify Opus before using it; prefer Sonnet, fall back to Haiku for trivial work. When unsure, start smaller and escalate only if the smaller model struggles.
+3. **Never reach for the top tier by default.** Justify it before using; prefer Standard, fall back to Cheap/fast for trivial work. When unsure, start smaller and escalate only if the smaller model struggles.
 
 ---
 
@@ -133,6 +133,7 @@ Warm cream `#F9F7F5` (canvas) · Ink `#141310` (text/primary) · Citron `#979C1A
 
 - **`/work`** — full dev workflow from a Linear issue: research → plan → TDD → review → verify → commit → study → content check.
 - **`/website`** — website issues: design (Stitch MCP), copy (content-engine), build, review (website-review skill), optional Remotion video.
+- **`/harden <module>`** — ledger-first module-hardening program (audit → harden backend+frontend → review panel → gate → commit-with-sha → log). Resumable via `study/<module>/_hardening-log.md`. The process behind the accounting/inventory/purchase/sales/POS programs.
 
 ### Linear Workflow
 

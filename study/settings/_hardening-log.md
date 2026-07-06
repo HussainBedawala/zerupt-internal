@@ -68,7 +68,7 @@ Each layer = BE + FE + DB together. Consistency/ponytail track runs INSIDE every
 ### Batch A — per-view execution (Identity & Access control plane, the L1 heart)
 - [x] VIEW 1 — security_settings wired for real — shipped `52addb45` (mig 0157)
 - [x] VIEW 2 — company: C1 tenant/settings gate + owner transfer (S1) + recovery contact (S3) — shipped `1e8775bf` (mig 0158)
-- [ ] VIEW 3 — members: team-users → @RequiresPermission + hash invitation.token
+- [x] VIEW 3 — members: team-users → @RequiresPermission + branchScope + hash invitation.token — shipped `9a4a1104` (mig 0159)
 - [ ] VIEW 4 — roles: lower(name) unique index + field-mask/constraintJson UI
 - [ ] VIEW 5 — approval-pins: owner-reset another user's PIN + forgot-PIN self-service
 
@@ -195,6 +195,49 @@ full monorepo turbo typecheck + test (pre-commit) green; console.log check green
   of free-text `reason` — both cross-cutting, out of VIEW-2 scope; verify in L5.
 - Codex independent cross-model review of the auth path NOT yet run — program gate; recommend before
   go-live (same as VIEW 1).
+
+### VIEW 3 — members: RBAC gates + branch scope + invite token hashing — `9a4a1104` (mig 0159) — 2026-07-07
+
+**Shipped:**
+- **RBAC migration:** team-users mutation routes (role/invite/activate/suspend/restore/deactivate/
+  branches) migrated from `@UseGuards(OwnerGuard)` to `@RequiresPermission(...)` keys (added
+  `settings.user.role.update`); stale DEV-36/37 TODOs stripped. `changeRole` KEEPS its Owner-only
+  service enforcement (safe fallback — no role-hierarchy/rank model exists to distinguish a
+  non-escalating transition from a privilege grab; ponytail-marked with the upgrade trigger:
+  role-hierarchy model ships → allow non-owner transitions for permission holders, keep the Owner
+  hard-check for owner promote/demote). OwnerGuard retained only on transfer-ownership.
+- **DEV-190 (was fail-open):** `branchIds` was `.optional()` and the invite dialog had NO branch
+  picker — every non-owner invite silently landed with zero branch access. Fixed BOTH server (zod
+  superRefine requires ≥1 branch; Owner refined out) and client (required branch multi-select with
+  loading / load-error+retry / empty states so a branch-fetch failure can't strand the inviter).
+- **Invite token hashing:** `invitations.token` was CLEARTEXT → `tokenHash` sha256(64) unique +
+  `tokenPrefix`(12) (mirrors api_keys), raw token returned once, accept looks up by hash (mig 0159:
+  data step expires pending cleartext invites, backfills terminal rows with an unrecoverable
+  id-derived hash, `DROP CONSTRAINT IF EXISTS` for deploy-safety across differently-named tenant
+  constraints). Accept route: added Zod validation (was unvalidated → hashToken(undefined) 500 +
+  large-body DoS) + throttle; cross-tenant IDOR tests for resend/revoke.
+
+**Reviewer panel:** security (PRIMARY) + nestjs + database + frontend + code. The 3 headline risks
+(guard→permission escalation, fail-open branchScope, token hashing) all verified CORRECT. Fixed:
+accept-route validation/throttle, branch-fetch stranding, TEAM_TID barrel registration, checkbox
+a11y, stale-branchId pruning, IDOR tests, DROP CONSTRAINT IF EXISTS. No open CRITICAL/HIGH.
+
+**Gates:** api + web typecheck green; `invitations team-users` = Test Suites 4 passed, 107 tests;
+i18n:check parity green; full monorepo turbo typecheck + test (pre-commit) green.
+
+**FOUNDER DECISIONS logged (agent-os/product/testing/settings/_findings.md — F1, F2):**
+- **F1 (architecture):** the `invitations` create/resend/accept trio is dead/broken —
+  `acceptInvitation` never provisions membership (no userTenantMap/userRoles/userBranches/Supabase
+  link) and the route is unreachable by a not-yet-member; `team-users.inviteUser` is a SEPARATE real
+  path that provisions via Supabase. Pick the canonical invite flow: build real acceptance (AuthOnly
+  pre-tenant path + provisioning) OR remove the invitations module. This pass only hardened the token
+  at rest + accept validation; provisioning behavior UNCHANGED.
+- **F2 (trust model / escalation):** an `settings.user.invite` holder can assign a custom `roleId`
+  carrying sensitive keys to a new Member, bypassing the Owner-only `changeRole` guard via the invite
+  door. Decide: restrict roleId grants to Owner/settings.role.assign, or enforce a permission-ceiling
+  check in inviteUser. Ponytail-marked in code pending the decision.
+
+**Founder TODO:** apply mig 0159 to real dev/prod tenant DBs + verify.
 
 ## Deferred
 

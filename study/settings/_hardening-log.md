@@ -65,8 +65,16 @@ Each layer = BE + FE + DB together. Consistency/ponytail track runs INSIDE every
 
 ## Progress
 
+### Batch A — per-view execution (Identity & Access control plane, the L1 heart)
+- [x] VIEW 1 — security_settings wired for real — shipped `52addb45` (mig 0157)
+- [ ] VIEW 2 — company: gate tenant/settings PATCH (C1) + owner transfer (S1) + recovery contact (S3)
+- [ ] VIEW 3 — members: team-users → @RequiresPermission + hash invitation.token
+- [ ] VIEW 4 — roles: lower(name) unique index + field-mask/constraintJson UI
+- [ ] VIEW 5 — approval-pins: owner-reset another user's PIN + forgot-PIN self-service
+
+### Layers (the original L0-L5 frame; Batch A covers the L1 core)
 - [ ] L0 Foundation: multi-entity + isolation (+admin registry/provisioning)
-- [ ] L1 Identity & Access (control plane) (+signup/entitlement)
+- [~] L1 Identity & Access (control plane) — VIEW 1 done; VIEWS 2-5 remain
 - [ ] L2 Financial config contracts
 - [ ] L3 Document numbering
 - [ ] L4 Integrations & notifications (+billing/Stripe)
@@ -74,7 +82,63 @@ Each layer = BE + FE + DB together. Consistency/ponytail track runs INSIDE every
 
 ## Layer log
 
-(entries appended per layer)
+### VIEW 1 — security_settings wired for real — `52addb45` (mig 0157) — 2026-07-07
+
+**Problem (C2):** every control on the Security panel (idle timeout, max concurrent sessions,
+MFA policy, password policy, IP allowlist) was stored in `security_settings` but had ZERO
+consumers in `auth/` — a no-op admin panel giving false assurance.
+
+**Shipped (all server-side enforceable):**
+- **App-side session ledger** `auth_sessions` (mig 0157, tenant DB). Keyed on the Supabase
+  JWT `session_id` claim (verified via context7 against Supabase docs — claim exists, maps to
+  `auth.sessions` PK). Needed because GoTrue has NO per-tenant idle/concurrent cap and NO
+  granular per-session revoke (admin sign-out is global-only).
+- **`SessionPolicyGuard`** (global APP_GUARD in SecuritySettingsModule, resolves after
+  JwtAuthGuard + TenantResolverGuard): IP allowlist (node:net BlockList CIDR, fail-closed) +
+  MFA `aal` gate (all/admins) + delegates idle/concurrent to the ledger.
+- **`SessionLedgerService`**: idle-timeout eviction, concurrent-cap oldest-first eviction,
+  activity tracking, revokeOwn/revokeOthers/listActive. All revokes audited (`@AuthSession`).
+- **Sessions & Devices** surface (BE + FE): list own sessions, revoke one, sign out others.
+- **API-mediated change-password chokepoint** (founder decision — the permanent, industry
+  pattern): re-auth with current password (Supabase) → validate tenant policy → set via admin
+  API → revoke other sessions. Per-account (tenantId,userId) brute-force lockout, IP-independent.
+- **MFA anti-lockout**: tightening mfaPolicy to all/admins requires the caller to already hold
+  an aal2 session (prevents self-lockout footgun).
+- **IP allowlist validation** hardened (node:net; the old regex accepted 999.999.999.999).
+- **FE**: central 401/403 handling (SESSION_REVOKED/IDLE → sign out; IP_NOT_ALLOWED/MFA_REQUIRED
+  → explain, no loop), enforcement warnings, testid registry.
+
+**Perf (founder flagged as critical):** steady-state adds ZERO extra DB round-trips per request
+— 30s in-memory policy cache + 30s session-validity cache + 60s throttled last_seen write.
+Cold path = one indexed PK read. Cross-instance revoke propagation bounded by 30s (single-
+instance today; documented).
+
+**Reviewer panel:** security-reviewer + nestjs-reviewer + frontend-reviewer + code-reviewer.
+No CRITICAL/HIGH bypasses. Fixed: IP-only throttle → per-account lockout; per-request MFA-admin
+DB lookup → cached; tenantId defense-in-depth on ledger queries; non-fatal last_seen write;
+guard-order regression test; password.service 100% coverage; FE (unhandled 429, hardcoded "on"
+joiner, missing session invalidation, missing testids). Codex independent cross-model review
+NOT yet run — recommend before go-live per program gate.
+
+**Gates:** full monorepo turbo typecheck (10 pkgs) green; 64 api tests green (6 suites);
+i18n:check parity green; console.log check green.
+
+**Deferrals:**
+- Password expiry (`passwordExpiryDays`): NOT surfaced/enforced. NIST SP 800-63B advises against
+  periodic expiry; enforcing needs a per-user password_changed_at + force-reset flow. Field kept
+  in schema/DTO (round-trips) but removed from the editable UI so it is not "stored but ignored".
+- MFA enrolment UX: enforcement (aal gate) is real; a guided "enrol your authenticator" flow when
+  a tenant flips MFA on is a separate FE feature (enrolment is client-side Supabase, not blocked
+  by our guard). mfaPolicy defaults to optional so not a day-1 blocker.
+- **Migration 0157 NOT applied to local dev DB** — the machine's `DATABASE_TENANT_URL` points at
+  `zerupt_tenant_dev` which does not exist here. SQL is committed and applies via Railway
+  pre-deploy `migrate-tenants.cli` on deploy. FOUNDER TODO: apply to the real dev tenant DB and
+  verify from the actual DB before dogfooding.
+
+**Concurrent work folded in:** another engineer's Settings-view FE polish (i18n-ing hardcoded
+aria-labels in settings-sidebar/mobile-settings-tabs/settings layout; shared security-merged-panel
+integration) was reviewed by the same panel and shipped in this commit. Unrelated concurrent work
+(website pricing, tenant-signup, db-admin plans) was deliberately excluded from the commit.
 
 ## Deferred
 

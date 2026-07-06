@@ -67,7 +67,7 @@ Each layer = BE + FE + DB together. Consistency/ponytail track runs INSIDE every
 
 ### Batch A — per-view execution (Identity & Access control plane, the L1 heart)
 - [x] VIEW 1 — security_settings wired for real — shipped `52addb45` (mig 0157)
-- [ ] VIEW 2 — company: gate tenant/settings PATCH (C1) + owner transfer (S1) + recovery contact (S3)
+- [x] VIEW 2 — company: C1 tenant/settings gate + owner transfer (S1) + recovery contact (S3) — shipped `1e8775bf` (mig 0158)
 - [ ] VIEW 3 — members: team-users → @RequiresPermission + hash invitation.token
 - [ ] VIEW 4 — roles: lower(name) unique index + field-mask/constraintJson UI
 - [ ] VIEW 5 — approval-pins: owner-reset another user's PIN + forgot-PIN self-service
@@ -139,6 +139,62 @@ i18n:check parity green; console.log check green.
 aria-labels in settings-sidebar/mobile-settings-tabs/settings layout; shared security-merged-panel
 integration) was reviewed by the same panel and shipped in this commit. Unrelated concurrent work
 (website pricing, tenant-signup, db-admin plans) was deliberately excluded from the commit.
+
+### VIEW 2 — company: C1 gate + owner transfer + recovery contact — `1e8775bf` (mig 0158) — 2026-07-07
+
+**Shipped:**
+- **C1 (CRIT fixed):** `tenant/settings` PATCH + POST logo now gated by `@RequiresPermission(
+  "settings.tenant.update")` (were unguarded — any member could rename the company / swap the
+  logo). GET left ungated (read is not the hole). Controller metadata spec added.
+- **S1 owner transfer (full spec):** `POST /tenant/users/transfer-ownership` (OwnerGuard +
+  throttle + `@Audited("OwnerTransfer")`). New `OwnerTransferService`: (1) self-PIN confirm via new
+  `verifySelfPin` (reuses scrypt + sliding-window lockout, NO SoD — the owner confirms with their
+  own PIN); (2) extensible `assertTransferPreconditions` (ponytail no-op — no pending-approvals /
+  security-alert subsystem exists yet); (3) up-front fail-loud if the Owner system role is missing;
+  (4) atomic admin-DB role swap with the current-owner row locked `FOR UPDATE` (explicit
+  serialization point) + post-swap single-owner `count()==1` invariant; (5) atomic tenant-DB tx
+  syncing the Owner system role for both parties + `tenant_identity.ownerUserId`, with a greppable
+  `OWNER_TRANSFER_PARTIAL_FAILURE` log if it throws after the admin commit; (6) forced session
+  revocation of the outgoing owner (fail loud); (7) immutable audit (actor + reason + before/after
+  roles) written BEFORE the event + revocation. Outgoing owner demoted to **Member** (admin-DB has
+  only owner/member — no "admin" coarse role; corrected from the design's "Admin"). Stable error
+  codes on every throw for FE i18n.
+- **S3 recovery contact:** nullable `recoveryContactEmail`(320) + `recoveryContactName`(200) on
+  `tenant_identity` (mig 0158); surfaced in tenant-settings GET/PATCH (email validated), gated by
+  the same `settings.tenant.update` key, audited.
+- **Reuse/ponytail:** extracted the duplicated `syncOwnerSystemRole` into
+  `team-users/owner-role-sync.util.ts` (one source for `changeRole` + transfer, executor-agnostic
+  so it joins the caller's tx); deduped PIN_REGEX to the canonical `approval-pin.dto.ts`.
+- **FE:** owner-transfer danger-zone dialog (target picker, reason Textarea + counter, PIN, AlertDialog
+  confirm, code-mapped localized errors, Cancel disabled while pending, candidate-list error state)
+  + recovery-contact section (inline email validation); testid registry `organisation.ts` created +
+  registered; en/ar parity, no em dashes.
+
+**Reviewer panel (paranoid, no lazy framing):** security-reviewer (PRIMARY) + nestjs + database +
+frontend + code. Consolidated + fixed in one pass: strikeMap keyspace collision between
+verifyApproval/verifySelfPin → purpose-scoped lockout key; cross-DB partial-failure → single tenant
+tx + tagged error log; duplicated sync → shared util; event-before-audit → reordered; FOR UPDATE
+serialization made explicit; FE raw-error-string i18n leak → error codes; Cancel-during-pending
+race → guarded; em dash in `noCandidates` copy → fixed; candidate-fetch error vs empty conflation →
+distinct ErrorState. No open CRITICAL/HIGH.
+
+**Gates:** api + web typecheck green; `owner-transfer pin-verification tenant-settings team-users`
+= Test Suites 6 passed, 136 tests; owner-transfer.service.ts 100% coverage; i18n:check parity green;
+full monorepo turbo typecheck + test (pre-commit) green; console.log check green.
+
+**Deferrals / founder TODOs:**
+- **Mig 0158 NOT applied to local dev tenant DB** (`zerupt_tenant_dev` absent locally) — applies via
+  Railway pre-deploy `migrate-tenants.cli`. FOUNDER TODO: apply to real dev/prod tenant DBs + verify.
+- In-memory PIN lockout is per-instance / non-durable across deploy (pre-existing to verifyApproval;
+  and verifySelfPin is only reachable behind an owner session so it is a confirmation factor, not
+  primary auth). Same single-instance posture VIEW 1 documented. Upgrade → shared store when the API
+  scales horizontally.
+- Recovery-contact hardening (email-verify the new address + optional owner-PIN re-auth on change) —
+  ponytail-marked on the schema; do before go-live (it is a lockout-recovery lever).
+- Global ThrottlerGuard is IP-keyed (cross-tenant DoS on shared NAT) and audit-viewer output-encoding
+  of free-text `reason` — both cross-cutting, out of VIEW-2 scope; verify in L5.
+- Codex independent cross-model review of the auth path NOT yet run — program gate; recommend before
+  go-live (same as VIEW 1).
 
 ## Deferred
 

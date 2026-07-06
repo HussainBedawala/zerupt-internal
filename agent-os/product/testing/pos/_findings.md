@@ -529,4 +529,27 @@ Founder rang online sales on live Asala and hit UI defects the recon (structural
 
 **Infra fix (incidental, `161891c6`):** root `eslint.config.js` scoped the Next `react-hooks/*` compiler rules to `apps/website/**` only, so lint-staged (runs from repo root) failed to resolve those rules' `eslint-disable` directives for any `apps/web/**` file. Extended the scope to `apps/web/**` too — unblocks lint-staged for all web commits, not just this one.
 
-**Sign-off status:** token/public-page model is money-correct + leak-free (recon). Fixes shipped: #52 (returns token), #57 (frozen receipt, HIGH), #58 (back-office receipt actions), #59 (flags clarity). **Pending founder live re-verify on the new deploy:** online sale receipt now flips to final number + barcode + WhatsApp after sync; return now yields a public `/r/` receipt; back-office receipt/reprint/WhatsApp works.
+**Sign-off status:** token/public-page model is money-correct + leak-free (recon). Fixes shipped: #52 (returns token), #57 (frozen receipt, HIGH), #58 (back-office receipt actions), #59 (flags clarity), #60 (qty precision).
+
+| # | Date | Submodule | Severity | Summary | Repro | Expected vs Actual | Status |
+|---|------|-----------|----------|---------|-------|--------------------|--------|
+| 60 | 2026-07-06 | 07 Receipt qty | LOW | **Server-backed receipt printed raw stored quantity (`1.000000`) instead of the display form.** `receipt-document.tsx` rendered `line.quantity` verbatim; the local receipt already normalized it, so only the synced/server receipt (and the new back-office receipt view) showed 6dp. | Sync a sale, view the server receipt. | `1 × KWD 8.730` (trailing zeros stripped; real fractional qty preserved). | **FIXED — `41f3d5f7`.** Routed line quantity through the shared quantity formatter (`formatQuantity(v, null, "en")`, min 0 fraction digits), added as a `qty` prop mirroring the existing `fmt` prop; removed the dead `t_qty_placeholder` helper. Typecheck + 55 receipt tests green. |
+
+## ✅ Submodule 07 — Receipt Model — SIGNED OFF (2026-07-06)
+
+Cross-DB recon (tenant `pos_transactions`/`pos_receipts` + admin `receipt_tokens`) + full backend & frontend code audit (token mint, public `/r/[token]` controller/page, receipt render components, reprint/gift/WhatsApp) + founder end-to-end dogfooding on live Asala (KWD 3dp) + reviewer panels on every fix. All CRITICAL/HIGH pass.
+
+**Load-bearing 07 invariants — GREEN on live data:**
+- **Token minted post-commit, non-blocking, three-layer idempotent** (online `pay()` + offline sync); a re-synced offline sale never mints a second token.
+- **Admin `receipt_tokens` = minimal token→tenant routing map**; the 18 sale tokens are byte-for-byte set-equal across admin + tenant DBs (zero orphans/missing); tokens are 122-bit UUIDv4.
+- **Public `/r/[token]` is `@Public()` but token-scoped** (query scoped by tenant_id AND token → no cross-tenant leak), minimal projection (no cost/WAC/margin, no internal IDs, phone stripped, approver identity not exposed), uniform 404 on bad tokens, `Cache-Control: no-store`.
+- **Money KWD 3dp + quantity display-normalized**, bilingual/RTL; gift hides prices/totals; WhatsApp shares only the token URL (non-blocking, no PII).
+- **#51 DUPLICATE policy resolved by-design** (real reprint counter exists; queue-drawer DUPLICATE is correct anti-fraud; at-sale receipt is the original).
+
+**Fixes shipped this program (erp main):** #52 returns-token (`36c2dfaf`) · #57 frozen at-checkout receipt HIGH (`161891c6`) · #58 back-office receipt actions + #59 flags clarity (`161891c6`) · #60 receipt qty precision (`41f3d5f7`) · incidental root eslint config scope fix (`161891c6`). Every fix behind the reviewer panel (code + nestjs + security for the token trust boundary; code + frontend for the web changes) — all CLEAN.
+
+**Founder-verified live:** online-sale receipt flips to the final server number + barcode after sync (screenshot-confirmed the frozen-OFFLINE bug is fixed). **Remaining founder live re-verify on the latest deploy (non-blocking):** return now yields a public `/r/` receipt; back-office Receipt/reprint/WhatsApp; qty now renders `1` not `1.000000`.
+
+**Open product options (founder, non-blocking):** (a) print the link QR on the thermal receipt too (today it's barcode-on-paper + QR-digital); (b) rename/redesign the back-office "Flags" column header beyond the added tooltip.
+
+**Verdict:** the receipt model is tenant-isolated, leak-free, money- and quantity-correct, and never-block on the live dataset; the token/idempotency + public-page trust boundary are sound; all dogfooding defects fixed and (for #57) founder-verified. Signed off.

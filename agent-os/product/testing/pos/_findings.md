@@ -450,3 +450,29 @@ Founder ran the manual guide on live Asala (offline → ring → refresh → voi
 | 49 | 2026-07-06 | 06 Register layout | **HIGH** | **Cart column vanishes below 1024px with no fallback — checkout impossible on a narrow screen.** `register-shell.tsx` cart column was `hidden ... lg:flex`; the `<lg` bottom bar rendered only `ActionBar` (Hold/Recall/Return/Exchange) — no line items, no total, no PAY. A stale code comment promised "a compact bottom bar with PAY button" that was never built. Not offline-specific (affects online too). | Shrink the POS viewport below 1024px (tablet landscape / split-screen / docked DevTools) in BUILD phase. | Cashier can always see the cart + pay on any supported width. | **FIXED — `b49ae9e4`.** New `<lg` compact bar (item count + grand total via shared `formatCurrency`, PAY gated on `hasLines`) that opens the **unmodified** `CartPanel` in a bottom `Sheet`; PAY enters SETTLE via the same `handlePay`; whole block gated on `phase==="build"` (no double-render with the PaySurface overlay). Desktop layout untouched. frontend-reviewer approved (checks a–g pass). |
 | 50 | 2026-07-06 | 06 Offline void | MEDIUM | **Voiding a never-synced offline sale hard-deleted it with no reason and no trace** — conflicts with "immutable audit log for every mutation", and if the customer already holds the printed `OFF-` receipt, that number now maps to nothing server-side. Mechanically it was safe (no orphan, no 404 loop). | Offline, complete a sale, open the sync queue, Void it → green toast, row vanishes silently. | Same reason capture as an online void + a durable local record; never a fully traceless discard. | **FIXED — `b49ae9e4`** (founder decision: hard-delete + require reason + tombstone). Pending void now requires the SAME `VOID_REASONS` reason/note form as the synced void; writes an immutable IndexedDB tombstone (new Dexie table `voidedQueueTombstones`, additive v5) **before** the delete (tombstone-then-delete; if the tombstone write fails the row is NOT deleted). A synced/syncing row throws a tagged `SaleAlreadyProcessingError` → routes the cashier to the server void instead of a misleading "try again". Dexie upgrade verified additive/safe (no wipe of queued sales); frontend-reviewer approved. |
 | 51 | 2026-07-06 | 06 / 07 Receipt | LOW | **Post-sync reprint shows "DUPLICATE".** The `OFFLINE` badge correctly disappears once the sale gets its real number + barcode; the DUPLICATE band appears because the queue-drawer reprint hardcodes `isDuplicate={true}`. The at-checkout receipt is NOT a duplicate. WORKING AS DESIGNED — BUT the first receipt carrying the *real* server number can only be produced via that reprint dialog (the at-sale print only had the offline device number), so it always reads DUPLICATE. | Sync an offline sale, reprint from the queue drawer. | Some MENA tax-invoice rules want the customer's kept copy to be an "original"; consider a per-sale print counter so DUPLICATE applies only from the 2nd real-number print. | NOTE — product/compliance decision for the founder (no print-count tracking exists today). Not a defect in the offline flow. |
+
+---
+
+## ✅ Submodule 06 — Offline Mode — SIGNED OFF (2026-07-06)
+
+Full offline-invariant recon over all synced-offline rows on live Asala (KWD 3dp) + complete backend (`pos-sync.*`) and frontend (`features/pos/offline/*`) code audit + founder dogfooding end-to-end (offline → ring 5 → refresh → void → reconnect → FIFO sync → verify) + re-test of both shipped fixes. All CRITICAL/HIGH pass.
+
+**Load-bearing offline invariants — GREEN on live data:**
+- **Exactly-once idempotent replay:** fast-path by `(tenant, client_id)` returns the existing row; partial-unique-index backstop (`pos_transactions_tenant_client_id_key`) catches the race — never a 500, never a duplicate (23/23 client_ids distinct).
+- **Server recomputes totals; never-block mismatch flag:** canonical `recompute()`; divergence stored to `totals_mismatch` jsonb, never rejected, never silently accepted (all live rows tied out clean).
+- **Three-way tie-out (POS ↔ GL ↔ stock)** on every synced-offline sale — balanced JE + COGS + signed stock, identical to online — including a clean net-zero voided-offline (`-2-3`).
+- **Receipt token not minted pre-sync** (offline rows live only in IndexedDB until the sync insert assigns `transaction_number` + token).
+- **store_credit / gift_card offline reject is SERVER-ENFORCED** on the sync path (Zod enum + `normalizeOfflinePayments` allowlist re-check → 422) — the feared client-only CRITICAL is closed.
+
+**Fixes shipped this pass (main):**
+- **#44 (HIGH)** `is_offline` provenance — server now forces the flag on offline-replay endpoints (`c6870e3a`); prod backfilled (18/18 rows now flagged).
+- **#49 (HIGH)** narrow-screen cart — compact total+PAY bar + bottom-sheet CartPanel below 1024px (`b49ae9e4`); founder re-tested ✅.
+- **#50 (MEDIUM)** offline pending-void — reason-gated + immutable local tombstone before delete (`b49ae9e4`); founder re-tested ✅.
+
+**Open (not blockers — batched for the founder's back-office/approvals UI pass):**
+- **#45** no cross-register back-office pending-sync panel (per-device visibility only; the till DOES see + can retry).
+- **#46** shift-close-with-unsynced is cashier self-ack, not manager-gated (align with the deferred approvals/RBAC batch; warn-not-block is correct for persona).
+- **#47/#48** LOW by-design notes (no `offline_created_at`; FIFO enforced reactively via 404-retry, no server dead-letter).
+- **#51** post-sync reprint always reads DUPLICATE — product/compliance decision (MENA tax-invoice "original" nuance); no print-count tracking exists.
+
+**Verdict:** offline mode is money-correct, idempotent, and never-block on the live dataset; the two dogfooding UI defects are fixed and founder-verified. Signed off.

@@ -172,12 +172,73 @@ tests + dev/prod migrate.
 **FOUNDER TODO:**
 - **Apply migs 0134-0139 to the dev tenant DB** (prod auto-migrates via Railway on the pushes above; the 383d23de deploy unblocks it).
 - **Deferred (scoped follow-ups):** (1) **ZATCA QR** POS wiring — after the zatca worktree merge (2 wires: join zatca table in pos-receipt.service.build + thermal QR raster; KSA-only flag). (2) **Loyalty + customers module** — needs a customers table + loyalty-liability GL + accounting sign-off. (3) fresh tenants seed only the Owner role → create a Manager role with `pos.cash.approve`/`pos.discount.approve`/`pos.return.approve` for non-owner approvals.
+
+---
+
+## Follow-up scoping pass (2026-06-30, post-program)
+
+### (3) Manager role + RBAC approval defaults — ✅ SUPERSEDED by canonical role-template library (commit c2dc7dd8, main, no migration)
+Founder rejected the standalone inline seed as a "hacky fix" and asked to recon the existing role-creation flow first.
+Recon found a COMPLETE self-service role system already exists (full role CRUD API + a frontend template picker with
+Cashier/Manager/Viewer/Accountant cards) — plus THREE divergent "Manager" definitions (web template, unused shared Admin
+const, my inline seed). The real bug: the curated templates predated the POS-hardening approval keys, so even picking
+"Manager" could not use the approval flows. Founder chose the "full canonical library" path.
+**Shipped (c2dc7dd8):** ONE canonical `packages/shared/src/role-templates.ts` (typed as PermissionKey → bad keys fail to
+compile), consumed by BOTH the web picker AND provisioning. Manager now grants the 3 pos.*.approve + approvalpin.manage
+(+ return/reprint/catalog/tender reads); **Cashier no longer carries pos.transaction.price-override or pos.transaction.void**
+(security review caught: price-override bypasses the discount-approve SoD via the price field — and auto-seeding made it a
+default grant). Provisioning auto-seeds Cashier + Manager (editable, idempotent, empty-set guarded). i18n: filled every
+missing entity/action label so the permission matrix never shows a raw key (en+ar parity). Guard test (38 cases) permanently
+prevents template staleness. Reviewer panel (security/nestjs/frontend): price-override BLOCKER fixed; MED/LOW folded in.
+Gates: shared 451 tests, api seed 50, api+web typecheck, web i18n:check all green. The earlier inline-seed commit c2fbbfc0
+is superseded by this (its block was rewritten, not reverted; net history is coherent on main).
+**Open (flag to founder):** (a) existing already-provisioned tenants do NOT get the auto-seeded roles — needs an idempotent
+reconcile or migrate-tenants backfill (writes tenant data → ops sign-off). **DEFERRED per founder (will test on a fresh tenant only).**
+
+**Follow-on UX/i18n fixes — ✅ SHIPPED (commit d78944e0, main, web-only):** founder said "fix everything other than backfilling."
+(b) picker name-collision now prefills a unique name + inline hint (no 409 dead-end); (c) name>100 shows the correct
+form.errors.nameTooLong key (was nameRequired); (d) canonical role names (Owner/Cashier/Manager/Viewer/Accountant) display in
+tenant locale via getRoleDisplayName + roles.systemRoleNames (en+ar), custom names verbatim, applied at roles table/delete/users/
+invite dropdown; plus an inline 409 backstop (ApiError.status → name-field error, returns to basics step) and typed-translator
+cleanup. New pure helper + 4 unit tests; frontend reviewer panel ran (no blockers; 2 LOW + 1 INFO all folded in). Gates: web
+typecheck + i18n:check + roles/team 39 tests green. Both role commits on main, unpushed; no migration.
+
+#### (superseded) original inline seed — kept for history
+Earlier commit c2fbbfc0 seeded a single inline Manager role in seed-config.step.ts; see supersession above.
+`seed-config.step.ts` now seeds an editable, least-privilege **"Manager"** shift-supervisor role at
+provisioning (priority 10, isSystemRole=false, unassigned). Grants the three approval keys
+(`pos.cash.approve` / `pos.discount.approve` / `pos.return.approve`) + `pos.transaction.approve` (void)
++ `settings.approvalpin.manage` (so the manager can set their OWN pin — required to be an approver) +
+day-to-day supervisor actions (shift open/close, session, void/return/reprint, ring sales, catalog/tender read).
+No owner bypass — every key explicit; none owner-only. Idempotent on (tenantId,name) + (roleId,permissionKey).
+Verified path: PermissionService.hasPermission resolves the keys from role_permissions; PinVerificationService.verifyApproval
+enforces SoD (approver != cashier) + the RBAC key on the approver. Spec extended → 47 tests green; api typecheck +
+full pre-commit (turbo) green. **Applies to NEW tenants only** — existing tenants need an admin to create/assign the role.
+
+### (2) Loyalty + customers — SCOPED (study/pos/09-loyalty-customers-design.md), recommend POST-launch
+Key finding: the premise was wrong — a customers table ALREADY exists (`sales_customers`, the AR party master
+POS reads for receipts/AR). REUSE it (add phone partial-unique index + balance/tier cols + immutable `loyalty_ledger`).
+Proposed GL: **2153 Loyalty Points Liability** (deferred-revenue); earn DR contra-revenue 4310 / CR 2153; redeem DR 2153 /
+CR revenue 4110; expiry DR 2153 / CR other income 7110 — **needs accounting-reviewer sign-off** (IFRS contra-revenue vs
+face-value liability across KSA/Kuwait/India). Effort ~L (8-12 solo days). Retention not acquisition; `customerId` already
+wired; offline double-redemption fraud path unsolved → **post-launch**. Stale comment at pos.ts:347-348 ("no customers table
+yet") is factually wrong — fix when touched.
+
+### (3-scale) Weighing-scale manual entry — SCOPED (study/pos/10-weighing-scale-manual-entry-scope.md), recommend DEFER
+No `soldByWeight` flag exists (the `weightKg` col is landed-cost only) → needs a new backend flag (DB+API+FE), pushing effort
+to ~M (1.5-2 days). UI = replace the qty stepper with a tappable "0.000 kg" → NumericKeypad (3dp, 0.001-999.999) on the
+existing onChangeQty path; computeCartTotals already handles decimal qty (no engine change). Launch ICP (electronics,
+auto-parts, fashion, general merch) has NO weighing vertical; existing weight-barcode scan path covers label-printing scales.
+**Defer; trigger = first grocery/produce/butcher/sweets shop that uses a standalone scale without label printing.**
+
+### (4) Ops — VERIFIED
+Migs 0134-0139 all have committed .sql + matching _journal.json entries (no orphans); journal-integrity test 3/3 green.
+Prod auto-applies via Railway pre-deploy (`migrate-all.cli`, /health-gated). Dev tenant apply command (founder):
+`cd erp/packages/db && set -a; . ../../.env; set +a; npx drizzle-kit migrate` (DATABASE_TENANT_URL → zerupt_tenant_dev).
 - L7 shipped without the formal per-layer reviewer panel (founder directed "commit everything"); reporting screens + strong features are typecheck+test green but un-dogfooded — verify on a live shift.
 
 **TODO (founder):**
-- **Apply migs 0134 + 0135 + 0136 + 0137 + 0138 to the dev tenant DB** (`zerupt_tenant_dev` @ ep-fancy-king-a11gw110): `set -a; . ./.env; set +a;
-  cd packages/db && npx drizzle-kit migrate` — blocked from this session by the DB-write guardrail. Prod auto-migrates
-  on the push that just landed (Railway pre-deploy).
+- ~~**Apply migs 0134 + 0135 + 0136 + 0137 + 0138 to the dev tenant DB**~~ ✅ DONE (founder applied 2026-07-03). Prod auto-migrated on push (Railway pre-deploy).
 - **Onboarding note:** fresh tenants seed only the `Owner` role. Until an admin creates a manager role WITH
   `pos.cash.approve`, only the Owner can approve pay-outs (Owner bypasses RBAC). Document for go-live / consider a
   default "Manager" role.

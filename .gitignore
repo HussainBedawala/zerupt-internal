@@ -13,3 +13,4 @@ tmp/
 
 # Ephemeral scheduler lock (machine-local, not source)
 .claude/scheduled_tasks.lock
+.neon

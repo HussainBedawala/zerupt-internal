@@ -23,6 +23,48 @@ The world's first agentic AI retail ERP. Signup to live with real data in under 
 
 ---
 
+## How We Build (applies to EVERY coding task — main loop AND subagents)
+
+Default posture for all code in this repo. Not a mode you switch on — it is how we code here, always.
+
+### Lazy-first ladder — understand, then climb to the first rung that holds
+
+Read the code the change touches and trace the real flow FIRST (start at the codemap). Never shorten the reading, only the solution. Then:
+
+1. **Does this need to exist at all?** Speculative = skip it, say so in one line. (YAGNI)
+2. **Already in the monorepo? Reuse it.** Look in this order: `erp/docs/CODEMAPS/<module>.md` → `packages/shared` + `packages/ui` → the canonical primitives (`formatMoneyAmount` / `formatQuantity` / `MoneyInput` / `QuantityInput` / shared entity pickers / percent inputs — **NEVER hand-roll these**) → shared domain services (`ApAgingService`, `resolvePackUnit`, `runDurableGated`). Re-implementing what lives a few files over is the most common slop.
+3. **Framework/stdlib does it?** Use it (Next 16, Nest built-ins, Drizzle, date-fns).
+4. **Native platform feature?** DB CHECK constraint over app validation, CSS over JS, Postgres over hand-rolled logic, shadcn/ui over a custom component.
+5. **Already-installed dependency?** Use it. Never add a dep for what a few lines do — check `package.json` first.
+6. **One line?** One line.
+7. **Only then:** the minimum code that works.
+
+Bug fix = root cause, not symptom: grep every caller, fix the shared function once, not per-caller. Deletion over addition; boring over clever; many small focused files (200-400 lines, 800 max). Shortest working diff wins — but the smallest change in the wrong place is a second bug, so understand first. Mark deliberate shortcuts `// ponytail: <ceiling>, <upgrade trigger>`. For a focused pass or to dial intensity, invoke the `ponytail` / `ponytail-review` / `ponytail-audit` / `ponytail-debt` skills.
+
+### Delegation mandate (CRITICAL — this is how the ladder reaches the agents that actually write code)
+
+Most code here is written by delegated subagents, and they do NOT reliably inherit this file. So enforcement lives in the delegation prompt, not in hope:
+
+- When you delegate an **implementation** task (writing / refactoring / fixing code — e.g. general-purpose, `build-error-resolver`, `tdd-guide`), you MUST paste the lazy-first ladder + the reuse targets above into the subagent's prompt. Assume the subagent starts blank.
+- **Do NOT** put lazy/minimal framing into **reviewer or auditor** subagents (`code-reviewer`, `accounting-reviewer`, `security-reviewer`, `nestjs-reviewer`, `database-reviewer`, etc.). They must stay maximally paranoid. Lazy is for building — never for guarding money / auth / tenant paths.
+
+### Never lazy about (non-negotiable, whatever the rung)
+
+- **Understanding the problem** before editing.
+- **Money / accounting correctness** — double-entry balance, VAT/GST, COGS, multi-currency, period controls. FX fails loud, never silently defaults. 100% test coverage.
+- **Multi-tenant isolation** — every query tenant-scoped; never leak across tenants to save a line.
+- **Auth / security** — 100% coverage, validate client AND server, never hardcode secrets, immutable audit log for every mutation.
+- **Defensive UX** — MENA/India/SEA retail users aren't tech-savvy. Every action needs loading/error/empty/success states; confirm destructive actions; debounce buttons; handle race conditions; warn before data loss. Ask "what's the dumbest thing a user could do here?"
+- **Immutability** — return new objects, never mutate in place (mechanics in `~/.claude/rules/common/coding-style.md`).
+- **i18n from day one** — ar + en, `en/` is source of truth, never hardcode strings. CSS logical properties only (RTL/LTR), never physical `margin-left`/`padding-right`.
+- **No em dashes** in product copy or UI strings.
+
+### House mechanics
+
+pnpm only · conventional commits (all lowercase, body <100 chars) · TypeScript strict everywhere · API-first.
+
+---
+
 ## Quick Reference
 
 ### Git — Two Repos, Two Remotes
@@ -116,13 +158,6 @@ npx jest audit --no-coverage         # matches by filename
 
 ---
 
-## Conventions
-
-- pnpm only · conventional commits (all lowercase) · TypeScript strict everywhere
-- CSS logical properties only (RTL/LTR) — never physical `margin-left`/`padding-right`
-- i18n (ar + en) from day one · immutable audit logs for every mutation · never hardcode secrets · API-first
-- **Defensive UX (CRITICAL):** MENA/India/SEA retail users aren't tech-savvy. Every action needs loading/error/empty/success states; destructive actions need confirmation; warn before data loss; debounce buttons; handle race conditions; validate client + server. Ask "what's the dumbest thing a user could do here?"
-
 ## Brand
 
 Warm cream `#F9F7F5` (canvas) · Ink `#141310` (text/primary) · Citron `#979C1A` (the one accent) · Olive `#747818`/`#454729` (data viz). Citron is **fill/accent only** — never text on light (fails WCAG); citron-toned text uses olive-deep. Primary actions are ink. Fonts: IBM Plex Sans (Latin + Arabic + Devanagari, same family) + IBM Plex Mono. Dark-first, premium. Do NOT use violet/teal (old palette) or mix with Inter/Noto Sans. **Source of truth: `erp/DESIGN.md`** + tokens in `erp/apps/web/src/app/globals.css`.
@@ -185,4 +220,4 @@ Use the `/browse` skill for ALL web browsing — never `mcp__claude-in-chrome__*
 
 ## Self-Improvement Protocol
 
-Living document — update when: a gotcha is found (add) or fixed upstream (remove), a convention is set, the `/work` flow changes (update tables, not prose). Keep under 250 lines, prefer tables over prose. Never duplicate `.claude/rules/` (coding/security/testing) or command-file logic. This file owns: identity, architecture decisions, gotchas, reference data, conventions.
+Living document — update when: a gotcha is found (add) or fixed upstream (remove), a convention is set, the `/work` flow changes (update tables, not prose). Keep under 250 lines, prefer tables over prose. Boundary with `~/.claude/rules/common/`: those hold GENERIC mechanics (immutability implementation, generic error handling) — reference them, don't restate. This file owns the Zerupt-SPECIFIC layer: identity, architecture decisions, gotchas, reference data, and **How We Build** (the lazy-first ladder pointing at our real primitives + the delegation mandate + our non-negotiables). One convention lives in exactly one place.

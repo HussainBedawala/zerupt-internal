@@ -51,3 +51,29 @@ Severity rubric: CRITICAL / HIGH / MEDIUM / LOW.
   permission ceiling). DECISION: restrict roleId grants to Owner / settings.role.assign
   holders, or enforce that the actor holds every permission key the assigned role
   grants (permission-ceiling). Ponytail-marked in code pending the decision.
+
+## VIEW 4 — Roles: Founder Decisions Needed
+
+- **F3 (HIGH, enforcement epic) — FOUNDER DECISION NEEDED:** role `fieldMask` +
+  `scopeType` are configurable, stored, and now server-side validated (scopeType
+  parity added this pass), but NOTHING enforces them at READ time — a grep shows
+  fieldMask/scopeType are consumed only in the roles module, never in inventory
+  (cost/margin), reports (accountBalances/taxLines), or settings (secretValue)
+  response paths. So a role configured to "hide cost from cashiers" currently does
+  NOT hide it. VIEW 4 shipped the editor + storage + validation groundwork and
+  labeled the UI as "rolling out / not yet enforced" (SensitiveFieldsPanel rollout
+  notice) to avoid false assurance. DECISION/EPIC: build a cross-module
+  FieldMaskInterceptor (or serializer) that strips masked fields from responses
+  per the caller's resolved role, and enforces scopeType (Tenant/Branch/Own) —
+  likely its own batch. Until then the control is inert.
+- **F4 (HIGH, RBAC escalation model — groups with F2) — FOUNDER DECISION NEEDED:**
+  no permission-ceiling on role editing/assignment. A holder of
+  `settings.role.update` can edit its own (or another non-owner) role to add
+  permissions / broaden scopeType / clear masks — privilege self-escalation
+  (settings.role.update is not owner-only or ceiling-checked). Same root gap as F2
+  (invite-time roleId can exceed the inviter's holdings). Note: the scope/mask half
+  of this is currently moot because those controls are unenforced at read time (see
+  F3), but the permission-key-adding half is live. DECISION: pick the RBAC
+  no-escalation model — permission-ceiling ("cannot grant beyond your own
+  holdings"), role-priority/rank, or make settings.role.update owner-only — and
+  apply it to BOTH role editing and invite-time roleId assignment.

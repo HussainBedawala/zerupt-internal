@@ -69,7 +69,7 @@ Each layer = BE + FE + DB together. Consistency/ponytail track runs INSIDE every
 - [x] VIEW 1 — security_settings wired for real — shipped `52addb45` (mig 0157)
 - [x] VIEW 2 — company: C1 tenant/settings gate + owner transfer (S1) + recovery contact (S3) — shipped `1e8775bf` (mig 0158)
 - [x] VIEW 3 — members: team-users → @RequiresPermission + branchScope + hash invitation.token — shipped `9a4a1104` (mig 0159)
-- [ ] VIEW 4 — roles: lower(name) unique index + field-mask/constraintJson UI
+- [x] VIEW 4 — roles: case-insensitive name unique index + field-mask/scope editor — shipped `80df2a8a` (mig 0160)
 - [ ] VIEW 5 — approval-pins: owner-reset another user's PIN + forgot-PIN self-service
 
 ### Layers (the original L0-L5 frame; Batch A covers the L1 core)
@@ -238,6 +238,44 @@ i18n:check parity green; full monorepo turbo typecheck + test (pre-commit) green
   check in inviteUser. Ponytail-marked in code pending the decision.
 
 **Founder TODO:** apply mig 0159 to real dev/prod tenant DBs + verify.
+
+### VIEW 4 — roles: case-insensitive names + sensitive-field masking editor — `80df2a8a` (mig 0160) — 2026-07-07
+
+**Shipped:**
+- **Case-insensitive role names:** replaced the case-sensitive `(tenantId,name)` unique with a partial
+  functional unique index on `(tenantId, lower(name)) WHERE is_active` (mig 0160) — active-scoped so a
+  renamed/retired role frees its name (owner flexibility). Service adds a friendly case-insensitive
+  fail-fast (`assertNoCaseInsensitiveNameCollision`, runs on rename AND reactivation) before the DB
+  constraint; DB index is the real backstop (TOCTOU-safe via unique-violation catch).
+- **Field-mask + scope editor (spec-03):** per-permission fieldMask + scopeType (Tenant/Branch/Own) now
+  editable in the role dialog, driven by an EXTENSIBLE `MASKABLE_FIELD_REGISTRY` in packages/shared (one
+  source of truth — a new maskable field is a one-line addition; no component/validator change). Server
+  validates field masks AND scope types against the registry (client/server parity), dedupes masks. The raw
+  permission key is translated to a human label in the panel.
+
+**Reviewer panel (db/security/nestjs/frontend/code):** fixed — reactivation collision message, scopeType
+validation parity, mask dedup, untranslated permission-key label, stale-config-on-deselect pruning,
+case-insensitive client dedup, immutable updateData, React-19 set-state-in-effect (replaced the
+nameServerError effect with the guarded adjust-state-during-render pattern). No open blocking issue.
+
+**Gates:** api + web typecheck green; `roles` = Test Suites 2, 65 tests; web vitest 20; shared field-mask 8;
+i18n:check parity green; full monorepo turbo typecheck + test (pre-commit) green.
+
+**FOUNDER DECISIONS logged (_findings.md F3, F4):**
+- **F3 (HIGH, enforcement epic):** role fieldMask + scopeType are configurable/stored/validated but NOT
+  enforced at READ time anywhere (inventory cost/margin, reports balances/tax, settings secrets never
+  consult them) — a role set to "hide cost from cashiers" currently does NOT hide it. VIEW 4 shipped the
+  editor + validation groundwork and LABELS the panel "rolling out / not yet enforced" so owners are not
+  falsely assured. Epic: build a cross-module FieldMaskInterceptor/serializer + scope enforcement. Inert
+  until then.
+- **F4 (HIGH, RBAC escalation model — groups with F2):** no permission-ceiling on role editing/assignment —
+  a `settings.role.update` holder can add permissions / broaden scope to its own or another non-owner role
+  (self-escalation); same root gap as F2 (invite-time roleId). The scope/mask half is moot until F3, but the
+  permission-adding half is live. Decide the model: permission-ceiling, role-priority/rank, or make
+  settings.role.update owner-only — apply to both role editing and invite-time roleId.
+
+**Founder TODO:** apply mig 0160 to real dev/prod tenant DBs; pre-launch collision risk if a tenant already
+has case-colliding active role names (CREATE UNIQUE INDEX fails — acceptable pre-launch, flagged).
 
 ## Deferred
 

@@ -46,6 +46,28 @@ Severity rubric: CRITICAL / HIGH / MEDIUM / LOW.
   `approvalpin.reset` event is emitted; a consumer is pending
   (`// ponytail:` marker in `pin-verification.service.ts`).
 
+## Batch C — money-adjacent config (currency/fiscal, tax, numbering, posting)
+
+All four views shipped 2026-07-07 (C1 `43fcfb2c`, C3 `c7d5e0cd`, C2 `06313ea3`, C4 `3096fd5a`), no
+migrations. Full detail in `study/settings/_hardening-log.md` Batch C block. Founder decisions + open
+follow-ups from this batch:
+
+- **F-C2a (RESOLVED, founder call):** a document dated before all versioned `TaxRate` rows used to silently
+  use today's `TaxCode.rate`. Ruling: **fail loud** — throw `TAX_RATE_NOT_CONFIGURED_FOR_DATE` (clean 400,
+  actionable self-serve message) when versioned rates exist but none covers the date; keep the `TaxCode.rate`
+  epoch fallback only when zero versioned rates exist. Rationale: long-run-correct + country-agnostic;
+  silently assuming a historical rate risks mis-reporting to a tax authority. Shipped in C2.
+- **F-C2b (RESOLVED):** `isNoTax` now derived from tax category `{exempt, out_of_scope}`, not summed rates
+  (a 0%-rate `standard` code was misreported as no-tax). Shipped in C2.
+- **F-C2c (RESOLVED):** legacy zero-rated turnover warning is the PERMANENT guard (no pre-launch legacy data
+  to backfill; base stored post-DEV-340). No backfill built. Shipped in C2.
+- **F-C1 (RESOLVED, founder call):** fiscal hard-lock reopen stays RBAC + reason + audit — NO mandatory
+  approval-PIN (consistent with the settings-optional PIN philosophy). Currency deactivation now fails loud
+  when the currency is a legal-entity OR branch base currency.
+- **Open follow-ups (non-blocking, in hardening-log Deferred):** C1 create-side TOCTOU (add isActive currency
+  check on entity/branch create); C2 pre-existing N+1 in `resolveEffectiveRates`; C3 data-driven document
+  types deferred (YAGNI until user-defined custom documents is a real bet, ponytail-marked in code).
+
 ## VIEW 3 — Members: Founder Decisions Needed
 
 - **F1 (HIGH, architecture) — FOUNDER DECISION NEEDED:** The `invitations`

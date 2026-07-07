@@ -335,6 +335,138 @@ The Identity & Access control plane is hardened end to end. What Batch A surface
 - **Program gate not yet run:** independent cross-model Codex `/review` on the auth paths (VIEWS 1-5) —
   recommended before go-live.
 
+## Batch C — the money-adjacent configuration control plane (currency/fiscal, tax, numbering, posting)
+
+Reconciled the Batch C view list against `settings-sections.ts` + this log before starting. Batch B
+(shipped in `e1c8e56f`, `d45608f2`, `a72ad503`, `f60c27ef`, but never logged here) had already dropped
+the invitations module (mig 0161, resolving F1), added tax `taxBreakdown` + B3 schema guards (mig 0162),
+capped legal entities, hardened branches, and shipped the dynamic country/capability nav + server-side
+field masking. So Batch C = the finance-config surfaces: **currency/fiscal (C1), tax (C2), document
+numbering (C3), account mappings/posting (C4).** No migrations needed in the entire batch (all fixes are
+app-level logic/validation on existing schema).
+
+**Execution:** ran C1/C2/C3 implementation in PARALLEL (disjoint files, no migration-journal contention
+since no migrations), reviewed each with a paranoid per-view panel, serialized the commit gate (staged
+only each view's files by explicit path so lint-staged stashed the others). C4 (shares tax files with C2)
+ran after. Ponytail throughout: cut two over-reaches before writing code (a mandatory PIN gate on fiscal
+reopen; a data-driven document-type refactor) as drift/YAGNI after founder confirmation.
+
+- [x] VIEW C1 — currency & fiscal — shipped `43fcfb2c` (no mig)
+- [x] VIEW C3 — document numbering — shipped `c7d5e0cd` (no mig)
+- [x] VIEW C2 — tax configuration — shipped `06313ea3` (no mig)
+- [x] VIEW C4 — account mappings + tax-code GL accounts — shipped `3096fd5a` (no mig)
+
+### VIEW C1 — currency & fiscal — `43fcfb2c` — 2026-07-07
+
+**Shipped:**
+- **Currency deactivation guard (fail loud):** `currency-config.service.ts` `assertCurrencyNotInUse()` now
+  blocks deactivating/deleting a tenant currency that is a legal entity's OR a branch's base/transaction
+  currency (`branches.currencyCode` was the reviewer-caught HIGH — a structurally identical live reference
+  the first cut missed). Runs inside the same tx as the mutation (no TOCTOU with the mutation itself),
+  tenant-scoped, throws `ConflictException` naming the blocking entities/branches. Stale TODOs removed.
+- **Fiscal hard-lock reopen:** VERIFIED (no code change) it already requires a non-empty reason
+  (`reopenFiscalYearSchema` min(1)) and writes an immutable audit row (before/after). Founder decision:
+  do NOT add a mandatory approval-PIN (stays consistent with the settings-optional PIN philosophy; a
+  mandatory gate here would be inconsistent ceremony on a self-serve product). RBAC + reason + audit stand.
+- **Shared-primitive + i18n polish:** 5 hand-rolled spinners → shared `SubmitButton` (incl. a missing
+  loading affordance on close-year confirm); em-dash → comma in `currency-dialog.tsx`; currencies panel now
+  surfaces the backend guard message (`error.message`) instead of a generic toast.
+
+**Reviewer panel (accounting PRIMARY + nestjs + frontend + code):** all APPROVE. Fixed in one pass: branch
+reference (HIGH), tenant-scope test assertions (MEDIUM), isActive-inclusion clarifying comment. Deferred as
+documented ponytail: the create-side TOCTOU (neither legal-entity nor branch create validates the assigned
+currency is active, so a rare concurrent create-vs-deactivate can still race under READ COMMITTED — bounded
+by rarity; upgrade trigger = add isActive check on the create paths or SERIALIZABLE/FOR SHARE).
+
+**Gates:** api + web typecheck clean on touched files; `currency-config` = 27 tests; i18n parity green.
+
+### VIEW C3 — document numbering — `c7d5e0cd` — 2026-07-07
+
+**Shipped:**
+- **Starting-number self-serve (migration wedge):** wired the starting/next-number field into the sequence
+  dialog. Create = optional starting number (default 1). Edit = defensive (required reason, warning banner,
+  AlertDialog confirm) since changing a live sequence's next number can duplicate/skip document numbers;
+  bounds-validated. Backend already supported it; this closed the UI gap.
+- **Shared-primitive + dedup:** raw `<select>`/`<button>` → shared `Select`/`Button`; consolidated the
+  triple-duplicated date-placeholder/format logic (one backend + two FE copies) into one shared util
+  `packages/shared/src/doc-numbering-preview.ts` (byte-identical lift, verified no numbering drift).
+- **Clean 400 on out-of-range create:** create-side `nextNumber` now `.min(1).max(999_999_999)` to match the
+  DB CHECK (was `.positive()`, so an over-range value hit a raw DB error instead of a validation 400).
+- **Document-type enum:** DEFERRED data-driven refactor (founder decision — customers configure numbering
+  for existing types, they don't invent types; adding one stays a rare dev migration). Ponytail-marked at the
+  enum + DTO; upgrade trigger = user-defined custom documents feature ships.
+
+**Reviewer panel (code + nestjs + frontend):** all APPROVE. Verified the util consolidation is behaviorally
+identical, the atomic reserve/reset SQL is UNTOUCHED, the next-number edit flow is genuinely defensive, and
+no set-state-in-effect. Only fix = the create-side `.max` bound above.
+
+**Gates:** api + web typecheck clean on touched files; `doc-numbering` = 69 tests; i18n parity green.
+
+### VIEW C2 — tax configuration — `06313ea3` — 2026-07-07 (money-critical)
+
+**Three known Batch-B defects + one account-validation gap, all fixed:**
+- **(a) Backdated rate — FAIL LOUD (founder decision):** `getEffectiveRate()` used to fall back to the CURRENT
+  `TaxCode.rate` when no versioned rate covered the date — a silent miscalculation on a backdated doc. Now it
+  distinguishes "zero rate rows ever" (keeps the epoch `TaxCode.rate` fallback — a code that's always been one
+  rate) from "rate rows exist but none covers this date" (throws `TAX_RATE_NOT_CONFIGURED_FOR_DATE`, a clean
+  per-document 400 with an actionable self-serve message naming the code + date). Founder ruling: fail loud is
+  the long-run-correct, country-agnostic choice (silently assuming a historical rate risks mis-reporting to a
+  tax authority); the actionable error prevents a dead-end. Half-open `[from,to)` boundary verified, no
+  off-by-one; caller comment in `tax-calc` updated; propagation test added.
+- **(b) isNoTax by CATEGORY not summed rates:** a 0%-rate `standard` code was misreported as no-tax. Now
+  `NO_TAX_CATEGORIES = {exempt, out_of_scope}` (verified exactly complete against the `tax_category` enum:
+  `zero_rated` is a taxable 0% supply reported as turnover → NOT no-tax; `reverse_charge`/`non_recoverable`
+  are real tax events; `standard` is always taxable even at 0%). New `taxCodeCategory` on the component
+  response drives it. 8 category tests.
+- **(c) Legacy zero-rated turnover warning:** kept as the PERMANENT guard (founder decision — no pre-launch
+  legacy data to backfill, base is stored post-DEV-340). Comment-only change stating it's permanent, not a
+  stopgap. No backfill/migration built.
+- **(d) Tax-code GL account validation (money-critical):** `validateTaxCodeAccounts` was type-only; now it
+  also reuses `AccountMappingService.assertPostableAccounts` (postable-leaf + active + correct-legal-entity),
+  failing loud on a tax code pointed at a non-postable/wrong-entity account. `JournalEntriesModule` exports the
+  service; `TaxConfigModule` imports it (no cycle — verified). legalEntityId resolved tenant-scoped.
+
+**Reviewer panel (accounting PRIMARY + nestjs + code + database):** all APPROVE, no CRITICAL/HIGH. Fixes:
+defensive tenant-scoping comment on the "any rate exists" existence query (database MEDIUM — safe today via the
+tenant-verified parent, documented against future refactor). Deferred: pre-existing N+1 in
+`resolveEffectiveRates` (2-3 queries per distinct tax code per document; not introduced here; follow-up ticket
+if tax codes per document grow) — the new existence query only fires on the already-rare miss path.
+
+**Gates:** api typecheck clean; `tax` = 246 tests (9 suites), account-mapping/tax-summary/onboarding green.
+
+### VIEW C4 — account mappings + tax-code GL accounts — `3096fd5a` — 2026-07-07
+
+**Shipped:**
+- **Discoverability:** the account-mappings feature was fully built but lived at a standalone
+  `/accounting/account-mappings` route outside the Settings shell. Added an `account-mappings` section to the
+  finance group (gated `requiresModule: accounting`) that MOUNTS the existing `AccountMappingsPanel` verbatim
+  (zero new backend, zero rebuilt UI). Old route left as a live deep link (no dead links).
+- **Tax-code GL account fields:** the taxation UI never exposed the per-tax-code `outputAccountId`/`inputAccountId`
+  overrides (the fix (d) validates) — wired both into the tax-code dialog via the shared `AccountPicker`
+  (postable/active-only by the picker's defaults; server validates output=liability/input=asset). Edit-time
+  label resolution via the existing `useAccountQuery` so the admin sees the account, not a raw UUID.
+- **Em-dash cleanup:** the account-label format `${code} — ${name}` (a pre-existing house-rule violation in the
+  two mapping dialogs) → `${code} · ${name}` across all three sites. Converted a pre-existing set-state-in-effect
+  in `edit-mapping-dialog` to the render-time previous-value-compare pattern (surfaced by the pre-commit linter).
+
+**Reviewer panel (frontend + code):** APPROVE. MEDIUM (UUID-on-edit) + LOW (em dash) both fixed FE-side (no
+tax-config backend reopened).
+
+**Gates:** web typecheck clean; i18n parity green; `settings-sections` vitest 16/16.
+
+## Deferred / follow-ups (Batch C)
+
+- **C1 create-side TOCTOU:** add an `isActive` currency check on the legal-entity + branch create paths (or
+  SERIALIZABLE/FOR SHARE on the deactivation tx) to fully close the rare concurrent create-vs-deactivate race.
+- **C2 N+1:** batch `resolveEffectiveRates` into one `inArray(taxCodeIds)` fetch if tax codes per document grow
+  (multi-jurisdiction compound groups). Pre-existing, not blocking.
+- **C3 document types:** build data-driven document types only if/when user-defined custom documents becomes a
+  real product bet (own feature with template builder), not speculative plumbing now.
+- **C4 cosmetic:** none blocking — edit-time account label now resolves via `useAccountQuery`.
+- **Founder TODO (carried, all batches):** apply the unapplied tenant migrations (0157-0162) to the real dev +
+  prod tenant DBs and verify from the actual DB. Batch C added NO new migrations. A separate agent is
+  verifying/applying — coordinate.
+
 ## Deferred
 
 (scope/features vs founder-TODOs — appended as they arise)

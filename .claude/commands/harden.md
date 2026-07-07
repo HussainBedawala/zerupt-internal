@@ -50,7 +50,7 @@ Start from the **6-layer default**; split a layer into sub-layers (2a/2b/2c) onl
 - **Fail-loud over silent-wrong** — non-1 FX rejected not mis-posted; cost-zero COGS flagged (sale still completes — never lose a sale).
 - **Money = Decimal everywhere**; generated total/balance columns where drift must be structurally impossible.
 - **No TOCTOU** — advisory-locked in-tx checks for hard blocks (e.g. credit limit).
-- **Modular boundary DOWN only** — re-verify every layer; invert any upward violation to an event.
+- **Modular boundary DOWN only** — re-verify every layer; invert any upward violation to an event. Now mechanically checked: `study/ops/graphify/check-drift.sh` fails on any foundational→upper import (accounting/inventory importing up into pos/sales/purchase).
 
 ## 3. Per-layer loop
 
@@ -62,7 +62,7 @@ Start from the **6-layer default**; split a layer into sub-layers (2a/2b/2c) onl
    - Always `code-reviewer`; backend → `nestjs-reviewer` + `api-reviewer`; any GL/COGS/tax/tie-out → `accounting-reviewer` (balance-proof every JE); PIN/SoD/cash/auth → `security-reviewer`; migrations → `database-reviewer`; web → `frontend-reviewer`.
    - For money paths, ALSO run an **independent cross-model pass** (gstack `/review` — Codex/fresh subagent, not Claude-reviewing-Claude).
    - Fix ALL CRITICAL/HIGH/MED same session. None deferred silently.
-6. **Gates**: real `node dist/main.js` boot (the DI/wiring gate unit tests miss) · 100% coverage on financial/GL/tie-out/reversal paths, 80%+ general · confirm literal "Test Suites: N" with N>0 (jest passWithNoTests silently passes on 0 matches).
+6. **Gates**: real `node dist/main.js` boot (the DI/wiring gate unit tests miss) · 100% coverage on financial/GL/tie-out/reversal paths, 80%+ general · confirm literal "Test Suites: N" with N>0 (jest passWithNoTests silently passes on 0 matches) · **architecture drift**: run `study/ops/graphify/check-drift.sh` — must exit 0 (no new upward-dependency violation this layer introduced).
 7. **Commit + merge to main.** Log `- [x] L<n> <name> — shipped <8-char-sha> (mig <NNNN>)` in the Progress checklist AND a `### L<n> — <name> (shipped <sha>, <date>, mig <NNNN>)` entry in the Layer log (what shipped + bug named, reviewer summary, gates passed).
 8. Optionally pre-run the NEXT layer's read-only study+audit in parallel while this one finishes (the purchase-program speedup).
 

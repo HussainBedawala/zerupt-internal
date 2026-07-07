@@ -14,3 +14,11 @@ tmp/
 # Ephemeral scheduler lock (machine-local, not source)
 .claude/scheduled_tasks.lock
 .neon
+
+# graphify codebase-graph outputs (regenerable; keep GRAPH_REPORT.md tracked)
+study/ops/graphify/graph.json
+study/ops/graphify/*.html
+study/ops/graphify/obsidian/
+study/ops/graphify/.graphify_*
+study/ops/graphify/2026-*/
+study/ops/graphify/cache/

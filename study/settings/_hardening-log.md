@@ -70,11 +70,13 @@ Each layer = BE + FE + DB together. Consistency/ponytail track runs INSIDE every
 - [x] VIEW 2 — company: C1 tenant/settings gate + owner transfer (S1) + recovery contact (S3) — shipped `1e8775bf` (mig 0158)
 - [x] VIEW 3 — members: team-users → @RequiresPermission + branchScope + hash invitation.token — shipped `9a4a1104` (mig 0159)
 - [x] VIEW 4 — roles: case-insensitive name unique index + field-mask/scope editor — shipped `80df2a8a` (mig 0160)
-- [ ] VIEW 5 — approval-pins: owner-reset another user's PIN + forgot-PIN self-service
+- [x] VIEW 5 — approval-pins: admin reset (clear) + forgot-PIN self-service re-auth — shipped `8405cf5b` (no mig)
+
+**BATCH A COMPLETE (VIEWS 1-5, the Identity & Access / L1 control-plane heart).**
 
 ### Layers (the original L0-L5 frame; Batch A covers the L1 core)
 - [ ] L0 Foundation: multi-entity + isolation (+admin registry/provisioning)
-- [~] L1 Identity & Access (control plane) — VIEW 1 done; VIEWS 2-5 remain
+- [x] L1 Identity & Access (control plane) — VIEWS 1-5 all shipped (Batch A complete)
 - [ ] L2 Financial config contracts
 - [ ] L3 Document numbering
 - [ ] L4 Integrations & notifications (+billing/Stripe)
@@ -276,6 +278,62 @@ i18n:check parity green; full monorepo turbo typecheck + test (pre-commit) green
 
 **Founder TODO:** apply mig 0160 to real dev/prod tenant DBs; pre-launch collision risk if a tenant already
 has case-colliding active role names (CREATE UNIQUE INDEX fails — acceptable pre-launch, flagged).
+
+### VIEW 5 — approval pins: admin reset + self-service forgot-PIN — `8405cf5b` (no mig) — 2026-07-07
+
+**Shipped:**
+- **Admin reset (S2a):** `POST /tenant/approval-pin/reset` (gated `settings.approvalpin.reset`, Owner/Admin,
+  throttled). Reset = CLEAR (delete the target's pin row + clear their lockout counters), never SET a value —
+  so an admin can never learn/use a target's PIN (SoD / non-repudiation). Rejects self-reset (resetter !=
+  target). Role-hierarchy guard: a non-Owner cannot reset an Owner's PIN. Durable audit row carries actor +
+  targetUserId + reason (explicit AuditLogService append — the @Audited interceptor could not capture
+  targetUserId, see F5); emits `approvalpin.reset` for a future notify-the-target consumer.
+- **Forgot-PIN (S2b):** `POST /tenant/approval-pin/forgot` re-authenticates with the account PASSWORD
+  (SupabaseAdminService.verifyPassword) then sets a new PIN — no admin needed. Per-account "forgot" lockout
+  (purpose-scoped, independent of approval/self counters) surfaces retry-after ONLY on the caller's OWN
+  account; the lockout check runs BEFORE verifyPassword. verifyApproval/verifySelfPin remain generic-422
+  anti-probing (unchanged, verified).
+- **Reuse:** scrypt + timingSafeEqual + sliding-window lockout from the existing PIN service; canonical
+  PIN_REGEX + digit constants moved to packages/shared/src/constants.ts (single source, BE + FE).
+- **FE:** forgot-PIN dialog with a localized LIVE lockout countdown (en/ar, stable single-interval timer),
+  reset dialog (reason required + inline hint, destructive AlertDialog), reset action hidden for self/inactive
+  users; testids registered.
+
+**Reviewer panel:** security (PRIMARY) + nestjs + frontend + code. security verified SoD, tenant-scoping,
+no cross-account probe on forgot, own-account-only retry-after, no primitive weakening. Fixed: durable reset
+audit (target+reason), non-owner-cannot-reset-owner guard, reset event, i18n countdown units, shared PIN
+regex, confirm-PIN testid, reason-required hint, stable countdown interval, forgot password max. No open
+CRITICAL/HIGH.
+
+**Gates:** api + web typecheck green; `approval-pin pin-verification` = Test Suites 2, 48 tests; web vitest 25;
+i18n:check parity green; full monorepo turbo typecheck + test (pre-commit) green. No DB migration needed.
+
+**FOUNDER decision / follow-ups logged (_findings.md):**
+- **F5 (MEDIUM, systemic):** the @Audited interceptor derives entityId only from `id` (response/param/body),
+  so body-only DELETE-style routes using a different key (resetPin's `targetUserId`) under-audit. Fixed this
+  route with an explicit append; give the interceptor a `*Id`-suffix body fallback in the L5 audit pass so
+  other such routes are covered systemically.
+- Notify-the-target on PIN reset (email/in-app) is a follow-up — `approvalpin.reset` event emitted, consumer
+  pending.
+
+## Batch A retrospective (VIEWS 1-5)
+
+The Identity & Access control plane is hardened end to end. What Batch A surfaced beyond the planned work:
+- Real security holes closed: unguarded tenant/settings mutations (C1), cleartext invitation tokens,
+  fail-open invite branchScope (DEV-190), cross-flow PIN lockout bleed, resetPin under-audit.
+- Self-serve lifecycle levers now exist: owner transfer, recovery contact, admin PIN reset, forgot-PIN.
+- **Open FOUNDER DECISIONS carried out of Batch A (in `_findings.md`) — resolve before/early in Batch B:**
+  - **F1:** invitations accept trio is dead/broken (never provisions membership) vs the real team-users
+    invite path — pick the canonical invite flow (build acceptance OR remove the module).
+  - **F2 + F4 (same root):** no permission-ceiling on role editing OR invite-time roleId assignment — pick the
+    RBAC no-escalation model (permission-ceiling / role-rank / owner-only role editing) and apply to both.
+  - **F3:** role field-mask + scopeType are configurable/stored/validated but NOT enforced at read time —
+    cross-module FieldMaskInterceptor epic (UI currently labeled "not yet enforced" so no false assurance).
+  - **F5:** audit interceptor body-param entityId fallback (systemic under-audit on body-only delete routes).
+- **Founder TODO (all views):** apply migrations 0158 / 0159 / 0160 to the real dev + prod tenant DBs and
+  verify from the actual DB (local `zerupt_tenant_dev` absent; they apply via Railway pre-deploy on deploy).
+- **Program gate not yet run:** independent cross-model Codex `/review` on the auth paths (VIEWS 1-5) —
+  recommended before go-live.
 
 ## Deferred
 

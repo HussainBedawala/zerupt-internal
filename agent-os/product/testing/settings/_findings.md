@@ -28,7 +28,23 @@ Severity rubric: CRITICAL / HIGH / MEDIUM / LOW.
   defensive-UX/a11y/testid fixes). Two FOUNDER-DECISION-NEEDED architecture findings
   below (F1, F2) — not resolved in this pass.
 - VIEW 4 — Roles — pending.
-- VIEW 5 — Approval PINs — pending.
+- VIEW 5 — Approval PINs — reviewer fix pass applied: durable resetPin audit row
+  (actor + target + reason, mirroring VIEW 2 owner-transfer), role-hierarchy guard
+  (non-Owner cannot reset the Owner's PIN), `approvalpin.reset` event wiring, PIN_REGEX
+  consolidated to `packages/shared/src/constants.ts`, i18n countdown fix (ar/en), reset
+  reason inline hint, stable countdown interval.
+
+## VIEW 5 — Approval PINs: Notes
+
+- **F5 (MEDIUM, systemic audit gap):** the `@Audited` interceptor derives entityId only
+  from response/param/body `id`; body-only DELETE-style routes that use a different key
+  (e.g. resetPin's `targetUserId`) get entityId "unknown" + null after. VIEW 5 fixed the
+  PIN-reset route with an explicit `AuditLogService.append` call. OTHER such routes may
+  silently under-audit. Follow-up: give the interceptor a configurable/`*Id`-suffix
+  body-param fallback so target ids are captured systemically. (For the L5 audit pass.)
+- Note: "notify the target when their PIN is reset" (email/in-app) is a follow-up — the
+  `approvalpin.reset` event is emitted; a consumer is pending
+  (`// ponytail:` marker in `pin-verification.service.ts`).
 
 ## VIEW 3 — Members: Founder Decisions Needed
 

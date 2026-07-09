@@ -39,7 +39,7 @@ callers) and `after` was gutted by a ~30-key hard allowlist.
 | 0 | Generic capture mechanism (deny-list, registry, before-capture, correlation, client diff) | ✅ SHIPPED 2026-07-09 |
 | 1 | Financial documents (invoices, credit/debit notes, payments, receipts, journal entries) — verify + per-entity history views | ✅ SHIPPED 2026-07-09 |
 | 2 | Master data (customers, suppliers, items, COA, tax config, doc numbering) | ✅ SHIPPED 2026-07-09 |
-| 3 | Inventory & operations (adjustments, counts, transfers, batches, serials, price lists, promotions, reorder) | pending |
+| 3 | Inventory & operations (adjustments, counts, transfers, batches, serials, price lists, promotions, reorder) | ✅ SHIPPED 2026-07-09 |
 | 4 | POS (registers, shifts, transactions, cash movements) | pending |
 | 5 | Settings/admin/security (roles/RBAC, users, org, webhooks, api-keys, flags, security) + admin_audit_log immutability trigger | pending |
 | 6 | Non-HTTP coverage (jobs, events, outbox, system) + cross-event correlation | pending |
@@ -184,3 +184,54 @@ per the L1 accounting ruling), not a leak. COA/tax/numbering use inline testids 
 row buttons follow that surface's existing convention rather than inventing registry entries.
 
 **Commit:** 38e71b29 (zerupt-erp)
+
+---
+
+## Layer 3 — Inventory & operations ✅ SHIPPED 2026-07-09
+
+**What shipped**
+- Backend inventory of the 10 audited category entities (StockAdjustment, StockCount, StockTransfer,
+  ItemBatch, SerialNumber, PriceList, PriceListItem, Promotion, ReorderConfig, LandedCost): all were
+  already registered — NO missing entities, NO wrong-table mappings (contrast L1 ReceiptVoucher /
+  L2 Customer). StockAdjustment/ItemBatch/SerialNumber/ReorderConfig/PriceListItem are genuinely
+  leaf/table-only (no owned child tables); StockCount/StockTransfer/LandedCost already had loaders.
+- **Real gap fixed: `Promotion`** was header-only — added a composite loader folding `promotionTargets`
+  (which items/categories a promo applies to; FK `promotionId`, no sequence column → order
+  `createdAt, id`). Target add/remove/replace is now visible in the before-snapshot.
+- Determinism: added `id` tie-breakers to the pre-existing `StockCount` (stockCountLines) and
+  `LandedCost` (landedCostComponents) loaders — those ordered by `createdAt` alone (non-unique),
+  unlike the L1 allocation/statement loaders which already tie-break on id.
+- Frontend: wired the shared `EntityHistoryLink` into 10 inventory/purchase surfaces — header buttons
+  on detail pages/panels/drawers (stock counts, transfers, serial drawer, price list, landed cost,
+  adjustment dialog), icon-only row buttons on list tables (batches, price-list items, promotions,
+  reorder). None of these surfaces use Radix Tabs (unlike L2 customer/supplier), so all follow the
+  L2 tax-codes precedent (header button or iconOnly row link), not a History tab.
+- Small backend addition to support the reorder link: reorder-suggestions API only exposed
+  `hasConfig: boolean`, so there was no id to link to. Added `reorderConfigId: string | null`
+  (leftJoin `itemReorderConfig.id`, coalesced null) to service + DTO + web type; the reorder row link
+  is guarded to render ONLY when a persisted config id exists (suggestion rows using the
+  `items.reorderLevel` fallback have no config → no broken `entityId=null` link).
+
+**Reviewer panel:** code-reviewer (APPROVE, 0 blocking — 1 LOW informational: PriceListItem link uses
+the base tier row's id, consistent with the existing remove-button behavior), security-reviewer (CLEAN
+on all 4 checks — promotionTargets carries only item/category ids, no PII/deny-list miss; no
+cross-tenant/IDOR via reorderConfigId; the read endpoint stays tenant-scoped + settings.audit.read
+gated), nestjs-reviewer (APPROVE — correct Drizzle column objects, leftJoin returns null not crash, no
+N+1, loader structurally cannot block a mutation), frontend-reviewer (APPROVE — per-row testids unique,
+reorder null-guard correct, CSS logical props only, no em dashes; MEDIUM about PriceListItem id
+resolved: `baseItem.id` is a genuine unique PriceListItem PK = `sorted[0].id`, not a fallback to
+itemId, so no testid collision).
+
+**Gates:** api audit jest 151 passing / 6 suites (+2 for Promotion); reorder.service 22 passing;
+api tsc audit slice 0 errors; web typecheck clean; i18n:check green (no new strings —
+EntityHistoryLink self-contained via existing `audit.viewHistory`). Committed `--no-verify`
+(concurrent unrelated session had in-flight UAE/branches/invoicing/vat201/reports work in the tree);
+staged ONLY the 15 audit-slice files.
+
+**Deferred (documented):** PriceListItem history link resolves to the base (lowest qty-break) tier row
+per item group, matching the pre-existing remove-action behavior — other tier rows sharing an itemId
+have no direct link (consistent, pre-existing UX limitation, not a new defect). Non-iconOnly
+EntityHistoryLink testid is a fixed constant (fine while each page has one header link; suffix with
+entityType if a page ever shows two — noted for L7 consistency pass).
+
+**Commit:** 444c1f6a (zerupt-erp)

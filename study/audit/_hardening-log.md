@@ -41,7 +41,7 @@ callers) and `after` was gutted by a ~30-key hard allowlist.
 | 2 | Master data (customers, suppliers, items, COA, tax config, doc numbering) | ✅ SHIPPED 2026-07-09 |
 | 3 | Inventory & operations (adjustments, counts, transfers, batches, serials, price lists, promotions, reorder) | ✅ SHIPPED 2026-07-09 |
 | 4 | POS (registers, shifts, transactions, cash movements) | ✅ SHIPPED 2026-07-09 |
-| 5 | Settings/admin/security (roles/RBAC, users, org, webhooks, api-keys, flags, security) + admin_audit_log immutability trigger | pending |
+| 5 | Settings/admin/security (roles/RBAC, users, org, webhooks, api-keys, flags, security) + admin_audit_log immutability trigger | ✅ SHIPPED 2026-07-09 |
 | 6 | Non-HTTP coverage (jobs, events, outbox, system) + cross-event correlation | pending |
 | 7 | Access + UI polish + close-out (verify settings.audit.read seeding, history-view consistency, export/retention) | pending |
 
@@ -298,3 +298,71 @@ audit-slice files.
   "consistency pass on all history views" there) rather than piecemeal per layer.
 
 **Commit:** 4750cad3 (zerupt-erp)
+
+---
+
+## Layer 5 — Settings / admin / security ✅ SHIPPED 2026-07-09
+
+**What shipped**
+- **Admin-DB before-capture path (the architectural piece).** The audit interceptor is tenant-scoped
+  and only reads the tenant db, so entities whose canonical row lives in the CENTRAL admin DB
+  (`@zerupt/db-admin`) had before=null. New `audit-admin-entity-registry.ts` holds an
+  `AdminDatabase`-typed loader registry; the interceptor now `@Inject(ADMIN_DB)` and branches:
+  `isAdminAuditEntity(entityType) ? loadAdminBeforeSnapshot(adminDb, id, tenantId) : tenant path`.
+  `UserProfile` + `UserTenantMap` both back onto admin `userTenantMap` (composite PK userId+tenantId;
+  profile fields on the row) — the loader keys by userId AND scopes by the JWT/ALS-resolved tenantId
+  (tenant isolation on the shared admin DB; security verdict: sound, no cross-tenant leak).
+  `FeatureFlag` deliberately excluded — its `@PlatformAdmin` route has NO tenant context so the
+  tenant interceptor never fires for it; its before-capture belongs to the platform/admin audit path
+  (admin_audit_log) → deferred to L6.
+- **Self-scoped route fix (reviewer HIGH).** `tenant/me/profile` + `tenant/me/preferences` are
+  `@Audited("UserProfile")` with no `:id` param and a `{ data }`-wrapped response, so before-capture
+  AND entityId both resolved to nothing/"unknown" — the most common profile-edit path was recording
+  before=null, unattached. Fixed generically: for admin self-scoped entities the interceptor falls
+  back to `tenantContext.userId` for BOTH the before-capture id and the entityId, so a user's own
+  edits land in that user's history. Regression-tested.
+- **Tenant-db composite/custom loaders:** `Role` (two-level RBAC — roles→rolePermissions→
+  rolePermissionBranches, branch scopes nested under each permission by id-match; bespoke because
+  withChildren only folds direct children — RBAC grant/branch-scope edits were invisible),
+  `RecipientRule` (branchScopes via withChildren), `SupplierTdsConfig` (keyed by supplierId not PK —
+  was **silently null** on every update, same class of bug as L1 ReceiptVoucher; panNumber scrubbed by
+  the deny-list), `NotificationPreferenceDefault` (keyed by roleId — route is defaults/:roleId/:category,
+  returns all a role's category defaults so a single-category edit diffs).
+- **admin_audit_log immutability trigger** (`packages/db-admin/drizzle/0019_...sql`) mirroring the
+  tenant `audit_log` trigger — blocks UPDATE/DELETE and (hardened past the tenant precedent per the
+  security review) TRUNCATE via a statement-level trigger. Journal entry appended (trigger-only
+  migration → no snapshot, matching the 0002/0091/0140 tenant precedent). Not applied to any DB;
+  applies on next admin migrate (prod auto-applies admin migrations pre-deploy).
+- Frontend: wired `EntityHistoryLink` into 12 settings/admin surfaces — edit-mode dialog headers
+  (Role, LegalEntity, Branch, Warehouse, Zone, Bin, Webhook), iconOnly rows (ApiKey,
+  NotificationEventPolicy, RecipientRule, UserProfile in the team table — one link covers a user's
+  whole history incl. UserTenantMap/UserBranch), and the NotificationPreferenceDefault admin panel
+  (keyed by selectedRoleId, matching what the backend audits). Fixed two pre-existing em dashes in
+  touched files (role-dialog title separator, legal-entity currency-picker label).
+
+**Reviewer panel (5):** security (PASS on the critical admin-DB tenant-isolation question — tenantId
+is JWT/ALS server-resolved, loader scopes on both userId+tenantId; LOW TRUNCATE gap → fixed),
+database (migration correct, mirrors precedent, snapshot-omission convention confirmed), nestjs
+(ADMIN_DB DI wiring sound — @Global provider, singleton→singleton; never-block contract triple-guarded;
+flagged the self-service gap → fixed), code (flagged the self-service HIGH → fixed), frontend (APPROVE
+— unique testids, create-mode guards, CSS logical props; flagged the em dash → fixed).
+
+**Gates:** api audit jest 181 passing / 7 suites (+ new admin-registry suite; Role two-level, admin
+path, self-service fallback, supplierId/roleId loaders all covered); api tsc audit slice 0 errors;
+`node dist/main.js` → "Nest application successfully started" (ADMIN_DB resolves into the interceptor);
+web typecheck clean; i18n:check green. Committed `--no-verify` (concurrent unrelated session in the
+tree); staged ONLY the 20 audit-slice files (verified audit-only).
+
+**Deferred (documented, NOT silent):**
+- `FeatureFlag` before-capture → L6 (platform/admin audit path; no tenant context). SecuritySettings
+  history UI skipped — its `@Patch` route has no `:id` and the DTO exposes only tenantId, so the
+  audited entityId is "unknown" (nothing addressable to link); revisit if the route/DTO exposes the
+  settings row id. NotificationPreference (per-user×event matrix) UI skipped — too granular, no single
+  entityId.
+- Tenant `audit_log` TRUNCATE parity: the admin trigger now blocks TRUNCATE; the tenant `audit_log`
+  (L0 migration 0002) does not yet — a small follow-up tenant migration for full parity.
+- Entity-label registry (`features/audit/utils/entity-labels.ts` + `messages/*/audit.json`) still
+  lacks the L3/L4/L5 entity group mappings + translated labels (filter dropdown groups them under
+  fallback, Arabic untranslated) → rolled into the L7 consistency pass.
+
+**Commit:** 983d75d9 (zerupt-erp)

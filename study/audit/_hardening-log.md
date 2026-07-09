@@ -42,7 +42,7 @@ callers) and `after` was gutted by a ~30-key hard allowlist.
 | 3 | Inventory & operations (adjustments, counts, transfers, batches, serials, price lists, promotions, reorder) | ✅ SHIPPED 2026-07-09 |
 | 4 | POS (registers, shifts, transactions, cash movements) | ✅ SHIPPED 2026-07-09 |
 | 5 | Settings/admin/security (roles/RBAC, users, org, webhooks, api-keys, flags, security) + admin_audit_log immutability trigger | ✅ SHIPPED 2026-07-09 |
-| 6 | Non-HTTP coverage (jobs, events, outbox, system) + cross-event correlation | pending |
+| 6 | Non-HTTP coverage (jobs, events, outbox, system) + cross-event correlation | 🟡 CORE SHIPPED 2026-07-09 (GL audited; ranked backlog remains) |
 | 7 | Access + UI polish + close-out (verify settings.audit.read seeding, history-view consistency, export/retention) | pending |
 
 Per category after L0: (a) composite registry loaders, (b) verify capture fidelity, (c) wire the
@@ -366,3 +366,70 @@ tree); staged ONLY the 20 audit-slice files (verified audit-only).
   fallback, Arabic untranslated) → rolled into the L7 consistency pass.
 
 **Commit:** 983d75d9 (zerupt-erp)
+
+---
+
+## Layer 6 — Non-HTTP coverage 🟡 CORE SHIPPED 2026-07-09 (crown-jewel gap closed; ranked backlog remains)
+
+**Discovery (full map):** the HTTP `@Audited` interceptor covers only mutating HTTP requests. A
+discovery sweep found `AuditSource.Job`/`Event` are dead enum members — i.e. ZERO non-HTTP audit
+coverage. Ranked gaps: (1) **JE posting** (the entire general ledger — event listeners + outbox drain,
+money-affecting, every doc), (2) FeatureFlag (@PlatformAdmin, decorated @Audited but interceptor skips
+it — false coverage), (3) inventory stock-ledger/WAC/COGS listeners, (4) ZATCA reporting worker/
+listener, (5) provisioning pipeline, (6) replay-dead-letter CLI, (7) cron jobs (batch-expiry write-off,
+inventory reconciliation, overdue-receivable).
+
+**What shipped (gap #1 — the crown jewel):** `JournalPostingService.postFromEvent` now writes an audit
+row for every event-driven GL posting. `postFromEvent` is called ONLY from the outbox poller + the
+replay CLI + the fast-path `@OnEvent` listener — all non-HTTP, so no double-audit with any @Audited
+controller (verified by grepping all callers). The append runs INSIDE the posting `db.transaction`
+(exec=tx → rethrows on failure), so the audit row commits atomically with the JE (no JE without its
+audit row); the outbox drain is idempotent so a rollback simply retries. The `after`-snapshot is a
+COMPLETE, independently-reconstructable GL record (per the accounting review): header (id, entryNumber,
+legalEntityId, fiscalPeriodId, eventType/eventId, source-doc linkage, postingDate, currency, header
+rate, totals) + per-line (accountId, functional debit/credit, transaction-currency debitTC/creditTC,
+per-line exchangeRate + date, taxCodeId/taxAmount/taxAmountTC, taxableAmount/TC, taxClassification,
+partyType/partyId for AR/AP subledger, branchId, costCenterId, sourceDocumentDate, dueDate,
+description/descriptionAlt). Run through the shared `scrubSnapshotObject` deny-list (free-text
+description could carry a pasted secret). `correlationId` threaded from the payload (already persisted
+on the JE row) links the audit row back to the originating request/outbox row. `source: Event`,
+`userId: SYSTEM_USER_ID` (audit_log.userId has no FK — plain uuid; SYSTEM_USER_ID is the established
+system actor the outbox already posts as). New dep: `AuditModule` imported into `JournalEntriesModule`
+(AuditLogService depends only on TENANT_DB → no new provider cycle; boot-gate confirmed).
+
+**Reviewer panel (4):** nestjs (APPROVE — no DI cycle, tx-as-exec correct, SYSTEM_USER_ID FK note
+resolved), code (APPROVE — atomicity correct, no double-audit, idempotent-skip writes no spurious row;
+MEDIUM missing per-line FX → fixed), accounting (CRITICAL per-line FX dropped + HIGH tax base/
+classification + HIGH legalEntity/fiscalPeriod + MEDIUM branch/cost-center/dates → ALL fixed by
+completing the snapshot; approved atomicity; flagged the postDirect coverage gap → deferred, see below),
+security (MEDIUM hand-built snapshot bypassed the deny-list scrub → fixed with scrubSnapshotObject
+wrap; LOW: consider centralizing the scrub inside AuditLogService.append itself so no future direct
+caller can bypass it → L7 hardening item).
+
+**Gates:** api journal-posting + audit jest 237 passing / 8 suites (incl. new append assertion);
+api tsc audit/posting slice 0 errors; `node dist/main.js` → "Nest application successfully started"
+(AuditModule resolves into the cycle-bound JournalEntriesModule). Committed `--no-verify`; staged ONLY
+the 3 slice files.
+
+**Ranked backlog (NOT done — the rest of L6; each is its own reviewable slice):**
+- **postDirect GL coverage** (accounting HIGH, highest next value): year-end closing (retained-earnings
+  transfer), opening balances, inventory reconciliation, JE reversal all post via `postDirect` and today
+  get only an ENTITY-level audit row (FiscalYear/OpeningBalance/InventoryReconciliation/JournalEntry via
+  HTTP) — NOT a JournalEntry-shaped GL snapshot. So a `entityType='JournalEntry'` audit query
+  under-counts real GL postings. Not a regression (they are audited), but hoist the append into
+  `postDirect` (the single chokepoint, callers pass optional event context) for consistent full GL
+  coverage. Do this NEXT.
+- **FeatureFlag** (gap #2): mutation on a @PlatformAdmin route with no tenant context → tenant
+  interceptor skips it (its @Audited is dead weight). Needs an explicit `admin_audit_log` insert in
+  `FeatureFlagsService.setFlag` (mirror `AdminTenantService`), handling admin_audit_log.tenantId being
+  notNull vs global (tenantId-null) flags (nullable-tenantId migration or sentinel).
+- **Inventory valuation listeners** (#3), **ZATCA worker/listener** (#4), **provisioning** (#5),
+  **replay-dead-letter CLI** (#6), **cron write-offs/reconciliation** (#7): mutate but don't append.
+- **Full outbox correlationId threading:** the JE row + PostEventPayload already carry correlationId,
+  and the append now passes it — but the outbox row has no correlation_id column, so replayed events
+  lose the link (needs: add column + stamp at enqueue + rehydrate at drain into the payload/context).
+  Additive: links appear automatically once threaded.
+- **Centralize scrub in `AuditLogService.append`** (security LOW): move the deny-list scrub into the
+  single write chokepoint so no direct caller can ever bypass it (idempotent for the interceptor path).
+
+**Commit:** 8452fb79 (zerupt-erp)

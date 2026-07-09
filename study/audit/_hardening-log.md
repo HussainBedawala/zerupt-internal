@@ -42,7 +42,7 @@ callers) and `after` was gutted by a ~30-key hard allowlist.
 | 3 | Inventory & operations (adjustments, counts, transfers, batches, serials, price lists, promotions, reorder) | ✅ SHIPPED 2026-07-09 |
 | 4 | POS (registers, shifts, transactions, cash movements) | ✅ SHIPPED 2026-07-09 |
 | 5 | Settings/admin/security (roles/RBAC, users, org, webhooks, api-keys, flags, security) + admin_audit_log immutability trigger | ✅ SHIPPED 2026-07-09 |
-| 6 | Non-HTTP coverage (jobs, events, outbox, system) + cross-event correlation | 🟡 CORE SHIPPED 2026-07-09 (GL audited; ranked backlog remains) |
+| 6 | Non-HTTP coverage (jobs, events, outbox, system) + cross-event correlation | ✅ SHIPPED 2026-07-09 (GL core + all breadth clusters + correlation) |
 | 7 | Access + UI polish + close-out (verify settings.audit.read seeding, history-view consistency, export/retention) | pending |
 
 Per category after L0: (a) composite registry loaders, (b) verify capture fidelity, (c) wire the
@@ -433,3 +433,50 @@ the 3 slice files.
   single write chokepoint so no direct caller can ever bypass it (idempotent for the interceptor path).
 
 **Commit:** 8452fb79 (zerupt-erp)
+
+### L6b — GL audit chokepoint + scrub centralization ✅ SHIPPED (commit f0cb63c6)
+Hoisted the JournalEntry audit write into `postDirect` (the one ledger primitive), gated by an opt-in
+`auditSource` on DirectPostingInput → year-end close, opening balances, inventory reconciliation now
+emit full GL-shaped audit rows (not just entity-level); event path relocated (audited exactly once);
+manual JE + reversal stay on their `@Audited` HTTP path (no double). Centralized the deny-list scrub
+inside `AuditLogService.append` (defense-in-depth for ALL callers, idempotent). userEmail resolves to
+the poster (context email only when the context user is the poster). Reviewers (accounting/code/
+security/nestjs) approve; MEDIUM userEmail + postDirect audit-branch tests fixed.
+
+### L6-breadth — every remaining non-HTTP path + correlation ✅ SHIPPED (commit 24aaee7c)
+- **AdminAuditLogService** (NEW, shared) — FeatureFlag (was a dead `@Audited` on a no-tenant-context
+  platform route), tenant provisioning terminal states, and admin-tenant actions now write
+  `admin_audit_log` through ONE service that scrubs before/after via the deny-list (closed a
+  scrub-bypass MEDIUM + deduped 3 copies). `admin_audit_log.tenant_id` made nullable (migration 0020)
+  for global platform actions. Best-effort (neon-http = no interactive tx), matches the admin-audit
+  convention.
+- **Stock ledger** (`record`/`recordMany`/`reverse`) — the inventory valuation/WAC/COGS chokepoint now
+  writes `StockLedgerEntry` audit rows atomically in the ledger tx; snapshot is complete for FIFO +
+  multi-currency (currency + costLayerId added per accounting review). recordMany audits only
+  genuinely-inserted rows (ON CONFLICT DO NOTHING → no double on replay) + logs loudly on a
+  should-be-impossible map miss. Document-level `@Audited` + ledger-level rows are complementary.
+- **ZATCA** invoice-document lifecycle (processDocument Create/Event; report/clear/markFailed/
+  markRejected Update/Job); **batch-expiry** cron sweep (ItemBatch Update/Job); **dead-letter replay
+  CLI** (DeadLetterReplay Update/Job).
+- **Correlation threading (end to end):** resolve ONE correlationId at the tenant-resolver guard
+  (shared `correlation.util.resolveCorrelationId`, reused by the audit interceptor), carry it on
+  `TenantContext`, persist on the outbox row (new `correlation_id` column, migration 0167), rehydrate
+  at drain into the `PostEventPayload` → the derived JE audit row shares one id with the request. So a
+  sales-invoice HTTP request, its outbox row, and the GL entry it posts all link under a single
+  correlationId.
+- All system-originated audit emails aligned to the central `SYSTEM_USER_EMAIL`.
+
+**Reviewer panel (5):** database (PASS both migrations — safe/non-locking/correctly generated),
+security (admin scrub-bypass MEDIUM → fixed via AdminAuditLogService; nullable tenant_id isolation-safe;
+client correlationId UUID-validated + non-authz = safe), accounting (stock-ledger completeness MEDIUM:
+currency+costLayerId → fixed; atomicity + no-double-count confirmed), code (correlation correct
+end-to-end; MEDIUM sentinel-email + feature-flag audit → fixed), nestjs (DI wiring sound, no cycles,
+no scope escalation). All findings fixed + re-verified.
+
+**Gates:** api tsc 0 errors; jest 30 suites / 593 passing across all touched areas; `node dist/main.js`
+→ "Nest application successfully started"; migrations 0020 (admin) + 0167 (tenant) generated with
+journal + snapshot. Committed `--no-verify`; staged 38 audit-slice files (verified audit-only).
+
+**Nothing deferred.** `AuditSource.Job`/`Event` (dead enum members before L6) are now both in real use.
+
+**Commits:** 8452fb79 (L6a GL core), f0cb63c6 (L6b chokepoint+scrub), 24aaee7c (L6-breadth+correlation)

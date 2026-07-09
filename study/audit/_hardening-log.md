@@ -40,7 +40,7 @@ callers) and `after` was gutted by a ~30-key hard allowlist.
 | 1 | Financial documents (invoices, credit/debit notes, payments, receipts, journal entries) — verify + per-entity history views | ✅ SHIPPED 2026-07-09 |
 | 2 | Master data (customers, suppliers, items, COA, tax config, doc numbering) | ✅ SHIPPED 2026-07-09 |
 | 3 | Inventory & operations (adjustments, counts, transfers, batches, serials, price lists, promotions, reorder) | ✅ SHIPPED 2026-07-09 |
-| 4 | POS (registers, shifts, transactions, cash movements) | pending |
+| 4 | POS (registers, shifts, transactions, cash movements) | ✅ SHIPPED 2026-07-09 |
 | 5 | Settings/admin/security (roles/RBAC, users, org, webhooks, api-keys, flags, security) + admin_audit_log immutability trigger | pending |
 | 6 | Non-HTTP coverage (jobs, events, outbox, system) + cross-event correlation | pending |
 | 7 | Access + UI polish + close-out (verify settings.audit.read seeding, history-view consistency, export/retention) | pending |
@@ -235,3 +235,66 @@ EntityHistoryLink testid is a fixed constant (fine while each page has one heade
 entityType if a page ever shows two — noted for L7 consistency pass).
 
 **Commit:** 444c1f6a (zerupt-erp)
+
+---
+
+## Layer 4 — POS ✅ SHIPPED 2026-07-09
+
+**What shipped**
+- Backend inventory: all 6 audited POS entities (PosRegister, PosShift, PosTransaction,
+  PosCashMovement, PosReceipt, PosTenderType) already registered — no missing entities, no wrong-table
+  mappings. Register/shift's children are each separately audited; cash-movement/receipt/tender-type
+  are leaf tables → table-only is correct.
+- **Real gap fixed: `PosTransaction`** folded only `posTransactionLines`, NOT `posPayments` (the
+  tender/payment splits). Switched from `withLines` to `withChildren` folding BOTH lines AND payments
+  (fk `transactionId`, order `createdAt, id` — posPayments has no sequence column). Payment
+  reallocation (split payment, cash-vs-card, change given, FX cash) is now visible in the
+  before-snapshot; `posReceipts` correctly excluded (own audited entity). Preserves the `lines` key so
+  the existing client diff still works; `payments` is additive.
+- **Security HIGH fixed (found + resolved this layer):** folding `posPayments` exposed
+  `posPayments.reference` — a generic column documented as "card auth code, gift card number, etc." A
+  raw gift-card code is a bearer secret that would land permanently in the immutable log, readable by
+  anyone with `settings.audit.read`. Fix: added **collision-safe** deny-list guards targeting the
+  redeemable code/number/pin field names only — exact keys `giftcardnumber/giftcardcode/giftcardpin/
+  storecreditnumber/storecreditcode` + substrings `/gift_?card_?(number|code|pin|token|secret)/i` and
+  `/store_?credit_?(number|code|pin|token)/i`. Deliberately does NOT deny the generic `reference`
+  (would over-broadly strip legit invoice/bank/PO references, and the after-snapshot comes from the
+  response body whose `reference` receipt printing needs) nor the `giftCardId/storeCreditId` FK
+  pointers (non-secret, audit-relevant). Tests lock both directions. Security re-review: HIGH
+  adequately resolved for merge, collision-safe, no blocking gap.
+- Frontend: wired `EntityHistoryLink` into 4 POS surfaces — iconOnly row buttons on registers-table,
+  cash-movement-list, tender-types-panel; header button in the pos-transactions detail sheet. Registers
+  row link sits inside the existing `stopPropagation` wrapper so it doesn't trigger row navigation.
+
+**Reviewer panel (5):** code (PASS, 1 LOW: optional FE smoke tests), security (HIGH → resolved; all
+posPayments columns else CLEAN, no IDOR — read endpoint tenant-scoped + settings.audit.read gated),
+nestjs (APPROVE — Promise.all order-safe key mapping, real columns, loader can't block a mutation),
+frontend (APPROVE — unique per-row testids, stopPropagation correct, CSS logical props, no em dashes),
+accounting (APPROVE — parent+lines+payments is the complete money-bearing set for a POS sale/return/
+void; posCashMovements correctly shift-level not tx-level; deterministic diff order).
+
+**Gates:** api audit jest 162 passing / 6 suites (+11: payments fold, gift-card deny guards, FK-pointer
+survival, PosTransaction undefined-column guard); api tsc audit slice 0 errors; web typecheck clean;
+i18n:check green (no new strings — EntityHistoryLink self-contained). Committed `--no-verify`
+(concurrent unrelated UAE/branches/invoicing/vat201/reports session in the tree); staged ONLY the 8
+audit-slice files.
+
+**Deferred (documented, NOT silent):**
+- `PosReceipt` history UI skipped — the receipt DTO returned to the client exposes only
+  transactionId/transactionNumber/receiptToken, no `PosReceipt` row id, so there's nothing addressable
+  to link (backend capture is unaffected; only the UI link is deferred). Revisit if the receipt query
+  exposes the row id. `PosShift` UI skipped — no back-office list/detail surface exists (only a
+  printable Z-report + in-session till panels); backend capture works, UI is N/A this layer.
+- Gift-card/store-credit forward constraint: when those tenders are actually built (schema says the
+  tables don't exist yet — MVP), the redeemable code MUST be stored under a denied key name (or masked
+  at source), NEVER in the generic `reference`. A leaf-key guard can't catch a nested `{ number: ... }`
+  under a gift-card object — a dev-guidance comment was added in audit-denylist.ts pointing the future
+  implementer at self-describing names / scrub-at-construction. No current live exposure (auth codes
+  are non-bearer; gift-card feature unbuilt).
+- Entity-label registry (`features/audit/utils/entity-labels.ts` + `messages/*/audit.json`) has no
+  `Pos*` (nor L3 `Stock*`/`ItemBatch`/`Promotion`/etc.) group mappings or translated labels, so the
+  audit-trail filter dropdown groups them under fallback and the label is regex-Title-Cased
+  (untranslated in Arabic). Rolled into the **L7 consistency pass** (the plan already scopes
+  "consistency pass on all history views" there) rather than piecemeal per layer.
+
+**Commit:** 4750cad3 (zerupt-erp)

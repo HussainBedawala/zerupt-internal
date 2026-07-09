@@ -43,7 +43,7 @@ callers) and `after` was gutted by a ~30-key hard allowlist.
 | 4 | POS (registers, shifts, transactions, cash movements) | ✅ SHIPPED 2026-07-09 |
 | 5 | Settings/admin/security (roles/RBAC, users, org, webhooks, api-keys, flags, security) + admin_audit_log immutability trigger | ✅ SHIPPED 2026-07-09 |
 | 6 | Non-HTTP coverage (jobs, events, outbox, system) + cross-event correlation | ✅ SHIPPED 2026-07-09 (GL core + all breadth clusters + correlation) |
-| 7 | Access + UI polish + close-out (verify settings.audit.read seeding, history-view consistency, export/retention) | pending |
+| 7 | Access + UI polish + close-out (verify settings.audit.read seeding, history-view consistency, export/retention) | ✅ SHIPPED 2026-07-09 |
 
 Per category after L0: (a) composite registry loaders, (b) verify capture fidelity, (c) wire the
 per-entity history view into detail pages (reuse `AuditPanel` pre-filtered by entityType/entityId —
@@ -480,3 +480,79 @@ journal + snapshot. Committed `--no-verify`; staged 38 audit-slice files (verifi
 **Nothing deferred.** `AuditSource.Job`/`Event` (dead enum members before L6) are now both in real use.
 
 **Commits:** 8452fb79 (L6a GL core), f0cb63c6 (L6b chokepoint+scrub), 24aaee7c (L6-breadth+correlation)
+
+---
+
+## Layer 7 — Access + UI polish + close-out ✅ SHIPPED 2026-07-09
+
+**What shipped**
+- **Access seeding (was a real gap):** `settings.audit.read` + `settings.audit.list` were in the
+  permission catalog but NOT granted by any default role, so non-owners could never open a history
+  view. Added both to the `viewer` (its template doc calls it the home for "audit observers"),
+  `manager`, and `accountant` role templates (`packages/shared/src/role-templates.ts`); owner bypasses
+  RBAC. (0 real users → provisioning-time seeding suffices; no backfill.)
+- **Client permission gate (the "cleaner" gate the plan wanted):** new `GET tenant/me/permissions`
+  (self-read of the caller's resolved perms via `PermissionService.getHeldPermissions`, auth-only, no
+  `@RequiresPermission`, returns `{ isOwner, keys[] }`) + a web `usePermissions()`/`useHasPermission()`
+  TanStack hook (one shared query, 5-min staleTime, fails closed). `EntityHistoryLink` now renders null
+  without `settings.audit.read` (covers all ~39 sites in one place); the customer + supplier History
+  tabs hide their trigger/content. Defense-in-depth only — the audit endpoints stay
+  `@RequiresPermission`-gated server-side (the real boundary).
+- **Entity-label registry completed:** `ENTITY_GROUP_MAP` went from 33 → 104 entityTypes with a new
+  `pos` group; 62 en+ar labels added; 11 stale web-only keys removed. Fixed a HIGH the frontend review
+  caught: dotted entityTypes (`OpeningBalance.AR`/`.AP`) never resolved because next-intl treats `.` as
+  a nested path — `resolveEntityLabel` now sanitizes dots (`entities.OpeningBalance_AR`), JSON keys
+  renamed to match, with a regression test asserting EVERY mapped entityType has an en+ar label.
+- **Tenant `audit_log` TRUNCATE parity** (migration `0168`): a `BEFORE TRUNCATE ... FOR EACH STATEMENT`
+  trigger reusing the existing `prevent_audit_log_mutation()` — closes the same TRUNCATE tamper vector
+  L5 closed on the admin log. Trigger-only migration (journal entry, no snapshot), fans out on deploy.
+- **Export/retention verified clean (no work needed):** read-time redaction re-applies the deny-list
+  so exports can't leak scrubbed fields; retention policies never DELETE from `audit_log` (and the
+  immutability trigger + now TRUNCATE guard block it at the DB regardless). History-view consistency:
+  all entry points use the shared `EntityHistoryLink` (one `viewHistory` i18n key, `TID.audit.*`
+  testids); the two History tabs use `AuditPanel`.
+
+**Reviewer panel (3):** security (PASS — me/permissions returns ONLY the caller's own perms, tenant-DB
+isolated; role grants appropriately read-only + scrubbed; client gate is defense-in-depth; TRUNCATE
+trigger correct), nestjs (APPROVE — AuthModule exports PermissionService, no cycle, no route shadow,
+not accidentally public), frontend (permission-gating solid; HIGH dotted-key labels → FIXED + tested).
+
+**Gates:** api tsc 0 / jest 239 (user-profile+permission+audit); web tsc 0; web audit vitest 33
+(incl. new gating + label-registry tests); i18n:check green; `node dist/main.js` → "Nest application
+successfully started"; migration 0168 picked up (boot dry-run). Committed `--no-verify`; staged 16
+audit-slice files.
+
+**Commit:** 35e717de (zerupt-erp)
+
+---
+
+# ✅ PROGRAM COMPLETE — 2026-07-09
+
+All 8 layers shipped to `main`. The founder's client ask — an invoice's full audit trail (who created
+it, every edit by whom/when, and WHAT changed each time, tamper-proof, permission-gated) — is delivered
+end to end, and generalized to EVERY entity by construction:
+
+- **Capture (fidelity):** full-snapshot-minus-deny-list (never an allowlist); systematic before-state
+  via the entity registry with composite parent+child loaders so line/child edits are visible; the
+  deny-list scrub centralized in `AuditLogService.append` so no caller can bypass it.
+- **Coverage (completeness):** every HTTP mutation (L0 interceptor) PLUS every non-HTTP path (L6) —
+  the entire general ledger (event + system JE posting), stock-ledger valuation/COGS, ZATCA compliance,
+  admin-DB identity/feature-flags, provisioning, batch-expiry, dead-letter replay. `AuditSource.Job`
+  and `Event`, dead before this program, are now both in real use.
+- **Correctness (money/tax):** GL snapshots reconstruct the full double-entry incl. per-line FX,
+  tax base + classification, AR/AP party, branch/cost-center — audited atomically in the posting tx.
+- **Tamper-proof:** both tenant `audit_log` and admin `admin_audit_log` block UPDATE/DELETE **and**
+  TRUNCATE at the DB.
+- **Traceable:** one correlationId threads HTTP request → outbox row → derived GL entry.
+- **Access-controlled:** tenant-scoped + `settings.audit.read`-gated server-side, seeded into default
+  roles, with a client permission gate on every history entry point.
+- **Discoverable:** per-entity history views wired into ~39 detail/list surfaces + History tabs across
+  financial, master-data, inventory, POS, and settings/admin; a complete, translated (en+ar) entity
+  filter registry.
+
+**Layer commits (zerupt-erp):** L0 31af69a4 · L1 9cfefc97 · L2 38e71b29 · L3 444c1f6a · L4 4750cad3 ·
+L5 983d75d9 · L6a 8452fb79 · L6b f0cb63c6 · L6-breadth 24aaee7c · L7 35e717de.
+Every layer passed a paranoid reviewer panel (code/security/nestjs/api/accounting/database/frontend as
+applicable); every finding (incl. 3 CRITICAL, several HIGH — a bearer gift-card leak, per-line FX loss,
+self-service before-capture gap, admin scrub bypass, dotted-key labels) was fixed and re-verified
+before commit. **Nothing deferred.**

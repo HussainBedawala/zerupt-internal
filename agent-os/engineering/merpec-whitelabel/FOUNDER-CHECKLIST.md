@@ -33,17 +33,17 @@ That 64-hex-char string is your `BACKUP_ENCRYPTION_KEY_V1`. It MUST be different
 
 ---
 
-## PHASE 2 — DNS for merpec.com (do NOT touch legacy `erp.merpec.com` / `kb.merpec.com`)
+## PHASE 2 — DNS for merpeckw.com (new domain, on Namecheap)
 
-You can keep DNS at GoDaddy or move it to Cloudflare (recommended, free). Either way you add the same records. You will get the exact target values from Vercel (Phase 3) and Railway (Phase 4), so do Phase 3/4 first, then come back and add:
+`merpeckw.com` is a fresh domain (Namecheap → Domain List → Manage → **Advanced DNS → Add New Record**). The legacy Merpec system on `merpec.com` (`erp.merpec.com`, `kb.merpec.com`) is a DIFFERENT domain — leave it entirely alone. Get the exact target values from Vercel (Phase 3) and Railway (Phase 4) first, then add:
 
-| Type | Name (host) | Value | From |
+| Type | Host | Value | From |
 |---|---|---|---|
 | CNAME | `app` | `<value Vercel shows>` (usually `cname.vercel-dns.com`) | Phase 3 |
 | CNAME | `api` | `<value Railway shows>` (e.g. `<id>.up.railway.app`) | Phase 4 |
-| TXT / CNAME | (Resend DKIM/SPF records) | `<values Resend shows>` | Phase 5 |
+| CNAME / TXT | (Resend DKIM/SPF records) | `<values Resend shows>` | Phase 5 |
 
-Note: if `merpec.com` root is already used by the legacy site, only add the NEW subdomains `app` and `api`. Do not change existing `@`, `www`, `erp`, `kb`, or MX records.
+Namecheap tip: in Advanced DNS, the Host field is just the subdomain (`app`, `api`, etc.), not the full domain. Set TTL to Automatic. If Namecheap added default parking records (a `@`/`www` CNAME to `parkingpage`), you can leave them; they don't affect `app`/`api`.
 
 ---
 
@@ -58,8 +58,8 @@ Note: if `merpec.com` root is already used by the legacy site, only add the NEW 
    | Key | Value |
    |---|---|
    | `NEXT_PUBLIC_BRAND` | `merpec`  ← the only true differentiator |
-   | `NEXT_PUBLIC_APP_URL` | `https://app.merpec.com` |
-   | `NEXT_PUBLIC_API_URL` | `https://api.merpec.com` |
+   | `NEXT_PUBLIC_APP_URL` | `https://app.merpeckw.com` |
+   | `NEXT_PUBLIC_API_URL` | `https://api.merpeckw.com` |
    | `NEXT_PUBLIC_SITE_URL` | Merpec marketing site URL (legacy site for now) |
    | `NEXT_PUBLIC_WEBSITE_URL` | same Merpec marketing site URL |
    | `NEXT_PUBLIC_SUPABASE_URL` | **same as zerupt-web** |
@@ -69,7 +69,7 @@ Note: if `merpec.com` root is already used by the legacy site, only add the NEW 
 
    Set all of them for **Production** (and Preview/Development if you use those).
 6. **Deploy.** First build will succeed once `NEXT_PUBLIC_BRAND=merpec` is set.
-7. **Settings → Domains → Add** `app.merpec.com`. Vercel shows a CNAME target — put that into the `app` DNS record (Phase 2). Wait for "Valid Configuration" (auto-TLS issues in a few minutes).
+7. **Settings → Domains → Add** `app.merpeckw.com`. Vercel shows a CNAME target — put that into the `app` DNS record (Phase 2). Wait for "Valid Configuration" (auto-TLS issues in a few minutes).
 
 ---
 
@@ -79,14 +79,14 @@ You do NOT create a second service. Same `@zerupt/api` service serves both brand
 
 ### 4.1 Add the custom domain
 1. Railway → project → service **@zerupt/api** → **Settings → Networking → Custom Domain → Add**.
-2. Enter `api.merpec.com`. Railway shows a CNAME target — put that into the `api` DNS record (Phase 2). Wait for it to verify (green).
+2. Enter `api.merpeckw.com`. Railway shows a CNAME target — put that into the `api` DNS record (Phase 2). Wait for it to verify (green).
 
 ### 4.2 Add / update environment variables (service **Variables** tab)
 | Key | Value | Notes |
 |---|---|---|
-| `CORS_ORIGINS` | append `,https://app.merpec.com` to the existing value | comma-separated; keep the existing origins |
+| `CORS_ORIGINS` | append `,https://app.merpeckw.com` to the existing value | comma-separated; keep the existing origins |
 | `RESEND_FROM_ZERUPT` | `Zee at Zerupt <zee@mail.zerupt.com>` | optional; falls back to brand config if unset |
-| `RESEND_FROM_MERPEC` | `Merpec <no-reply@mail.merpec.com>` | set once Resend domain is verified (Phase 5) |
+| `RESEND_FROM_MERPEC` | `Merpec <no-reply@mail.merpeckw.com>` | set once Resend domain is verified (Phase 5) |
 | `SUPABASE_SEND_EMAIL_HOOK_SECRET` | `<from Supabase, Phase 6>` | required for the auth-email hook to verify |
 
 Leave the backup vars for Phase 7. Saving variables triggers a redeploy.
@@ -95,9 +95,9 @@ Leave the backup vars for Phase 7. Saving variables triggers a redeploy.
 
 ## PHASE 5 — Resend: verify the Merpec sending domain
 
-1. Resend dashboard → **Domains → Add Domain** → `mail.merpec.com`.
-2. Resend shows DKIM (CNAME) + SPF (TXT) + optionally DMARC records. Add each to the merpec.com DNS zone (Phase 2). Click **Verify** until green. (A second domain needs Resend Pro; free tier's single domain is fine until Merpec actually sends.)
-3. Decide with Dad the real sender + a human reply address (e.g. `support@merpec.com`). Set `RESEND_FROM_MERPEC` in Railway (Phase 4.2) to the confirmed `Merpec <no-reply@mail.merpec.com>`.
+1. Resend dashboard → **Domains → Add Domain** → `mail.merpeckw.com`.
+2. Resend shows DKIM (CNAME) + SPF (TXT) + optionally DMARC records. Add each to the merpeckw.com DNS zone (Phase 2). Click **Verify** until green. (A second domain needs Resend Pro; free tier's single domain is fine until Merpec actually sends.)
+3. Decide with Dad the real sender + a human reply address (e.g. `support@merpeckw.com`). Set `RESEND_FROM_MERPEC` in Railway (Phase 4.2) to the confirmed `Merpec <no-reply@mail.merpeckw.com>`.
 
 ---
 
@@ -105,18 +105,18 @@ Leave the backup vars for Phase 7. Saving variables triggers a redeploy.
 
 ### 6.1 Redirect allowlist
 1. Supabase → project → **Authentication → URL Configuration → Redirect URLs → Add**.
-2. Add `https://app.merpec.com/**`. Save. (Leave the existing zerupt entries.)
+2. Add `https://app.merpeckw.com/**`. Save. (Leave the existing zerupt entries.)
 
 ### 6.2 Send Email Hook (routes auth emails through our brand-aware endpoint)
 1. Supabase → **Authentication → Hooks (or Emails → Email Hook)** → **Send Email Hook** → Enable.
-2. **Endpoint URL:** `https://api.merpec.com/auth/email-hook` (works for both brands; it resolves brand per-user). You may also use `https://api.zerupt.com/auth/email-hook` — same endpoint, one API.
+2. **Endpoint URL:** `https://api.merpeckw.com/auth/email-hook` (works for both brands; it resolves brand per-user). You may also use `https://api.zerupt.com/auth/email-hook` — same endpoint, one API.
 3. Supabase generates a **signing secret** (`v1,whsec_...`). Copy it → set `SUPABASE_SEND_EMAIL_HOOK_SECRET` in Railway (Phase 4.2) → let the API redeploy.
 4. Supabase Pro is required for MAU headroom; the hook then handles all auth emails.
 
 ### 6.3 Test the email matrix (after 6.2 + Resend verified)
-- Merpec user password reset → email from Merpec sender, Merpec template, link to `app.merpec.com`.
+- Merpec user password reset → email from Merpec sender, Merpec template, link to `app.merpeckw.com`.
 - Zerupt user password reset → unchanged.
-- New signup from `app.merpec.com` before a tenant exists → Merpec branding (origin-derived).
+- New signup from `app.merpeckw.com` before a tenant exists → Merpec branding (origin-derived).
 
 ---
 
@@ -157,7 +157,7 @@ Leave the backup vars for Phase 7. Saving variables triggers a redeploy.
 ## PHASE 10 — Platform-admin access (for the new admin actions)
 
 - The brand filter and renewal-date edit are API-only (no admin UI, same as today). Ensure your Supabase user id is in the API env `PLATFORM_ADMIN_USER_IDS` (comma-separated).
-- Edit a renewal date: `PATCH https://api.merpec.com/admin/tenants/<tenantId>/subscription` with JSON body `{ "renewsAt": "2027-07-12" }` and your admin JWT. Filter by brand: `GET /admin/tenants?brand=merpec`.
+- Edit a renewal date: `PATCH https://api.merpeckw.com/admin/tenants/<tenantId>/subscription` with JSON body `{ "renewsAt": "2027-07-12" }` and your admin JWT. Filter by brand: `GET /admin/tenants?brand=merpec`.
 - Reminders fire automatically to Sentry at 30/7/1 days before `renewsAt`; the customer also sees an in-app banner within 30 days.
 
 ---
@@ -165,8 +165,8 @@ Leave the backup vars for Phase 7. Saving variables triggers a redeploy.
 ## Verification checklist (tick as you go)
 - [ ] zerupt-web builds again (Phase 0.1) and app.zerupt.com is up.
 - [ ] api deploy healthy (Phase 0.2).
-- [ ] app.merpec.com loads, shows Merpec logo/name (Phase 3).
-- [ ] api.merpec.com/api/v1/health returns ok; app.merpec.com can log in (CORS, Phase 4).
+- [ ] app.merpeckw.com loads, shows Merpec logo/name (Phase 3).
+- [ ] api.merpeckw.com/api/v1/health returns ok; app.merpeckw.com can log in (CORS, Phase 4).
 - [ ] Merpec password-reset email is Merpec-branded (Phase 6.3).
 - [ ] (when ready) backup_runs shows completed rows (Phase 7).
 - [ ] Neon PITR + branch protection on (Phase 8).

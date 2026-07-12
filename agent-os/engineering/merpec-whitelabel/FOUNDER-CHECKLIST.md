@@ -1,69 +1,181 @@
-<!-- Merpec white-label — founder manual steps + open items | 2026-07-12 -->
-# Merpec White-Label — Founder Checklist
+<!-- Merpec white-label — founder manual steps (exact) | 2026-07-12 -->
+# Merpec White-Label — Founder Manual Steps (exact)
 
-All CODE is shipped on branch `phase-1/merpec-whitelabel` (repo `zerupt-erp`). The items below are dashboard/infra actions only you can do (accounts, DNS, secrets), plus the migration apply. Nothing here needs more code.
-
-## 0. Database migrations — AUTO-APPLIED on deploy (no manual step needed)
-Two admin-DB migrations ship on this branch: `0021_orange_vanisher` (brand column, `renews_at`, `backup_runs`) and `0022_acoustic_gambit` (brand index, `backup_runs` FK → set null). Railway's `preDeployCommand` (`migrate-all.cli`) applies admin migrations FIRST (before traffic switches); a failure aborts the deploy and keeps the old version live. So merging to `main` + Railway auto-deploy applies them to prod automatically.
-- These are **admin-DB only** (the tenants/subscriptions registry + `backup_runs`). No per-tenant schema changed, so existing tenants need no per-tenant migration.
-- Backfill is automatic: existing subscriptions get `renews_at = created_at + 1 year`; existing tenants get `brand = 'zerupt'`.
-- Optional pre-merge dev check: `cd erp/packages/db-admin && DIRECT_URL_ADMIN=<dev-admin-url> npx drizzle-kit migrate`, then verify `\d tenants` / `\d subscriptions` / `\d backup_runs`.
-
-## 1. DNS (merpec.com zone — recommend Cloudflare free tier; do NOT touch legacy `erp.merpec.com` / `kb.merpec.com`)
-- `app.merpec.com`  CNAME → Vercel (from the new Vercel project below).
-- `api.merpec.com`  CNAME → Railway (custom domain on the existing API service).
-- Resend DKIM/SPF/DMARC records for `mail.merpec.com` (Resend gives exact records in step 4).
-
-## 2. Vercel — second frontend project (same repo, same `main`)
-- New project `merpec-web`, same team (no seat cost), root `apps/web`, prod domain `app.merpec.com`.
-- Env = copy of `zerupt-web` with these overrides:
-  | Var | Value |
-  |---|---|
-  | `NEXT_PUBLIC_BRAND` | `merpec` |
-  | `NEXT_PUBLIC_APP_URL` | `https://app.merpec.com` |
-  | `NEXT_PUBLIC_API_URL` | `https://api.merpec.com` |
-  | `NEXT_PUBLIC_SITE_URL` / `NEXT_PUBLIC_WEBSITE_URL` | Merpec marketing site (legacy until refreshed) |
-  | `NEXT_PUBLIC_PRINT_AGENT_DOWNLOAD_URL` | Merpec print-agent URL if/when it differs (else leave Zerupt default) |
-  | everything else | identical to `zerupt-web` |
-- `NEXT_PUBLIC_BRAND` MUST be set — the build fails loud if unset (that is intentional: a wrong default is a brand leak).
-
-## 3. Railway — one API service, second domain
-- Add `api.merpec.com` as a custom domain on the existing `@zerupt/api` service.
-- Extend `CORS_ORIGINS` env with `https://app.merpec.com`.
-
-## 4. Resend — verify the Merpec sending domain
-- Verify `mail.merpec.com` (add the DKIM/SPF records to the merpec.com DNS zone). Second domain needs Resend Pro; free tier is fine until Merpec actually sends.
-- Set API env: `RESEND_FROM_MERPEC="Merpec <no-reply@mail.merpec.com>"` (and optionally `RESEND_FROM_ZERUPT` — else it falls back to the brand config sender). Decide the human-reply/support address with Dad.
-
-## 5. Supabase — auth redirects + send-email hook
-- Add `https://app.merpec.com/**` to the auth redirect allowlist.
-- Configure the **Send Email Hook** → point it at `https://api.merpec.com/auth/email-hook` (the brand-aware endpoint). Copy the signing secret into API env `SUPABASE_SEND_EMAIL_HOOK_SECRET` (`v1,whsec_...`). This routes all auth emails through our brand-aware sender; verify with the spec-04 test matrix (Merpec reset → Merpec sender/template/app.merpec.com link; Zerupt unchanged).
-
-## 6. Backups — provision R2, then flip the flag
-Backups ship OFF (`BACKUP_ENABLED=false`). To turn on:
-- Create a Cloudflare R2 bucket (e.g. `zerupt-backups`); create an S3 API token.
-- Generate a NEW 64-hex key for `BACKUP_ENCRYPTION_KEY_V1` (MUST differ from `DB_ENCRYPTION_KEY_V1`).
-- Set API env: `BACKUP_ENABLED=true`, `BACKUP_ENCRYPTION_KEY_V1`, `R2_ENDPOINT`, `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY`, `R2_BUCKET`. Optional second copy: `B2_*` (Backblaze).
-- Ensure the Railway image has a `pg_dump` client whose major version ≥ Neon's Postgres major (pin in the Dockerfile). The job runs nightly ~02:00 UTC (~05:00 Gulf).
-- Do a first manual restore drill within a month (restore a random tenant's dump to a scratch Neon branch, check row counts + trial balance). Log it in `study/ops/`.
-
-## 7. Neon — durability settings (already on your to-do list)
-- Set PITR retention to the plan maximum; enable branch protection on the prod branch.
-
-## 8. Latency gate (before the first Kuwaiti customer)
-- Confirm the Railway region + Neon region for prod. Target Amsterdam (~120ms from Kuwait); if prod sits in a US region, move it BEFORE onboarding, not after. Re-check Railway's region list near launch.
-
-## 9. Platform-admin access (for the new admin endpoints)
-- The brand filter (`GET /admin/tenants?brand=merpec`) and renewal-date edit (`PATCH /admin/tenants/:id/subscription` body `{ "renewsAt": "2027-07-12" }`) sit behind the platform-admin guard. Ensure your user id is in `PLATFORM_ADMIN_USER_IDS`. There is no admin UI (consistent with today); use an authenticated API call. Renewal reminders fire to Sentry at 30/7/1 days before `renews_at`, and the customer sees an in-app banner within 30 days.
+All CODE is merged to `main`. These are dashboard/infra actions only you can do. Do them in order. Placeholders look like `<this>`.
 
 ---
 
-## Open items (waiting on Dad)
-- **Merpec assets** — real logo mark + PWA icons are already wired in (`apps/web/public/brand/merpec/`, from the 2025 branding pack). If a higher-res 512px "M" master exists, drop it in to replace the upscaled-from-200px icons; the wordmark (`logo.png`) is in place. No code change needed to swap any of them.
-- **Email sender + support address** — confirm the final `no-reply@mail.merpec.com` sender and a human support/reply address (e.g. `support@merpec.com`); update `RESEND_FROM_MERPEC` and the brand config `emailFrom` in `packages/shared/src/brand/merpec.ts` if different.
+## PHASE 0 — URGENT: unblock the EXISTING prod builds (do first)
 
-## Known non-goals (deliberately not done)
+The brand resolver fails loud when `NEXT_PUBLIC_BRAND` is unset (a silent default would be a brand leak). Your existing `zerupt-web` Vercel project doesn't have it yet, so its build now fails. Fix:
+
+### 0.1 Add the brand env var to the EXISTING zerupt-web project
+1. Vercel dashboard → your team → project **zerupt-web** (the current app.zerupt.com project).
+2. **Settings → Environment Variables → Add New**.
+3. Key: `NEXT_PUBLIC_BRAND`  Value: `zerupt`  Environments: check **Production, Preview, Development**. Save.
+4. **Deployments** tab → latest deployment → **⋯ → Redeploy** (uncheck "use existing build cache" is fine). Build should now pass.
+
+### 0.2 Confirm the API redeploy recovered
+The API had a boot crash (now fixed on `main`). In Railway → service **@zerupt/api** → **Deployments**, confirm the newest deploy is **Active/Healthy** (healthcheck `/api/v1/health` green). If it's still building, wait for it. Nothing to set here for this step.
+
+---
+
+## PHASE 1 — Generate the secrets you'll paste later (do once, store in a password manager)
+
+### 1.1 Backup encryption key (only needed when you turn backups on, but generate now)
+Run locally:
+```bash
+openssl rand -hex 32
+```
+That 64-hex-char string is your `BACKUP_ENCRYPTION_KEY_V1`. It MUST be different from `DB_ENCRYPTION_KEY_V1`. Store it safely — losing it makes backups unrecoverable.
+
+(The Supabase hook secret is generated by Supabase in Phase 6, not here.)
+
+---
+
+## PHASE 2 — DNS for merpec.com (do NOT touch legacy `erp.merpec.com` / `kb.merpec.com`)
+
+You can keep DNS at GoDaddy or move it to Cloudflare (recommended, free). Either way you add the same records. You will get the exact target values from Vercel (Phase 3) and Railway (Phase 4), so do Phase 3/4 first, then come back and add:
+
+| Type | Name (host) | Value | From |
+|---|---|---|---|
+| CNAME | `app` | `<value Vercel shows>` (usually `cname.vercel-dns.com`) | Phase 3 |
+| CNAME | `api` | `<value Railway shows>` (e.g. `<id>.up.railway.app`) | Phase 4 |
+| TXT / CNAME | (Resend DKIM/SPF records) | `<values Resend shows>` | Phase 5 |
+
+Note: if `merpec.com` root is already used by the legacy site, only add the NEW subdomains `app` and `api`. Do not change existing `@`, `www`, `erp`, `kb`, or MX records.
+
+---
+
+## PHASE 3 — Vercel: second frontend project `merpec-web`
+
+1. Vercel → **Add New → Project** → import the SAME Git repo (`zerupt-erp`). (Importing the same repo twice is allowed and free on your plan.)
+2. **Project name:** `merpec-web`.
+3. **Root Directory:** `apps/web` (click Edit, select it).
+4. **Framework Preset:** Next.js (auto-detected). Leave build/install commands as the monorepo defaults (same as zerupt-web).
+5. **Environment Variables** — add these (copy every value from zerupt-web EXCEPT the overrides shown):
+
+   | Key | Value |
+   |---|---|
+   | `NEXT_PUBLIC_BRAND` | `merpec`  ← the only true differentiator |
+   | `NEXT_PUBLIC_APP_URL` | `https://app.merpec.com` |
+   | `NEXT_PUBLIC_API_URL` | `https://api.merpec.com` |
+   | `NEXT_PUBLIC_SITE_URL` | Merpec marketing site URL (legacy site for now) |
+   | `NEXT_PUBLIC_WEBSITE_URL` | same Merpec marketing site URL |
+   | `NEXT_PUBLIC_SUPABASE_URL` | **same as zerupt-web** |
+   | `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | **same as zerupt-web** |
+   | `NEXT_PUBLIC_PRINT_AGENT_DOWNLOAD_URL` | same as zerupt-web (unless Merpec ships its own agent) |
+   | `NEXT_PUBLIC_PRINT_AGENT_SHA` | same as zerupt-web |
+
+   Set all of them for **Production** (and Preview/Development if you use those).
+6. **Deploy.** First build will succeed once `NEXT_PUBLIC_BRAND=merpec` is set.
+7. **Settings → Domains → Add** `app.merpec.com`. Vercel shows a CNAME target — put that into the `app` DNS record (Phase 2). Wait for "Valid Configuration" (auto-TLS issues in a few minutes).
+
+---
+
+## PHASE 4 — Railway: one API service, second domain + new env
+
+You do NOT create a second service. Same `@zerupt/api` service serves both brands.
+
+### 4.1 Add the custom domain
+1. Railway → project → service **@zerupt/api** → **Settings → Networking → Custom Domain → Add**.
+2. Enter `api.merpec.com`. Railway shows a CNAME target — put that into the `api` DNS record (Phase 2). Wait for it to verify (green).
+
+### 4.2 Add / update environment variables (service **Variables** tab)
+| Key | Value | Notes |
+|---|---|---|
+| `CORS_ORIGINS` | append `,https://app.merpec.com` to the existing value | comma-separated; keep the existing origins |
+| `RESEND_FROM_ZERUPT` | `Zee at Zerupt <zee@mail.zerupt.com>` | optional; falls back to brand config if unset |
+| `RESEND_FROM_MERPEC` | `Merpec <no-reply@mail.merpec.com>` | set once Resend domain is verified (Phase 5) |
+| `SUPABASE_SEND_EMAIL_HOOK_SECRET` | `<from Supabase, Phase 6>` | required for the auth-email hook to verify |
+
+Leave the backup vars for Phase 7. Saving variables triggers a redeploy.
+
+---
+
+## PHASE 5 — Resend: verify the Merpec sending domain
+
+1. Resend dashboard → **Domains → Add Domain** → `mail.merpec.com`.
+2. Resend shows DKIM (CNAME) + SPF (TXT) + optionally DMARC records. Add each to the merpec.com DNS zone (Phase 2). Click **Verify** until green. (A second domain needs Resend Pro; free tier's single domain is fine until Merpec actually sends.)
+3. Decide with Dad the real sender + a human reply address (e.g. `support@merpec.com`). Set `RESEND_FROM_MERPEC` in Railway (Phase 4.2) to the confirmed `Merpec <no-reply@mail.merpec.com>`.
+
+---
+
+## PHASE 6 — Supabase: auth redirects + Send Email Hook
+
+### 6.1 Redirect allowlist
+1. Supabase → project → **Authentication → URL Configuration → Redirect URLs → Add**.
+2. Add `https://app.merpec.com/**`. Save. (Leave the existing zerupt entries.)
+
+### 6.2 Send Email Hook (routes auth emails through our brand-aware endpoint)
+1. Supabase → **Authentication → Hooks (or Emails → Email Hook)** → **Send Email Hook** → Enable.
+2. **Endpoint URL:** `https://api.merpec.com/auth/email-hook` (works for both brands; it resolves brand per-user). You may also use `https://api.zerupt.com/auth/email-hook` — same endpoint, one API.
+3. Supabase generates a **signing secret** (`v1,whsec_...`). Copy it → set `SUPABASE_SEND_EMAIL_HOOK_SECRET` in Railway (Phase 4.2) → let the API redeploy.
+4. Supabase Pro is required for MAU headroom; the hook then handles all auth emails.
+
+### 6.3 Test the email matrix (after 6.2 + Resend verified)
+- Merpec user password reset → email from Merpec sender, Merpec template, link to `app.merpec.com`.
+- Zerupt user password reset → unchanged.
+- New signup from `app.merpec.com` before a tenant exists → Merpec branding (origin-derived).
+
+---
+
+## PHASE 7 — Backups (currently OFF; turn on when ready)
+
+1. Cloudflare dashboard → **R2 → Create bucket** → name `zerupt-backups`.
+2. **R2 → Manage R2 API Tokens → Create** (Object Read & Write). Note the **Access Key ID**, **Secret Access Key**, and your account's **S3 endpoint** `https://<account-id>.r2.cloudflarestorage.com`.
+3. Railway → @zerupt/api → Variables, add:
+   | Key | Value |
+   |---|---|
+   | `BACKUP_ENABLED` | `true` |
+   | `BACKUP_ENCRYPTION_KEY_V1` | the key from Phase 1.1 |
+   | `R2_ENDPOINT` | `https://<account-id>.r2.cloudflarestorage.com` |
+   | `R2_ACCESS_KEY_ID` | `<from step 2>` |
+   | `R2_SECRET_ACCESS_KEY` | `<from step 2>` |
+   | `R2_BUCKET` | `zerupt-backups` |
+   | `BACKUP_ENV` | `production` (optional; else uses NODE_ENV) |
+   | `B2_ENDPOINT` / `B2_ACCESS_KEY_ID` / `B2_SECRET_ACCESS_KEY` / `B2_BUCKET` | optional Backblaze second copy — set all four or none |
+4. **Docker image must have `pg_dump`** whose major version ≥ Neon's Postgres major. Verify/pin in `apps/api/Dockerfile` (add the postgres client, e.g. `apk add --no-cache postgresql16-client`). If missing, the job records failed runs. The job runs nightly ~02:00 UTC (~05:00 Gulf).
+5. First run: after enabling, watch Sentry for a failure alert and check the `backup_runs` table in the admin DB for `completed` rows. Do a manual restore drill within a month (restore one tenant's dump to a scratch Neon branch; check row counts + trial balance); log it in `study/ops/`.
+
+---
+
+## PHASE 8 — Neon durability (small, high value)
+
+1. Neon console → your prod project → **Settings → Storage / History retention** → set PITR retention to the plan maximum (7d Launch / 30d Scale).
+2. Enable **branch protection** on the prod branch (Settings → Branches → protect).
+
+---
+
+## PHASE 9 — Latency + region (before the first real Kuwaiti customer)
+
+1. Confirm the Railway region of @zerupt/api and the Neon region of prod. Target Amsterdam (~120ms from Kuwait). If either sits in a US region, plan the move BEFORE onboarding, not after.
+2. Re-check Railway's region list near launch (regions change).
+
+---
+
+## PHASE 10 — Platform-admin access (for the new admin actions)
+
+- The brand filter and renewal-date edit are API-only (no admin UI, same as today). Ensure your Supabase user id is in the API env `PLATFORM_ADMIN_USER_IDS` (comma-separated).
+- Edit a renewal date: `PATCH https://api.merpec.com/admin/tenants/<tenantId>/subscription` with JSON body `{ "renewsAt": "2027-07-12" }` and your admin JWT. Filter by brand: `GET /admin/tenants?brand=merpec`.
+- Reminders fire automatically to Sentry at 30/7/1 days before `renewsAt`; the customer also sees an in-app banner within 30 days.
+
+---
+
+## Verification checklist (tick as you go)
+- [ ] zerupt-web builds again (Phase 0.1) and app.zerupt.com is up.
+- [ ] api deploy healthy (Phase 0.2).
+- [ ] app.merpec.com loads, shows Merpec logo/name (Phase 3).
+- [ ] api.merpec.com/api/v1/health returns ok; app.merpec.com can log in (CORS, Phase 4).
+- [ ] Merpec password-reset email is Merpec-branded (Phase 6.3).
+- [ ] (when ready) backup_runs shows completed rows (Phase 7).
+- [ ] Neon PITR + branch protection on (Phase 8).
+
+## Open items (from Dad)
+- Final Merpec email sender + support/reply address (placeholder wired; update `RESEND_FROM_MERPEC` + `packages/shared/src/brand/merpec.ts` `emailFrom`).
+- Optional higher-res 512px "M" master (current PWA icons upscaled from 200px; swap is zero code — drop files into `apps/web/public/brand/merpec/`).
+
+## Non-goals (not doing)
 - No migration of legacy Merpec customers; legacy `*.merpec.com` untouched.
 - No payment gateway for Merpec (manual invoicing, off-system).
 - No separate Supabase project / admin DB / Railway service per brand.
-- Second Vercel project auto-deploys from `main` (brands in lockstep). At ~10 paying Merpec customers, pause auto-deploy on `merpec-web` and promote soaked builds manually (tripwire from decisions.md §10).

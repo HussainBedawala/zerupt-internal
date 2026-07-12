@@ -3,15 +3,11 @@
 
 All CODE is shipped on branch `phase-1/merpec-whitelabel` (repo `zerupt-erp`). The items below are dashboard/infra actions only you can do (accounts, DNS, secrets), plus the migration apply. Nothing here needs more code.
 
-## 0. Apply the database migrations (do first, blocks everything)
-Two admin-DB migrations are generated but NOT applied: `0021_orange_vanisher` (brand column, `renews_at`, `backup_runs`) and `0022_acoustic_gambit` (brand index, `backup_runs` FK → set null). Apply to dev, verify, then prod:
-```bash
-cd erp/packages/db-admin
-DIRECT_URL_ADMIN=<dev-admin-url>  npx drizzle-kit migrate   # dev first
-# verify: \d tenants (brand col + chk), \d subscriptions (renews_at), \d backup_runs
-DIRECT_URL_ADMIN=<prod-admin-url> npx drizzle-kit migrate   # then prod
-```
-Backfill note: existing subscriptions get `renews_at = created_at + 1 year` automatically. Existing tenants get `brand = 'zerupt'`.
+## 0. Database migrations — AUTO-APPLIED on deploy (no manual step needed)
+Two admin-DB migrations ship on this branch: `0021_orange_vanisher` (brand column, `renews_at`, `backup_runs`) and `0022_acoustic_gambit` (brand index, `backup_runs` FK → set null). Railway's `preDeployCommand` (`migrate-all.cli`) applies admin migrations FIRST (before traffic switches); a failure aborts the deploy and keeps the old version live. So merging to `main` + Railway auto-deploy applies them to prod automatically.
+- These are **admin-DB only** (the tenants/subscriptions registry + `backup_runs`). No per-tenant schema changed, so existing tenants need no per-tenant migration.
+- Backfill is automatic: existing subscriptions get `renews_at = created_at + 1 year`; existing tenants get `brand = 'zerupt'`.
+- Optional pre-merge dev check: `cd erp/packages/db-admin && DIRECT_URL_ADMIN=<dev-admin-url> npx drizzle-kit migrate`, then verify `\d tenants` / `\d subscriptions` / `\d backup_runs`.
 
 ## 1. DNS (merpec.com zone — recommend Cloudflare free tier; do NOT touch legacy `erp.merpec.com` / `kb.merpec.com`)
 - `app.merpec.com`  CNAME → Vercel (from the new Vercel project below).

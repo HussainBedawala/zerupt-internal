@@ -86,7 +86,8 @@ You do NOT create a second service. Same `@zerupt/api` service serves both brand
 |---|---|---|
 | `CORS_ORIGINS` | append `,https://app.merpeckw.com` to the existing value | comma-separated; keep the existing origins |
 | `RESEND_FROM_ZERUPT` | `Zee at Zerupt <zee@mail.zerupt.com>` | optional; falls back to brand config if unset |
-| `RESEND_FROM_MERPEC` | `Merpec <no-reply@mail.merpeckw.com>` | set once Resend domain is verified (Phase 5) |
+| `RESEND_FROM_MERPEC` | `Zee at Merpec <zee@mail.merpeckw.com>` | set once Resend domain is verified (Phase 5) |
+| `RESEND_API_KEY_MERPEC` | `re_<merpec-resend-account-key>` | Merpec's OWN Resend account key (separate free account, see Phase 5). Zerupt keeps the shared `RESEND_API_KEY`. |
 | `SUPABASE_SEND_EMAIL_HOOK_SECRET` | `<from Supabase, Phase 6>` | required for the auth-email hook to verify |
 
 Leave the backup vars for Phase 7. Saving variables triggers a redeploy.
@@ -95,9 +96,11 @@ Leave the backup vars for Phase 7. Saving variables triggers a redeploy.
 
 ## PHASE 5 — Resend: verify the Merpec sending domain
 
-1. Resend dashboard → **Domains → Add Domain** → `mail.merpeckw.com`.
-2. Resend shows DKIM (CNAME) + SPF (TXT) + optionally DMARC records. Add each to the merpeckw.com DNS zone (Phase 2). Click **Verify** until green. (A second domain needs Resend Pro; free tier's single domain is fine until Merpec actually sends.)
-3. Decide with Dad the real sender + a human reply address (e.g. `support@merpeckw.com`). Set `RESEND_FROM_MERPEC` in Railway (Phase 4.2) to the confirmed `Merpec <no-reply@mail.merpeckw.com>`.
+To avoid Resend's Pro fee (needed to add a 2nd domain to the Zerupt account), Merpec runs on its **own separate Resend account** (free tier = 1 domain, 3k emails/mo, plenty for a pilot). Zerupt stays on its existing account/key.
+1. In the **Merpec Resend account** → **Domains → Add Domain** → `mail.merpeckw.com`.
+2. Add the DKIM (CNAME) + SPF (TXT) records it shows to the merpeckw.com DNS zone (Phase 2). **Verify** until green.
+3. In that account → **API Keys → Create** → copy the key → set `RESEND_API_KEY_MERPEC` in Railway (Phase 4.2). Our mailer uses this key for Merpec sends and the shared `RESEND_API_KEY` for Zerupt.
+4. Decide with Dad the real sender + a human reply address (e.g. `support@merpeckw.com`). Set `RESEND_FROM_MERPEC` in Railway to the confirmed `Zee at Merpec <zee@mail.merpeckw.com>`.
 
 ---
 

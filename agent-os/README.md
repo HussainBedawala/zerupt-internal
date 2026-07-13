@@ -42,6 +42,7 @@ code repo; if an agent needs a fact about the product, it lives here.
 | Customer personas / journeys | `customers/personas/`, `customers/journeys/` |
 | Current website pages, SEO, structure | `marketing/website/digest.md` (snapshot), `marketing/website/seo.md` (plan) |
 | Deep as-built engineering detail | `engineering/{area}/` |
+| Merpec Kuwait white-label plan (decisions, costs, risks) | `product/merpec-kuwait/decisions.md` |
 
 ---
 

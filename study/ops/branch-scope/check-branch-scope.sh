@@ -73,7 +73,7 @@ esac
 
 # Modules already migrated to branchScopeCondition — reads here GATE. Add a module
 # dir (path segment right after apps/api/src/) as each fan-out wave completes.
-MIGRATED_MODULE_DIRS="inventory"
+MIGRATED_MODULE_DIRS="accounts,bank-reconciliation,bins,cheques,close-management,dashboard,data-export,doc-numbering,fiscal-period,fx-revaluation,import,inventory,inventory-import,inventory-reconciliation,journal-entries,migration,onboarding,opening-balance,opening-import,pos,public,purchase,reports,sales,subledger-reconciliation,suppliers,tb-import,warehouses,zatca"
 
 perl - "$REGISTRY" "$API_SRC" "$MODE" "$MIGRATED_MODULE_DIRS" <<'PERL'
 use strict; use warnings;
@@ -270,6 +270,8 @@ my @files;
       if (-d $p) { push @dirs, $p; next; }
       next unless $p =~ /\.ts$/;
       next if $p =~ /\.spec\.ts$/;
+      next if $p =~ /\.e2e-spec\.ts$/;
+      next if $p =~ m{/__tests__/};        # test helpers/harnesses/fixtures are not runtime reads
       next if $p =~ m{/tenant/protected-tables\.ts$};
       next if $p =~ m{/tenant/branch-scope\.ts$};
       push @files, $p;

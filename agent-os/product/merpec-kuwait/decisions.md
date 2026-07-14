@@ -23,14 +23,14 @@ We will never copy the code to make a Merpec version. Copies are how the old Mer
 
 - The code stays in one place (the existing Zerupt repo).
 - A small "brand config" file holds each brand's name, logo, colors, and email sender. The app is built twice from the same code: once as Zerupt, once as Merpec.
-- Kuwait customers use `app.merpec.com`. International customers use `app.zerupt.com`. Both talk to the same backend server and the same database platform.
+- Kuwait customers use `app.merpeckw.com` (the `merpec.com` domain belongs to the old system at GoDaddy; new Merpec runs on our Namecheap-registered `merpeckw.com`). International customers use `app.zerupt.com`. Both talk to the same backend server and the same database platform.
 
 ## 3. What stays the same, what changes
 
 | Piece | Merpec Kuwait | Notes |
 |---|---|---|
 | Code | Same repo, same code | One team, one place to fix bugs |
-| Backend API (Railway) | Same server, answers to `api.merpec.com` too | Adding a second web address to the same server is cheap and easy |
+| Backend API (Railway) | Same server, answers to `api.merpeckw.com` too | Adding a second web address to the same server is cheap and easy |
 | Databases (Neon) | Same setup: every customer gets their own private database | A Merpec customer's data is just as isolated as a Zerupt customer's |
 | Login system (Supabase) | Same system | Login emails will be Merpec-branded (see section 7) |
 | Frontend (Vercel) | A second deployment of the same code with `BRAND=merpec` | Shows Merpec logo, name, colors everywhere |
@@ -40,7 +40,7 @@ We will never copy the code to make a Merpec version. Copies are how the old Mer
 ## 4. Work needed before the first Merpec customer
 
 1. **Brand config + string sweep** (1-2 days): make every place that currently says "Zerupt" (logo, app name, browser tab, receipt footers, printed documents) read from the brand config instead.
-2. **Second frontend deployment** (1 day): new Vercel project at `app.merpec.com`, DNS records added at GoDaddy (or Cloudflare), Merpec logo and colors from Dad.
+2. **Second frontend deployment** (1 day): new Vercel project at `app.merpeckw.com` (DONE 2026-07-14: deployed, DNS on Vercel nameservers, wildcard `*.merpeckw.com` live), Merpec logo and colors from Dad.
 3. **Brand-aware emails** (1-2 days): login and product emails come from a Merpec address for Merpec customers (see section 7).
 4. **Safety net** (same week): nightly backups of every customer database to a second storage provider, plus turning on Neon's longest restore window. See section 9.
 5. **Anti-leak check**: an automated test that fails if the word "Zerupt" ever appears anywhere in the Merpec build. This blocks brand mistakes before they ship.
@@ -55,7 +55,7 @@ Kuwaiti customers often pay for custom features. The old way was to make a custo
 2. **Optional modules behind a switch:** bigger things (like the garage module for the auto-parts customer) get built INTO the main product, but hidden behind a per-customer switch called an "entitlement". Only customers who paid for it see it. Bonus: that module can later be sold to similar businesses in other countries. Every paid customization becomes a product we own, instead of a one-off copy we must maintain.
 3. **Truly one-off requests:** still built in the main codebase behind that customer's switch. If a request genuinely cannot work that way, we say no or reshape it. **We never fork the code. No exceptions.**
 
-**Custom web addresses:** if a customer pays for their own address (like `alghanim.merpec.com` or `erp.theircompany.com`), it is about 30 minutes of setup: point their address at our frontend, add it to two allow-lists. Same product, no new code. We can charge well for this.
+**Custom web addresses:** if a customer pays for their own address (like `alghanim.merpeckw.com` or `erp.theircompany.com`), it is about 30 minutes of setup: point their address at our frontend, add it to two allow-lists. Same product, no new code. We can charge well for this.
 
 ## 6. Money: how Merpec customers pay, and what it costs us
 
@@ -78,10 +78,10 @@ A 120 KWD/year AMC is about $32.50/month of revenue against $1-5/month of cost: 
 
 Two kinds of email, both end up sent through Resend (our email service):
 
-1. **Login emails** (confirm account, reset password): triggered by Supabase but routed through our own sender, so Merpec customers get them from `Merpec <no-reply@mail.merpec.com>` with a Merpec template.
+1. **Login emails** (confirm account, reset password): triggered by Supabase but routed through our own sender, so Merpec customers get them from `Merpec <no-reply@mail.merpeckw.com>` with a Merpec template.
 2. **Product emails** (notifications, receipts): sent by our app; the sender and template are picked by the customer's brand.
 
-We must verify `mail.merpec.com` as a sending domain in Resend when this goes live.
+DONE: `mail.merpeckw.com` is verified in Resend (DKIM/SPF live on Vercel DNS).
 
 ## 8. Existing Merpec customers and the old system
 

@@ -112,7 +112,7 @@ To avoid Resend's Pro fee (needed to add a 2nd domain to the Zerupt account), Me
 
 ### 6.2 Send Email Hook (routes auth emails through our brand-aware endpoint)
 1. Supabase → **Authentication → Hooks (or Emails → Email Hook)** → **Send Email Hook** → Enable.
-2. **Endpoint URL:** `https://api.merpeckw.com/auth/email-hook` (works for both brands; it resolves brand per-user). You may also use `https://api.zerupt.com/auth/email-hook` — same endpoint, one API.
+2. **Endpoint URL:** `https://api.merpeckw.com/api/v1/auth/email-hook` (works for both brands; it resolves brand per-user). You may also use `https://api.zerupt.com/api/v1/auth/email-hook` — same endpoint, one API. NOTE: the `/api/v1` prefix is REQUIRED (the API mounts every route under it); omitting it returns 404 and Supabase fails the signup with `500: Unexpected status code returned from hook: 404`, so no auth email is ever sent.
 3. Supabase generates a **signing secret** (`v1,whsec_...`). Copy it → set `SUPABASE_SEND_EMAIL_HOOK_SECRET` in Railway (Phase 4.2) → let the API redeploy.
 4. Supabase Pro is required for MAU headroom; the hook then handles all auth emails.
 

@@ -51,7 +51,7 @@ Result: `app.merpeckw.com` and `app.zerupt.com` are the identical application, w
 
 ### 5. Auth (Supabase) — one system, brand-aware emails
 - One Supabase project for both brands. The login token carries `tenant_id`, not brand (auth stays brand-agnostic).
-- Login emails (confirm, reset) are routed through our own API endpoint (`/auth/email-hook`), which looks up the user's brand and sends a Merpec-branded or Zerupt-branded email accordingly. So a Merpec user never gets an email that says Zerupt.
+- Login emails (confirm, reset) are routed through our own API endpoint (`/api/v1/auth/email-hook`), which looks up the user's brand and sends a Merpec-branded or Zerupt-branded email accordingly. So a Merpec user never gets an email that says Zerupt.
 
 ### 6. Observability — separated by a tag
 - Errors (Sentry) are tagged with `brand`, so you can filter Merpec issues from Zerupt issues in one dashboard without separate projects.

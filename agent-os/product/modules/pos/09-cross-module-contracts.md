@@ -8,8 +8,8 @@ These are read-only queries POS makes against the Inventory module. See `invento
 
 | Query | Purpose | Used When |
 |-------|---------|-----------|
-| Item catalog (name, SKU, type, tracking) | Display item in cart | Adding items |
-| Barcode lookup | Scan-to-add | Adding items |
+| Item catalog (name, SKU, type, parentItemId, variantLabel(+Alt), barcode label) | Display item in cart, parent-grouped search, offline variant picker | Adding items |
+| Barcode/code lookup (ladder: scale barcode → barcode → normalized SKU → alternate codes) | Scan-to-add | Adding items |
 | Item search (name, SKU, partial match) | Manual item lookup | Adding items |
 | Price resolution | Get selling price per pricing hierarchy | Adding items |
 | Stock availability (per warehouse) | Show in-stock indicator | Adding items, optional |

@@ -429,3 +429,14 @@ cash, balanced), added server-side value/target/window guards, made list show ta
 locale-aware, and fixed a promotions-surfaced FNC-sentinel bug in the central JE auto-posting
 chokepoint (header stored "FNC" at 2dp → now resolves to tenant currency at correct precision).
 Commits: c21ce381, f9048399, c6a82f8c. All reviewed (nestjs/accounting/frontend), specs green.
+
+## 2026-07-15 — item model industry completeness (DEV-458)
+One-day full build, single commit on main. Variant/matrix items end to end (per-parent axes ≤3 bilingual,
+250 cap, combo_key DB backstop, parents non-stockable via stock_ledger trigger, type/parent immutable),
+barcode name (label), item_alternate_codes wired into POS/scanner ladders, scale-barcode server parity +
+tenant setting, normalized SKU-fallback fix, template import v1.1.0 (variantGroup + option pairs, alt-codes
+sheet, 10 new holds, idempotent), items list rollup + reports groupByParent, POS Dexie v6 + offline variant
+picker, industry capability profile in shared (flag OR data-exists + "show more fields"). 6-reviewer panel:
+27 findings all fixed/accepted same session (1 critical: silent alt-code drop; combo cap import bypass;
+import parent validation). Gates: api 8,933 jest / web 285 files / shared 557 / i18n / drift all green.
+Migration 0173 auto-applies on deploy. Specs + codemaps updated.

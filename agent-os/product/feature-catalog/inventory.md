@@ -5,12 +5,12 @@
 
 ---
 
-## Item Model — Flat Items (Matrix planned)
+## Item Model — Flat + Matrix Items
 
-- **Status:** flat items `shipped` · matrix/variant items `planned` (NOT built)
-- **Description:** Every sellable product is a flat item with a SKU, name (bilingual EN/AR), category, unit of measure, and optional weight/dimensions. Matrix items (auto-generating Size × Color style variants) are designed in the module spec but NOT implemented: the `items.type`/`parentItemId` columns exist as a forward-compat stub, but there is no `item_attributes` table, the API rejects non-flat types (`items.service.ts` G1 guard throws `BadRequestException`), and there is no web/POS variant support. Today a clothing shop represents variants as separate flat items (e.g. `TSHIRT-RED-M`, `TSHIRT-RED-L`).
-- **Who it's for:** Retailers managing catalogues as flat items. Apparel/footwear size-color grids are a planned enhancement.
-- **Constraints / notes:** Tracking type (serial/batch/none) and valuation method are set once at item creation and are immutable once any movement exists. Matrix design (≤3 axes) lives in `modules/inventory/01-item-model.md`; implementing it requires the `item_attributes` table + variant generation + lifting the API guard.
+- **Status:** shipped (flat items; matrix/variant items)
+- **Description:** Every sellable product is either a flat item, or a matrix parent with generated variants — both stored as rows in `items`. A matrix parent defines up to 3 attribute axes (bilingual name/nameAlt, ordered bilingual values), and the system auto-generates one `MatrixVariant` row per combination with SKU `{parent}-{VAL1}-{VAL2}`, capped at 250 variants per parent (DB `combo_key` uniqueness is the backstop). Parents are non-stockable, non-sellable, and cannot carry barcodes (DB-trigger enforced) — they exist only as templates. `type`/`parentItemId` are immutable once set. Variants inherit from the parent at generation time only (no live cascade on later parent edits); "generate missing" for a new axis value is idempotent. Variants are deactivated, never deleted, to preserve history. Axes cannot be added or removed after the parent is created; value **rename** is supported and recomputes the variant name (not the SKU).
+- **Who it's for:** Apparel/footwear size-color grids and any retailer needing size/color/material variant grids; flat items remain the default for everyone else.
+- **Constraints / notes:** Tracking type (serial/batch/none) and valuation method are set once at item creation and are immutable once any movement exists. Deliberately not built in this ship: adding/deleting an axis after parent creation, converting a flat item to/from matrix, and a tenant-wide shared attribute library (axes are defined per-parent). Which merchants see the matrix-item UI at all is gated by the Industry Capability Profile (`apparel_fashion`; see `modules/inventory/01-item-model.md`), with "show more fields" fallback if data already exists.
 
 ---
 
@@ -35,9 +35,27 @@
 ## Barcode Registry
 
 - **Status:** shipped
-- **Description:** Every item can carry multiple barcodes (EAN-13, UPC-A, Code 128, custom). Any scanned barcode resolves to exactly one item within the tenant, with fallback to SKU lookup. For matrix items, the barcode resolves to the specific variant.
+- **Description:** Every item can carry multiple barcodes (EAN-13, UPC-A, Code 128, custom), each with a bilingual "barcode name" (`label`) so a user can tell multiple barcodes apart (e.g., "Case barcode" vs "Store barcode"). Any scanned barcode resolves to exactly one item within the tenant, with fallback through a normalized-SKU rung and an alternate-codes rung (see below). For matrix items, the barcode resolves to the specific variant; parents 400 on direct lookup since they carry no barcode.
 - **Who it's for:** Retailers using barcode scanners at POS, goods receiving, and stock counts.
 - **Constraints / notes:** Barcodes must be globally unique per tenant. Items without a supplier barcode can have one auto-generated (see Internal Barcode Generation below).
+
+---
+
+## Alternate Codes
+
+- **Status:** shipped
+- **Description:** A separate registry (`item_alternate_codes`) for non-barcode identifiers a retailer needs to look items up by — OEM part numbers, aftermarket equivalents, superseded codes, or other free-form references, each with a note field. Unlike barcodes, alternate codes are unique per item rather than globally unique across the tenant. Wired into the POS/scanner lookup ladder between the normalized-SKU rung and the end of the chain.
+- **Who it's for:** Auto parts, electronics, and hardware retailers where the same physical item is commonly referenced by multiple manufacturer or supersession codes.
+- **Constraints / notes:** Column visibility in the bulk-import template and item form is gated by the Industry Capability Profile (part-number industries).
+
+---
+
+## Scale Barcodes
+
+- **Status:** shipped
+- **Description:** Weighed-goods barcodes printed by store scales (produce, deli, bakery) encode a PLU/item reference plus a weight or price segment in the GS1 "2x" format. The server parses this format with parity to physical scale hardware. Per-tenant settings (`scaleBarcodeEnabled`, `scaleBarcodePluSource`) turn the parsing on and choose whether the PLU segment maps to SKU or barcode. Scale-barcode resolution is the first rung of the POS lookup ladder.
+- **Who it's for:** Grocery retailers weighing loose goods at the register.
+- **Constraints / notes:** Gated by the Industry Capability Profile (`grocery`); off by default for tenants that don't need it.
 
 ---
 

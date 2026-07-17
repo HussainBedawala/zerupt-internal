@@ -457,6 +457,107 @@ data; cost-gated unitCost; full-range export + cap. Grocery/pharma value. 17 tes
 
 ---
 
+# Phase 3 — Purchase Reports (shipped 2026-07-18)
+
+**Founder mandate (2026-07-18):** Harden the purchase reports the same way the financial + inventory
+reports were. Everything dynamic, locale-aware (ar + en), brand-aware, 8th-grade legible. Fix existing
+purchase-facing reports, add the purchase reports a real retail ERP lacks. Ponytail/reuse-first.
+Autonomous, on **main only**, --no-verify + push. Subagents must NOT spawn subagents (write to
+`/tmp/purchase-reports-hardening/`, return terse summaries).
+
+## What makes purchase reports different — tie-out is to the AP subledger + inventory GL
+
+Same inversion (reports own no tables, must reconcile to a ledger by construction). The ledger:
+1. **Supplier balances / purchase totals tie to the party-tagged `trade_payables` (2111) GL control
+   account** resolved DYNAMICALLY by system role (`accountSystemRoles.roleKey`), never a hardcoded
+   code, never denormalized `purchase_invoices.balance` (per [[project_ap_subledger_source_of_truth]]).
+   Reference pattern: `ap-aging.service.ts`.
+2. **Landed cost capitalization ties to `merchandise_inventory` (1141)** by dynamic role.
+3. GRN accrual (2121) is a POOLED control account (no party) → GRN/received reports are operational,
+   NOT GL-tied by supplier (proven, not asserted — surfaced as a note, never a fake reconciliation).
+
+## Layer plan (audit-driven; existing ap-aging + supplier-statement AUDITED not rebuilt)
+
+| # | Report | Source of truth | Status |
+|---|--------|-----------------|--------|
+| P0 | Foundation — RBAC (reuse reports.operational.view + inventory.cost.view; no reports.purchase.* needed), new "purchase" ReportGroup, shared-infra confirm, copy standard | AP 2111 + inventory 1141 | shipped |
+| P1 | Purchase Register (+ by-supplier) | 2111 party-tagged, GL tie-out | shipped |
+| P2 | Purchases by Item | grn_lines received-basis (cost-stripped), no tie-out by design | shipped |
+| P3 | Purchase Returns (+ by supplier/reason) | 2111 debit, GL tie-out (matched-GRN portion) | shipped |
+| P4 | Goods Received (GRN) | grn_lines, received-not-billed exposure, operational (no tie-out) | shipped |
+| P5 | Landed Costs (by shipment/item) | 1141 debit, GL tie-out | shipped |
+
+## SHIPPED 2026-07-18 — erp 1330b9ef (pushed origin/main, --no-verify), mig 0186
+
+69 files (5 new reports end-to-end + shared consolidation). All gates green:
+web + api typecheck ✓ · i18n:check ✓ (parity, ~120 new keys/locale, 0 em dashes) · 201 purchase-report
+tests (10 suites) ✓ · api build ✓ · real boot (ReportsModule DI clean, Nest started) ✓ · arch drift 0
+upward ✓ · drizzle check ✓ (mig 0186: 3 composite keyset indexes).
+
+### Build (mirror of inventory phase): 5 parallel disjoint-file build agents (Register on opus for the
+headline GL tie-out; rest sonnet) → orchestrator consolidated shared files single-writer
+(reports.module, report-registry incl. new "purchase" ReportGroup, reports-index-grid GROUP_ORDER,
+barrel, resolve-drill-href new `purchaseReturn` variant, en+ar reports.json) → 6-reviewer panel → 3
+parallel fix agents (backend / migration / frontend, disjoint) → gate wall → commit.
+
+### Reviewer panel (6) — all findings fixed same session
+- **accounting (opus): APPROVE, 0 CRIT/HIGH.** Balance-proved all three tie-outs by tracing the actual
+  JE lines the purchase listener posts (not on faith): register Σ(payableTotal×rate) = NET 2111 credit
+  for source_document_type='pinv'; returns = 2111 debit for 'prn' party-tagged; landed = 1141 debit for
+  'lc'. Windows align by construction (JE occurredAt=doc date). Worst MED = FX rate coupling (report uses
+  bill's frozen rate, engine re-derives from rate table) — MOOT today (foreign purchase bills hard-
+  rejected, rate forced to 1), deferred with ponytail comment + upgrade trigger (thread frozen rate into
+  confirm payload before enabling FX bills). Fix lives in posting engine, out of reports scope.
+- **database (perf, founder priority): CRIT + HIGH fixed.** CRIT = goods-received had no date cap →
+  full-lifetime grn_lines scan on every page load (the exact "reports slow the DB at scale" failure) →
+  fixed (required dates + MAX_RANGE_DAYS). HIGH = register/returns/grns keyset lists had no composite
+  covering index → sort-per-page defeats keyset at scale → mig 0186 (3 partial/composite indexes,
+  mirrors inventory 0185). MED = register/returns period max-range cap added; account-role lookups
+  timeout-wrapped.
+- **api: HIGH fixed** = cursor decode wrapped in blanket try/catch downgraded a tampered-cursor 400
+  (BadRequestException) to 500 in 3 services → added `instanceof HttpException` re-throw + integration
+  tests. MED glTieOut `matched`→`reconciles` (aligned to repo convention), warning-code drift
+  (→TRADE_PAYABLES_ROLE_UNMAPPED).
+- **frontend: 4 MED fixed** = raw GL codes "(2111)/(2121)" in shopkeeper copy → plain language ar+en;
+  bidi isolation on doc numbers (3 files); goods-received `<th> scope="col"`; landed-costs shipmentCount
+  → formatInt; goods-received CSV qty → formatQty.
+- **nestjs: APPROVE, 0 CRIT/HIGH.** All 5 registered, tenant+branch scoped, guards present, cost-strip
+  genuinely server-side. LOW = cost-strip untested → test added.
+- **code: APPROVE, 0 CRIT/HIGH.** SQL parameterized, roles dynamic, CSV escape used, immutable. MED =
+  field drift (fixed above).
+
+### RBAC model (purchase reports)
+- Operational purchase reports (register, returns, goods-received, purchases-by-item) VIEW =
+  `reports.operational.view` (the `manager`/purchase persona holds it; `reports.financial.view` would
+  hide them from the only role that manages purchasing). No new `reports.purchase.*` permission created.
+- Cost/unit-price columns (purchases-by-item avgUnitCost/totalCost, goods-received value) gated on
+  `inventory.cost.view` via PermissionService, stripped SERVER-side. Landed Costs whole route =
+  `inventory.cost.view` (all cost data, like Inventory Valuation). Register/returns show document
+  totals (the manager's own docs) — no strip.
+
+## Deferred / Founder-TODOs (purchase-reports phase)
+
+**Deferred scope (net-new, not this phase, logged not dropped):**
+- **Price-variance / 3-way-match exceptions report** — data fully supports it (PO↔GRN↔bill linked via
+  FKs; PPV already posts to 5210) so it is a prioritization call, not a data gap. Lower urgency for the
+  small-retail-first persona (few MVP tenants run formal 3-way-match). Revisit when procurement-heavy
+  chains onboard; cheap to add (nothing new to model).
+- **Query-param naming** kept as-is by persona (financial/statement reports periodStart/periodEnd;
+  operational date-list reports dateFrom/dateTo) rather than forcing a cross-cutting rename — cosmetic,
+  reviewer-flagged MED resolved by decision+doc not code churn.
+- **Multi-entity scope on purchases-by-item + goods-received** — branch-scoped only (their grn-based
+  data model carries no legalEntityId). Intentional; register/returns/landed-costs are entity-scoped.
+
+**Founder-TODOs (need a human — reviews were code/test level):**
+- Apply mig 0186 (3 purchase keyset indexes) to dev + prod Neon. Railway pre-deploy migrator applies on
+  merge; big-table CREATE INDEX fine pre-launch (no real data) but re-verify.
+- Verify all 5 purchase reports on a real dev tenant with live data before go-live (GL tie-out
+  reconciliation banners, drill-through, exports, cost-gating by role, received-not-billed).
+- FX: thread the frozen bill exchangeRate into the purchase-invoice confirm payload BEFORE enabling
+  foreign-currency purchase bills (see ponytail comment in purchase-register.service.ts).
+
+---
+
 ## Deferred
 
 **Deferred scope (net-new features, NOT stabilization):**

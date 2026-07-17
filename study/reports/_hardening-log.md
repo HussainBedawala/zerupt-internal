@@ -294,12 +294,175 @@ uncommitted work mid-run (HEAD moved 704e7806→…→8361dc17). Recovered each 
 lesson applied — committed + pushed immediately once green rather than deferring. See
 [[feedback_check_stash_before_redo]].
 
+---
+
+# Phase 2 — Inventory Reports (started 2026-07-18)
+
+**Founder mandate (2026-07-18):** Harden the inventory reports the same way the financial
+reports were hardened. Everything dynamic, locale-aware (ar + en), brand-aware. Fix the
+existing reports, the UI, and any code issues. Add the inventory reports a real retail ERP
+needs that we lack. Ponytail/reuse-first — reuse the financial-reports scaffolding (shared
+response envelope, statement-timeout guard, export mechanism, DrillThroughLink, report
+registry, canonical `formatQuantity`/`formatMoneyAmount`). Autonomous, on **main only**,
+no branches. Report only at layer boundaries. Subagents must NOT spawn subagents (write to
+`/tmp/inventory-reports-hardening/`, return terse summaries).
+
+## What makes inventory reports different — the tie-out is to the STOCK LEDGER + inventory GL
+
+Same inversion as financial reports (reports own no tables, they must reconcile to a ledger
+by construction) — but the ledger is the **inventory** ledger, not the GL:
+
+1. **On-hand QTY ties to the immutable stock ledger** (`stockLedgerEntries`, schema
+   `packages/db/src/schema/inventory-costing.ts`). Stock Levels reads the cache
+   (`materializedStockLevels`) — the hardening question is whether that cache can DRIFT from
+   the ledger and, if so, prove/reconcile it (never trust a silently-wrong cache).
+2. **Stock VALUE (WAC) reconciles to the inventory GL control account** (stock-on-hand /
+   inventory-asset account, resolved DYNAMICALLY by system role / account type from the
+   tenant COA — NEVER a hardcoded code). This is the accounting↔inventory tie-out the
+   inventory hardening program established; the Inventory Valuation report must PROVE it
+   (`glTieOut` + mismatch warning, same pattern the tax report got in Wave 2).
+3. **Stock Movement Ledger running balance is internally consistent** (prev + delta = running,
+   deterministic order by seq not just timestamp) and its ending balance per item equals
+   Stock Levels on-hand as-of the same date.
+4. Tenant-scoped · as-of/period boundaries honest · base-currency/FX fail-loud · empty/
+   loading/error/zero UI states · 8th-grade ar+en brand-aware copy (no em dashes, CSS logical
+   props, canonical primitives) · RBAC-gated backend AND frontend · dynamic (no hardcoded
+   warehouse/category/account/currency) · perf at scale (SQL aggregation, keyset pagination,
+   indexes, statement-timeout) · full-range multi-format export · drill-through to source doc.
+
+## Guiding principles — think like the stockkeeper AND the accountant
+
+- **The stockkeeper** must open Stock Levels and instantly see what is low / out / dead, and
+  trace any on-hand number back through the movement ledger to the document that moved it.
+- **The accountant** must be able to hand the Inventory Valuation total to the balance sheet:
+  it must equal the stock-on-hand GL control account to the fils/paisa.
+- Backend AND frontend every layer. No tech debt. Modular boundary points DOWN only.
+
+## Layer plan (inventory-reports phase)
+
+| # | Layer (report) | Source of truth | Status |
+|---|----------------|-----------------|--------|
+| I0 | Foundation — RBAC gating (FE registry vs BE guard), dynamic tax-of-inventory visibility, shared infra confirmed applied (timeout/export/drill), copy + naming standard, tie-out framing | stock ledger + inventory GL | pending |
+| I1 | Stock Levels | `materializedStockLevels` reconciled to `stockLedgerEntries` | pending |
+| I2 | Inventory Valuation | inventory GL control account (dynamic role) — glTieOut | pending |
+| I3 | Stock Movement Ledger | `stockLedgerEntries` running balance, keyset, drill-through | pending |
+| I4 | Stock Aging (surface/harden) + NEW reports the ERP lacks (audit-driven shortlist) | stock ledger / item reorder+expiry fields | pending |
+
+## Progress checklist
+
+> Execution note (2026-07-18): ran all layers in parallel (6 build agents on disjoint files),
+> shared files (registry/module/permissions/i18n) consolidated centrally by orchestrator, one
+> commit at end (founder ruling: on main, --no-verify, push). [b] = built + own-tests green,
+> pending review panel; [x] = fully shipped.
+
+- [b] I0 Foundation — RBAC standardized (all inventory ops reports -> reports.operational.view;
+      cost columns gated inventory.cost.view via PermissionService.canViewCost strip; valuation whole
+      report -> inventory.cost.view). AuthModule wired into ReportsModule. Registry + i18n consolidated.
+- [b] I1 Stock Levels — ledger-drift banner surfaced, SQL GROUP BY rollup (killed JS fetch-all),
+      full-range export endpoint, status filter (All/OK/Low/Out/Negative), cost-gated, 51 tests
+- [b] I2 Inventory Valuation — CRITICAL GL tie-out vs merchandise_inventory (dynamic role, 0.01 tol,
+      glTieOut + GL_TIEOUT_MISMATCH/INVENTORY_GL_ROLE_UNMAPPED, fail-visible), whole report cost.view,
+      full-range export (fixed silent page=1), negative rows flagged, SKU drill to movements, 15 tests
+- [b] I3 Stock Movement Ledger — keyset cursor (occurredAt,createdAt,id), real docNumber resolution +
+      drill-through to source docs, statement-timeout on all scans, running-balance tie-out vs
+      materializedStockLevels comparator, cost-gated, 25 tests
+- [b] I4a Stock Aging — SURFACED (was backend-only): registry + page + component + full-range export +
+      ledger-drift flag added; "Dead Stock" copy; cost-gated, 13 tests
+- [b] I4b Low Stock / Reorder (NEW) — items at/below reorderLevel + suggested reorder qty, SQL
+      aggregation, reuses deriveStatus, 8 tests
+- [b] I4c Expiry / Batch (NEW) — batches by days-to-expiry (parameterized thresholds), uses unused
+      item_batches FEFO data, 10 tests
+- Negative-stock folded into Stock Levels status filter (not a separate card). Adjustment/variance,
+  transfer, ABC, turnover deferred.
+
+## SHIPPED 2026-07-18 — erp 5dc97151 (pushed origin/main, --no-verify)
+
+72 files (33 new), 6 inventory reports hardened + 2 new. All gates green post-fix:
+web + api typecheck ✓ · api build ✓ · boot (Nest started, ReportsModule + AuthModule DI clean) ✓ ·
+134 inventory-report tests (8 suites) ✓ · i18n:check ✓ (parity, ~90 new keys/locale, 0 em dashes) ·
+arch drift 0 upward ✓ · drizzle check ✓ (mig 0185).
+
+### Reviewer panel (6 reviewers) — all findings fixed same session
+- accounting (opus): GL tie-out sound; HIGH-1 = displayed cache total wasn't the tied number →
+  fixed (now-path reportValue = displayed Σ materialized total, ties that to GL; also killed the
+  hot-path full-ledger scan). No CRITICAL (read-only, no JE/float).
+- nestjs: CRITICAL expiry cost-leak (fixed: canViewCost strip); HIGH valuation branch-scope (fixed:
+  branch-scoped rows, tie-out suppressed+labeled when narrowed). MED stale comment (fixed).
+- database (perf, founder priority): C1 valuation full-ledger scan on now-path (fixed w/ acct HIGH-1);
+  C2 as-of GROUP BY bounded by entity index + timeout + guard; C3 expiry unbounded (fixed: cap +
+  export); H1 movement-ledger default view uncovered → added covering index sle_occurred_at_created_at_id_idx
+  (mig 0185); M1 stock-levels getDrivingMovement now timeout-wrapped.
+- frontend: HIGH stock-aging summarizeBuckets null-poisoning (fixed); HIGH low-stock/expiry silent
+  truncation (fixed: full-range export + banner); MED em-dash UI fallback (fixed → hyphen); +loading.tsx.
+- api: CRITICAL expiry cost-leak (dup); HIGH envelope divergence + missing exports (fixed: flat +
+  /export on low-stock & expiry); MED limit defaults standardized to 20; summary dup removed.
+- code: HIGH expiry cost-leak (dup) + MED unbounded (dup) fixed; LOW leftJoin→innerJoin fixed.
+
+### RBAC model (standardized)
+- Inventory operational reports (stock-levels, movements, aging, low-stock, expiry) VIEW =
+  reports.operational.view (Manager/Viewer/Accountant/Owner — matches reports.* namespace, keeps
+  Cashiers out of report surfaces).
+- Cost/value columns gated on inventory.cost.view (Accountant/Owner) via PermissionService.canViewCost,
+  stripped SERVER-side (never just hidden). Inventory Valuation whole report = inventory.cost.view.
+
+## Layer log
+
+### I0 Foundation (shipped 5dc97151)
+RBAC standardized (above); AuthModule wired into ReportsModule for PermissionService cost-gating;
+registry gets 3 new inventory cards + valuation moved to cost.view; ~90 i18n keys (en+ar) consolidated
+single-writer, 0 em dashes; source-of-truth confirmed: materializedStockLevels = stockLedgerEntries
+by same-tx construction = GL merchandise_inventory by dynamic role.
+
+### I1 Stock Levels (shipped 5dc97151)
+Ledger-drift banner+per-row flag surfaced (was computed then dropped); JS fetch-all rollup replaced by
+SQL GROUP BY (index-covered); full-range /export; status filter (All/OK/Low/Out/Negative); cost-gated;
+getDrivingMovement timeout-wrapped. 51 tests.
+
+### I2 Inventory Valuation (shipped 5dc97151) — the headline fix
+Added GL tie-out vs merchandise_inventory control account (dynamic role, 0.01 tol, fail-visible
+GL_TIEOUT_MISMATCH/INVENTORY_GL_ROLE_UNMAPPED). now-path reportValue = displayed cache total (ties the
+on-screen number, no ledger scan); as-of = ledger-derived. Tie-out applies only at unnarrowed entity
+scope (branch/warehouse/category narrowing → suppressed + labeled banner). Branch-scoped rows. Whole
+report gated inventory.cost.view. Full-range export (fixed silent page=1). Negative rows flagged. 17 tests.
+
+### I3 Stock Movement Ledger (shipped 5dc97151)
+Keyset cursor (occurredAt,createdAt,id); real docNumber resolution + drill-through to source docs
+(grn/pinv/inv/trf/journalEntry); statement-timeout on all scans; running-balance tie-out vs
+materializedStockLevels comparator; cost-gated. Covering index sle_occurred_at_created_at_id_idx (mig 0185). 25 tests.
+
+### I4a Stock Aging / Dead Stock (shipped 5dc97151)
+SURFACED (was backend-only, invisible): registry + page + component + full-range export + ledger-drift
+flag added; summarizeBuckets null-poisoning fixed; page-path capped. "Dead Stock" 8th-grade copy. 13 tests.
+
+### I4b Low Stock / Reorder — NEW (shipped 5dc97151)
+Items at/below reorderLevel + suggested reorder qty; SQL aggregation (reuses deriveStatus);
+full-range export + truncation banner; quantity-only. 11 tests.
+
+### I4c Expiry / Batch — NEW (shipped 5dc97151)
+Batches by days-to-expiry (parameterized thresholds); activates the previously-unused item_batches FEFO
+data; cost-gated unitCost; full-range export + cap. Grocery/pharma value. 17 tests.
+
+## Deferred / Founder-TODOs (inventory-reports phase)
+
+**Founder-TODOs (need a human — reviews were code/test level):**
+- Apply migration 0185 (index sle_occurred_at_created_at_id_idx) to dev + prod Neon. Railway pre-deploy
+  migrator applies on merge; big-table CREATE INDEX is fine pre-launch (no real data) but re-verify.
+- Verify all 6 inventory reports on a real dev tenant with live data before go-live (drift banners,
+  GL tie-out reconciliation, drill-through, exports, cost-gating by role).
+
+**Deferred scope (net-new, not this phase):**
+- Stock Adjustment / Variance report (stock_counts exists), Stock Transfer report, ABC analysis,
+  inventory turnover / days-of-supply. Lower value or need new aggregates.
+- Sales / POS reports hardening — a later phase.
+
+---
+
 ## Deferred
 
 **Deferred scope (net-new features, NOT stabilization):**
 - India GSTR-style return forms (and other market-specific statutory forms beyond UAE VAT201) —
   separate feature initiative, large.
-- Non-financial reports (sales / inventory / POS) hardening — a later phase, not started.
+- Non-financial reports (sales / POS) hardening — a later phase. Inventory reports = Phase 2, in progress.
 
 **Founder-TODOs (need a human):**
 - Verify all reports (incl. new statements, day book, drill-through, tie-outs) on a real dev tenant

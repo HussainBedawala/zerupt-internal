@@ -677,6 +677,103 @@ daily-sales, top-sellers (reports.sales.read, group sales), Receivables Aging (a
 
 ---
 
+---
+
+# Phase 5 — POS Reports (shipped 2026-07-18) — FINAL read-layer phase
+
+**Founder mandate (2026-07-18):** Harden the POS-facing reports the same way financial +
+inventory + purchase + sales were. Everything dynamic, locale-aware (ar + en), 8th-grade
+legible. AUDIT (don't rebuild) cashier-performance/pos-hourly-sales/pos-payment-breakdown/
+z-report-history. Add the POS reports a real retail ERP lacks. Ponytail/reuse-first. Autonomous,
+on **main only**, --no-verify + push. Subagents must NOT spawn subagents.
+
+## Precursor (shipped erp a4855993): the orphaned `reports.sales.read` fix (sales-phase TODO)
+`reports.sales.read` was defined but granted to NO role template → daily-sales, top-sellers,
+pos-hourly-sales, cashier-performance, pos-payment-breakdown were Owner-only. Granted to
+**manager/viewer/accountant** (mirrors reports.operational.view holders). Cashiers deliberately
+EXCLUDED (store-wide analytics + cross-cashier performance is a supervisor tool; cashiers keep
+their own Z-report via pos.session.read). No financial/GL over-grant. 557 shared tests green.
+
+## What makes POS reports different — tie-out truth (Opus-traced invariant map)
+- ALL POS JEs carry ONE `sourceDocumentType: "pos"` (sale/void/return/shift-close); `journal_entries`
+  has NO event_type. Discriminate sale vs void vs return by JOIN `sourceDocumentId → pos_transactions`
+  (type/status/voidedAt/noReceiptReturn) OR by account ROLE. (Unlike sales' 'inv'/'cn'.)
+- Dynamic roleKeys that EXIST: product_sales, output_tax_payable, sales_returns, cogs, cash_register,
+  trade_receivables, cash_over_short. **NO bank/petty_cash/gift_card/store_credit role** → card/bank/
+  gift/store-credit tenders tie to GL only via account_mappings / frozen postedAccountId → per-tender
+  GL recon is PARTIAL (cash + on-account only). NEVER fake a per-tender GL reconciliation.
+- POS is functional-currency pinned for the JE → sum functional amounts, no FX leg.
+- Cash variance: pos_shifts.cashOverShort persisted at close (never recompute); corroborate Σ vs
+  cash_over_short-role GL. Reuse zReport / computeCashComponents.
+
+## Layer plan (audit-driven; pos-hourly-sales/cashier-performance/z-report-history AUDITED not rebuilt)
+| # | Report | Source of truth | Status |
+|---|--------|-----------------|--------|
+| Q0 | Precursor RBAC fix (reports.sales.read → persona) | role-templates | shipped a4855993 |
+| Q1 | POS Sales Summary (register/shift/day) NEW | product_sales−sales_returns/output_tax/cogs GL tie-out | shipped |
+| Q2 | Refunds & Voids NEW | sales_returns role, void/return via source-doc join, keyset | shipped |
+| Q3 | Cash Variance by Shift NEW | pos_shifts.cashOverShort + cash_over_short role corroboration | shipped |
+| Q4 | POS Discounts NEW | line vs order discount + approval-token, operational | shipped |
+| Q5 | pos-payment-breakdown (Tender recon) HARDEN | honest PARTIAL GL tie (cash+on-account role, non-cash aggregate) + export | shipped |
+| Q6 | cashier-performance + z-report-history HARDEN | currency precision + full-range shift export | shipped |
+
+## SHIPPED 2026-07-18 — erp d960adf9 (pushed origin/main, --no-verify), mig 0189
+101 files staged (POS work + a concurrent session's bundled salesperson-performance scaffold +
+mig 0188 — bundled because shared reports files were entangled; green, non-destructive, NOT part of
+this hardening work). All gates green: web + api typecheck ✓ · i18n:check ✓ (en/ar parity, 0 em
+dashes) · 103 POS-report tests (6 suites) ✓ · api build ✓ · real boot (ReportsModule DI clean, Nest
+started) ✓ · arch drift 0 upward ✓ · drizzle check ✓ (mig 0189: pos_shifts (tenant,status,opened_at)
+index + pos_transactions refunds/voids partial keyset index).
+
+### Build: 6 parallel disjoint-file build agents (3 GL tie-outs on opus: Sales Summary, Refunds/Voids,
+payment-breakdown extend; Cash Variance/Discounts/existing-fixes on sonnet) → single-writer consolidation
+(reports.module, registry pos-group, barrel, `posShift` drill variant, en+ar reports.json reconciled
+against each component's actual t() calls) → 6-reviewer panel → 4 parallel fix agents (disjoint) → gate wall.
+
+### Reviewer panel (6) — all CRIT/HIGH/MED fixed same session
+- **accounting (opus): BLOCK → all fixed.** 2 CRIT + 1 HIGH in pos-sales-summary (the other 4 traced sound):
+  CRIT-1 revenue tie-out subtracted GROSS return subtotal but emitter's sales_returns DR is NET of line
+  discount → fixed (net returnAmount, matches emitter); CRIT-2 doc side tenant-local day vs GL side UTC
+  postingDate → fixed (UTC-day both sides, tz-immune for MENA/India/SEA); HIGH-3 cross-period void erased
+  prior revenue → fixed (void-proof source-doc join, sales-register approach); MED-4 self-satisfying
+  fixtures → rewritten to derive both sides from one fixture set + SQL-shape assertions (17 tests).
+- **database (perf, founder priority): CRIT + 2 HIGH fixed.** CRIT = payment-breakdown/cash-variance GL-tie
+  queries lacked explicit postingDate predicate on journal_entry_lines (sargability by join-order luck) →
+  added gte/lte both. HIGH-1 pos_shifts missing (tenant,status,opened_at) index + no max-range on shifts
+  DTO → index (mig 0189) + MAX_RANGE_DAYS. HIGH-2 PosShiftsService.list not timeout-wrapped → wrapped.
+  MED cash-variance OFFSET → keyset cursor (permanent, matches refunds-voids).
+- **api: 3 HIGH fixed.** cash-variance limit 200→100 (sibling ceiling); GlTieOut missing `applies` field
+  (shared FE renderer); payment-breakdown missing /export route → added. + param rename sales-summary
+  periodStart/End → dateFrom/To (POS sibling convention).
+- **frontend: 1 HIGH fixed.** cashier-performance CSV export path still dropped { currency } (on-screen
+  was fixed, export missed) → 3dp KWD/BHD/OMR now correct in export too. + z-report dead labels, discounts
+  decimals, refunds-voids functional-currency assumption documented.
+- **nestjs: APPROVE 0 CRIT/HIGH** (2 LOW fixed: discounts export HttpException rethrow + merged-cap truncated).
+- **code: APPROVE 0 CRIT/HIGH** (SQL parameterized, roles dynamic, Decimal, tenant-scoped, immutable; MED
+  fetchSalesByShift(db:unknown)→typed TenantTx fixed).
+
+### RBAC model (POS reports)
+All 4 new + audited operational POS reports VIEW = `reports.sales.read` (now held by manager/viewer/
+accountant). Cost columns (sales-summary COGS/margin) gated `inventory.cost.view`, stripped SERVER-side.
+
+## Deferred / Founder-TODOs (POS-reports phase)
+**MED-5 multi-entity (intentional decision, not a band-aid):** POS operational reports are branch/register
+-scoped (POS is physically branch-bound; pos_transactions carries no legalEntityId without schema work).
+Full legal-entity scoping deferred behind the MULTI_ENTITY flag — same posture as the purchase phase's
+branch-scoped grn reports. GL tie-out banners now carry an honest "checked across the whole company"
+scope note so multi-entity tenants aren't misled. Revisit when MULTI_ENTITY flips.
+**Deferred net-new (logged):** salesperson POS report (no salesperson dim distinct from cashierId — same
+gap as sales phase; a concurrent session is now building the sales-side salesperson feature), item/category
+POS breakdown (covered by top-sellers), serial/batch POS (schema "MVP: unused"), price-override standalone
+(folds into POS Discounts), receipt-reprint audit (thin data).
+**Founder-TODOs (need a human):**
+- Apply mig 0189 (2 POS keyset/perf indexes) to dev + prod Neon. Railway pre-deploy migrator applies on
+  merge; big-table CREATE INDEX fine pre-launch (no real data) but re-verify.
+- Verify all POS reports on a real dev tenant with live data before go-live (GL tie-out banners, drill-through
+  to Z-report, full-range exports, cost-gating by role, void-proof sales summary, non-UTC dates, cash variance).
+
+---
+
 ## Deferred
 
 **Deferred scope (net-new features, NOT stabilization):**

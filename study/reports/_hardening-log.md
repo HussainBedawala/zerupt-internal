@@ -558,6 +558,125 @@ parallel fix agents (backend / migration / frontend, disjoint) → gate wall →
 
 ---
 
+# Phase 4 — Sales Reports (shipped 2026-07-18)
+
+**Founder mandate (2026-07-18):** Harden the sales reports the same way the financial +
+inventory + purchase reports were. Everything dynamic, locale-aware (ar + en), brand-aware,
+8th-grade legible. AUDIT (don't rebuild) daily-sales/top-sellers + Receivables Aging +
+customer-statement. Do NOT touch POS reports (separate later phase). Add the sales reports a
+real retail ERP lacks. Ponytail/reuse-first. Autonomous, on **main only**, --no-verify + push.
+Subagents must NOT spawn subagents (write to `/tmp/sales-reports-hardening/`, return terse summaries).
+
+## What makes sales reports different — tie-out is to the AR subledger + revenue/COGS GL
+
+Same inversion (reports own no tables, must reconcile to a ledger by construction). The ledger:
+1. **Customer balances / sales totals tie to the party-tagged `trade_receivables` (1131) GL
+   control account** resolved DYNAMICALLY by `accountSystemRoles.roleKey`, never a hardcoded
+   code, never denormalized `sales_invoices.balance` (per [[project_ap_subledger_source_of_truth]]).
+   Reference: `ar-aging.service.ts`. JE sourceDocumentType: invoice/direct-sale `'inv'`, credit
+   note `'cn'`, debit note `'dn'`, receipt `'rv'`, write-off `'adj'`.
+2. **Revenue ties to `product_sales` (4110) net of `sales_returns` (4200); COGS ties to `cogs`**
+   (posted by the inventory engine on sale/sale_return, NOT the sales listener). Gross Margin
+   proves revenue − COGS reconciles to the P&L by construction.
+3. **FX differs from purchase:** sales invoices DO allow foreign currency → totals use functional
+   JE amounts, TC per row, frozen JE rate (never re-derive). (Purchase hard-rejected foreign bills.)
+
+## Layer plan (audit-driven; daily-sales/top-sellers/ar-aging/customer-statement AUDITED not rebuilt)
+
+| # | Report | Source of truth | Status |
+|---|--------|-----------------|--------|
+| S0 | Foundation — reuse reports.operational.view + inventory.cost.view (no new perm), existing "sales" ReportGroup, shared-infra confirm, copy standard | AR 1131 + revenue/COGS GL | shipped |
+| S1 | Sales Register (+ by-customer) | 1131 party-tagged debit 'inv', GL tie-out, void-proof | shipped |
+| S2 | Sales Returns / Credit Notes (+ by reason/customer) | 1131 credit 'cn', GL tie-out; 4200 corroboration | shipped |
+| S3 | Sales by Item / Category | invoice/credit-note lines, cost-stripped, no tie-out by design | shipped |
+| S4 | Gross Margin (by category) | product_sales net of sales_returns − cogs; GL tie-out; whole route cost.view | shipped |
+| S5 | Discount Report (by customer/item/category) | invoice/credit-note-line discounts, operational, no tie-out | shipped |
+
+## SHIPPED 2026-07-18 — erp bf4b675c (pushed origin/main, --no-verify), mig 0187
+
+67 files (5 new reports end-to-end + shared consolidation). All gates green:
+web + api typecheck ✓ · i18n:check ✓ (parity, ~140 new keys/locale, 0 em dashes) · 74 sales-report
+tests (5 suites) ✓ · api build ✓ · real boot (ReportsModule DI clean, Nest started) ✓ · arch drift 0
+upward ✓ · drizzle check ✓ (mig 0187: 2 composite keyset indexes — salesInvoices + salesCreditNotes).
+
+### Build (mirror of purchase phase): 5 parallel disjoint-file build agents (Sales Register + Gross
+Margin on opus for the GL tie-outs; returns/by-item/discount on sonnet) → orchestrator consolidated
+shared files single-writer (reports.module, report-registry sales-group entries, components barrel,
+resolve-drill-href new `salesReturn` variant → /sales/credit-notes/[id], en+ar reports.json, schema
++ mig 0187) → 6-reviewer panel → 2 parallel fix agents (accounting/tie-out on opus, frontend on
+sonnet, disjoint files) → gate wall → commit.
+
+### Reviewer panel (6) — all CRIT/HIGH/MED fixed same session
+- **accounting (opus): 3 HIGH + 2 MED, ALL FIXED.** Tie-outs held only because sales invoices are
+  currently pinned to functional currency; three defects would misstate real numbers for target markets:
+  - HIGH-1 Gross Margin revenue was GROSS of returns while COGS netted the return → full return showed
+    Profit=100 (true 0) + chronic false GL_TIEOUT_MISMATCH. Fixed: revenue = product_sales net −
+    sales_returns (4200) debit-net.
+  - HIGH-2 Sales Returns mixed date bases (tenant-local rows vs UTC-date postingDate GL) → false
+    mismatch for every non-UTC (MENA/India/SEA) tenant. Fixed: UTC-date-of-confirmedAt both sides (like register).
+  - HIGH-3 Sales Register excluded cross-period-voided invoices (Jan-confirmed/Feb-voided vanished from
+    Jan list but Jan GL kept the debit) → false mismatch + AR understated. Fixed: void-proof tie — sum
+    the 1131 DEBIT of currently-live 'inv' invoices (join to salesInvoices status='confirmed'), not net-of-void.
+  - MED-1 Returns branch filter not propagated to GL side → false mismatch on branch-filtered view. Fixed.
+  - MED-2 Gross Margin GL COGS summed all cogs movement incl. shrinkage → scoped to sale doc types ('inv','pos','cn').
+  - Each fix proven by a new test (41 tests across the 3 tie-out suites). Clean: no cross-tenant leak
+    (tenantId on both line + entry), Decimal throughout, roleKey resolution (no hardcoded codes).
+- **frontend: 2 HIGH + 2 MED fixed.** HIGH = legal-entity switch didn't reset keyset cursor/accumulated
+  rows (sales-returns) or page counter (discount) → mixed two entities' rows / out-of-range page. Fixed
+  (reset effect keyed on entityId). MED = discount raw <button> → shared Button; added missing loading.tsx
+  to gross-margin + discount-report route folders.
+- **code: 1 HIGH (== acct MED-1, deduped) fixed.** Else clean: SQL parameterized, roles dynamic, no
+  denormalized-balance leak, immutable, no console.log.
+- **database (perf, founder priority): 0 CRIT/HIGH, 2 LOW.** Mig 0187 partial composite indexes exactly
+  match both WHERE + keyset ORDER BY (true index range scans); keyset is genuine seek (no OFFSET); GL
+  tie-out queries covered by jel_account_id_posting_date_idx; withReportStatementTimeout on every scan;
+  date-range caps enforced (no unbounded-scan gap). LOWs (redundant COUNT, unconditional branches join) folded into acct fix.
+- **nestjs: APPROVE, 0 findings.** All 5 registered, tenant+branch scoped, guards match RBAC, cost-strip
+  genuinely server-side, cursor-decode re-throws HttpException (no 400→500 downgrade).
+- **api: 0 CRIT/HIGH/MED, 2 LOW.** Contract-consistent with purchase reports (reconciles not matched,
+  tampered cursor → 400, envelope parity). LOW (sales-by-item hand-rolled consolidated field) fixed inline (shared primitive).
+
+### RBAC model (sales reports) — the discovered gap
+- Operational sales reports (register, returns, sales-by-item, discount) VIEW = `reports.operational.view`
+  (held by Manager/Viewer/Accountant persona). **DISCOVERED: `reports.sales.read` is defined but granted
+  to NO role template** — so the existing daily-sales/top-sellers (and the 3 POS reports) are effectively
+  Owner-only today. Gating the new reports on it would have made them Owner-only too (the exact anti-pattern
+  the founder warned of). Chose `reports.operational.view` (persona-correct: the Manager who runs sales
+  reports holds it). See Deferred/Founder-TODOs.
+- Cost/margin columns (sales-by-item unitCost/cogs/margin) gated `inventory.cost.view` via PermissionService,
+  stripped SERVER-side. Gross Margin whole route = `inventory.cost.view` (all cost/margin data, like Landed
+  Costs). Register/returns/discount show document totals (manager's own docs) — no strip.
+
+### Audited-not-rebuilt (confirmed still tie out)
+daily-sales, top-sellers (reports.sales.read, group sales), Receivables Aging (ar-aging) + customer-statement
+(GL-native via trade_receivables control account, dynamic role, group financial). No real gaps found; left untouched.
+
+## Deferred / Founder-TODOs (sales-reports phase)
+
+**Deferred scope (net-new, not this phase, logged not dropped):**
+- **Salesperson / staff sales performance report** — DEFERRED: no salespersonId/staffId/createdBy column
+  exists on any sales document (only workflow actors confirmedBy/voidedBy, which would misattribute). A real
+  product/schema decision (add a salesperson dimension), not a reporting gap. Revisit if a sales-commission
+  need arises. POS has cashierId but that is POS scope.
+- **Sales by item / Gross Margin overlap** kept as two reports by design: Sales by Item = operational
+  line-level (reports.operational.view, cost-stripped, no tie-out); Gross Margin = GL-tied profitability
+  summary by category (inventory.cost.view). Different persona, permission, granularity.
+
+**Founder-TODOs (need a human — reviews were code/test level):**
+- **Orphaned `reports.sales.read`** — grant it to the appropriate persona in `role-templates.ts` (Manager
+  and/or a sales/cashier role) so daily-sales/top-sellers/pos-hourly-sales/cashier-performance/
+  pos-payment-breakdown stop being Owner-only. Deliberately NOT fixed here (touches out-of-scope POS reports);
+  a one-line role-template change once the persona is decided.
+- Apply mig 0187 (2 sales keyset indexes) to dev + prod Neon. Railway pre-deploy migrator applies on merge;
+  big-table CREATE INDEX fine pre-launch (no real data) but re-verify.
+- Verify all 5 sales reports on a real dev tenant with live data before go-live (GL tie-out reconciliation
+  banners, drill-through incl. salesReturn, exports, cost-gating by role, void-proof register, non-UTC dates).
+- FX latent inconsistency (LOW): Sales Register multiplies by an exchangeRate the ledger currently ignores
+  (sales pinned to rate=1). Thread the frozen doc rate consistently before enabling foreign-currency sales
+  invoices in reports (same posture as the purchase phase's FX founder-TODO).
+
+---
+
 ## Deferred
 
 **Deferred scope (net-new features, NOT stabilization):**

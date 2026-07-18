@@ -5600,8 +5600,8 @@
     "semantic_hash": ""
   },
   "apps/api/src/reports/reports.module.ts": {
-    "mtime": 1784324902.4916372,
-    "ast_hash": "8fe6ab7cbb8d05e05f3f5af9922d53c6",
+    "mtime": 1784334311.174587,
+    "ast_hash": "8189d2315644324cd7dfb9cae207ba65",
     "semantic_hash": ""
   },
   "apps/api/src/reports/shared/net-sales-by-date.spec.ts": {
@@ -7590,8 +7590,8 @@
     "semantic_hash": ""
   },
   "apps/web/messages/ar/reports.json": {
-    "mtime": 1784326944.3664646,
-    "ast_hash": "39f6ea4da2a2c2a760acd570a51428aa",
+    "mtime": 1784334559.6695247,
+    "ast_hash": "e84997d4587ba48730881268a433b938",
     "semantic_hash": ""
   },
   "apps/web/messages/ar/retention.json": {
@@ -7885,8 +7885,8 @@
     "semantic_hash": ""
   },
   "apps/web/messages/en/reports.json": {
-    "mtime": 1784326944.3645759,
-    "ast_hash": "fd063be6b8ff3fa3c530d97fc39e7a70",
+    "mtime": 1784334500.3058252,
+    "ast_hash": "cb8b9a349997af686d193f7321f967f1",
     "semantic_hash": ""
   },
   "apps/web/messages/en/retention.json": {
@@ -7960,8 +7960,8 @@
     "semantic_hash": ""
   },
   "apps/web/next-env.d.ts": {
-    "mtime": 1784327292.2938669,
-    "ast_hash": "2a74d3909800ca5467fa83b0ab4a4890",
+    "mtime": 1784327641.2825449,
+    "ast_hash": "d0f8375ae1199dc7acd3977fc33b78b8",
     "semantic_hash": ""
   },
   "apps/web/next.config.ts": {
@@ -14540,8 +14540,8 @@
     "semantic_hash": "27a3d58fa2252d3c17f2b5b962515625"
   },
   "apps/web/src/features/reports/components/reports-index-grid.tsx": {
-    "mtime": 1784221692.4688358,
-    "ast_hash": "8e291d3f6827ae6b70fa1fab45d60dfd",
+    "mtime": 1784330088.7275572,
+    "ast_hash": "2718f2d38e34184687f5cff529b2fd9e",
     "semantic_hash": ""
   },
   "apps/web/src/features/reports/components/reports/__tests__/ap-aging-report.test.tsx": {
@@ -14600,8 +14600,8 @@
     "semantic_hash": "7b8a379062258a8e4ef14d97daa2e826"
   },
   "apps/web/src/features/reports/components/reports/index.ts": {
-    "mtime": 1784324337.727938,
-    "ast_hash": "ba9a40fa69d945bc57535a7371ace467",
+    "mtime": 1784334340.1406765,
+    "ast_hash": "9f6941637c60297299f3b236bc16cb1b",
     "semantic_hash": ""
   },
   "apps/web/src/features/reports/components/reports/inventory-valuation-report.tsx": {
@@ -14705,8 +14705,8 @@
     "semantic_hash": "cd3b1e49bd4ceb8a56a9de244169a013"
   },
   "apps/web/src/features/reports/lib/report-registry.ts": {
-    "mtime": 1784324931.3403616,
-    "ast_hash": "800c81ca4613d59ff74145ab20a7aafe",
+    "mtime": 1784334327.4738638,
+    "ast_hash": "024329f854db699ba879ba8df996a2c3",
     "semantic_hash": ""
   },
   "apps/web/src/features/reports/types.ts": {
@@ -16090,8 +16090,8 @@
     "semantic_hash": "ccfbf418e7a602d723f421362d49a119"
   },
   "apps/website/next-env.d.ts": {
-    "mtime": 1784327260.7603974,
-    "ast_hash": "2a74d3909800ca5467fa83b0ab4a4890",
+    "mtime": 1784327641.283117,
+    "ast_hash": "d0f8375ae1199dc7acd3977fc33b78b8",
     "semantic_hash": ""
   },
   "apps/website/next.config.ts": {
@@ -18530,8 +18530,8 @@
     "semantic_hash": ""
   },
   "packages/db/drizzle/meta/_journal.json": {
-    "mtime": 1784326037.7496946,
-    "ast_hash": "1f8f8e6530e26add284754f1ea6ab5c1",
+    "mtime": 1784334418.7176454,
+    "ast_hash": "d09dd7959380c1573dd602b21f780673",
     "semantic_hash": ""
   },
   "packages/db/package.json": {
@@ -18810,8 +18810,8 @@
     "semantic_hash": "882da0b3c90251b44e28583f3600d925"
   },
   "packages/db/src/schema/purchase.ts": {
-    "mtime": 1784317825.2612572,
-    "ast_hash": "56f79ab460fd4a874a76cc4157181406",
+    "mtime": 1784331092.9908166,
+    "ast_hash": "d2f22a2d5aaee9dc976871158d67a6e7",
     "semantic_hash": ""
   },
   "packages/db/src/schema/rbac.ts": {
@@ -18835,8 +18835,8 @@
     "semantic_hash": "3d92722e0a25a461ee810bf82f6a6117"
   },
   "packages/db/src/schema/sales.ts": {
-    "mtime": 1784317849.1157131,
-    "ast_hash": "a4851d255218443cf475b15d4b87878a",
+    "mtime": 1784334405.230169,
+    "ast_hash": "299897e2890a2e8eaca9df28742326f6",
     "semantic_hash": ""
   },
   "packages/db/src/schema/scan-jobs.ts": {
@@ -21860,8 +21860,8 @@
     "semantic_hash": ""
   },
   "apps/web/src/features/reports/lib/resolve-drill-href.ts": {
-    "mtime": 1784324337.7328799,
-    "ast_hash": "e5db3621ec271a31909288378a71bce4",
+    "mtime": 1784334357.751576,
+    "ast_hash": "d9b1681a4248e65249f03fcd81ec8ef3",
     "semantic_hash": ""
   },
   "apps/api/src/auth/internal-token.guard.spec.ts": {
@@ -22372,6 +22372,601 @@
   "packages/db/drizzle/meta/0185_snapshot.json": {
     "mtime": 1784326037.7478426,
     "ast_hash": "30bc2d59941deb155e36e85e373740b7",
+    "semantic_hash": ""
+  },
+  "apps/api/src/reports/goods-received.controller.ts": {
+    "mtime": 1784328983.418924,
+    "ast_hash": "625236eda157c05a5932651c79682c5b",
+    "semantic_hash": ""
+  },
+  "apps/api/src/reports/goods-received.cursor.ts": {
+    "mtime": 1784328830.585441,
+    "ast_hash": "85a8c5f0fb86cedd4e9c25e9902d50be",
+    "semantic_hash": ""
+  },
+  "apps/api/src/reports/goods-received.dto.ts": {
+    "mtime": 1784331211.031516,
+    "ast_hash": "3cbf19dd962c34a73af0e52db6d0f6e2",
+    "semantic_hash": ""
+  },
+  "apps/api/src/reports/goods-received.service.spec.ts": {
+    "mtime": 1784331635.3039596,
+    "ast_hash": "de5b44e91b2e3a91e126b432a238331e",
+    "semantic_hash": ""
+  },
+  "apps/api/src/reports/goods-received.service.ts": {
+    "mtime": 1784331284.4292493,
+    "ast_hash": "efe5ce7c7acc563861389d3192b909da",
+    "semantic_hash": ""
+  },
+  "apps/api/src/reports/landed-costs.controller.ts": {
+    "mtime": 1784328964.1870534,
+    "ast_hash": "17a666098f702b2b8470e59e7d288269",
+    "semantic_hash": ""
+  },
+  "apps/api/src/reports/landed-costs.dto.ts": {
+    "mtime": 1784328872.5807085,
+    "ast_hash": "97854a89037ee2b82e60e5397ad88a54",
+    "semantic_hash": ""
+  },
+  "apps/api/src/reports/landed-costs.service.spec.ts": {
+    "mtime": 1784329086.081983,
+    "ast_hash": "c9f41d0addd64b0fbda4d766c24498af",
+    "semantic_hash": ""
+  },
+  "apps/api/src/reports/landed-costs.service.ts": {
+    "mtime": 1784329014.292356,
+    "ast_hash": "5d3dc1457cd03aae4858a8dc9dbb5a2a",
+    "semantic_hash": ""
+  },
+  "apps/api/src/reports/purchase-register.controller.ts": {
+    "mtime": 1784329119.4802125,
+    "ast_hash": "b48ae9c61e9713dcd0ce953d2241b034",
+    "semantic_hash": ""
+  },
+  "apps/api/src/reports/purchase-register.cursor.ts": {
+    "mtime": 1784328894.963522,
+    "ast_hash": "ee0f6b30edfae7368b71236daa270f62",
+    "semantic_hash": ""
+  },
+  "apps/api/src/reports/purchase-register.dto.ts": {
+    "mtime": 1784331414.525896,
+    "ast_hash": "cdc92b48794734ab0eafd2dab96f45a8",
+    "semantic_hash": ""
+  },
+  "apps/api/src/reports/purchase-register.service.spec.ts": {
+    "mtime": 1784331573.307673,
+    "ast_hash": "d1e5871c7b437594dbba64aa28a05867",
+    "semantic_hash": ""
+  },
+  "apps/api/src/reports/purchase-register.service.ts": {
+    "mtime": 1784331531.7561336,
+    "ast_hash": "a595590c5e51621b141ba20c159f3342",
+    "semantic_hash": ""
+  },
+  "apps/api/src/reports/purchase-returns.controller.ts": {
+    "mtime": 1784328922.1675663,
+    "ast_hash": "83f1da396c9c9b931bc8ef7fd14358be",
+    "semantic_hash": ""
+  },
+  "apps/api/src/reports/purchase-returns.cursor.ts": {
+    "mtime": 1784328847.802172,
+    "ast_hash": "bccacd7ca8870c90c15ce52afc02d7f0",
+    "semantic_hash": ""
+  },
+  "apps/api/src/reports/purchase-returns.dto.ts": {
+    "mtime": 1784331428.564882,
+    "ast_hash": "c45efd87fcb6f8b6cf99567bafe5a599",
+    "semantic_hash": ""
+  },
+  "apps/api/src/reports/purchase-returns.service.spec.ts": {
+    "mtime": 1784331593.4610176,
+    "ast_hash": "45d3bea9e45c0b68b1ec8401c379ab09",
+    "semantic_hash": ""
+  },
+  "apps/api/src/reports/purchase-returns.service.ts": {
+    "mtime": 1784331510.7202518,
+    "ast_hash": "cacec279fe8da14d7a8bffc61795c16d",
+    "semantic_hash": ""
+  },
+  "apps/api/src/reports/purchases-by-item.controller.ts": {
+    "mtime": 1784328720.987353,
+    "ast_hash": "45304c9f5aee40ebd60a8a14f7b194ea",
+    "semantic_hash": ""
+  },
+  "apps/api/src/reports/purchases-by-item.dto.ts": {
+    "mtime": 1784328621.8104465,
+    "ast_hash": "1d85287972d9e6c5635b7d37add980de",
+    "semantic_hash": ""
+  },
+  "apps/api/src/reports/purchases-by-item.service.spec.ts": {
+    "mtime": 1784331688.1440012,
+    "ast_hash": "88176848181d1dea752f051edc3538b5",
+    "semantic_hash": ""
+  },
+  "apps/api/src/reports/purchases-by-item.service.ts": {
+    "mtime": 1784328785.2805283,
+    "ast_hash": "bf1232ea05cede35cf8266cbb66113ee",
+    "semantic_hash": ""
+  },
+  "apps/web/src/app/[locale]/(app)/reports/goods-received/loading.tsx": {
+    "mtime": 1784329280.275398,
+    "ast_hash": "6166ba57e146c334e49def82fc0b35d4",
+    "semantic_hash": ""
+  },
+  "apps/web/src/app/[locale]/(app)/reports/goods-received/page.tsx": {
+    "mtime": 1784329277.5789716,
+    "ast_hash": "f14dd6c55c2360430f663df72ea1c3f5",
+    "semantic_hash": ""
+  },
+  "apps/web/src/app/[locale]/(app)/reports/landed-costs/loading.tsx": {
+    "mtime": 1784329329.8704135,
+    "ast_hash": "fc30c6ebcaf695969948747e90f83147",
+    "semantic_hash": ""
+  },
+  "apps/web/src/app/[locale]/(app)/reports/landed-costs/page.tsx": {
+    "mtime": 1784329353.8234663,
+    "ast_hash": "581e0fd06a3878d41795c271cbc03406",
+    "semantic_hash": ""
+  },
+  "apps/web/src/app/[locale]/(app)/reports/purchase-register/loading.tsx": {
+    "mtime": 1784329815.3065338,
+    "ast_hash": "b88d1bec7d2ad65ec687400868dfd1d3",
+    "semantic_hash": ""
+  },
+  "apps/web/src/app/[locale]/(app)/reports/purchase-register/page.tsx": {
+    "mtime": 1784329805.5761888,
+    "ast_hash": "3e03ae535e444c7c905e40d687d6f971",
+    "semantic_hash": ""
+  },
+  "apps/web/src/app/[locale]/(app)/reports/purchase-returns/loading.tsx": {
+    "mtime": 1784329424.700719,
+    "ast_hash": "a9cf9967c63745eec9de3e2495de48fd",
+    "semantic_hash": ""
+  },
+  "apps/web/src/app/[locale]/(app)/reports/purchase-returns/page.tsx": {
+    "mtime": 1784329421.3016927,
+    "ast_hash": "7b103f665da1aac0f8debc7cc180dfa5",
+    "semantic_hash": ""
+  },
+  "apps/web/src/app/[locale]/(app)/reports/purchases-by-item/loading.tsx": {
+    "mtime": 1784329214.8906157,
+    "ast_hash": "2622b35119464e943edb82c0e86f7df2",
+    "semantic_hash": ""
+  },
+  "apps/web/src/app/[locale]/(app)/reports/purchases-by-item/page.tsx": {
+    "mtime": 1784329210.9076443,
+    "ast_hash": "2959916dc984ab48dae7dec8899b29f5",
+    "semantic_hash": ""
+  },
+  "apps/web/src/features/reports/api/goods-received-api.ts": {
+    "mtime": 1784329311.06558,
+    "ast_hash": "f91e14fd2ec795e50c53ff6dfb2ecfde",
+    "semantic_hash": ""
+  },
+  "apps/web/src/features/reports/api/goods-received-keys.ts": {
+    "mtime": 1784329149.3599715,
+    "ast_hash": "30b17898da4f3aa1e0a16722711d52c3",
+    "semantic_hash": ""
+  },
+  "apps/web/src/features/reports/api/goods-received-queries.ts": {
+    "mtime": 1784329164.393338,
+    "ast_hash": "dd405f324b7ec3cccf32d5769b8a6bdd",
+    "semantic_hash": ""
+  },
+  "apps/web/src/features/reports/api/landed-costs-api.ts": {
+    "mtime": 1784329390.6561503,
+    "ast_hash": "f10a325f688d76f47fa3f80ce082dde8",
+    "semantic_hash": ""
+  },
+  "apps/web/src/features/reports/api/landed-costs-keys.ts": {
+    "mtime": 1784329173.3957,
+    "ast_hash": "23aae47fbb46ebb4411e30995cd05e1f",
+    "semantic_hash": ""
+  },
+  "apps/web/src/features/reports/api/landed-costs-queries.ts": {
+    "mtime": 1784329190.5295613,
+    "ast_hash": "8a01c62be8718c22e1e41a78fff29817",
+    "semantic_hash": ""
+  },
+  "apps/web/src/features/reports/api/purchase-register-api.ts": {
+    "mtime": 1784329615.4596353,
+    "ast_hash": "f59fc3c39198eca817e63e9a58750ad3",
+    "semantic_hash": ""
+  },
+  "apps/web/src/features/reports/api/purchase-register-keys.ts": {
+    "mtime": 1784329626.795051,
+    "ast_hash": "6e0dccca1c20d5b6a22da1636277c83b",
+    "semantic_hash": ""
+  },
+  "apps/web/src/features/reports/api/purchase-register-queries.ts": {
+    "mtime": 1784329635.8249848,
+    "ast_hash": "e5b9b63c060d9dc58e396a68ef86cb2f",
+    "semantic_hash": ""
+  },
+  "apps/web/src/features/reports/api/purchase-returns-api.ts": {
+    "mtime": 1784329458.3601274,
+    "ast_hash": "57b5216fecbec6d3d9a565fd130f2ffd",
+    "semantic_hash": ""
+  },
+  "apps/web/src/features/reports/api/purchase-returns-keys.ts": {
+    "mtime": 1784329201.3715844,
+    "ast_hash": "4be343ca53b1dafc59e6789f619aa701",
+    "semantic_hash": ""
+  },
+  "apps/web/src/features/reports/api/purchase-returns-queries.ts": {
+    "mtime": 1784329241.6880774,
+    "ast_hash": "eea66425352bdd817cfc753c187bdb04",
+    "semantic_hash": ""
+  },
+  "apps/web/src/features/reports/api/purchases-by-item-api.ts": {
+    "mtime": 1784328915.108844,
+    "ast_hash": "0eebc90155b9b5fa9667d9d037941e5a",
+    "semantic_hash": ""
+  },
+  "apps/web/src/features/reports/api/purchases-by-item-keys.ts": {
+    "mtime": 1784328907.8242836,
+    "ast_hash": "b6dabbf40122dd739296ded9e3369bfe",
+    "semantic_hash": ""
+  },
+  "apps/web/src/features/reports/api/purchases-by-item-queries.ts": {
+    "mtime": 1784328921.5658333,
+    "ast_hash": "34926688a2dd8cbfb9e4e9fbd5592f2c",
+    "semantic_hash": ""
+  },
+  "apps/web/src/features/reports/components/reports/goods-received-report.tsx": {
+    "mtime": 1784331188.9127905,
+    "ast_hash": "f0de219a81823e5b18ba391b11aae8d8",
+    "semantic_hash": ""
+  },
+  "apps/web/src/features/reports/components/reports/landed-costs-report.tsx": {
+    "mtime": 1784331233.496085,
+    "ast_hash": "2faf0b960a6fd827bbb1da99d8cefead",
+    "semantic_hash": ""
+  },
+  "apps/web/src/features/reports/components/reports/purchase-register-report.tsx": {
+    "mtime": 1784331286.1841137,
+    "ast_hash": "2ec080091934b8150344f3e10f401a87",
+    "semantic_hash": ""
+  },
+  "apps/web/src/features/reports/components/reports/purchase-returns-report.tsx": {
+    "mtime": 1784331318.772309,
+    "ast_hash": "104c6c728f9be56d562ed864fdc16d46",
+    "semantic_hash": ""
+  },
+  "apps/web/src/features/reports/components/reports/purchases-by-item-report.tsx": {
+    "mtime": 1784329048.2267199,
+    "ast_hash": "822b79b2f54ea1bd8e753c08a70eaba7",
+    "semantic_hash": ""
+  },
+  "apps/web/src/features/reports/types/goods-received.types.ts": {
+    "mtime": 1784329135.821826,
+    "ast_hash": "960a53a954dd954e84f5f552415358ab",
+    "semantic_hash": ""
+  },
+  "apps/web/src/features/reports/types/landed-costs.types.ts": {
+    "mtime": 1784329168.8047652,
+    "ast_hash": "1c409a3654dd704c887a95b3abc219ae",
+    "semantic_hash": ""
+  },
+  "apps/web/src/features/reports/types/purchase-register.types.ts": {
+    "mtime": 1784331243.796387,
+    "ast_hash": "e9a68124f8dafd25eb301ff07c1943ee",
+    "semantic_hash": ""
+  },
+  "apps/web/src/features/reports/types/purchase-returns.types.ts": {
+    "mtime": 1784331254.8224685,
+    "ast_hash": "fe20044a96a47d50fe4b80bb1f9f73c0",
+    "semantic_hash": ""
+  },
+  "apps/web/src/features/reports/types/purchases-by-item.types.ts": {
+    "mtime": 1784329161.46911,
+    "ast_hash": "ab2a2e0ff703d5d85700c553e206e811",
+    "semantic_hash": ""
+  },
+  "packages/db/drizzle/0186_nifty_living_lightning.sql": {
+    "mtime": 1784331105.2926404,
+    "ast_hash": "e26c9ca006064ea05e87529cb38b8976",
+    "semantic_hash": ""
+  },
+  "packages/db/drizzle/meta/0186_snapshot.json": {
+    "mtime": 1784331105.2907548,
+    "ast_hash": "3ad401e26cfe21b979ac12e32d6aaf47",
+    "semantic_hash": ""
+  },
+  "apps/api/src/reports/discount-report.controller.ts": {
+    "mtime": 1784333618.677957,
+    "ast_hash": "e51da3052d2eed127b2415f8612efac1",
+    "semantic_hash": ""
+  },
+  "apps/api/src/reports/discount-report.dto.ts": {
+    "mtime": 1784333488.0043447,
+    "ast_hash": "7867fbff4310d13ce41d464df2e963e3",
+    "semantic_hash": ""
+  },
+  "apps/api/src/reports/discount-report.service.spec.ts": {
+    "mtime": 1784333724.0632627,
+    "ast_hash": "bd0ad9bd71c4d29287b79942ea32c590",
+    "semantic_hash": ""
+  },
+  "apps/api/src/reports/discount-report.service.ts": {
+    "mtime": 1784333583.0225074,
+    "ast_hash": "6441cb70ac9390036739eebf9d0d8903",
+    "semantic_hash": ""
+  },
+  "apps/api/src/reports/gross-margin.controller.ts": {
+    "mtime": 1784333681.667347,
+    "ast_hash": "1399d7fbb37e552f9776accc8868af95",
+    "semantic_hash": ""
+  },
+  "apps/api/src/reports/gross-margin.dto.ts": {
+    "mtime": 1784333504.6843653,
+    "ast_hash": "36cb8bba958be690921f79014ce26183",
+    "semantic_hash": ""
+  },
+  "apps/api/src/reports/gross-margin.service.spec.ts": {
+    "mtime": 1784335888.7184525,
+    "ast_hash": "c88f774b04d6e2f063aa4126ab54cf61",
+    "semantic_hash": ""
+  },
+  "apps/api/src/reports/gross-margin.service.ts": {
+    "mtime": 1784335924.980696,
+    "ast_hash": "92e3f3db855fff6046b01072241c1d85",
+    "semantic_hash": ""
+  },
+  "apps/api/src/reports/sales-by-item.controller.ts": {
+    "mtime": 1784333420.7099535,
+    "ast_hash": "21e65a89fbd07db4a20cca138d7c3fe5",
+    "semantic_hash": ""
+  },
+  "apps/api/src/reports/sales-by-item.dto.ts": {
+    "mtime": 1784335449.0011075,
+    "ast_hash": "63a25bea5ecfad2113e6768d2a50b331",
+    "semantic_hash": ""
+  },
+  "apps/api/src/reports/sales-by-item.service.spec.ts": {
+    "mtime": 1784333543.938634,
+    "ast_hash": "5d732cd7ecbe34126116da7f716f8ba6",
+    "semantic_hash": ""
+  },
+  "apps/api/src/reports/sales-by-item.service.ts": {
+    "mtime": 1784333435.71025,
+    "ast_hash": "33aa99741435f5041ccc83c8523be5e7",
+    "semantic_hash": ""
+  },
+  "apps/api/src/reports/sales-register.controller.ts": {
+    "mtime": 1784333467.5632298,
+    "ast_hash": "fed5e5b4429b2edbe3913ccf1a46e647",
+    "semantic_hash": ""
+  },
+  "apps/api/src/reports/sales-register.cursor.ts": {
+    "mtime": 1784333322.51714,
+    "ast_hash": "00ea1c1378dfed2156743417dddc83f5",
+    "semantic_hash": ""
+  },
+  "apps/api/src/reports/sales-register.dto.ts": {
+    "mtime": 1784333355.1301212,
+    "ast_hash": "bbca10ff0e938bb805f791a39e8a6d59",
+    "semantic_hash": ""
+  },
+  "apps/api/src/reports/sales-register.service.spec.ts": {
+    "mtime": 1784336721.5365481,
+    "ast_hash": "1b3b9eabf20c20f264a5ef14f91cbdb1",
+    "semantic_hash": ""
+  },
+  "apps/api/src/reports/sales-register.service.ts": {
+    "mtime": 1784336643.0779264,
+    "ast_hash": "27109b568337cb38c7b2481a024a350b",
+    "semantic_hash": ""
+  },
+  "apps/api/src/reports/sales-returns.controller.ts": {
+    "mtime": 1784333585.4092941,
+    "ast_hash": "f6bed23dc55213583e430db187d45fa4",
+    "semantic_hash": ""
+  },
+  "apps/api/src/reports/sales-returns.cursor.ts": {
+    "mtime": 1784333373.5923038,
+    "ast_hash": "eb649b2f3aa2415378e0ddd06f8f1dd9",
+    "semantic_hash": ""
+  },
+  "apps/api/src/reports/sales-returns.dto.ts": {
+    "mtime": 1784333367.0023255,
+    "ast_hash": "b6211808ff60dc7e5c2cfb37e19fbddd",
+    "semantic_hash": ""
+  },
+  "apps/api/src/reports/sales-returns.service.spec.ts": {
+    "mtime": 1784336505.9369054,
+    "ast_hash": "b9ac12484ff927cb6a406e67e547a6b6",
+    "semantic_hash": ""
+  },
+  "apps/api/src/reports/sales-returns.service.ts": {
+    "mtime": 1784336350.1183686,
+    "ast_hash": "bfb1d72a1c7cedb9c547d8ada18e338c",
+    "semantic_hash": ""
+  },
+  "apps/web/src/app/[locale]/(app)/reports/discount-report/page.tsx": {
+    "mtime": 1784333883.73804,
+    "ast_hash": "3c6c257bc90a2ed50a5314e81644009a",
+    "semantic_hash": ""
+  },
+  "apps/web/src/app/[locale]/(app)/reports/gross-margin/page.tsx": {
+    "mtime": 1784333933.223381,
+    "ast_hash": "57a79d1fbd894399b99a98e2b2df4560",
+    "semantic_hash": ""
+  },
+  "apps/web/src/app/[locale]/(app)/reports/sales-by-item/loading.tsx": {
+    "mtime": 1784333672.3148246,
+    "ast_hash": "be9b9be5351c0b0fb30125dedeb27566",
+    "semantic_hash": ""
+  },
+  "apps/web/src/app/[locale]/(app)/reports/sales-by-item/page.tsx": {
+    "mtime": 1784333667.0336199,
+    "ast_hash": "a35f7840828cfa432897c42c0c136038",
+    "semantic_hash": ""
+  },
+  "apps/web/src/app/[locale]/(app)/reports/sales-register/loading.tsx": {
+    "mtime": 1784333685.0612268,
+    "ast_hash": "4926d22127a4a0dfa74f61d1f62b6e0a",
+    "semantic_hash": ""
+  },
+  "apps/web/src/app/[locale]/(app)/reports/sales-register/page.tsx": {
+    "mtime": 1784333679.7578278,
+    "ast_hash": "12ffb3bc1489a5e2f5f7628fc63d388d",
+    "semantic_hash": ""
+  },
+  "apps/web/src/app/[locale]/(app)/reports/sales-returns/loading.tsx": {
+    "mtime": 1784333967.6170766,
+    "ast_hash": "81b0cb37fee3b7f6fdfe28c64a0a4519",
+    "semantic_hash": ""
+  },
+  "apps/web/src/app/[locale]/(app)/reports/sales-returns/page.tsx": {
+    "mtime": 1784333964.87005,
+    "ast_hash": "99f8fad29253e3a4aacec04deb4e0da3",
+    "semantic_hash": ""
+  },
+  "apps/web/src/features/reports/api/discount-report-api.ts": {
+    "mtime": 1784333788.340743,
+    "ast_hash": "b72fa1d08718aef8709d616bd5a05cdf",
+    "semantic_hash": ""
+  },
+  "apps/web/src/features/reports/api/discount-report-keys.ts": {
+    "mtime": 1784333792.7182631,
+    "ast_hash": "0b78d5022229390c2e7061a288f860c6",
+    "semantic_hash": ""
+  },
+  "apps/web/src/features/reports/api/discount-report-queries.ts": {
+    "mtime": 1784333797.6928418,
+    "ast_hash": "2edd990b7f33c8a4ff3c24b3aab1b359",
+    "semantic_hash": ""
+  },
+  "apps/web/src/features/reports/api/gross-margin-api.ts": {
+    "mtime": 1784333826.8689487,
+    "ast_hash": "e00f3a3e712f38eb09fa59ece66ae370",
+    "semantic_hash": ""
+  },
+  "apps/web/src/features/reports/api/gross-margin-keys.ts": {
+    "mtime": 1784333831.4176285,
+    "ast_hash": "8df1221f1f4cd9ff34dc84f12f862560",
+    "semantic_hash": ""
+  },
+  "apps/web/src/features/reports/api/gross-margin-queries.ts": {
+    "mtime": 1784333840.5413134,
+    "ast_hash": "3c53a3b50d3f5000bd22fbfba1a84150",
+    "semantic_hash": ""
+  },
+  "apps/web/src/features/reports/api/sales-by-item-api.ts": {
+    "mtime": 1784333577.8136313,
+    "ast_hash": "918f688fe5bed0ea154ad9430a0bb46b",
+    "semantic_hash": ""
+  },
+  "apps/web/src/features/reports/api/sales-by-item-keys.ts": {
+    "mtime": 1784333582.0246465,
+    "ast_hash": "20a9c695d6982a8b74b164538bc3533e",
+    "semantic_hash": ""
+  },
+  "apps/web/src/features/reports/api/sales-by-item-queries.ts": {
+    "mtime": 1784333587.725694,
+    "ast_hash": "ea0aa8482427eb8b566752d86a4fd398",
+    "semantic_hash": ""
+  },
+  "apps/web/src/features/reports/api/sales-register-api.ts": {
+    "mtime": 1784333589.3991106,
+    "ast_hash": "23dfa78767ab09beb2083a093630344b",
+    "semantic_hash": ""
+  },
+  "apps/web/src/features/reports/api/sales-register-keys.ts": {
+    "mtime": 1784333595.383821,
+    "ast_hash": "fbbde09c77827cc6c036330fd0571953",
+    "semantic_hash": ""
+  },
+  "apps/web/src/features/reports/api/sales-register-queries.ts": {
+    "mtime": 1784333602.515514,
+    "ast_hash": "0100c83e89cf74e8c58b6586238b3485",
+    "semantic_hash": ""
+  },
+  "apps/web/src/features/reports/api/sales-returns-api.ts": {
+    "mtime": 1784333885.5581632,
+    "ast_hash": "82ff4f0fd05b6f98a885771e96a1fcaa",
+    "semantic_hash": ""
+  },
+  "apps/web/src/features/reports/api/sales-returns-keys.ts": {
+    "mtime": 1784333889.139157,
+    "ast_hash": "ac04fa330c8afaf18091bdddb355a6da",
+    "semantic_hash": ""
+  },
+  "apps/web/src/features/reports/api/sales-returns-queries.ts": {
+    "mtime": 1784333894.1688204,
+    "ast_hash": "41bfb1e6645a789746cb4744edcc3724",
+    "semantic_hash": ""
+  },
+  "apps/web/src/features/reports/components/reports/discount-report.tsx": {
+    "mtime": 1784335473.5444973,
+    "ast_hash": "9ae7ef90619428443059b32e4e328816",
+    "semantic_hash": ""
+  },
+  "apps/web/src/features/reports/components/reports/gross-margin-report.tsx": {
+    "mtime": 1784334052.3657281,
+    "ast_hash": "14a0f094e2fb39e4cd33f75b2572d5a8",
+    "semantic_hash": ""
+  },
+  "apps/web/src/features/reports/components/reports/sales-by-item-report.tsx": {
+    "mtime": 1784333648.747232,
+    "ast_hash": "ae6013595e44757544c7b282d10c3483",
+    "semantic_hash": ""
+  },
+  "apps/web/src/features/reports/components/reports/sales-register-report.tsx": {
+    "mtime": 1784333674.5040364,
+    "ast_hash": "0aaa916ac3a6a9dd02ad2ba3149312d1",
+    "semantic_hash": ""
+  },
+  "apps/web/src/features/reports/components/reports/sales-returns-report.tsx": {
+    "mtime": 1784335436.6574237,
+    "ast_hash": "28373297f97ce2585156718f43480134",
+    "semantic_hash": ""
+  },
+  "apps/web/src/features/reports/types/discount-report.types.ts": {
+    "mtime": 1784333780.7979226,
+    "ast_hash": "c9b8454f789cb0b0fd427d1d3b23260e",
+    "semantic_hash": ""
+  },
+  "apps/web/src/features/reports/types/gross-margin.types.ts": {
+    "mtime": 1784333818.2892885,
+    "ast_hash": "d91bec0e015a096549e14ddcf6aee198",
+    "semantic_hash": ""
+  },
+  "apps/web/src/features/reports/types/sales-by-item.types.ts": {
+    "mtime": 1784333569.8164353,
+    "ast_hash": "7089f59e056a7a3c2e41009cb119dfa1",
+    "semantic_hash": ""
+  },
+  "apps/web/src/features/reports/types/sales-register.types.ts": {
+    "mtime": 1784333578.6483853,
+    "ast_hash": "b2d1f7be2bec262ce10b61f68eab6ba3",
+    "semantic_hash": ""
+  },
+  "apps/web/src/features/reports/types/sales-returns.types.ts": {
+    "mtime": 1784333877.7525516,
+    "ast_hash": "d76a836afeb0297dff494a0c4359a807",
+    "semantic_hash": ""
+  },
+  "packages/db/drizzle/0187_public_puff_adder.sql": {
+    "mtime": 1784334418.7178502,
+    "ast_hash": "b44ac12e9942a26a4da365ac379b0495",
+    "semantic_hash": ""
+  },
+  "packages/db/drizzle/meta/0187_snapshot.json": {
+    "mtime": 1784334418.716143,
+    "ast_hash": "71c9ea56bb015d51b07f7fd6c6c37a47",
+    "semantic_hash": ""
+  },
+  "apps/web/src/app/[locale]/(app)/reports/discount-report/loading.tsx": {
+    "mtime": 1784335499.5996509,
+    "ast_hash": "e9badbc915953d5c36152b04e5b8a630",
+    "semantic_hash": ""
+  },
+  "apps/web/src/app/[locale]/(app)/reports/gross-margin/loading.tsx": {
+    "mtime": 1784335498.7042384,
+    "ast_hash": "1ffba24cfd08c0bd7e5591d242f9c697",
     "semantic_hash": ""
   }
 }

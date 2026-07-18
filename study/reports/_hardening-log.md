@@ -654,19 +654,31 @@ daily-sales, top-sellers (reports.sales.read, group sales), Receivables Aging (a
 ## Deferred / Founder-TODOs (sales-reports phase)
 
 **Deferred scope (net-new, not this phase, logged not dropped):**
-- **Salesperson / staff sales performance report** — DEFERRED: no salespersonId/staffId/createdBy column
-  exists on any sales document (only workflow actors confirmedBy/voidedBy, which would misattribute). A real
-  product/schema decision (add a salesperson dimension), not a reporting gap. Revisit if a sales-commission
-  need arises. POS has cashierId but that is POS scope.
+- **Salesperson / staff sales performance report** — ✅ SHIPPED 2026-07-18 (bundled into commit d960adf9,
+  mig 0188). Was a real DATA GAP not a reporting gap, so built as schema + capture + report: nullable
+  `salespersonId` uuid (no FK, central-DB convention like confirmedBy/pos.cashierId) on sales_orders +
+  sales_invoices; threaded through order/invoice/direct-sale create DTOs+services (copied order→invoice on
+  convert); SalespersonSelect picker on all 3 create forms, pre-selecting the current user (one-person-shop
+  default = fallback-to-confirming-user, no tenant toggle), sourced dynamically from useUsersQuery("active"),
+  clearable → null groups as "Unattributed". New `salesperson-performance` report (group sales,
+  reports.operational.view; cogs/margin behind inventory.cost.view, stripped server-side): per-salesperson
+  invoices/grossSales/discounts/returns/netSales + COGS/grossMargin/margin%. OPERATIONAL, no GL tie-out
+  (attribution is a document dimension, not a control account). Accounting-reviewer (opus) initially BLOCKED
+  on two money bugs — FIXED before ship: revenue/margin now TAX-EXCLUSIVE (total − taxTotal, ties to
+  gross-margin.service by construction; was counting output VAT/GST as profit) and returns FX-converted via
+  the original invoice's exchangeRate (was left in transaction currency). Net of credit notes attributed to
+  the original invoice's salesperson, void-proof, opening excluded. 5-reviewer panel (code/nestjs/accounting-
+  opus/frontend/database) all APPROVE post-fix. Index (tenant,salesperson,confirmedAt) marked `// ponytail`
+  ahead-of-a-future-drill-through (report GROUP BY today rides the existing status index). POS still uses
+  cashierId (cashier-performance report), correctly not duplicated.
 - **Sales by item / Gross Margin overlap** kept as two reports by design: Sales by Item = operational
   line-level (reports.operational.view, cost-stripped, no tie-out); Gross Margin = GL-tied profitability
   summary by category (inventory.cost.view). Different persona, permission, granularity.
 
 **Founder-TODOs (need a human — reviews were code/test level):**
-- **Orphaned `reports.sales.read`** — grant it to the appropriate persona in `role-templates.ts` (Manager
-  and/or a sales/cashier role) so daily-sales/top-sellers/pos-hourly-sales/cashier-performance/
-  pos-payment-breakdown stop being Owner-only. Deliberately NOT fixed here (touches out-of-scope POS reports);
-  a one-line role-template change once the persona is decided.
+- ~~**Orphaned `reports.sales.read`**~~ — ✅ FIXED (erp a4855993): granted to Manager/Viewer/Accountant in
+  `role-templates.ts`, so daily-sales/top-sellers/pos-hourly-sales/cashier-performance/pos-payment-breakdown
+  are no longer Owner-only.
 - Apply mig 0187 (2 sales keyset indexes) to dev + prod Neon. Railway pre-deploy migrator applies on merge;
   big-table CREATE INDEX fine pre-launch (no real data) but re-verify.
 - Verify all 5 sales reports on a real dev tenant with live data before go-live (GL tie-out reconciliation

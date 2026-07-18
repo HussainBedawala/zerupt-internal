@@ -242,3 +242,56 @@ Prod auto-applies via Railway pre-deploy (`migrate-all.cli`, /health-gated). Dev
 - **Onboarding note:** fresh tenants seed only the `Owner` role. Until an admin creates a manager role WITH
   `pos.cash.approve`, only the Owner can approve pay-outs (Owner bypasses RBAC). Document for go-live / consider a
   default "Manager" role.
+
+---
+
+## Register ↔ branch/warehouse linkage hardening — SHIPPED (2026-07-18)
+
+Triggered by founder question: "how are POS registers linked to each branch?" Found the model over-exposed
+internal warehouse concepts to non-tech users (dad-tested: confused by branch vs warehouse vs transit + manual
+linking) and had integrity + onboarding gaps. Ran a 6-layer /harden pass (Layer 5 deferred to DEV-461). Commits:
+`85cc6a07` (settings UX), `39cd4278` (data+onboarding, bundled by a concurrent salesperson session), `7184420e`
+(review fixes). Mig **0191** (composite FK + UNIQUE + type flip + backfill).
+
+**Layer 1 — blast-radius audit (gate):** `warehouses.type` was INERT — nothing branched on it for
+valuation/COGS/transfers/reports/POS. Flip to "store" = near-zero runtime risk. Cleared the type-semantics change.
+
+**Layer 2 — data integrity:** (a) branch default warehouse `type` "warehouse"→"store" (+ schema default) so
+"store" reliably = sellable sales floor; idempotent backfill `UPDATE warehouses SET type='store' WHERE
+is_default=true AND type='warehouse'`. (b) `UNIQUE(branch_id,id)` on warehouses + composite FK
+`pos_registers(branch_id,warehouse_id)→warehouses(branch_id,id)` — a register's warehouse can NEVER belong to a
+different branch. **Accounting-reviewer: this closed a REAL cross-entity misattribution risk** — stock deduction +
+legal-entity/VAT resolution both walk register→warehouse→branch→legalEntity, so a mismatched register.branchId
+could have invoiced a sale under the wrong legal entity vs where stock deducted. (c) app guard: register create
+rejects non-`store`/cross-branch/missing warehouse (422). update() exempt (warehouseId immutable).
+
+**Layer 3 — onboarding:** BUG FIXED — `materialize-pos` only ever created a register for the earliest-created
+branch (why one branch showed a till, others said "configure in settings"). Now one register PER sellable branch,
+fail-loud (UnprocessableEntityException) if a branch lacks its default warehouse. Added optional
+`terminalsPerBranch` (per-branch till count, default 1, capped ≤50 keys). Removed dead `separateWarehousePerBranch`
+toggle + manual `linkedBranchIndex` branch-picker.
+
+**Layer 4 — settings UX (simplify for non-tech):** warehouse dialog 3-way type dropdown → single "Do you sell to
+customers here?" switch (Yes=store, No=storage) + InfoHint tooltip. **Transit removed from all user-facing
+surfaces** (system-managed only; legacy transit warehouses locked, relabeled "Internal"). Register dialog: queries
+only `type:'store'` warehouses for the branch → 1 match auto-assigned + picker hidden, 2+ shows filtered picker,
+0 shows friendly error + submit disabled.
+
+**Layer 6 — copy:** plain-language ar/en, em-dash fixes (locations.json, pos.json, onboarding.json, step6 aria-label).
+
+**Layer 7 — reviewer panel:** database + accounting + nestjs + frontend + code/security all PASS, 0 CRITICAL/HIGH.
+Drift gate: 0 upward-dependency violations. Fixes applied (7184420e): typed exception, terminalsPerBranch key cap,
+em-dash. Deferred findings → **DEV-462** (register create() missing assertBranchAccess — intra-tenant RBAC gap,
+pre-existing), **DEV-463** (guard error messages hardcoded English → error-code i18n).
+
+**Billing tie-in:** `billing-metering` already counts active branches as billable outlets (storage warehouses free),
+so one-register-per-branch aligns cleanly with per-outlet billing.
+
+**Deferred — DEV-461 (Layer 5):** advanced tier (multiple stock rooms per branch + shared/org-level warehouses via
+nullable `warehouses.branchId`). Also captures the accounting-reviewer's note that the backfill conflates "default
+warehouse" with "sellable store" (a pure-DC branch's default gets flipped) — needs an explicit `isSellable` concept
+if a future report ever keys off `type='store'`. Accounting-neutral today (type still inert elsewhere).
+
+**TODO (founder):** apply mig 0191 to dev + prod tenant DBs (prod auto-applies via Railway pre-deploy on push;
+dev: `cd erp/packages/db && set -a; . ../../.env; set +a; npx drizzle-kit migrate`). Un-dogfooded — verify a fresh
+multi-branch onboarding creates a till per branch and the warehouse question reads clearly.

@@ -671,6 +671,48 @@ daily-sales, top-sellers (reports.sales.read, group sales), Receivables Aging (a
   opus/frontend/database) all APPROVE post-fix. Index (tenant,salesperson,confirmedAt) marked `// ponytail`
   ahead-of-a-future-drill-through (report GROUP BY today rides the existing status index). POS still uses
   cashierId (cashier-performance report), correctly not duplicated.
+- **POS floor-salesman capture + Salesperson Performance POS extension** — ✅ SHIPPED 2026-07-18 (erp
+  39cd4278 build + dd80293d review-fixes, mig 0190). The natural next increment after the sales-side
+  salesperson dim: electronics/furniture/apparel/jewellery/mobile floors commission the salesman who
+  CLOSED the sale, usually NOT the cashier at the till — POS could not attribute or commission that
+  person. Added nullable `pos_transactions.salesperson_id` uuid (no FK, mirrors cashierId; NO new index —
+  report GROUP BY rides existing (tenant,status,completed_at) idx, ponytail-documented). Threaded OPTIONAL
+  salespersonId through create-transaction DTO+service AND the offline sync-ingest path (pos-sync
+  dto/service/mappers) — mirrors customerId rails exactly; returns/exchanges INHERIT
+  `salespersonId: original.salespersonId` from the original sale (no-receipt returns have no original →
+  null/Unattributed, correct). PERSONA DECISION: POS salesperson defaults to EMPTY (never = cashier) —
+  set means "a floor salesman other than the till operator"; auto-defaulting to cashier would
+  double-attribute counter-only shops. No tenant toggle (YAGNI). POS cart picker reuses SalespersonSelect
+  in cart-panel header, flows through offline cart-engine → sale-builder → sync payload (the live
+  register path is offline-first, NOT the legacy online createTransaction). Report EXTENDED
+  (salesperson-performance.service): unions POS sale+return legs into the SAME salespersonId buckets as
+  the invoice legs, COMBINED money across counter+POS (added `posTransactionCount` for channel
+  transparency; kept `invoiceCount` counter-only). POS legs are FUNCTIONAL-pinned (sum functional cols
+  directly, NO exchangeRate multiply, unlike invoice legs), ex-tax (`subtotal − discountTotal −
+  orderDiscountAmount` sales; `subtotal − discountTotal` returns), engine-realized COGS, void-proof
+  (status='completed'), UTC-day window on completedAt — mirrors pos-sales-summary bases so margin ties to
+  gross-margin by construction. Stays OPERATIONAL (no GL tie-out — no salesperson control account).
+  5-reviewer panel (code/nestjs/accounting-OPUS/frontend/database): accounting-opus BLOCKED on a real
+  CRITICAL money bug — POS return LINES store NEGATIVE qty, so `sum(costAtSale*quantity)` returned a
+  NEGATIVE returnsCogs which `cogs = cogs − returnsCogs` then ADDED (overstating net COGS by 2x the
+  return cost, understating margin, breaking the tie). FIXED: negate to `sum(-(costAtSale*quantity))` so
+  returnsCogs is positive; added a compileSql regression guard proving the negation (the mock can't
+  exercise real SQL arithmetic). Also fixed: order-discount tie caveat softened in header (POS
+  grossSales nets orderDiscountAmount which gross-margin's line basis does not — commission-accurate, tie
+  exact only absent POS order discounts); posRegisters.tenantId defense-in-depth guard on the 4 POS
+  joins; write-path tests (create persists id + defaults null not cashier / return inherits / sync
+  ingest); frontend Transaction type exposes salespersonId; a11y Label htmlFor on the picker. All gates
+  green (api+web typecheck, i18n parity + 0 em dashes, api build, drift exit 0, jest report 31 / create
+  97 / return 16 / sync 53). Committed via shared tree amid a concurrent locations session (--no-verify;
+  the same commit bundled their warehouse mig 0191 + onboarding wip, founder-authorized).
+  **Deferred (logged, not built):** (1) distinct return-processor attribution — inheritance from the
+  original sale is correct; a distinct return-processor is rarely commissioned. (2) receipt-voucher
+  "collectedBy" collector — a collections concept (niche van/route), NOT salespersonId; separate future
+  field. (3) quotations/estimates salespersonId — no such table; add from day one if ever built.
+  **Founder-TODO:** verify on a real dev tenant with live data before go-live (POS return-COGS netting,
+  POS+counter union per salesperson, cost-gating by role, Unattributed bucket, offline-synced sale
+  attribution); consider EXPLAIN ANALYZE of the POS report GROUP BY at volume; reconcile the
+  index-policy asymmetry vs sales_invoices' proactive salesperson index.
 - **Sales by item / Gross Margin overlap** kept as two reports by design: Sales by Item = operational
   line-level (reports.operational.view, cost-stripped, no tie-out); Gross Margin = GL-tied profitability
   summary by category (inventory.cost.view). Different persona, permission, granularity.

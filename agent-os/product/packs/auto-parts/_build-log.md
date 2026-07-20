@@ -99,3 +99,20 @@ dual-reviewed (nestjs+database / frontend+code), findings fixed same session.
 - **Open follow-ups (from forms persona audit, not yet done):** fold vehicle fitment into
   item-create flow; bring supplier-form up to customer-form polish; promotion-form → RHF+Zod;
   industry-aware import default (generic engine passes null today).
+
+## Personalization follow-ups (2026-07-20) — done
+Shipped erp **9d957d2d** (all dual-reviewed: frontend+code+nestjs APPROVE; 2 medium
+fitment-UX edges fixed). Closes the forms-audit follow-ups:
+- **Fitment inline:** part form now authors vehicle fitment at create/edit (additive
+  family-level, reuses VehiclePicker + useFitmentsByFamilyQuery; removal stays in the
+  families panel — honest read-only chips + hint, no dead controls since the part
+  endpoint has no item-scoped removal). Picker resets on family switch; duplicate re-add
+  merges the note instead of dropping it.
+- **Supplier form parity:** brought to customer-form standard (RequiredMark/OptionalTag,
+  InfoHint tooltips, section cards, curated payment-terms Select, real EntityImageUpload,
+  sticky footer, isolateText). 11 testids wired.
+- **Promotion form:** migrated off hand-rolled useState/errors to react-hook-form + zod +
+  MoneyInput; dead state machine deleted.
+- **Import default now industry-aware:** generic engine threads context.industry into
+  resolveDefaultUnit (was always null→generic), resolved once per run, tenant-scoped.
+All remaining follow-ups from the persona audit are now CLOSED.

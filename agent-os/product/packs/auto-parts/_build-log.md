@@ -65,3 +65,37 @@
 - [x] reports backend: parts velocity (fast/slow/dead), sales by brand/category (cost-strip), fitment coverage. Reviewed (db: isolation+cost SOUND; nestjs APPROVE) + fixed (velocity branchId, distinct override count). 3 suites/23.
 - [x] reports frontend: registry requiresModule gating + 3 screens (cost cols conditional). 19 tests. [review in flight]
 - [ ] DEFERRED FOLLOW-UP: print part-number column on invoice/quotation. Seam ready (verified): `partNumber` exists on inventory_items but NOT on invoice/quotation LINE detail — needs adding to the line projection in the invoice-detail + quotation-detail services (apps/api), then `TaxDocument` gets an optional `showPartNumber?` prop (default false → non-pack invoices byte-identical) wired from `useTenantCapabilities().modules.has("auto_parts")` in `invoice-print-document.tsx`/quotation equivalent + `invoice-to-tax-document.ts`. Deferred: touches the shared money-document template; do it as a focused reviewed change, not at session tail. Counter invoices already print correctly without it.
+
+## Personalization layer (2026-07-20) — making it feel purpose-built
+Generic industry seam, never auto-parts hacks. Shipped erp **860bdf3f** (single
+commit; bundled a concurrent translate-field feature per founder call). All waves
+dual-reviewed (nestjs+database / frontend+code), findings fixed same session.
+- **P0 fix (data-loss):** import dedupe fingerprint now includes `parsed.fitments`
+  — a re-import with new/edited fitments was wrongly refused as IMPORT_ALREADY_APPLIED.
+- **P1:** `updatePartSchema` rejects direct `familyId` (400 → move-family), closing a
+  bypass of singleton-GC + fitment re-point.
+- **W1 nav gate:** new `packages/shared/.../nav-visibility.ts` (`resolveIndustryHiddenNav`,
+  keyed like item-field-visibility). Hides inventory>batches for auto_parts; escape hatch
+  reveals it on batch concept/any batch item. One line per future industry/href.
+- **W2 labels:** `item-label-overrides.ts` (`resolveItemLabelKeys`) → product→part,
+  sku→part no. on item form + list. i18n keys under `vocabulary.*` (renamed from a
+  duplicate `labels` key that JSON-collapsed and broke the list for ALL tenants — CRIT
+  caught in review). ar+en.
+- **W3 matched-code UX:** shared item search returns `matchedOn{leg,value}` (ported from
+  part-finder); pos/sales/purchase/inventory dropdowns show "matched: OEM/family x"
+  (altCode/family only, bidi-safe). POS local cache can't match OEM → server path already
+  falls through; only surfacing was missing.
+- **W4 activation:** PackInstaller seeds `inventory_concept=simple_sku` only-if-unset.
+- **Specialization:** hid the duplicate legacy free-text brand field when the pack section
+  shows (was silent data-loss); deleted dead serialEmphasis/batchEmphasis seam outputs.
+- **POS unit bug:** cart line showed hardcoded "Unit"; now threads the item's real base
+  unit name end-to-end (POS catalog DTO→cart-engine→row); every other module already did.
+- **Dynamic units (founder redesign):** killed the hardcoded `COMMON_UNITS` preset list.
+  New `default-unit.ts` (`resolveDefaultUnit(industry)`=PCS uppercase, industry-keyed +
+  `formatUnitLabel`). `GET items/units` = tenant's distinct used units (mirrors listBrands,
+  + index mig **0201**); combobox seeds the industry default when empty; unit normalized
+  uppercase at the ItemsService write choke point. Import default unified to the same
+  resolver (was scattered "unit"/"pcs" literals). Tooltips sharpened, base-vs-pack.
+- **Open follow-ups (from forms persona audit, not yet done):** fold vehicle fitment into
+  item-create flow; bring supplier-form up to customer-form polish; promotion-form → RHF+Zod;
+  industry-aware import default (generic engine passes null today).

@@ -43,4 +43,25 @@
 - [x] frontend core ✅ CLOSED: `<PartFinder/>` + standalone page + hook. Reviews: frontend (Opus)+code (Sonnet) → fixed 2 CRITICAL contract-drift (equiv price object, matchedOn.field 8-literal union), hardcoded-KWD→useTenantCurrency, debounce empty-flash, a11y Collapsible, bidi, this-branch-first, fitment sample render. 11/11 tests, i18n+typecheck green.
 - [x] embed (essential) ✅: extended shared `ItemsService.search` with always-on `part_identifiers` rung (empty for non-pack) → parts findable by ANY alt/OEM code in EVERY existing picker (POS online/sales/purchase/quotation/adjustments), onPick contract byte-identical, price/tax parity. 122 tests. Mirrors already-reviewed barcode-rung pattern (isolation+regression+dedup tested).
 - ENHANCEMENT (tracked, post-go-live): rich in-line equivalents/fitment inside transaction pickers (pack-aware ItemSearchCombobox display) + POS offline-cache alt-code search. Standalone finder delivers full rich UX today.
-- **M3 GO-LIVE GATE FUNCTIONALLY COMPLETE.** SHA: _pending checkpoint commit_
+- **M3 GO-LIVE GATE FUNCTIONALLY COMPLETE.** Checkpoint commit erp **b0e82f66** (M0-M3), docs 73c2645. Full pre-commit passed (lint+turbo typecheck all pkgs). Push held for end.
+
+## M4 — Fitment lookup + family merge/move  (in progress)
+- [ ] backend: vehicles/vehicle_makes CRUD; fitments CRUD (attach family/item-level, list, what-fits-vehicle reverse, delete); family merge/move (re-point details+fitments, dedup/union, GC singleton, immutable audit) — fix #6.
+- [x] frontend: vehicle cascade picker, vehicles/what-fits/families screens, fitment mgmt (family + item-level override authoring), merge/move behind named confirms.
+- [x] reviews: db-integrity (Opus) fixed moveFamily override-loss BLOCKER + FOR UPDATE locks; nestjs fixed double-audit + ParseUUIDPipe + delete-perm; frontend+code fixed fitment vehicle labels, panel-collapse, named confirms. shared use-debounce extracted.
+- **M4 CLOSED.** Checkpoint commit erp **8f788593**. Push held for end.
+
+## M6 — Activation UX + import  (in progress — the "how it gets enabled" story)
+- [ ] onboarding: industry "Auto Parts" pick auto-activates pack (calls PackInstallerService)
+- [ ] founder admin activation UI over M0 endpoint
+- [ ] parts import mapping (hook inventory-template-context by industry, AI-first)
+
+## M6 — Activation UX + import
+- [x] onboarding: industry auto_parts pick auto-activates pack (OnboardingCompleteService, fail-safe, idempotent). Reviewed (nestjs APPROVE) + fixed. 116 tests.
+- [x] founder activation: API endpoint (M0) is the founder path; no admin web shell exists → bespoke admin UI DEFERRED (over-engineering for one button; documented).
+- [ ] DEFERRED FOLLOW-UP: bulk parts import. Seams ready: `InventoryTemplateContextService.build` already threads `industry`; extend template columns (part no/brand/alt-codes/family) when industry==='auto_parts' + row-processing writes via M2 parts.service. Large inventory-adjacent milestone; parts fully creatable via reviewed Add-Part UI meanwhile.
+
+## M5 — Reports + print
+- [x] reports backend: parts velocity (fast/slow/dead), sales by brand/category (cost-strip), fitment coverage. Reviewed (db: isolation+cost SOUND; nestjs APPROVE) + fixed (velocity branchId, distinct override count). 3 suites/23.
+- [x] reports frontend: registry requiresModule gating + 3 screens (cost cols conditional). 19 tests. [review in flight]
+- [ ] DEFERRED FOLLOW-UP: print part-number column on invoice/quotation. Seam ready (verified): `partNumber` exists on inventory_items but NOT on invoice/quotation LINE detail — needs adding to the line projection in the invoice-detail + quotation-detail services (apps/api), then `TaxDocument` gets an optional `showPartNumber?` prop (default false → non-pack invoices byte-identical) wired from `useTenantCapabilities().modules.has("auto_parts")` in `invoice-print-document.tsx`/quotation equivalent + `invoice-to-tax-document.ts`. Deferred: touches the shared money-document template; do it as a focused reviewed change, not at session tail. Counter invoices already print correctly without it.

@@ -1,0 +1,4 @@
+.env
+.opencode/state
+.opencode/cache
+*.local.json

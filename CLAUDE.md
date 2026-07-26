@@ -153,6 +153,7 @@ npx jest audit --no-coverage         # matches by filename
 - **Next.js 16 middleware** — file is `proxy.ts`, not `middleware.ts`
 - **`suppressHydrationWarning`** — only on `<html>`, NEVER on `<body>`
 - **Bidi isolation** — use `apps/web/src/lib/bidi.ts` for user content with unknown direction
+- **`::text` in an INDEX predicate** — never. `enum::text` runs the enum output function (only STABLE), so Postgres rejects the index with `42P17 functions in index predicate must be marked IMMUTABLE`. The `::text` idiom is CHECK-constraint-only (there it dodges enum-add-in-same-tx). In partial indexes compare the enum directly (`"status" <> 'voided'`) or use a positive IN-list. Guarded by `packages/db/src/schema/__tests__/index-predicate-immutability.test.ts`
 - **Translations** — `en/` is source of truth; `pnpm --filter @zerupt/web i18n:check` verifies ar/en parity
 - **Code review** — fix all findings (CRITICAL→LOW) same session. Write to `erp/.review-findings.md` (gitignored), fix one by one, delete when done.
 

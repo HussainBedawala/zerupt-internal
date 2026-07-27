@@ -97,7 +97,7 @@ pnpm --filter @zerupt/api typecheck    # or test
 | AI Service | FastAPI (Python), LiteLLM, pgvector |
 | Database | Neon Serverless Postgres (admin DB + per-tenant DBs), Supabase Auth |
 | Hosting | Vercel (frontend), Railway (API + AI), Neon (Postgres), Supabase (Auth + Storage) |
-| Testing | Jest (API), Vitest (web), Playwright (E2E), pytest (AI) |
+| Testing | Jest (API), Vitest (web), gstack `/browse` + `/qa` (browser/E2E — no Playwright suite, retired in erp a04406d7), pytest (AI) |
 | CI/CD | GitHub Actions, Turborepo, pnpm workspaces |
 
 ## Architecture

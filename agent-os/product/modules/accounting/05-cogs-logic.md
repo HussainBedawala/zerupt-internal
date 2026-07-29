@@ -106,6 +106,40 @@ DR  COGS          [difference]
 CR  Inventory     [difference]
 ```
 
+## GRN Cost-Correction Attribution
+
+When a supplier bill reprices a GRN after receipt, the signed cost delta (D) splits between an inventory uplift (1141, units still on hand) and a retroactive COGS reclass (5100, units already sold). The two slices always sum to D exactly. What differs across costing methods is the population the split is computed over.
+
+**FIFO items:** split per receipt line. `inventory_cost_layers.source_document_line_id` ties each layer to the grn line it came from, so the still-on-hand numerator, the denominator, and the layer uplift all key on the corrected line. A correction on line 1 never reprices line 2.
+
+**Serial items:** split per receipt line, same mechanism, via `item_serial_numbers.purchase_doc_line_id`.
+
+**WAC items:** split per (receipt, item, warehouse) pool, not per line. This is a genuine limitation and not fixable: a WAC pool is one blended average in a single `materialized_stock_levels` row (`on_hand` + `average_cost`). WAC items create no cost layers at all, and stock ledger entries record the line of the movement's own document, not which receipt line was consumed. No stored data anywhere could attribute a per-line still-on-hand quantity under WAC. The pool is the only computable answer; reconstructing a synthetic FIFO-style attribution would invent a costing method never applied to the GL, which is more wrong than the honest pool.
+
+**Legacy fallback:** a FIFO or serial receipt whose records are not fully line-tagged (received before those columns existed, or a partially tagged pool) also falls back to the pool. This is deliberately all-or-nothing: half-attributing would price a line against a population that is partly invisible.
+
+**Consequence for WAC:** if one GRN receives the same item into the same warehouse on two lines at different prices, a correction on one line is split using the pool's blended on-hand ratio rather than that line's own. The total delta and the GL tie-out are unaffected and always exact, only the 1141-vs-5100 attribution between the two lines is approximate.
+
+**Transferred units (FIFO and serial):** a unit moved to another warehouse after receipt drops out of the corrected receipt's on-hand slice, so its share of the delta lands in the COGS reclass even though the unit is still physically on hand. FIFO behaves the same way (a transfer consumes the source warehouse's layer and opens a new one under the transfer document), so the two costing paths agree, but the period COGS is overstated until those units sell. Across a year-end close this misstates retained earnings.
+
+**Known defect, serial acquisition cost basis:** `item_serial_numbers.acquisition_cost` is written in the document currency and as entered (tax inclusive on an inclusive line) at receipt, while GL 1141 is debited functional and ex-tax, and the sale path consumes the stored cost as if it were functional ex-tax COGS. On a foreign currency or taxed serial receipt those three disagree and 1141 never fully relieves. This is invisible while every stored row is at rate 1 with no tax, which is true of current live data. It must be fixed (store functional ex-tax at receipt, and write the functional corrected cost on correction) before the first foreign currency or taxed serial tracked receipt, because after that a data backfill is also required.
+
+**Example:**
+```
+GRN, same item/warehouse, two lines:
+  Line 1: 60 units @ 10.000
+  Line 2: 40 units @ 12.000
+Pool: 100 received, 50 still on hand (blended, not line-attributed)
+
+Correction: +100 booked on line 1
+  Pool on-hand ratio = 50 / 100 = 50%
+  Inventory uplift (1141) = 100 × 50% = 50.000
+  Retroactive COGS (5100) = 100 × 50% = 50.000
+
+Line 1's own remaining quantity is not used, the pool ratio applies
+regardless of which line the correction lands on.
+```
+
 ## Assembly / Production
 
 ```

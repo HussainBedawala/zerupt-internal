@@ -143,6 +143,8 @@ cd /Users/hus3ain/Development/Zerupt/erp/apps/api
 npx jest audit --no-coverage         # matches by filename
 ```
 
+Vitest for web/shared. **`pnpm --filter @zerupt/web test -- <path>` does NOT filter** — it runs all files. Use `npx vitest run <fragment>` from the package dir. `vi.mock("@zerupt/shared", () => ({...}))` blanks the formatters AND the label layer — always spread `...(await importOriginal())` first. Snapshots are evidence, never a rubber stamp: never bulk `-u`, and classify every changed line BEFORE reverting or regenerating.
+
 ---
 
 ## Codebase Gotchas
@@ -154,6 +156,11 @@ npx jest audit --no-coverage         # matches by filename
 - **`suppressHydrationWarning`** — only on `<html>`, NEVER on `<body>`
 - **Bidi isolation** — use `apps/web/src/lib/bidi.ts` for user content with unknown direction
 - **`::text` in an INDEX predicate** — never. `enum::text` runs the enum output function (only STABLE), so Postgres rejects the index with `42P17 functions in index predicate must be marked IMMUTABLE`. The `::text` idiom is CHECK-constraint-only (there it dodges enum-add-in-same-tx). In partial indexes compare the enum directly (`"status" <> 'voided'`) or use a positive IN-list. Guarded by `packages/db/src/schema/__tests__/index-predicate-immutability.test.ts`
+- **Printed documents bind to the DOCUMENT's language**, never the viewer's UI locale. NEVER call `useTranslations`/`useLocale` inside a printed document tree — thread labels in from the document label layer. One sanctioned exemption: the POS Z-report (internal, cashier viewer IS the reader), documented in its file header. See `erp/docs/CODEMAPS/print.md`
+- **Scope print audits by what RENDERS, not by directory** — `features/zatca/**`, `features/pos/**` and `features/invoices/**` all render onto the printed document from outside `print/**`. A directory-scoped audit missed a hardcoded English compliance string on a Saudi tax invoice
+- **Validate with the real parser, never string surgery** — a protocol-relative URL fix using `startsWith` left `/\evil.com` open because WHATWG normalises backslash to slash. Parse with `URL`, then check the parsed parts
+- **Validate layout/format constants against the WORST-CASE country**, never the launch customer's. A 96px column floor looked perfect in Kuwait (KWD, no tax) and broke every Indian GST invoice (more columns, 2dp)
+- **`check-drift.sh` exit code misleads through a pipe** — `... | tail` reports 0 while the checker itself exits 1. Read the violation-count line, or check `_arch_check.py`'s own exit code. Run it from the ROOT repo, not `erp/`
 - **Translations** — `en/` is source of truth; `pnpm --filter @zerupt/web i18n:check` verifies ar/en parity
 - **Code review** — fix all findings (CRITICAL→LOW) same session. Write to `erp/.review-findings.md` (gitignored), fix one by one, delete when done.
 

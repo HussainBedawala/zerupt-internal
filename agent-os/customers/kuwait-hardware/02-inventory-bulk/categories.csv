@@ -1,0 +1,98 @@
+code,namePrimary,nameSecondary,parentCode
+CAT001,Power Tools,أدوات كهربائية,
+CAT002,Drills & Drivers,مثاقب,CAT001
+CAT003,Angle Grinders,صنفرة زاوية,CAT001
+CAT004,Circular Saws,مناشير دائرية,CAT001
+CAT005,Jigsaws,,CAT001
+CAT006,Planers & Routers,مسويات وروترات,CAT001
+CAT007,Generators,مولدات كهرباء,CAT001
+CAT008,Welding Machines,ماكينات لحام,CAT001
+CAT009,Hand Tools.,,
+CAT010,Wrenches,,CAT009
+CAT011,Screwdrivers,مفكات,CAT009
+CAT012,Pliers,زرادية,CAT009
+CAT013,Hammers,مطارق,CAT009
+CAT014,Hand Saws,,CAT009
+CAT015,Chisels,إزميل,CAT009
+CAT016,Tool Sets,,CAT009
+CAT017,FASTENERS,مثبتات,
+CAT018,Screws,براغي,CAT017
+CAT019,Wood Screws,براغي خشب,CAT018
+CAT020,Machine Screws,براغي آلات,CAT018
+CAT021,Self  Tapping Screws,براغي ذاتية التنصيت,CAT018
+CAT022, Bolts & Nuts ,,CAT017
+CAT023,Washers,حلقات,CAT017
+CAT024,Anchors & Plugs,مثبتات جدارية,CAT017
+CAT025,nails,,CAT017
+CAT026, Rivets ,مسامير برشام,CAT017
+CAT027,Plumbing,سباكة,
+CAT028,pipes & fittings,مواسير ووصلات,CAT027
+CAT029,PVC Pipes,مواسير بي في سي,CAT028
+CAT030,Copper  Fittings,وصلات نحاس,CAT028
+CAT031,PPR Pipes,مواسير بي بي آر,CAT028
+CAT032,Valves,صمامات,CAT027
+CAT033, Taps & Mixers ,حنفيات وخلاطات,CAT027
+CAT034,Water Tanks,خزانات مياه,CAT027
+CAT035,Sealants & Tape,شريط لحام وسدادات,CAT027
+CAT036,Electrical,,
+CAT037,Cables & Wires,كابلات وأسلاك,CAT036
+CAT038,Switches & Sockets,مفاتيح وأفياش,CAT036
+CAT039,Circuit Breakers,قواطع كهربائية,CAT036
+CAT040,Lighting,إنارة,CAT036
+CAT041,Conduits,مواسير كهرباء,CAT036
+CAT042,Extension Cords,وصلات كهرباء,CAT036
+CAT043,paint & coatings,دهانات,
+CAT044,"Emulsion Paint,",دهان مائي,CAT043
+CAT045,Enamel Paint,دهان زيتي,CAT043
+CAT046,  Primers,,CAT043
+CAT047,Spray Paint,بخاخ دهان,CAT043
+CAT048,Brushes & Rollers,فرش ورولات,CAT043
+CAT049,Thinners,تنر,CAT043
+CAT050,Safety Gear,معدات السلامة,
+CAT051,Helmets,,CAT050
+CAT052,Gloves,قفازات,CAT050
+CAT053,Safety Boots,أحذية سلامة,CAT050
+CAT054,Eye Protection,نظارات واقية,CAT050
+CAT055,High Visibility Vests,سترات عاكسة,CAT050
+CAT056,Respirators,أقنعة تنفس,CAT050
+CAT057,Adhesives & Sealants,مواد لاصقة وعازلة,
+CAT058,Silicone Sealant,سيليكون,CAT057
+CAT059,Construction Adhesive,لاصق إنشائي,CAT057
+CAT060,Epoxy,,CAT057
+CAT061,Super Glue,لاصق سريع,CAT057
+CAT062,Foam Fillers,رغوة عازلة,CAT057
+CAT063,Abrasives,مواد كاشطة,
+CAT064,Sandpaper,ورق صنفرة,CAT063
+CAT065,Grinding Discs,أقراص جلخ,CAT063
+CAT066,Cutting Discs,أقراص قطع,CAT063
+CAT067,"Wire Brushes,",فرش سلك,CAT063
+CAT068,Building Hardware,عدد بناء,
+CAT069,Cement & Mortar,أسمنت وملاط,CAT068
+CAT070,Insulation,,CAT068
+CAT071,tiles adhesive,,CAT068
+CAT072, Scaffolding ,,CAT068
+CAT073,Wheelbarrows,,CAT068
+CAT074,Ironmongery.,أدوات حديدية,
+CAT075,Door Hinges,,CAT074
+CAT076,Locks & Padlocks,أقفال,CAT074
+CAT077,Door Handles  ,مقابض أبواب,CAT074
+CAT078,Cabinet Fittings,,CAT074
+CAT079,Chains,سلاسل,CAT074
+CAT080, Garden Tools ,أدوات حديقة,
+CAT081,SHOVELS & SPADES,مجارف,CAT080
+CAT082,Hoses & Sprinklers,خراطيم ورشاشات,CAT080
+CAT083,Pruning Shears,مقصات تقليم,CAT080
+CAT084,Wheelbarrows & Carts,عربات حديقة,CAT080
+CAT085,Measuring Tools,,
+CAT086,Tape Measures,أشرطة قياس,CAT085
+CAT087,Spirit Levels  ,ميزان مياه,CAT085
+CAT088,Laser Levels,ميزان ليزر,CAT085
+CAT089,Calipers,فرجار قياس,CAT085
+CAT090,Ladders & Access,سلالم,
+CAT091,Aluminium Ladders,سلالم ألمنيوم,CAT090
+CAT092,Step Stools,مقاعد درج,CAT090
+CAT093,Platform Ladders,سلالم منصة,CAT090
+CAT094,WELDING & METALWORK,لحام وأعمال معدنية,
+CAT095, welding rods ,أسياخ لحام,CAT094
+CAT096,Welding Accessories,,CAT094
+CAT097,"Metal Sheets,",صفائح معدنية,CAT094

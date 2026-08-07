@@ -1,0 +1,482 @@
+saleRef,saleDate,customer,branch,warehouse,item,unit,qty,unitPrice,discount,payment,dueDate,statedTotal,notes
+SLS-91045,27/7/2026,First Gulf Interiors  Est. 10,Shuwaikh Main,Shuwaikh Main,Tolsen Wood Router 1/2 inch,PCS,12,105.656,,credit,25/10/2026,1400.747,
+SLS-91045,27/7/2026,First Gulf Interiors  Est. 10,Shuwaikh Main,Shuwaikh Main,Stanley Impact Driver 20L,PCS,5,26.575,,credit,25/10/2026,,
+SLS-91046,27/12/2025,Al-Wazzan Maintenance 11,Ardiya Warehouse,Ardiya Warehouse,Ridgid Welding Electrode 20L.,PCS,10,13.451,,cash,,134.510,Migrated from legacy system
+SLS-91047,15/7/2026,Fahaheel Home Services  Est. 12,Shuwaikh Main,Shuwaikh Main,Total Extension Cord Large,PCS,2,4.002,,cash,,8.004,Migrated from legacy system
+SLS-91048,10/11/2025,Fahaheel Home Services  Est. 12,Shuwaikh Main,Shuwaikh Main,"karcher basin tap 18l,",Nos,8,12.873,,credit,10/12/2025,102.984,Migrated from legacy system
+SLS-91049,3/2/2026,Al-Fahad Contracting  Est. 13.,Ardiya Warehouse,Ardiya Warehouse,Truper Circular Saw 16 Gauge,PCS,11,26.092,,credit,20/3/2026,287.012,
+SLS-91050,23/9/2025,Al-Sabah Villa Services 3,Shuwaikh Main,Shuwaikh Main,Gulf Star Paint Thinner 50mm,PCS,4,5.180,,credit,22/12/2025,KWD 20.720,
+SLS-91051,28/1/2026,Jahra Building Supplies Buyer 8,Rai Branch,Rai Branch,Bosch PU Foam Filler XL,PCS,1,17.745,,bank_transfer,,17.745,Migrated from legacy system
+SLS-91052,16/5/2026,Desert Rose Interiors 2,Shuwaikh Main,Shuwaikh Main,TRUPER PVC CONDUIT PIPE 3/4 INCH,PCS,10,35.808,,cash,,565.856,Migrated from legacy system
+SLS-91052,16/5/2026,Desert Rose Interiors 2,Shuwaikh Main,Shuwaikh Main,black+decker plastic water tank medium,PCS,2,22.678,,cash,,,Migrated from legacy system
+SLS-91052,16/5/2026,Desert Rose Interiors 2,Shuwaikh Main,Shuwaikh Main,"Al-Fanar Garden Cart 25kg,",pc,6,27.070,,cash,,,Migrated from legacy system
+SLS-91053,13/4/2026,GULF BUILDERS 9,Rai Branch,Rai Branch,Ingco Dust Mask Respirator 10kg,PCS,9,13.374,3.928,cash,,203.558,
+SLS-91053,13/4/2026,GULF BUILDERS 9,Rai Branch,Rai Branch, Truper Phillips Screwdriver 50kg ,PCS,9,9.680,,cash,,,Migrated from legacy system
+SLS-91054,10/5/2026,Al-Bahar Property Services  Est. 11,Ardiya Warehouse,Ardiya Warehouse,Al-Fanar Emulsion Paint 3/4 inch,PCS,3,4.029,KWD 0.532,credit,9/7/2026,91.817,
+SLS-91054,10/5/2026,Al-Bahar Property Services  Est. 11,Ardiya Warehouse,Ardiya Warehouse,Tolsen Cordless Drill 1 Inch,Nos,9,8.918,,credit,9/7/2026,,Migrated from legacy system
+SLS-91055,9/5/2026,AL-RASHED VILLAS 10,Shuwaikh Main,Shuwaikh Main,Skil Combination Wrench Large,PCS,7,23.932,4.011,bank_transfer,,328.748,
+SLS-91055,9/5/2026,AL-RASHED VILLAS 10,Shuwaikh Main,Shuwaikh Main,DeWalt Work Gloves 25kg,PCS,7,23.605,,bank_transfer,,,
+SLS-91056,18/12/2025,Al-Anjari Villas  Est.,Shuwaikh Main,Shuwaikh Main,YATO SPRAY PAINT CAN 20MM,PC,11,122.014,,credit,16/2/2026,1434.904,Migrated from legacy system
+SLS-91056,18/12/2025,Al-Anjari Villas  Est.,Shuwaikh Main,Shuwaikh Main,  Total Tool Kit 20 Gauge Pieces,PCS,5,18.550,,credit,16/2/2026,,Migrated from legacy system
+SLS-91057,2/6/2026,Bin Hindi Property 9,Ardiya Warehouse,Ardiya Warehouse,  Crown Plastic Water Tank 4L,PCS,12,14.585,,credit,31/8/2026,442.880,Migrated from legacy system
+SLS-91057,2/6/2026,Bin Hindi Property 9,Ardiya Warehouse,Ardiya Warehouse,Ridgid Basin Tap 16 Gauge,PCS,1,18.460,0.360,credit,31/8/2026,,Migrated from legacy system
+SLS-91057,2/6/2026,Bin Hindi Property 9,Ardiya Warehouse,Ardiya Warehouse,Gulf Star Steel Chain 20 Gauge,PCS,8,31.220,,credit,31/8/2026,,Migrated from legacy system
+SLS-91058,31/10/2025,Al-Ghanim Home Repairs 11,Ardiya Warehouse,Ardiya Warehouse,Skil Flexible Wire 25kg,PCS,10,16.477,,bank_transfer,,244.300,
+SLS-91058,31/10/2025,Al-Ghanim Home Repairs 11,Ardiya Warehouse,Ardiya Warehouse,Sata Self Tapping Screw 22 Gauge,PCS,5,15.906,,bank_transfer,,,
+SLS-91059,3/1/2026,First Gulf Interiors 12,Shuwaikh Main,Shuwaikh Main,Hitachi Self Tapping Screw 20L,PCS,4,31.625,,cash,,282.489,Migrated from legacy system
+SLS-91059,3/1/2026,First Gulf Interiors 12,Shuwaikh Main,Shuwaikh Main,Hilti Common Nail 16Mm,PCS,8,17.600,,cash,,,
+SLS-91059,3/1/2026,First Gulf Interiors 12,Shuwaikh Main,Shuwaikh Main,DeWalt Tape Measure 10kg,Nos,1,15.189,,cash,,,Migrated from legacy system
+SLS-91060,25/3/2026,Al-Fahad Contracting,Rai Branch,Rai Branch,Truper Steel Toe Safety Boots 1/4 inch,PCS,3,29.194,,cash,,87.582,Migrated from legacy system
+SLS-91061,26/12/2025,Al-Marzouq Home 11,Ardiya Warehouse,Ardiya Warehouse,Bosch Door Handle 3/4 inch,PCS,10,0.487,KD 0.196,cash,,336.600,
+SLS-91061,26/12/2025,Al-Marzouq Home 11,Ardiya Warehouse,Ardiya Warehouse,Makita Grinding Disc 1200W,PCS,9,7.474,,cash,,,
+SLS-91061,26/12/2025,Al-Marzouq Home 11,Ardiya Warehouse,Ardiya Warehouse,Al-Fanar Wire Brush 25kg,Pieces,10,27.854,KWD 13.880,cash,,,
+SLS-91062,21/12/2025,Jahra Building Supplies Buyer 12,Rai Branch,Rai Branch,Ingco Gate Valve 650W,Nos,7,26.366,3.349,bank_transfer,,234.265,
+SLS-91062,21/12/2025,Jahra Building Supplies Buyer 12,Rai Branch,Rai Branch,Al-Fanar Work Gloves 1L,PC,12,2.927,,bank_transfer,,,
+SLS-91062,21/12/2025,Jahra Building Supplies Buyer 12,Rai Branch,Rai Branch, Yato Safety Goggles XL ,PCS,12,1.502,0.096,bank_transfer,,,
+SLS-91063,4/8/2026,Bin Hindi Property  Est. 5,Fahaheel Branch,Fahaheel Branch,Ingco PVC Conduit Pipe 20L,PCS,8,34.779,,credit,19/8/2026,278.232,
+SLS-91064,28/9/2025,Nasser Al-Hajeri 7,Rai Branch,Rai Branch,DeWalt PU Foam Filler 5kg,PCS,12,21.381,,credit,27/12/2025,284.738,Migrated from legacy system
+SLS-91064,28/9/2025,Nasser Al-Hajeri 7,Rai Branch,Rai Branch,DeWalt Garden Shovel 12mm,PCS,1,28.166,,credit,27/12/2025,,Migrated from legacy system
+SLS-91065,17/8/2025,Salem  Al-Rashidi 10,Fahaheel Branch,Fahaheel Branch,  Karcher Door Handle 24 Gauge,PCS,3,31.149,,credit,16/10/2025,93.447,
+SLS-91066,8/11/2025,Al-Mutairi Est.  Est. 12,Ardiya Warehouse,Ardiya Warehouse,Bosch Vernier Caliper 3/8 inch.,PCS,9,21.599,4.866,bank_transfer,,300.001,
+SLS-91066,8/11/2025,Al-Mutairi Est.  Est. 12,Ardiya Warehouse,Ardiya Warehouse,Skil Tape Measure 8mm,Pieces,4,27.619,,bank_transfer,,,
+SLS-91067,7/9/2025,Jahra Building Supplies Buyer 11,Ardiya Warehouse,Ardiya Warehouse,Metabo Steel Toe Safety Boots 24 Gauge,Pieces,1,2.796,0.026,cash,,2.770,
+SLS-91068,13/11/2025,Salem Al-Rashidi 5  ,Shuwaikh Main,Shuwaikh Main,Makita Flood Light 9L,PCS,4,22.101,,bank_transfer,,103.303,Migrated from legacy system
+SLS-91068,13/11/2025,Salem Al-Rashidi 5  ,Shuwaikh Main,Shuwaikh Main,DeWalt Dust Mask Respirator 1200W,PCS,1,2.675,,bank_transfer,,,
+SLS-91068,13/11/2025,Salem Al-Rashidi 5  ,Shuwaikh Main,Shuwaikh Main,Tolsen Grinding Disc 16 Gauge,PCS,7,1.769,0.159,bank_transfer,,,
+SLS-91069,13/7/2026,Al-Ajmi Interiors 11,Fahaheel Branch,Fahaheel Branch,Metabo Door Lock 12mm,PC,4,19.367,,cash,,580.850,Migrated from legacy system
+SLS-91069,13/7/2026,Al-Ajmi Interiors 11,Fahaheel Branch,Fahaheel Branch,Hilti Wheelbarrow 1kg,PCS,12,KWD 27.325,,cash,,,
+SLS-91069,13/7/2026,Al-Ajmi Interiors 11,Fahaheel Branch,Fahaheel Branch,Stanley Tile Adhesive Bag 650W,PCS,6,29.247,,cash,,,
+SLS-91070,14/6/2026,Farwaniya Fix-It Center 9,Rai Branch,Rai Branch,Metabo Aluminium Ladder 3/8 inch,Pieces,6,30.158,,cash,,KWD 312.684,Migrated from legacy system
+SLS-91070,14/6/2026,Farwaniya Fix-It Center 9,Rai Branch,Rai Branch,Hilti Spring Washer 750W,PCS,8,16.467,,cash,,,
+SLS-91071,11/8/2025,Ahmad Al-Kandari 11,Shuwaikh Main,Shuwaikh Main,Crown Copper Tee 32mm,PCS,8,30.069,,credit,10/10/2025,514.140,Migrated from legacy system
+SLS-91071,11/8/2025,Ahmad Al-Kandari 11,Shuwaikh Main,Shuwaikh Main,Crown Vernier Caliper 18L,PCS,12,KWD 22.799,,credit,10/10/2025,,Migrated from legacy system
+SLS-91072,7/8/2026,Al-Fahad Contracting 10,Shuwaikh Main,Shuwaikh Main,Al-Fanar Circular Saw 4L,PCS,10,9.140,4.286,credit,6/9/2026,KWD 87.114,Migrated from legacy system
+SLS-91073,7/9/2025,Al-Ajmi Interiors 11,Rai Branch,Rai Branch,BOSCH STEP STOOL XL,PCS,1,10.768,,cash,,245.599,
+SLS-91073,7/9/2025,Al-Ajmi Interiors 11,Rai Branch,Rai Branch,Hilti Steel Chain 1 inch,Nos,8,30.121,6.137,cash,,,Migrated from legacy system
+SLS-91074,28/4/2026,Continental Maintenance Co. 11,Fahaheel Branch,Fahaheel Branch,Sata Tool Kit 4L Pieces,PCS,7,KD 29.623,,cash,,207.361,
+SLS-91075,14/9/2025, Al-Yaqout Villas 11 ,Shuwaikh Main,Shuwaikh Main,Metabo Cold Chisel 22 Gauge,PCS,11,10.552,,credit,14/10/2025,160.335,
+SLS-91075,14/9/2025, Al-Yaqout Villas 11 ,Shuwaikh Main,Shuwaikh Main,Truper Wall Primer Medium,PCS,5,6.758,0.706,credit,14/10/2025,,Migrated from legacy system
+SLS-91075,14/9/2025, Al-Yaqout Villas 11 ,Shuwaikh Main,Shuwaikh Main,Gulf Star Silicone Sealant Tube XL,PCS,2,KWD 5.644,KWD 0.109,credit,14/10/2025,,Migrated from legacy system
+SLS-91076,20/7/2026,Al-Rashed Villas 3  ,Shuwaikh Main,Shuwaikh Main,Ridgid Garden Cart Small,PCS,8,360.554,,cash,,KWD 3147.332,
+SLS-91076,20/7/2026,Al-Rashed Villas 3  ,Shuwaikh Main,Shuwaikh Main,Sata Hand Saw 32mm,PCS,10,26.290,,cash,,,
+SLS-91077,7/7/2026,Al-Yaqout Villas 4,Shuwaikh Main,Shuwaikh Main,Hitachi PVC Pipe 20L,PCS,12,KWD 3.636,,cash,,KD 262.404,Migrated from legacy system
+SLS-91077,7/7/2026,Al-Yaqout Villas 4,Shuwaikh Main,Shuwaikh Main,Metabo Sandpaper Sheet 450W,PCS,9,24.308,,cash,,,
+SLS-91078,28/7/2026,Nasser Al-Hajeri 12,Ardiya Warehouse,Ardiya Warehouse,tolsen  flat washer 24 gauge,PCS,8,30.387,,cash,,419.528,
+SLS-91078,28/7/2026,Nasser Al-Hajeri 12,Ardiya Warehouse,Ardiya Warehouse,Tolsen Pop Rivet 2000W,PCS,6,15.402,,cash,,,Migrated from legacy system
+SLS-91078,28/7/2026,Nasser Al-Hajeri 12,Ardiya Warehouse,Ardiya Warehouse,Yato Tile Adhesive Bag Medium,PCS,10,8.402,,cash,,,
+SLS-91079,26/7/2026,Al-Ajmi Interiors 4,Rai Branch,Rai Branch,Total Paint Thinner 4L,PCS,2,3.172,,cash,,6.344,Migrated from legacy system
+SLS-91080,28/11/2025,Al-Roumi Renovation 6,Ardiya Warehouse,Ardiya Warehouse,Black+Decker  Welding Mask 20 Gauge,Pieces,1,28.747,,cash,,335.976,
+SLS-91080,28/11/2025,Al-Roumi Renovation 6,Ardiya Warehouse,Ardiya Warehouse,Makita Work Gloves 9L,Pieces,9,34.291,1.390,cash,,,
+SLS-91081,21/5/2026,Al-Duaij Maintenance 2,Fahaheel Branch,Fahaheel Branch,Metabo Circular Saw Medium,Nos,4,20.335,,cash,,KWD 81.340,Migrated from legacy system
+SLS-91082,26/2/2026,Al-Marzouq Home 5,Fahaheel Branch,Fahaheel Branch,Truper Pop Rivet 18L,PCS,4,27.268,,bank_transfer,,477.892,Migrated from legacy system
+SLS-91082,26/2/2026,Al-Marzouq Home 5,Fahaheel Branch,Fahaheel Branch,Sata Flat Screwdriver 1200W,PCS,4,27.459,,bank_transfer,,,
+SLS-91082,26/2/2026,Al-Marzouq Home 5,Fahaheel Branch,Fahaheel Branch,Al-Fanar Tape Measure 20 Gauge,Nos,9,28.776,,bank_transfer,,,
+SLS-91083,31/1/2026,Continental Maintenance Co. 4,Fahaheel Branch,Fahaheel Branch,Skil Sandpaper Sheet Medium,pc,8,20.960,2.780,credit,17/3/2026,164.900,
+SLS-91084,29/10/2025,Al-Wazzan Maintenance 9,Fahaheel Branch,Fahaheel Branch,Tolsen  Electrical Cable 6mm,Pieces,7,14.678,,credit,28/11/2025,295.514,
+SLS-91084,29/10/2025,Al-Wazzan Maintenance 9,Fahaheel Branch,Fahaheel Branch,Hitachi PU Foam Filler 9L,PCS,6,32.128,,credit,28/11/2025,,
+SLS-91085,26/1/2026,Fahaheel Home Services 8,Shuwaikh Main,Shuwaikh Main,Truper Wheelbarrow 5kg,PCS,10,KD 1.337,,credit,27/3/2026,90.689,Migrated from legacy system
+SLS-91085,26/1/2026,Fahaheel Home Services 8,Shuwaikh Main,Shuwaikh Main,Makita Circular Saw 20L  ,PCS,5,15.699,1.176,credit,27/3/2026,,Migrated from legacy system
+SLS-91086,3/10/2025,Salmiya Handyman Services  Est. 3,Shuwaikh Main,Shuwaikh Main,Karcher Combination Pliers 1500W,PCS,6,8.725,,bank_transfer,,156.426,Migrated from legacy system
+SLS-91086,3/10/2025,Salmiya Handyman Services  Est. 3,Shuwaikh Main,Shuwaikh Main,Bosch Hand Saw Small,PCS,6,17.346,,bank_transfer,,,
+SLS-91087,26/10/2025,Ahmadi Villa Care 8,Shuwaikh Main,Shuwaikh Main,Bosch Emulsion Paint 25kg,PCS,3,10.377,,bank_transfer,,31.131,Migrated from legacy system
+SLS-91088,26/9/2025,UNION FACILITY SERVICES 8,Rai Branch,Rai Branch,Total Thermal Insulation Sheet 22 Gauge,PCS,1,11.172,,credit,25/11/2025,124.572,Migrated from legacy system
+SLS-91088,26/9/2025,UNION FACILITY SERVICES 8,Rai Branch,Rai Branch,Hitachi Epoxy Adhesive 2000W,pcs,5,22.680,,credit,25/11/2025,,Migrated from legacy system
+SLS-91089,13/11/2025,Union Facility Services 12,Ardiya Warehouse,Ardiya Warehouse,Hitachi Flat Screwdriver 450W,PCS,4,18.223,,cash,,297.865,Migrated from legacy system
+SLS-91089,13/11/2025,Union Facility Services 12,Ardiya Warehouse,Ardiya Warehouse,Total Sprinkler Head 3/4 inch,Pieces,7,32.139,,cash,,,
+SLS-91090,10/2/2026,Modern Home Fix-It 2,Ardiya Warehouse,Ardiya Warehouse,Karcher PU Foam Filler 12mm,Nos,11,26.362,,bank_transfer,,289.982,Migrated from legacy system
+SLS-91091,28/2/2026,Fahaheel Home Services 8,Ardiya Warehouse,Ardiya Warehouse,TOLSEN WOOD ROUTER 10KG,PCS,4,19.990,,bank_transfer,,208.288,
+SLS-91091,28/2/2026,Fahaheel Home Services 8,Ardiya Warehouse,Ardiya Warehouse,Total Cordless Drill 9L,pc,6,21.388,,bank_transfer,,,Migrated from legacy system
+SLS-91092,16/1/2026,First Gulf Interiors  Est. 5,Shuwaikh Main,Shuwaikh Main,Tolsen Impact Driver 20L,PCS,4,422.313,,bank_transfer,,1743.306,
+SLS-91092,16/1/2026,First Gulf Interiors  Est. 5,Shuwaikh Main,Shuwaikh Main,Crown Paint Thinner 3/4 inch,PCS,9,6.006,,bank_transfer,,,
+SLS-91093,24/8/2025,Gulf Facility Management 7,Fahaheel Branch,Fahaheel Branch,DeWalt Circular Saw 4L,PCS,6,24.267,,credit,22/11/2025,194.810,Migrated from legacy system
+SLS-91093,24/8/2025,Gulf Facility Management 7,Fahaheel Branch,Fahaheel Branch,black+decker tool kit 3/8 inch pieces,PCS,2,24.972,KD 0.736,credit,22/11/2025,,
+SLS-91094,1/1/2026,Desert Rose Interiors 10,Fahaheel Branch,Fahaheel Branch,black+decker hi-vis safety vest 3/4 inch,pc,4,35.156,,bank_transfer,,153.656,
+SLS-91094,1/1/2026,Desert Rose Interiors 10,Fahaheel Branch,Fahaheel Branch,Sata Door Handle 12mm,PCS,3,KWD 4.344,,bank_transfer,,,Migrated from legacy system
+SLS-91095,8/10/2025,Al-Bahar Property Services 3,Ardiya Warehouse,Ardiya Warehouse,Gulf Star Work Gloves 9L,PCS,8,26.924,9.458,cash,,205.934,
+SLS-91096,16/3/2026,Ahmadi Villa Care 5,Shuwaikh Main,Shuwaikh Main,DeWalt Copper Tee Small,PCS,5,7.126,0.769,credit,15/4/2026,74.345,Migrated from legacy system
+SLS-91096,16/3/2026,Ahmadi Villa Care 5,Shuwaikh Main,Shuwaikh Main,Skil Aluminium Ladder 22 Gauge,PCS,2,19.742,,credit,15/4/2026,,Migrated from legacy system
+SLS-91097,14/6/2026,Salmiya Handyman Services 11,Shuwaikh Main,Shuwaikh Main,DeWalt Circular Saw 18L,pcs,4,KWD 22.100,,credit,13/8/2026,534.165,
+SLS-91097,14/6/2026,Salmiya Handyman Services 11,Shuwaikh Main,Shuwaikh Main,Ridgid Paint Roller 10kg,PCS,8,16.969,,credit,13/8/2026,,Migrated from legacy system
+SLS-91097,14/6/2026,Salmiya Handyman Services 11,Shuwaikh Main,Shuwaikh Main,Hilti Epoxy Adhesive 1200W,PCS,11,28.183,,credit,13/8/2026,,Migrated from legacy system
+SLS-91098,10/2/2026,Gulf Facility Management 7,Shuwaikh Main,Shuwaikh Main,truper scaffolding frame 900w,PCS,7,23.270,6.372,credit,11/5/2026,KWD 156.518,
+SLS-91099,30/10/2025,First Gulf Interiors 12,Ardiya Warehouse,Ardiya Warehouse,Makita Hacksaw 10mm,PC,6,8.764,0.399,cash,,79.850,Migrated from legacy system
+SLS-91099,30/10/2025,First Gulf Interiors 12,Ardiya Warehouse,Ardiya Warehouse,Gulf Star Locking Pliers 1200W,PCS,11,2.515,,cash,,,Migrated from legacy system
+SLS-91100,11/4/2026, Al-Fahad Contracting  Est. 4 ,Ardiya Warehouse,Ardiya Warehouse,Skil Thermal Insulation Sheet 4L,PCS,8,25.454,,bank_transfer,,444.643,Migrated from legacy system
+SLS-91100,11/4/2026, Al-Fahad Contracting  Est. 4 ,Ardiya Warehouse,Ardiya Warehouse,Total Aluminium Ladder 1200W,PCS,7,33.981,,bank_transfer,,,Migrated from legacy system
+SLS-91100,11/4/2026, Al-Fahad Contracting  Est. 4 ,Ardiya Warehouse,Ardiya Warehouse,Crown Wood Screw XL,PCS,6,0.524,,bank_transfer,,,
+SLS-91101,4/10/2025,Gulf Builders  Est. 10,Ardiya Warehouse,Ardiya Warehouse,Stanley Wall Primer 1/2 inch,PCS,1,7.663,,cash,,199.712,
+SLS-91101,4/10/2025,Gulf Builders  Est. 10,Ardiya Warehouse,Ardiya Warehouse,DeWalt Vernier Caliper 18L,PCS,11,17.459,,cash,,,
+SLS-91102,31/7/2026,Al-Roumi Renovation 4,Rai Branch,Rai Branch,Karcher Welding Mask 16 Gauge,PCS,4,KWD 169.564,33.374,bank_transfer,,1697.060,
+SLS-91102,31/7/2026,Al-Roumi Renovation 4,Rai Branch,Rai Branch,Stanley Aluminium Ladder 650W,PCS,2,370.515,,bank_transfer,,,Migrated from legacy system
+SLS-91102,31/7/2026,Al-Roumi Renovation 4,Rai Branch,Rai Branch,DeWalt Electrical Cable 16 Gauge,pcs,9,34.572,,bank_transfer,,,Migrated from legacy system
+SLS-91103,12/8/2025,  Salmiya Handyman Services 10,Fahaheel Branch,Fahaheel Branch,SATA BALL VALVE 22 GAUGE  ,PCS,11,298.666,,credit,11/10/2025,3285.326,Migrated from legacy system
+SLS-91104,5/3/2026,Ahmadi Villa Care 5,Ardiya Warehouse,Ardiya Warehouse,Crown Tile Adhesive Bag 2000W,PC,1,KD 11.344,,cash,,132.124,
+SLS-91104,5/3/2026,Ahmadi Villa Care 5,Ardiya Warehouse,Ardiya Warehouse,Truper Steel Toe Safety Boots 50mm,PCS,10,12.273,KD 1.950,cash,,,
+SLS-91105,1/1/2026,Al-Mutairi Est. 4,Ardiya Warehouse,Ardiya Warehouse,ridgid hacksaw 16 gauge,PC,9,13.551,,cash,,287.733,Migrated from legacy system
+SLS-91105,1/1/2026,Al-Mutairi Est. 4,Ardiya Warehouse,Ardiya Warehouse,Skil Sandpaper Sheet 1 inch,Nos,6,27.629,,cash,,,Migrated from legacy system
+SLS-91106,12/10/2025,FAHAHEEL HOME SERVICES 9,Ardiya Warehouse,Ardiya Warehouse,AL-FANAR SILICONE SEALANT TUBE 1 INCH.,PCS,12,1.384,,bank_transfer,,367.219,Migrated from legacy system
+SLS-91106,12/10/2025,FAHAHEEL HOME SERVICES 9,Ardiya Warehouse,Ardiya Warehouse,Metabo Long Nose Pliers 20mm,PCS,12,20.938,,bank_transfer,,,Migrated from legacy system
+SLS-91106,12/10/2025,FAHAHEEL HOME SERVICES 9,Ardiya Warehouse,Ardiya Warehouse,Black+Decker Sledge Hammer 12mm,PCS,7,14.327,0.934,bank_transfer,,,Migrated from legacy system
+SLS-91107,18/12/2025,New Kuwait Contracting 13,Fahaheel Branch,Fahaheel Branch,DEWALT HI-VIS SAFETY VEST 20MM,pc,12,KD 18.737,,bank_transfer,,224.844,
+SLS-91108,23/8/2025,Modern Home Fix-It  Est. 5,Fahaheel Branch,Fahaheel Branch,Yato Door Handle 25kg,Nos,4,10.260,1.580,cash,,48.580,
+SLS-91108,23/8/2025,Modern Home Fix-It  Est. 5,Fahaheel Branch,Fahaheel Branch,Ingco Claw Hammer 18L,PCS,1,9.120,,cash,,,Migrated from legacy system
+SLS-91109,8/7/2026,Continental Maintenance Co. 8,Rai Branch,Rai Branch,karcher teflon tape 20 gauge,PCS,6,0.569,,bank_transfer,,183.617,
+SLS-91109,8/7/2026,Continental Maintenance Co. 8,Rai Branch,Rai Branch,Makita ARC Welding Machine 1200W,PCS,6,27.815,4.639,bank_transfer,,,
+SLS-91109,8/7/2026,Continental Maintenance Co. 8,Rai Branch,Rai Branch,Gulf Star Spirit Level Medium,PCS,4,4.488,,bank_transfer,,,Migrated from legacy system
+SLS-91110,18/9/2025,Farwaniya Fix-It Center 3,Shuwaikh Main,Shuwaikh Main,Metabo Steel Toe Safety Boots 450W,pcs,6,18.585,,cash,,332.511,
+SLS-91110,18/9/2025,Farwaniya Fix-It Center 3,Shuwaikh Main,Shuwaikh Main,Ingco Steel Toe Safety Boots 4L,PCS,11,20.091,,cash,,,
+SLS-91111,30/6/2026,First Gulf Interiors 12,Ardiya Warehouse,Ardiya Warehouse,Tolsen Cabinet Hinge 50kg  ,pc,9,29.343,,cash,,390.317,Migrated from legacy system
+SLS-91111,30/6/2026,First Gulf Interiors 12,Ardiya Warehouse,Ardiya Warehouse,Gulf Star Enamel Paint 1kg,PCS,9,8.694,,cash,,,
+SLS-91111,30/6/2026,First Gulf Interiors 12,Ardiya Warehouse,Ardiya Warehouse,Truper Welding Gloves 5kg,PCS,4,11.996,,cash,,,
+SLS-91112,4/6/2026,Al-Fahad Contracting  Est. 13.,Shuwaikh Main,Shuwaikh Main,DeWalt PU Foam Filler 5kg,PCS,10,21.381,,bank_transfer,,213.810,Migrated from legacy system
+SLS-91113,11/5/2026,Desert Rose Interiors 3,Rai Branch,Rai Branch,Ingco Sandpaper Sheet Medium,PCS,12,35.711,,bank_transfer,,528.243,Migrated from legacy system
+SLS-91113,11/5/2026,Desert Rose Interiors 3,Rai Branch,Rai Branch,Ridgid Circular Saw 3/4 inch,Nos,3,KWD 33.237,,bank_transfer,,,Migrated from legacy system
+SLS-91114,15/12/2025,Al-Enezi General Maintenance  Est. 5,Ardiya Warehouse,Ardiya Warehouse,dewalt spray paint can 16 gauge,PCS,12,31.281,,credit,13/2/2026,466.140,
+SLS-91114,15/12/2025,Al-Enezi General Maintenance  Est. 5,Ardiya Warehouse,Ardiya Warehouse,truper electrical cable 8mm,pcs,8,11.346,,credit,13/2/2026,,Migrated from legacy system
+SLS-91115,7/1/2026,Al-Khaled General Trading 11,Ardiya Warehouse,Ardiya Warehouse,DeWalt Spirit Level 50kg,PCS,6,1.497,,bank_transfer,,130.090,
+SLS-91115,7/1/2026,Al-Khaled General Trading 11,Ardiya Warehouse,Ardiya Warehouse,Black+Decker Super Glue 3/8 inch,PCS,4,KD 8.370,,bank_transfer,,,
+SLS-91115,7/1/2026,Al-Khaled General Trading 11,Ardiya Warehouse,Ardiya Warehouse,Tolsen Garden Cart 4L,PCS,4,21.907,,bank_transfer,,,
+SLS-91116,18/8/2025,Al-Anjari Villas 8,Fahaheel Branch,Fahaheel Branch,Metabo Portable Generator 650W,PCS,12,8.370,,cash,,159.578,
+SLS-91116,18/8/2025,Al-Anjari Villas 8,Fahaheel Branch,Fahaheel Branch,Tolsen Welding Gloves 25mm,PCS,2,29.569,,cash,,,Migrated from legacy system
+SLS-91117,9/8/2025,New Kuwait Contracting 9,Shuwaikh Main,Shuwaikh Main,Bosch Extension Cord 9L,PCS,5,29.841,,cash,,346.563,
+SLS-91117,9/8/2025,New Kuwait Contracting 9,Shuwaikh Main,Shuwaikh Main,AL-FANAR STEEL TOE SAFETY BOOTS 24 GAUGE,pc,8,4.673,0.018,cash,,,Migrated from legacy system
+SLS-91117,9/8/2025,New Kuwait Contracting 9,Shuwaikh Main,Shuwaikh Main,Yato Tool Kit Large Pieces,Nos,8,19.999,,cash,,,Migrated from legacy system
+SLS-91118,21/2/2026,Jahra Building Supplies Buyer,Fahaheel Branch,Fahaheel Branch,DEWALT PVC CONDUIT PIPE 450W,PCS,4,29.375,,bank_transfer,,117.500,Migrated from legacy system
+SLS-91119,16/6/2026,Gulf Builders 4,Fahaheel Branch,Fahaheel Branch,Hitachi MCB Circuit Breaker 50kg,PCS,7,4.088,,cash,,3269.752,Migrated from legacy system
+SLS-91119,16/6/2026,Gulf Builders 4,Fahaheel Branch,Fahaheel Branch,Hilti Screwdriver Set 1L,pc,8,405.142,,cash,,,Migrated from legacy system
+SLS-91120,9/2/2026,Bin Hindi Property  Est.,Rai Branch,Rai Branch,Ridgid Paint Roller 20L,PCS,1,30.297,,credit,24/2/2026,67.875,
+SLS-91120,9/2/2026,Bin Hindi Property  Est.,Rai Branch,Rai Branch,al-fanar thermal insulation sheet 9l,PCS,6,6.505,1.452,credit,24/2/2026,,Migrated from legacy system
+SLS-91121,30/7/2026,Desert Rose Interiors  Est. 5,Shuwaikh Main,Shuwaikh Main,Total Dust Mask Respirator 20 Gauge,PCS,5,3.948,,cash,,253.380,Migrated from legacy system
+SLS-91121,30/7/2026,Desert Rose Interiors  Est. 5,Shuwaikh Main,Shuwaikh Main,  Truper Dust Mask Respirator 4L,PCS,4,8.924,,cash,,,
+SLS-91121,30/7/2026,Desert Rose Interiors  Est. 5,Shuwaikh Main,Shuwaikh Main,Makita Spray Paint Can 2000W,PC,7,28.446,1.178,cash,,,Migrated from legacy system
+SLS-91122,28/5/2026,Jahra Building Supplies Buyer,Fahaheel Branch,Fahaheel Branch,Gulf Star PVC Conduit Pipe 22 Gauge,PCS,12,14.415,2.070,credit,12/6/2026,318.521,
+SLS-91122,28/5/2026,Jahra Building Supplies Buyer,Fahaheel Branch,Fahaheel Branch, Ridgid Laser Level 20 Gauge ,PCS,9,16.607,1.852,credit,12/6/2026,,
+SLS-91123,1/2/2026,Al-Sabah Villa Services 6,Fahaheel Branch,Fahaheel Branch,Bosch Vernier Caliper 3/8 inch.,PCS,12,21.599,,credit,3/3/2026,259.188,
+SLS-91124,8/11/2025,Salem  Al-Rashidi 10,Shuwaikh Main,Shuwaikh Main,Black+Decker Portable Generator 20mm,PCS,1,26.453,,cash,,115.820,Migrated from legacy system
+SLS-91124,8/11/2025,Salem  Al-Rashidi 10,Shuwaikh Main,Shuwaikh Main,Yato Emulsion Paint 5kg,Nos,3,29.789,,cash,,,
+SLS-91125,29/4/2026,Al-Nasser Renovation 2,Ardiya Warehouse,Ardiya Warehouse,Total PU Foam Filler 16mm,PCS,8,22.034,KD 2.875,credit,28/6/2026,173.397,
+SLS-91126,17/10/2025,Al-Mutairi Est.  Est. 2,Ardiya Warehouse,Ardiya Warehouse,Crown Epoxy Adhesive 3/4 inch,pc,7,20.152,,bank_transfer,,437.833,
+SLS-91126,17/10/2025,Al-Mutairi Est.  Est. 2,Ardiya Warehouse,Ardiya Warehouse,Stanley Tool Kit 18 Gauge Pieces,pcs,11,26.979,,bank_transfer,,,Migrated from legacy system
+SLS-91127,20/1/2026,Al-Osaimi Maintenance 4,Rai Branch,Rai Branch,Hitachi Steel Toe Safety Boots 2000W,pcs,10,32.067,,credit,4/2/2026,320.670,Migrated from legacy system
+SLS-91128,5/5/2026,First Gulf Interiors  Est. 7,Ardiya Warehouse,Ardiya Warehouse,"Makita Cutting Disc 50kg,",PCS,12,25.951,,bank_transfer,,KWD 311.412,
+SLS-91129,1/9/2025,Al-Zamil Villas 2,Ardiya Warehouse,Ardiya Warehouse,Makita Common Nail 1 inch,PCS,12,1.839,,cash,,22.068,Migrated from legacy system
+SLS-91130,17/4/2026,Al-Wazzan Maintenance 6,Shuwaikh Main,Shuwaikh Main,skil hi-vis safety vest 18l,PCS,2,24.801,,cash,,49.602,
+SLS-91131,26/1/2026,Gulf Facility Management 7,Ardiya Warehouse,Ardiya Warehouse,Hilti Hi-Vis Safety Vest 750W,Pieces,9,18.372,,credit,26/4/2026,412.530,
+SLS-91131,26/1/2026,Gulf Facility Management 7,Ardiya Warehouse,Ardiya Warehouse,Bosch Emulsion Paint 9L,PCS,9,28.055,5.313,credit,26/4/2026,,
+SLS-91132,29/8/2025,Ahmad Al-Kandari  Est. 9,Shuwaikh Main,Shuwaikh Main,Crown LED Bulb 22 Gauge,PCS,5,10.457,,cash,,KWD 52.285,
+SLS-91133,2/3/2026,Fahaheel Home Services 5,Shuwaikh Main,Shuwaikh Main,Al-Fanar Tile Adhesive Bag Small,PCS,12,3.980,,credit,1/4/2026,105.656,Migrated from legacy system
+SLS-91133,2/3/2026,Fahaheel Home Services 5,Shuwaikh Main,Shuwaikh Main,metabo door hinge xl,PCS,8,7.237,,credit,1/4/2026,,
+SLS-91134,3/12/2025,Nasser Al-Hajeri 4,Rai Branch,Rai Branch,Ingco Inverter Generator 3/4 inch,PCS,8,9.582,,cash,,76.656,
+SLS-91135,15/7/2026,Al-Wazzan Maintenance 11,Rai Branch,Rai Branch,metabo work gloves 1 inch,PCS,4,26.163,,cash,,104.652,
+SLS-91136,24/7/2026,Al-Roumi Renovation 4,Shuwaikh Main,Shuwaikh Main,Total PVC Pipe 20 Gauge,PCS,7,2.512,,credit,23/8/2026,17.584,
+SLS-91137,6/4/2026,Al-Sanea Property 4,Fahaheel Branch,Fahaheel Branch,Ridgid Wood Router Medium,PCS,1,KWD 2.530,,bank_transfer,,1082.762,Migrated from legacy system
+SLS-91137,6/4/2026,Al-Sanea Property 4,Fahaheel Branch,Fahaheel Branch,Makita Wood Screw 25mm,PC,3,375.450,46.118,bank_transfer,,,
+SLS-91138,8/5/2026,Union Facility Services  Est. 11,Rai Branch,Rai Branch,Metabo MCB Circuit Breaker 40mm,PCS,5,31.141,4.592,cash,,547.699,
+SLS-91138,8/5/2026,Union Facility Services  Est. 11,Rai Branch,Rai Branch,Crown Aluminium Ladder 10mm,PCS,9,36.801,,cash,,,
+SLS-91138,8/5/2026,Union Facility Services  Est. 11,Rai Branch,Rai Branch,Crown Copper Elbow 32mm,PCS,9,7.457,1.736,cash,,,
+SLS-91139,16/5/2026,Salem  Al-Rashidi 10,Rai Branch,Rai Branch,Ingco Aluminium Ladder 2000W,PCS,6,28.495,5.172,cash,,707.602,
+SLS-91139,16/5/2026,Salem  Al-Rashidi 10,Rai Branch,Rai Branch,DeWalt Padlock 5kg,PCS,11,30.776,,cash,,,Migrated from legacy system
+SLS-91139,16/5/2026,Salem  Al-Rashidi 10,Rai Branch,Rai Branch,Al-Fanar Paint Brush 22 Gauge,PCS,12,KWD 16.939,,cash,,,
+SLS-91140,13/10/2025,Continental Maintenance Co. 3,Fahaheel Branch,Fahaheel Branch,DeWalt Circular Saw 4L,PCS,6,24.267,1.807,cash,,143.795,
+SLS-91141,26/6/2026,Al-Yaqout Villas  Est. 7,Shuwaikh Main,Shuwaikh Main,Al-Fanar Tile Adhesive Bag 12mm.,PCS,8,34.097,,cash,,KWD 338.723,
+SLS-91141,26/6/2026,Al-Yaqout Villas  Est. 7,Shuwaikh Main,Shuwaikh Main,Hitachi Garden Shovel 18 Gauge,PCS,7,9.421,,cash,,,Migrated from legacy system
+SLS-91142,26/3/2026,al-rashed villas  est. 6,Shuwaikh Main,Shuwaikh Main,Bosch Circular Saw 5kg,PCS,7,5.972,,bank_transfer,,41.804,
+SLS-91143,23/8/2025,Al-Yaqout Villas,Fahaheel Branch,Fahaheel Branch,DeWalt Extension Cord 750W,PCS,6,16.436,,cash,,98.616,
+SLS-91144,14/11/2025,Al-Sanea Property  Est. 7,Fahaheel Branch,Fahaheel Branch,Yato Tile Adhesive Bag 25mm,pc,4,29.707,,cash,,118.828,
+SLS-91145,21/4/2026,New Kuwait Contracting 9,Shuwaikh Main,Shuwaikh Main,BLACK+DECKER TILE ADHESIVE BAG 16 GAUGE,Pieces,3,KWD 36.906,,cash,,KWD 164.343,Migrated from legacy system
+SLS-91145,21/4/2026,New Kuwait Contracting 9,Shuwaikh Main,Shuwaikh Main,Ridgid MIG Welder 750W,PCS,7,7.966,2.137,cash,,,Migrated from legacy system
+SLS-91146,26/10/2025,Fahad Al-Otaibi 10  ,Rai Branch,Rai Branch,Gulf Star Paint Roller XL,PCS,12,10.391,,credit,10/12/2025,166.766,Migrated from legacy system
+SLS-91146,26/10/2025,Fahad Al-Otaibi 10  ,Rai Branch,Rai Branch,DeWalt Sprinkler Head 8mm,PCS,2,21.037,,credit,10/12/2025,,
+SLS-91147,14/6/2026, First Gulf Interiors 4 ,Ardiya Warehouse,Ardiya Warehouse, Karcher Construction Adhesive 24 Gauge ,PCS,5,7.471,,cash,,37.355,
+SLS-91148,15/8/2025,Ahmad Al-Kandari  Est. 13,Fahaheel Branch,Fahaheel Branch,Al-Fanar Wall Primer 20mm,PCS,11,7.326,,credit,13/11/2025,343.737,Migrated from legacy system
+SLS-91148,15/8/2025,Ahmad Al-Kandari  Est. 13,Fahaheel Branch,Fahaheel Branch,Bosch Wire Brush 3/4 inch,PCS,9,29.239,,credit,13/11/2025,,Migrated from legacy system
+SLS-91149,20/8/2025,Continental Maintenance Co. 12,Fahaheel Branch,Fahaheel Branch,Crown LED Bulb 9L,PCS,11,0.860,,cash,,24.442,
+SLS-91149,20/8/2025,Continental Maintenance Co. 12,Fahaheel Branch,Fahaheel Branch,Bosch PVC Pipe 1kg,PCS,12,1.283,0.414,cash,,,Migrated from legacy system
+SLS-91150,3/5/2026,Modern Home Fix-It  Est. 3,Ardiya Warehouse,Ardiya Warehouse,Sata Pipe Sealant XL,PCS,2,KWD 10.202,,cash,,20.404,
+SLS-91151,19/1/2026,Al-Anjari Villas  Est. 10,Shuwaikh Main,Shuwaikh Main,Bosch PPR Pipe 22 Gauge,PCS,10,8.472,,cash,,84.720,Migrated from legacy system
+SLS-91152,12/11/2025,Al-Osaimi Maintenance 2,Rai Branch,Rai Branch,Ridgid Screwdriver Set 1200W,PC,10,26.282,,cash,,262.820,
+SLS-91153,28/5/2026,Al-Duaij Maintenance  Est. 7,Ardiya Warehouse,Ardiya Warehouse,Stanley  Spirit Level 1 inch,PCS,1,11.558,,credit,27/6/2026,KD 1855.396,Migrated from legacy system
+SLS-91153,28/5/2026,Al-Duaij Maintenance  Est. 7,Ardiya Warehouse,Ardiya Warehouse,Truper PVC Conduit Pipe 1200W,PCS,7,269.898,45.448,credit,27/6/2026,,
+SLS-91154,30/6/2026,Desert Rose Interiors 13,Fahaheel Branch,Fahaheel Branch,Total Door Hinge XL,PCS,4,18.805,3.371,bank_transfer,,257.615,Migrated from legacy system
+SLS-91154,30/6/2026,Desert Rose Interiors 13,Fahaheel Branch,Fahaheel Branch,DEWALT  PHILLIPS SCREWDRIVER 18 GAUGE,PCS,6,30.961,,bank_transfer,,,Migrated from legacy system
+SLS-91155,23/2/2026,Al-Nasser Renovation 9,Ardiya Warehouse,Ardiya Warehouse,Tolsen PPR Pipe 25kg,PCS,9,KD 174.900,,bank_transfer,,1732.609,Migrated from legacy system
+SLS-91155,23/2/2026,Al-Nasser Renovation 9,Ardiya Warehouse,Ardiya Warehouse,Bosch Steel Toe Safety Boots XL,PC,7,14.287,,bank_transfer,,,
+SLS-91155,23/2/2026,Al-Nasser Renovation 9,Ardiya Warehouse,Ardiya Warehouse, Black+Decker Impact Driver 25kg ,PCS,6,10.062,1.872,bank_transfer,,,Migrated from legacy system
+SLS-91156,30/4/2026,AL-ROUMI RENOVATION  EST. 3,Shuwaikh Main,Shuwaikh Main,Bosch Jigsaw 16 Gauge,PCS,4,308.324,,cash,,KWD 1595.426,Migrated from legacy system
+SLS-91156,30/4/2026,AL-ROUMI RENOVATION  EST. 3,Shuwaikh Main,Shuwaikh Main,  Gulf Star Wood Router 3/4 inch,PCS,4,26.512,,cash,,,Migrated from legacy system
+SLS-91156,30/4/2026,AL-ROUMI RENOVATION  EST. 3,Shuwaikh Main,Shuwaikh Main,Yato  Garden Hose 16 Gauge.,Nos,11,KWD 24.038,8.336,cash,,,
+SLS-91157,27/9/2025,Union Facility Services,Shuwaikh Main,Shuwaikh Main,Stanley Inverter Generator 1200W.,PCS,9,0.670,,credit,12/10/2025,249.785,Migrated from legacy system
+SLS-91157,27/9/2025,Union Facility Services,Shuwaikh Main,Shuwaikh Main,Yato Thermal Insulation Sheet 22 Gauge,PCS,5,48.751,,credit,12/10/2025,,
+SLS-91158,31/7/2026,Hawally Repair Shop 5,Rai Branch,Rai Branch,Crown Steel Toe Safety Boots 4L,PCS,2,32.990,,cash,,65.980,Migrated from legacy system
+SLS-91159,24/7/2026,Al-Khaled General Trading 6,Rai Branch,Rai Branch,Al-Fanar Pu Foam Filler Medium,PCS,5,27.153,,credit,7/9/2026,150.917,Migrated from legacy system
+SLS-91159,24/7/2026,Al-Khaled General Trading 6,Rai Branch,Rai Branch,DeWalt Welding Electrode Small,PCS,4,3.788,,credit,7/9/2026,,
+SLS-91160,13/11/2025,Al-Roumi Renovation 12,Fahaheel Branch,Fahaheel Branch,Gulf Star Enamel Paint 1200W,PCS,8,12.651,,bank_transfer,,188.224,Migrated from legacy system
+SLS-91160,13/11/2025,Al-Roumi Renovation 12,Fahaheel Branch,Fahaheel Branch,BOSCH POP RIVET 18L,PCS,8,10.877,,bank_transfer,,,
+SLS-91161,23/5/2026,Salem Al-Rashidi 13,Shuwaikh Main,Shuwaikh Main,Tolsen Laser Level 18 Gauge,PCS,12,31.396,,cash,,421.528,
+SLS-91161,23/5/2026,Salem Al-Rashidi 13,Shuwaikh Main,Shuwaikh Main,Metabo Cement Bag 20 Gauge,PCS,2,22.388,,cash,,,Migrated from legacy system
+SLS-91162,7/5/2026,Bin Hindi Property  Est. 12,Fahaheel Branch,Fahaheel Branch,Sata Cordless Drill 1200W,PCS,5,KD 31.307,5.059,cash,,KWD 218.687,Migrated from legacy system
+SLS-91162,7/5/2026,Bin Hindi Property  Est. 12,Fahaheel Branch,Fahaheel Branch,Hitachi Adjustable Wrench 450W,PCS,4,2.183,0.207,cash,,,Migrated from legacy system
+SLS-91162,7/5/2026,Bin Hindi Property  Est. 12,Fahaheel Branch,Fahaheel Branch,Tolsen Cabinet Hinge 50kg  ,PCS,2,29.343,,cash,,,Migrated from legacy system
+SLS-91163,13/2/2026,Fahaheel Home Services 2,Rai Branch,Rai Branch,Karcher Hand Saw Medium,pcs,4,6.446,,credit,15/3/2026,105.637,Migrated from legacy system
+SLS-91163,13/2/2026,Fahaheel Home Services 2,Rai Branch,Rai Branch,Truper Angle Grinder 18 Gauge,PCS,3,24.583,,credit,15/3/2026,,Migrated from legacy system
+SLS-91163,13/2/2026,Fahaheel Home Services 2,Rai Branch,Rai Branch,Yato Machine Screw 900W,PCS,7,0.872,,credit,15/3/2026,,Migrated from legacy system
+SLS-91164,8/8/2025,Al-Khaled General Trading 5,Rai Branch,Rai Branch,STANLEY TAPE MEASURE 1/4 INCH,PCS,4,15.496,,credit,7/9/2025,142.204,
+SLS-91164,8/8/2025,Al-Khaled General Trading 5,Rai Branch,Rai Branch,"Metabo Garden Shovel 1 inch,",PCS,5,16.044,,credit,7/9/2025,,Migrated from legacy system
+SLS-91165,21/3/2026,Jahra Building Supplies Buyer 3,Rai Branch,Rai Branch,Truper Steel Toe Safety Boots 1500W,PCS,10,15.347,0.952,credit,20/4/2026,152.518,
+SLS-91166,19/8/2025,Gulf Facility Management 4,Shuwaikh Main,Shuwaikh Main,Al-Fanar Wire Brush 1200W,PCS,2,3.383,,bank_transfer,,6.766,
+SLS-91167,20/10/2025,  Bayt Al-Jomard 13,Ardiya Warehouse,Ardiya Warehouse,Sata Copper Tee 18 Gauge,pc,7,24.940,0.130,cash,,222.621,
+SLS-91167,20/10/2025,  Bayt Al-Jomard 13,Ardiya Warehouse,Ardiya Warehouse,Ingco Machine Screw 650W,PCS,7,6.707,,cash,,,Migrated from legacy system
+SLS-91167,20/10/2025,  Bayt Al-Jomard 13,Ardiya Warehouse,Ardiya Warehouse,Crown Dust Mask Respirator 10mm,PCS,1,1.222,,cash,,,Migrated from legacy system
+SLS-91168,4/9/2025,Gulf Builders 3,Ardiya Warehouse,Ardiya Warehouse,Sata Ball Valve 18 Gauge,PCS,7,14.684,,bank_transfer,,102.788,Migrated from legacy system
+SLS-91169,10/7/2026,First Gulf Interiors,Rai Branch,Rai Branch,Hitachi Self Tapping Screw Small,PCS,5,151.435,,bank_transfer,,757.175,Migrated from legacy system
+SLS-91170,14/5/2026,Fahaheel Home Services  Est. 12,Ardiya Warehouse,Ardiya Warehouse,Al-Fanar Super Glue 50kg,PCS,10,36.488,,credit,13/6/2026,KD 465.662,
+SLS-91170,14/5/2026,Fahaheel Home Services  Est. 12,Ardiya Warehouse,Ardiya Warehouse,Ridgid Pruning Shears Small,PCS,9,KD 11.198,,credit,13/6/2026,,Migrated from legacy system
+SLS-91171,30/12/2025,Al-Mutairi Est. 9,Rai Branch,Rai Branch,Gulf Star Concrete Nail 4L,PCS,10,25.659,,bank_transfer,,256.590,Migrated from legacy system
+SLS-91172,16/8/2025,New Kuwait Contracting,Ardiya Warehouse,Ardiya Warehouse,Makita Common Nail 24 Gauge,PCS,3,35.481,,cash,,106.443,Migrated from legacy system
+SLS-91173,20/8/2025,AL-WAZZAN MAINTENANCE,Shuwaikh Main,Shuwaikh Main,Sata Cutting Disc Large,PCS,5,18.111,,bank_transfer,,300.840,
+SLS-91173,20/8/2025,AL-WAZZAN MAINTENANCE,Shuwaikh Main,Shuwaikh Main,Karcher  Emulsion Paint XL,PCS,12,18.407,10.599,bank_transfer,,,
+SLS-91174,17/1/2026,Al-Sanea Property  Est. 12,Rai Branch,Rai Branch,DeWalt Angle Grinder Large,PCS,11,2.927,,cash,,110.299,
+SLS-91174,17/1/2026,Al-Sanea Property  Est. 12,Rai Branch,Rai Branch,Stanley Copper Tee 32mm,PCS,3,17.547,,cash,,,Migrated from legacy system
+SLS-91174,17/1/2026,Al-Sanea Property  Est. 12,Rai Branch,Rai Branch,Yato Galvanized Metal Sheet 1200W  ,PCS,2,13.396,1.331,cash,,,
+SLS-91175,24/3/2026,Salmiya Handyman Services 12,Ardiya Warehouse,Ardiya Warehouse,Stanley Silicone Sealant Tube 20L,PCS,7,176.678,KWD 31.922,credit,23/4/2026,1287.995,Migrated from legacy system
+SLS-91175,24/3/2026,Salmiya Handyman Services 12,Ardiya Warehouse,Ardiya Warehouse,Ingco Wood Chisel 750W,PCS,11,KWD 7.561,,credit,23/4/2026,,Migrated from legacy system
+SLS-91176,24/1/2026,  Al-Enezi General Maintenance  Est. 8,Shuwaikh Main,Shuwaikh Main,  Crown Wall Primer 1 inch,PCS,4,14.094,,bank_transfer,,306.054,
+SLS-91176,24/1/2026,  Al-Enezi General Maintenance  Est. 8,Shuwaikh Main,Shuwaikh Main,Ingco Steel Toe Safety Boots 24 Gauge,PCS,11,KD 22.698,,bank_transfer,,,Migrated from legacy system
+SLS-91177,10/8/2025,Modern Home Fix-It 13,Rai Branch,Rai Branch,AL-FANAR CONSTRUCTION ADHESIVE 16 GAUGE,PCS,7,23.200,5.964,credit,8/11/2025,156.436,
+SLS-91178,7/2/2026,Al-Mutairi Est. 11,Ardiya Warehouse,Ardiya Warehouse,Total Hacksaw 650W,PCS,5,3.051,0.110,cash,,1582.549,Migrated from legacy system
+SLS-91178,7/2/2026,Al-Mutairi Est. 11,Ardiya Warehouse,Ardiya Warehouse,Hilti Spring Washer 20 Gauge,PCS,12,130.617,,cash,,,Migrated from legacy system
+SLS-91179,10/3/2026,First Gulf Interiors 6,Fahaheel Branch,Fahaheel Branch,Makita Tool Kit 25kg Pieces,Nos,5,20.983,,bank_transfer,,104.915,
+SLS-91180,16/5/2026,Al-Wazzan Maintenance 10,Shuwaikh Main,Shuwaikh Main,Crown Door Handle 450W,PCS,2,11.596,,cash,,46.754,
+SLS-91180,16/5/2026,Al-Wazzan Maintenance 10,Shuwaikh Main,Shuwaikh Main,Truper Digging Spade 1200W,PCS,9,2.618,,cash,,,Migrated from legacy system
+SLS-91181,29/4/2026,Al-Duaij Maintenance  Est. 7,Fahaheel Branch,Fahaheel Branch,Bosch Galvanized Metal Sheet 2000W,PCS,11,22.095,2.342,credit,29/5/2026,279.541,
+SLS-91181,29/4/2026,Al-Duaij Maintenance  Est. 7,Fahaheel Branch,Fahaheel Branch,Gulf Star Steel Toe Safety Boots 24 Gauge,PCS,3,12.946,,credit,29/5/2026,,
+SLS-91182,19/7/2026,Al-Nasser Renovation  Est.,Ardiya Warehouse,Ardiya Warehouse,Karcher PU Foam Filler 32mm,pcs,9,27.104,,cash,,243.936,
+SLS-91183,15/7/2026,Salem Al-Rashidi 11,Rai Branch,Rai Branch, Tolsen Dust Mask Respirator 1kg ,PCS,9,KD 28.118,1.511,credit,30/7/2026,269.770,
+SLS-91183,15/7/2026,Salem Al-Rashidi 11,Rai Branch,Rai Branch,Crown Tape Measure 3/8 inch,PCS,3,6.073,,credit,30/7/2026,,Migrated from legacy system
+SLS-91184,10/9/2025,Desert Rose Interiors  Est. 5,Fahaheel Branch,Fahaheel Branch,Crown Tool Kit 50kg Pieces,PCS,9,22.235,KWD 3.595,cash,,470.810,Migrated from legacy system
+SLS-91184,10/9/2025,Desert Rose Interiors  Est. 5,Fahaheel Branch,Fahaheel Branch,Ingco Step Stool 16 Gauge,pcs,3,25.793,,cash,,,Migrated from legacy system
+SLS-91184,10/9/2025,Desert Rose Interiors  Est. 5,Fahaheel Branch,Fahaheel Branch,Bosch Scaffolding Frame Small,PCS,9,21.879,,cash,,,
+SLS-91185,7/1/2026,  Salmiya Handyman Services 10,Ardiya Warehouse,Ardiya Warehouse,Sata  Ready Mix Mortar 4L,Pieces,11,24.515,,bank_transfer,,431.485,Migrated from legacy system
+SLS-91185,7/1/2026,  Salmiya Handyman Services 10,Ardiya Warehouse,Ardiya Warehouse,Karcher Machine Screw 18L,PCS,12,13.485,,bank_transfer,,,
+SLS-91186,29/12/2025,Al-Sanea Property 10,Ardiya Warehouse,Ardiya Warehouse,Total Sandpaper Sheet 9L,PC,12,KWD 366.222,,bank_transfer,,4765.870,Migrated from legacy system
+SLS-91186,29/12/2025,Al-Sanea Property 10,Ardiya Warehouse,Ardiya Warehouse,TOTAL TILE ADHESIVE BAG 25KG,PC,11,33.746,,bank_transfer,,,
+SLS-91187,23/10/2025,Union Facility Services 6,Ardiya Warehouse,Ardiya Warehouse,Hilti Electric Planer 9L,PCS,10,24.708,,bank_transfer,,363.418,Migrated from legacy system
+SLS-91187,23/10/2025,Union Facility Services 6,Ardiya Warehouse,Ardiya Warehouse,Makita Jigsaw XL,PCS,5,23.643,1.877,bank_transfer,,,Migrated from legacy system
+SLS-91188,14/1/2026,Jahra Building Supplies Buyer 9,Fahaheel Branch,Fahaheel Branch,Ingco Extension Cord Large,PCS,8,32.632,,cash,,321.538,
+SLS-91188,14/1/2026,Jahra Building Supplies Buyer 9,Fahaheel Branch,Fahaheel Branch,Metabo Pop Rivet 1L,PCS,2,30.241,,cash,,,Migrated from legacy system
+SLS-91189,28/8/2025,Al-Roumi Renovation 4,Ardiya Warehouse,Ardiya Warehouse,Stanley Sandpaper Sheet 450W,PCS,5,7.881,,credit,27/9/2025,39.405,Migrated from legacy system
+SLS-91190,20/2/2026,nasser al-hajeri 11,Fahaheel Branch,Fahaheel Branch,Ridgid Wood Router 1/4 inch,PCS,8,KWD 4.489,0.244,bank_transfer,,35.668,Migrated from legacy system
+SLS-91191,5/9/2025,Al-Yaqout Villas  Est. 12,Fahaheel Branch,Fahaheel Branch,Karcher  Welding Gloves Small,PCS,2,22.465,,cash,,1550.545,
+SLS-91191,5/9/2025,Al-Yaqout Villas  Est. 12,Fahaheel Branch,Fahaheel Branch,Hitachi Steel Chain 40mm,PCS,1,25.895,,cash,,,
+SLS-91191,5/9/2025,Al-Yaqout Villas  Est. 12,Fahaheel Branch,Fahaheel Branch,Ingco Epoxy Adhesive XL,pcs,11,134.520,,cash,,,
+SLS-91192,9/2/2026,Modern Home Fix-It  Est. 6,Fahaheel Branch,Fahaheel Branch,Ingco Enamel Paint 900W,PCS,4,18.204,,bank_transfer,,72.816,
+SLS-91193,23/3/2026,Continental Maintenance Co. 12,Rai Branch,Rai Branch,Yato Cutting Disc Medium.,PCS,1,28.554,,credit,21/6/2026,28.554,Migrated from legacy system
+SLS-91194,8/6/2026,Al-Qadi Household  Est. 10,Rai Branch,Rai Branch,Karcher Spring Washer 20 Gauge,PCS,5,21.182,,credit,6/9/2026,633.838,Migrated from legacy system
+SLS-91194,8/6/2026,Al-Qadi Household  Est. 10,Rai Branch,Rai Branch,DEWALT HI-VIS SAFETY VEST 20MM,PCS,12,18.737,,credit,6/9/2026,,Migrated from legacy system
+SLS-91194,8/6/2026,Al-Qadi Household  Est. 10,Rai Branch,Rai Branch,Sata Sandpaper Sheet 20 Gauge,PCS,11,28.189,6.995,credit,6/9/2026,,Migrated from legacy system
+SLS-91195,25/6/2026,Union Facility Services  Est. 9,Shuwaikh Main,Shuwaikh Main,Tolsen PVC Conduit Pipe 8mm,Pieces,8,3.127,,bank_transfer,,25.016,
+SLS-91196,16/3/2026,Salem Al-Rashidi 9,Rai Branch,Rai Branch,Stanley Silicone Sealant Tube Large,Pieces,11,5.822,,cash,,312.930,Migrated from legacy system
+SLS-91196,16/3/2026,Salem Al-Rashidi 9,Rai Branch,Rai Branch,TOTAL WELDING MASK 1 INCH,Nos,8,31.111,,cash,,,
+SLS-91197,24/6/2026,Nasser Al-Hajeri 7,Fahaheel Branch,Fahaheel Branch,Total Circular Saw Large,PCS,3,13.739,,cash,,304.110,
+SLS-91197,24/6/2026,Nasser Al-Hajeri 7,Fahaheel Branch,Fahaheel Branch,DeWalt Mini Grinder 900W,PCS,7,26.228,,cash,,,Migrated from legacy system
+SLS-91197,24/6/2026,Nasser Al-Hajeri 7,Fahaheel Branch,Fahaheel Branch,  Gulf Star PVC Conduit Pipe 3/4 inch,PCS,4,20.466,2.567,cash,,,Migrated from legacy system
+SLS-91198,29/9/2025,Union Facility Services 4,Rai Branch,Rai Branch,Black+Decker Copper Elbow 5kg,PC,11,7.900,2.467,credit,28/11/2025,98.902,
+SLS-91198,29/9/2025,Union Facility Services 4,Rai Branch,Rai Branch,Tolsen PVC Pipe 25kg,PCS,3,4.823,,credit,28/11/2025,,Migrated from legacy system
+SLS-91199,18/5/2026,Salmiya Handyman Services 9,Fahaheel Branch,Fahaheel Branch,AL-FANAR EMULSION PAINT 25KG,PCS,11,28.421,11.515,bank_transfer,,399.576,Migrated from legacy system
+SLS-91199,18/5/2026,Salmiya Handyman Services 9,Fahaheel Branch,Fahaheel Branch,Stanley Emulsion Paint 1L,PCS,4,22.996,,bank_transfer,,,
+SLS-91199,18/5/2026,Salmiya Handyman Services 9,Fahaheel Branch,Fahaheel Branch,Makita Wall Primer Large,PCS,4,1.619,,bank_transfer,,,Migrated from legacy system
+SLS-91200,8/2/2026,Bin Hindi Property  Est. 5,Rai Branch,Rai Branch,Hilti Grinding Disc 50kg,pcs,3,9.016,,credit,23/2/2026,250.068,
+SLS-91200,8/2/2026,Bin Hindi Property  Est. 5,Rai Branch,Rai Branch,Metabo Steel Toe Safety Boots 450W,PCS,12,18.585,,credit,23/2/2026,,Migrated from legacy system
+SLS-91201,3/4/2026,Jahra Building Supplies Buyer 3,Ardiya Warehouse,Ardiya Warehouse,Black+Decker Electrical Cable 24 Gauge,PCS,7,33.522,7.762,credit,3/5/2026,375.285,Migrated from legacy system
+SLS-91201,3/4/2026,Jahra Building Supplies Buyer 3,Ardiya Warehouse,Ardiya Warehouse,Black+Decker MCB Circuit Breaker 20L,PCS,4,16.072,,credit,3/5/2026,,Migrated from legacy system
+SLS-91201,3/4/2026,Jahra Building Supplies Buyer 3,Ardiya Warehouse,Ardiya Warehouse,Sata Galvanized Metal Sheet Small,PCS,7,12.015,,credit,3/5/2026,,
+SLS-91202,13/2/2026,Hawally  Repair Shop 3,Fahaheel Branch,Fahaheel Branch,Tolsen Hammer Drill Large,PCS,2,253.236,8.389,credit,15/3/2026,527.613,Migrated from legacy system
+SLS-91202,13/2/2026,Hawally  Repair Shop 3,Fahaheel Branch,Fahaheel Branch, Stanley Gate Valve Medium ,PCS,10,2.953,,credit,15/3/2026,,
+SLS-91203,15/4/2026,Fahad Al-Otaibi 2,Fahaheel Branch,Fahaheel Branch,  Hitachi Impact Driver 22 Gauge,PC,7,29.695,,credit,30/4/2026,KD 322.868,
+SLS-91203,15/4/2026,Fahad Al-Otaibi 2,Fahaheel Branch,Fahaheel Branch,DeWalt Pruning Shears Medium,pc,7,16.429,,credit,30/4/2026,,
+SLS-91204,25/4/2026,New Kuwait Contracting  Est. 12,Rai Branch,Rai Branch,Truper Tape Measure 18L,PCS,2,71.344,,bank_transfer,,209.642,
+SLS-91204,25/4/2026,New Kuwait Contracting  Est. 12,Rai Branch,Rai Branch,Bosch Steel Toe Safety Boots 3/8 inch,PCS,3,22.318,,bank_transfer,,,Migrated from legacy system
+SLS-91205,3/9/2025,New Kuwait Contracting  Est. 12,Shuwaikh Main,Shuwaikh Main,Crown Wood Chisel 18 Gauge,PCS,9,25.979,,cash,,392.037,
+SLS-91205,3/9/2025,New Kuwait Contracting  Est. 12,Shuwaikh Main,Shuwaikh Main,Bosch Wood Screw Small,PCS,10,16.030,2.074,cash,,,
+SLS-91206,14/2/2026,Ahmad Al-Kandari,Shuwaikh Main,Shuwaikh Main,Yato Hi-Vis Safety Vest 20L,PCS,10,30.766,,cash,,320.652,Migrated from legacy system
+SLS-91206,14/2/2026,Ahmad Al-Kandari,Shuwaikh Main,Shuwaikh Main,DeWalt Socket Wrench Set Medium,PCS,1,12.992,,cash,,,Migrated from legacy system
+SLS-91207,6/5/2026,Al-Qadi Household 3,Ardiya Warehouse,Ardiya Warehouse,Ridgid Flat Washer 1kg,PCS,4,13.147,,cash,,453.818,
+SLS-91207,6/5/2026,Al-Qadi Household 3,Ardiya Warehouse,Ardiya Warehouse,Karcher Aluminium Ladder 750W,Nos,8,12.460,,cash,,,
+SLS-91207,6/5/2026,Al-Qadi Household 3,Ardiya Warehouse,Ardiya Warehouse,Gulf Star Wall Primer 1 inch,PCS,10,30.155,,cash,,,Migrated from legacy system
+SLS-91208,8/10/2025,Ahmadi Villa Care 9,Shuwaikh Main,Shuwaikh Main,Truper Tool Kit Medium Pieces,Pieces,8,20.671,,cash,,735.620,Migrated from legacy system
+SLS-91208,8/10/2025,Ahmadi Villa Care 9,Shuwaikh Main,Shuwaikh Main,Ingco Aluminium Ladder 2000W,PCS,9,28.495,KWD 0.627,cash,,,
+SLS-91208,8/10/2025,Ahmadi Villa Care 9,Shuwaikh Main,Shuwaikh Main,Sata Self Tapping Screw 1 inch,PCS,12,26.202,,cash,,,Migrated from legacy system
+SLS-91209,19/12/2025,Al-Anjari Villas  Est. 3,Fahaheel Branch,Fahaheel Branch,MAKITA HACKSAW LARGE,PCS,1,1.143,,bank_transfer,,40.809,Migrated from legacy system
+SLS-91209,19/12/2025,Al-Anjari Villas  Est. 3,Fahaheel Branch,Fahaheel Branch,tolsen platform ladder 20 gauge,PCS,6,KWD 6.611,,bank_transfer,,,Migrated from legacy system
+SLS-91210,3/7/2026, Al-Fahad Contracting  Est. 2 ,Ardiya Warehouse,Ardiya Warehouse,al-fanar garden cart small,PC,3,KWD 33.822,,credit,18/7/2026,332.550,Migrated from legacy system
+SLS-91210,3/7/2026, Al-Fahad Contracting  Est. 2 ,Ardiya Warehouse,Ardiya Warehouse,dewalt wood screw 4l,PCS,7,33.012,,credit,18/7/2026,,
+SLS-91211,28/9/2025,Desert Rose Interiors 13,Rai Branch,Rai Branch,Hilti Garden Hose 16mm,Pieces,10,34.986,,bank_transfer,,363.369,Migrated from legacy system
+SLS-91211,28/9/2025,Desert Rose Interiors 13,Rai Branch,Rai Branch,Gulf Star Door Handle 6mm,PCS,1,13.509,,bank_transfer,,,
+SLS-91212,16/12/2025,First Gulf Interiors 6,Ardiya Warehouse,Ardiya Warehouse,Crown PVC Pipe 1/2 inch,PCS,11,18.887,,cash,,207.757,
+SLS-91213,12/8/2025,Al-Anjari Villas 9,Fahaheel Branch,Fahaheel Branch,Gulf Star Cold Chisel 12mm,pc,1,27.140,,cash,,51.884,
+SLS-91213,12/8/2025,Al-Anjari Villas 9,Fahaheel Branch,Fahaheel Branch,BOSCH TOOL KIT 12MM PIECES,PCS,3,8.248,,cash,,,Migrated from legacy system
+SLS-91214,31/8/2025,  Al-Fahad Contracting 8,Shuwaikh Main,Shuwaikh Main,Ingco Enamel Paint 900W,Pieces,9,18.204,6.825,credit,15/10/2025,157.011,Migrated from legacy system
+SLS-91215,15/3/2026,Al-Enezi General Maintenance  Est. 4,Fahaheel Branch,Fahaheel Branch,Hitachi Work Gloves 3/4 inch,PCS,5,33.890,,cash,,320.447,Migrated from legacy system
+SLS-91215,15/3/2026,Al-Enezi General Maintenance  Est. 4,Fahaheel Branch,Fahaheel Branch,Sata Steel Toe Safety Boots 1L,Pieces,7,21.571,,cash,,,
+SLS-91216,16/11/2025,Al-Osaimi Maintenance 4,Fahaheel Branch,Fahaheel Branch,Hilti Tool Kit 12mm Pieces,PCS,11,KD 4.816,,bank_transfer,,52.976,Migrated from legacy system
+SLS-91217,26/8/2025,Al-Marzouq Home 8,Shuwaikh Main,Shuwaikh Main,Tolsen Epoxy Adhesive 900W,PCS,9,18.797,,credit,24/11/2025,169.173,
+SLS-91218,4/9/2025,Al-Wazzan Maintenance 2,Fahaheel Branch,Fahaheel Branch,  Black+Decker Galvanized Metal Sheet 20mm,Nos,6,18.401,,credit,4/10/2025,110.406,Migrated from legacy system
+SLS-91219,31/1/2026,Al-Khaled General Trading 5,Shuwaikh Main,Shuwaikh Main,Bosch Wire Brush 20mm,PCS,1,111.062,,cash,,111.062,Migrated from legacy system
+SLS-91220,11/3/2026,Al-Ajmi Interiors 3,Shuwaikh Main,Shuwaikh Main,Gulf Star Garden Cart 18 Gauge,PCS,1,17.829,KD 0.876,cash,,230.808,
+SLS-91220,11/3/2026,Al-Ajmi Interiors 3,Shuwaikh Main,Shuwaikh Main,Black+Decker Spirit Level 50kg,PCS,12,12.231,1.917,cash,,,
+SLS-91220,11/3/2026,Al-Ajmi Interiors 3,Shuwaikh Main,Shuwaikh Main,DeWalt Ready Mix Mortar 3/8 inch,PCS,6,11.500,,cash,,,
+SLS-91221,26/7/2026,Al-Qadi Household  Est. 10,Fahaheel Branch,Fahaheel Branch,Bosch Hacksaw 18 Gauge,PC,11,32.125,,credit,24/10/2026,KD 353.375,
+SLS-91222,29/5/2026,Gulf Builders 4,Rai Branch,Rai Branch,Truper Gate Valve Large,PCS,1,32.089,,cash,,32.089,Migrated from legacy system
+SLS-91223,22/6/2026,Modern Home Fix-It 12,Ardiya Warehouse,Ardiya Warehouse,makita rubber mallet 4l,PCS,8,28.616,7.264,credit,22/7/2026,655.532,Migrated from legacy system
+SLS-91223,22/6/2026,Modern Home Fix-It 12,Ardiya Warehouse,Ardiya Warehouse,Ingco Angle Grinder 25Kg,Nos,12,12.935,,credit,22/7/2026,,Migrated from legacy system
+SLS-91223,22/6/2026,Modern Home Fix-It 12,Ardiya Warehouse,Ardiya Warehouse,Gulf Star Teflon Tape 24 Gauge,PCS,8,KD 34.831,,credit,22/7/2026,,Migrated from legacy system
+SLS-91224,28/5/2026,Al-Ajmi Interiors 10,Rai Branch,Rai Branch,Ingco Teflon Tape 750W,PC,11,19.559,,bank_transfer,,320.629,
+SLS-91224,28/5/2026,Al-Ajmi Interiors 10,Rai Branch,Rai Branch,hitachi flood light large,PCS,10,10.548,,bank_transfer,,,
+SLS-91225,16/6/2026,Al-Wazzan Maintenance 12  ,Ardiya Warehouse,Ardiya Warehouse,Ingco Teflon Tape 750W,PCS,9,410.225,KD 37.384,cash,,3796.156,Migrated from legacy system
+SLS-91225,16/6/2026,Al-Wazzan Maintenance 12  ,Ardiya Warehouse,Ardiya Warehouse,Yato Wood Screw 22 Gauge,Pieces,5,28.303,,cash,,,
+SLS-91226,5/8/2026,Desert Rose Interiors 7,Shuwaikh Main,Shuwaikh Main,Hilti Steel Chain 50kg,PCS,8,55.602,,cash,,495.384,Migrated from legacy system
+SLS-91226,5/8/2026,Desert Rose Interiors 7,Shuwaikh Main,Shuwaikh Main,Al-Fanar PPR Pipe 20mm,PCS,2,25.284,,cash,,,Migrated from legacy system
+SLS-91227,21/5/2026,Fahaheel Home Services 4,Fahaheel Branch,Fahaheel Branch,Crown Paint Brush 5kg,PCS,4,7.890,,bank_transfer,,31.560,Migrated from legacy system
+SLS-91228,3/6/2026,Al-Roumi Renovation 13,Ardiya Warehouse,Ardiya Warehouse,Ridgid Sandpaper Sheet 5kg,PCS,2,0.150,,credit,2/8/2026,0.300,
+SLS-91229,1/2/2026,"First Gulf Interiors 9,",Rai Branch,Rai Branch,Hitachi Wall Switch 5kg,PCS,6,8.673,,bank_transfer,,52.038,Migrated from legacy system
+SLS-91230,22/11/2025,ahmad al-kandari 10,Ardiya Warehouse,Ardiya Warehouse,Stanley MIG Welder 5kg,PCS,4,KWD 0.460,0.041,cash,,1.799,
+SLS-91231,31/8/2025,Al-Osaimi Maintenance 9,Rai Branch,Rai Branch,Black+Decker Flat Washer 1/2 inch,PCS,6,17.594,,credit,15/9/2025,105.564,Migrated from legacy system
+SLS-91232,18/10/2025,Jahra Building Supplies Buyer 9,Ardiya Warehouse,Ardiya Warehouse,Tolsen Screwdriver Set 1L  ,Nos,3,7.666,,bank_transfer,,22.998,Migrated from legacy system
+SLS-91233,1/10/2025,Modern Home Fix-It  Est. 6,Ardiya Warehouse,Ardiya Warehouse,Ridgid Grinding Disc 750W  ,PCS,11,KD 17.901,,cash,,237.868,
+SLS-91233,1/10/2025,Modern Home Fix-It  Est. 6,Ardiya Warehouse,Ardiya Warehouse,dewalt self tapping screw 1/2 inch,PCS,9,4.703,1.370,cash,,,
+SLS-91234,10/3/2026,Modern Home Fix-It 11,Fahaheel Branch,Fahaheel Branch,Total Power Socket Small,PCS,12,1.758,,cash,,21.096,
+SLS-91235,11/8/2025,New Kuwait Contracting 3,Rai Branch,Rai Branch,Gulf Star Enamel Paint XL,PCS,8,KWD 6.900,1.555,credit,10/9/2025,53.645,Migrated from legacy system
+SLS-91236,30/9/2025,Al-Enezi General Maintenance  Est. 5,Fahaheel Branch,Fahaheel Branch,DeWalt  Flood Light Large.,PCS,1,10.771,,credit,29/11/2025,158.713,
+SLS-91236,30/9/2025,Al-Enezi General Maintenance  Est. 5,Fahaheel Branch,Fahaheel Branch,Crown Jigsaw 20 Gauge,PCS,2,21.941,0.388,credit,29/11/2025,,Migrated from legacy system
+SLS-91236,30/9/2025,Al-Enezi General Maintenance  Est. 5,Fahaheel Branch,Fahaheel Branch,Tolsen Safety Goggles 750W,PCS,8,13.056,,credit,29/11/2025,,
+SLS-91237,29/10/2025,Gulf Builders 8,Shuwaikh Main,Shuwaikh Main,Sata Thermal Insulation Sheet 22 Gauge,PCS,8,24.317,4.638,bank_transfer,,574.993,
+SLS-91237,29/10/2025,Gulf Builders 8,Shuwaikh Main,Shuwaikh Main,Karcher Laser Level 22 Gauge,PCS,5,15.849,,bank_transfer,,,
+SLS-91237,29/10/2025,Gulf Builders 8,Shuwaikh Main,Shuwaikh Main,Yato Impact Driver 50kg,PCS,10,31.712,11.270,bank_transfer,,,
+SLS-91238,10/4/2026,Al-Qadi Household 2,Fahaheel Branch,Fahaheel Branch,Black+Decker Combination Wrench 9L,pc,3,21.020,1.840,credit,9/7/2026,61.220,Migrated from legacy system
+SLS-91239,9/1/2026,AL-GHANIM HOME REPAIRS,Shuwaikh Main,Shuwaikh Main,Karcher Extension Cord Small,pc,7,19.009,,bank_transfer,,KWD 430.363,
+SLS-91239,9/1/2026,AL-GHANIM HOME REPAIRS,Shuwaikh Main,Shuwaikh Main,Makita Flexible Wire 18L,PCS,2,20.265,,bank_transfer,,,Migrated from legacy system
+SLS-91239,9/1/2026,AL-GHANIM HOME REPAIRS,Shuwaikh Main,Shuwaikh Main,Skil Tape Measure 8mm,Nos,9,KWD 28.530,,bank_transfer,,,Migrated from legacy system
+SLS-91240,5/12/2025,Desert Rose Interiors 10,Rai Branch,Rai Branch,Tolsen Extension Cord Large,PCS,6,26.969,2.496,cash,,159.318,Migrated from legacy system
+SLS-91241,6/4/2026,Al-Duaij Maintenance  Est.,Shuwaikh Main,Shuwaikh Main,Hilti Pop Rivet 18L,PCS,2,34.621,,cash,,108.094,Migrated from legacy system
+SLS-91241,6/4/2026,Al-Duaij Maintenance  Est.,Shuwaikh Main,Shuwaikh Main,Gulf Star Expansion Anchor 3/4 inch,PCS,11,3.532,,cash,,,
+SLS-91242,29/9/2025,New Kuwait Contracting 8,Ardiya Warehouse,Ardiya Warehouse,Stanley Extension Cord 50mm,PCS,2,13.477,0.038,cash,,220.844,Migrated from legacy system
+SLS-91242,29/9/2025,New Kuwait Contracting 8,Ardiya Warehouse,Ardiya Warehouse,Tolsen PVC Conduit Pipe 1/2 inch  ,PCS,8,24.897,5.248,cash,,,
+SLS-91243,12/8/2025,Al-Ghanim Home Repairs 6,Fahaheel Branch,Fahaheel Branch,Ingco  Door Lock 16mm,PCS,7,19.868,5.641,credit,10/11/2025,146.453,Migrated from legacy system
+SLS-91243,12/8/2025,Al-Ghanim Home Repairs 6,Fahaheel Branch,Fahaheel Branch,Black+Decker Door Handle 12mm,PCS,4,3.392,0.550,credit,10/11/2025,,Migrated from legacy system
+SLS-91244,6/9/2025,Al-Fahad Contracting 10,Ardiya Warehouse,Ardiya Warehouse,stanley tile adhesive bag 20 gauge,PCS,2,11.510,,cash,,333.010,Migrated from legacy system
+SLS-91244,6/9/2025,Al-Fahad Contracting 10,Ardiya Warehouse,Ardiya Warehouse,Karcher Plastic Water Tank Medium,PCS,7,29.311,4.582,cash,,,Migrated from legacy system
+SLS-91244,6/9/2025,Al-Fahad Contracting 10,Ardiya Warehouse,Ardiya Warehouse,Bosch Scaffolding Frame Small,PCS,5,21.879,,cash,,,
+SLS-91245,21/11/2025,Fahaheel Home Services 2,Rai Branch,Rai Branch,Karcher Sandpaper Sheet 3/4 inch,PCS,8,0.995,,credit,21/12/2025,7.960,Migrated from legacy system
+SLS-91246,10/8/2025,Gulf Builders  Est. 2,Shuwaikh Main,Shuwaikh Main,  Metabo Circular Saw 900W,PCS,12,13.363,,bank_transfer,,160.356,Migrated from legacy system
+SLS-91247,25/6/2026,Al-Wazzan Maintenance 9,Shuwaikh Main,Shuwaikh Main,Ridgid Impact Driver 24 Gauge,PCS,3,20.947,3.078,credit,25/7/2026,59.763,
+SLS-91248,25/7/2026,Nasser Al-Hajeri 4,Shuwaikh Main,Shuwaikh Main,Ridgid Flat Washer 18 Gauge,PCS,9,22.335,,cash,,201.015,
+SLS-91249,23/7/2026,Al-Marzouq Home,Rai Branch,Rai Branch,metabo door hinge xl,Nos,11,7.237,,cash,,171.399,
+SLS-91249,23/7/2026,Al-Marzouq Home,Rai Branch,Rai Branch,Total Angle Grinder 50Kg.,PCS,4,22.948,,cash,,,Migrated from legacy system
+SLS-91250,16/6/2026,Bayt Al-Jomard  Est..,Rai Branch,Rai Branch,Truper Wheelbarrow 6mm,PCS,11,4.425,,cash,,48.675,
+SLS-91251,24/2/2026,Al-Roumi Renovation 10.,Fahaheel Branch,Fahaheel Branch,Bosch Laser Level 12mm,PCS,3,19.464,,cash,,84.928,
+SLS-91251,24/2/2026,Al-Roumi Renovation 10.,Fahaheel Branch,Fahaheel Branch,"DeWalt Thermal Insulation Sheet 900W,",PCS,4,1.036,,cash,,,Migrated from legacy system
+SLS-91251,24/2/2026,Al-Roumi Renovation 10.,Fahaheel Branch,Fahaheel Branch,Skil Expansion Anchor 1 inch,PCS,2,KWD 11.196,,cash,,,
+SLS-91252,21/12/2025,Al-Sanea Property 9,Rai Branch,Rai Branch,Gulf Star Power Socket 5kg,PCS,6,18.834,,credit,4/2/2026,KWD 1605.640,
+SLS-91252,21/12/2025,Al-Sanea Property 9,Rai Branch,Rai Branch,Stanley Tile Adhesive Bag 650W,Pieces,12,9.059,,credit,4/2/2026,,Migrated from legacy system
+SLS-91252,21/12/2025,Al-Sanea Property 9,Rai Branch,Rai Branch,Tolsen Construction Adhesive 1/2 inch.,Nos,8,172.991,,credit,4/2/2026,,Migrated from legacy system
+SLS-91253,27/11/2025,Al-Roumi Renovation 13,Shuwaikh Main,Shuwaikh Main,SATA WIRE BRUSH 12MM,PCS,2,22.849,,cash,,193.859,
+SLS-91253,27/11/2025,Al-Roumi Renovation 13,Shuwaikh Main,Shuwaikh Main,Black+Decker Construction Adhesive 1200W,PCS,5,KWD 30.049,2.084,cash,,,
+SLS-91254,13/8/2025,Al-Enezi General Maintenance  Est. 2,Rai Branch,Rai Branch,Gulf Star Spirit Level 20L,PCS,1,20.588,,bank_transfer,,100.874,Migrated from legacy system
+SLS-91254,13/8/2025,Al-Enezi General Maintenance  Est. 2,Rai Branch,Rai Branch,Hilti Construction Adhesive 18L,PCS,4,5.445,,bank_transfer,,,
+SLS-91254,13/8/2025,Al-Enezi General Maintenance  Est. 2,Rai Branch,Rai Branch,Tolsen Safety Goggles 1500W,pc,2,29.253,,bank_transfer,,,Migrated from legacy system
+SLS-91255,28/2/2026,Al-Roumi Renovation 6,Fahaheel Branch,Fahaheel Branch,  Karcher Pipe Sealant Small,PCS,4,6.263,,credit,30/3/2026,25.052,Migrated from legacy system
+SLS-91256,10/8/2025,Al-Roumi Renovation  Est.  ,Shuwaikh Main,Shuwaikh Main,Gulf Star Hi-Vis Safety Vest 40mm,PCS,3,4.705,,bank_transfer,,14.115,Migrated from legacy system
+SLS-91257,10/1/2026,Al-Yaqout Villas 9,Shuwaikh Main,Shuwaikh Main,yato sandpaper sheet 1/2 inch,PCS,5,17.024,,credit,24/2/2026,315.314,Migrated from legacy system
+SLS-91257,10/1/2026,Al-Yaqout Villas 9,Shuwaikh Main,Shuwaikh Main,Tolsen Ball Valve 18 Gauge,PCS,5,28.487,,credit,24/2/2026,,Migrated from legacy system
+SLS-91257,10/1/2026,Al-Yaqout Villas 9,Shuwaikh Main,Shuwaikh Main,  STANLEY DOOR HINGE 18L,PCS,9,9.751,,credit,24/2/2026,,Migrated from legacy system
+SLS-91258,9/9/2025,New Kuwait Contracting 3,Ardiya Warehouse,Ardiya Warehouse,Truper Tool Kit 450W Pieces,PCS,3,7.074,,cash,,106.308,
+SLS-91258,9/9/2025,New Kuwait Contracting 3,Ardiya Warehouse,Ardiya Warehouse,Stanley Impact Driver 650W,PCS,6,14.181,,cash,,,
+SLS-91259,9/3/2026,Al-Duaij Maintenance  Est. 5,Fahaheel Branch,Fahaheel Branch,Ridgid Wall Primer 1500W,PC,10,12.105,,credit,8/4/2026,169.803,Migrated from legacy system
+SLS-91259,9/3/2026,Al-Duaij Maintenance  Est. 5,Fahaheel Branch,Fahaheel Branch,Makita Tape Measure 1/4 inch,PCS,3,16.251,,credit,8/4/2026,,Migrated from legacy system
+SLS-91260,1/10/2025,Gulf Builders  Est.,Fahaheel Branch,Fahaheel Branch,Hilti Pop Rivet 650W.,PCS,1,14.109,,cash,,35.109,Migrated from legacy system
+SLS-91260,1/10/2025,Gulf Builders  Est.,Fahaheel Branch,Fahaheel Branch,Al-Fanar Safety Goggles Small,PCS,1,21.000,,cash,,,Migrated from legacy system
+SLS-91261,23/10/2025,First Gulf Interiors 11,Shuwaikh Main,Shuwaikh Main,Sata Mini Grinder 16mm,Pieces,9,KD 26.654,,credit,22/11/2025,239.886,Migrated from legacy system
+SLS-91262,12/2/2026,New Kuwait Contracting 6,Fahaheel Branch,Fahaheel Branch,Yato Step Stool 4L,PCS,1,18.505,,bank_transfer,,269.988,Migrated from legacy system
+SLS-91262,12/2/2026,New Kuwait Contracting 6,Fahaheel Branch,Fahaheel Branch,Ridgid Copper Elbow 3/4 inch,PCS,12,21.870,10.957,bank_transfer,,,
+SLS-91263,29/6/2026,NASSER AL-HAJERI 13,Ardiya Warehouse,Ardiya Warehouse,Makita Ball Valve 40Mm,PCS,1,KWD 23.505,,cash,,KWD 64.761,Migrated from legacy system
+SLS-91263,29/6/2026,NASSER AL-HAJERI 13,Ardiya Warehouse,Ardiya Warehouse,Sata Cement Bag 50kg,PCS,8,5.157,,cash,,,
+SLS-91264,11/5/2026,Al-Wazzan Maintenance  Est. 8,Shuwaikh Main,Shuwaikh Main,DeWalt Door Hinge 12mm,PCS,6,7.303,,credit,10/6/2026,122.243,Migrated from legacy system
+SLS-91264,11/5/2026,Al-Wazzan Maintenance  Est. 8,Shuwaikh Main,Shuwaikh Main,Crown Machine Screw 650W,PCS,3,27.141,2.998,credit,10/6/2026,,Migrated from legacy system
+SLS-91265,30/12/2025,GULF FACILITY MANAGEMENT 5,Fahaheel Branch,Fahaheel Branch,Total Door Lock 18 Gauge,PCS,6,30.205,1.168,bank_transfer,,342.049,Migrated from legacy system
+SLS-91265,30/12/2025,GULF FACILITY MANAGEMENT 5,Fahaheel Branch,Fahaheel Branch,Yato Hex Nut 1/2 inch,PCS,7,23.141,,bank_transfer,,,Migrated from legacy system
+SLS-91266,14/7/2026,Al-Duaij Maintenance 6,Fahaheel Branch,Fahaheel Branch,Hitachi Flat Washer 40mm,PCS,11,KD 4.145,,bank_transfer,,45.595,Migrated from legacy system
+SLS-91267,27/4/2026,Al-Nasser Renovation 10,Fahaheel Branch,Fahaheel Branch,Hitachi Step Stool Medium,PCS,5,7.547,,cash,,KD 37.735,
+SLS-91268,6/2/2026,Al-Rashed Villas 11,Fahaheel Branch,Fahaheel Branch,Yato Jigsaw Large.,PCS,9,1.891,,credit,8/3/2026,17.019,Migrated from legacy system
+SLS-91269,16/3/2026,Bayt Al-Jomard  Est..,Fahaheel Branch,Fahaheel Branch,  Metabo Circular Saw 900W,PCS,2,13.363,,cash,,510.936,Migrated from legacy system
+SLS-91269,16/3/2026,Bayt Al-Jomard  Est..,Fahaheel Branch,Fahaheel Branch,Hitachi Machine Screw Small,PCS,5,96.842,,cash,,,Migrated from legacy system
+SLS-91270,18/2/2026,Al-Mutairi Est.  Est. 12,Rai Branch,Rai Branch,black+decker  ppr pipe 2000w,PCS,2,8.721,,credit,4/4/2026,30.812,Migrated from legacy system
+SLS-91270,18/2/2026,Al-Mutairi Est.  Est. 12,Rai Branch,Rai Branch,Truper Wheelbarrow 5kg,PCS,10,KD 1.337,,credit,4/4/2026,,
+SLS-91271,16/11/2025,Al-Marzouq Home 8,Ardiya Warehouse,Ardiya Warehouse,Ingco PVC Conduit Pipe 650W,PCS,3,22.593,,bank_transfer,,67.779,Migrated from legacy system
+SLS-91272,3/1/2026,Fahad Al-Otaibi 11,Fahaheel Branch,Fahaheel Branch, Ridgid Laser Level 20 Gauge ,PCS,6,16.607,0.212,cash,,538.826,Migrated from legacy system
+SLS-91272,3/1/2026,Fahad Al-Otaibi 11,Fahaheel Branch,Fahaheel Branch,Yato Extension Cord Medium,pc,12,18.663,,cash,,,Migrated from legacy system
+SLS-91272,3/1/2026,Fahad Al-Otaibi 11,Fahaheel Branch,Fahaheel Branch,Bosch Paint Brush 20 Gauge,PCS,10,21.544,,cash,,,Migrated from legacy system
+SLS-91273,30/3/2026,Fahad Al-Otaibi  Est. 5.,Ardiya Warehouse,Ardiya Warehouse,Bosch Cutting Disc 8mm,PCS,3,9.948,0.996,bank_transfer,,168.418,
+SLS-91273,30/3/2026,Fahad Al-Otaibi  Est. 5.,Ardiya Warehouse,Ardiya Warehouse, BOSCH CIRCULAR SAW 8MM ,PCS,5,27.302,4.119,bank_transfer,,,
+SLS-91273,30/3/2026,Fahad Al-Otaibi  Est. 5.,Ardiya Warehouse,Ardiya Warehouse,karcher wood chisel 3/8 inch,PCS,1,7.179,,bank_transfer,,,
+SLS-91274,10/8/2025,Gulf Builders  Est. 6.,Rai Branch,Rai Branch,Hilti Common Nail 25kg,PCS,10,18.120,,bank_transfer,,181.200,Migrated from legacy system
+SLS-91275,5/8/2026,Al-Mutairi Est. 6,Rai Branch,Rai Branch,Tolsen Step Stool 1L,PCS,7,29.149,,credit,19/9/2026,KD 204.043,Migrated from legacy system
+SLS-91276,30/1/2026,AL-GHANIM HOME REPAIRS,Ardiya Warehouse,Ardiya Warehouse,Makita Ball Valve 40Mm,Nos,6,23.505,5.659,bank_transfer,,KD 196.971,Migrated from legacy system
+SLS-91276,30/1/2026,AL-GHANIM HOME REPAIRS,Ardiya Warehouse,Ardiya Warehouse,Makita Jigsaw 50mm,Pieces,5,12.320,,bank_transfer,,,Migrated from legacy system
+SLS-91277,4/6/2026,GULF FACILITY MANAGEMENT 5,Ardiya Warehouse,Ardiya Warehouse,Gulf Star PPR Pipe Small,PCS,11,9.746,0.528,credit,4/7/2026,377.197,
+SLS-91277,4/6/2026,GULF FACILITY MANAGEMENT 5,Ardiya Warehouse,Ardiya Warehouse,Tolsen Grinding Disc 22 Gauge.,PCS,12,23.015,5.661,credit,4/7/2026,,
+SLS-91278,4/1/2026,Gulf  Builders  Est. 12,Rai Branch,Rai Branch,Total  Hand Saw 18L,PCS,8,KD 10.679,KD 2.550,credit,5/3/2026,82.882,Migrated from legacy system
+SLS-91279,8/6/2026,Salmiya Handyman Services,Shuwaikh Main,Shuwaikh Main,Skil PU Foam Filler 20L,PCS,5,1.341,0.253,cash,,KWD 160.784,
+SLS-91279,8/6/2026,Salmiya Handyman Services,Shuwaikh Main,Shuwaikh Main,Hilti Aluminium Ladder Medium,pcs,9,17.148,,cash,,,Migrated from legacy system
+SLS-91280,31/10/2025,Bin Hindi Property  Est.,Rai Branch,Rai Branch,Karcher Cutting Disc 16 Gauge,PCS,1,KD 4.779,,credit,15/11/2025,KWD 692.194,
+SLS-91280,31/10/2025,Bin Hindi Property  Est.,Rai Branch,Rai Branch,Crown PPR Pipe 1L,PCS,10,72.231,34.895,credit,15/11/2025,,Migrated from legacy system
+SLS-91281,28/6/2026,Ahmad Al-Kandari 11,Rai Branch,Rai Branch,Crown Tape Measure 3/4 inch,PCS,6,7.158,,cash,,42.948,
+SLS-91282,3/9/2025,Al-Yaqout Villas 9,Rai Branch,Rai Branch,Sata Scaffolding Frame Medium,PCS,3,33.098,,cash,,279.644,Migrated from legacy system
+SLS-91282,3/9/2025,Al-Yaqout Villas 9,Rai Branch,Rai Branch,Karcher Pop Rivet Large,PCS,10,17.021,,cash,,,
+SLS-91282,3/9/2025,Al-Yaqout Villas 9,Rai Branch,Rai Branch,Skil Locking Pliers 32mm,PCS,4,2.535,,cash,,,
+SLS-91283,25/9/2025,Farwaniya Fix-It Center 3,Rai Branch,Rai Branch,Karcher Cutting Disc 50mm,PCS,10,35.495,,cash,,373.238,Migrated from legacy system
+SLS-91283,25/9/2025,Farwaniya Fix-It Center 3,Rai Branch,Rai Branch,  Al-Fanar Wood Screw 650W,PCS,1,18.288,,cash,,,Migrated from legacy system
+SLS-91284,13/1/2026,Gulf Facility Management  Est. 10,Ardiya Warehouse,Ardiya Warehouse,Al-Fanar PVC Conduit Pipe XL,PCS,4,7.748,,cash,,30.992,Migrated from legacy system
+SLS-91285,12/11/2025,Al-Anjari Villas  Est. 13,Fahaheel Branch,Fahaheel Branch,Stanley Machine Screw 900W,Nos,9,32.367,,bank_transfer,,461.669,Migrated from legacy system
+SLS-91285,12/11/2025,Al-Anjari Villas  Est. 13,Fahaheel Branch,Fahaheel Branch,Ingco Garden Cart 24 Gauge,PCS,4,25.181,3.998,bank_transfer,,,Migrated from legacy system
+SLS-91285,12/11/2025,Al-Anjari Villas  Est. 13,Fahaheel Branch,Fahaheel Branch,Black+Decker Wood Router 18 Gauge,PCS,3,KD 25.812,3.796,bank_transfer,,,Migrated from legacy system
+SLS-91286,31/3/2026,Modern Home Fix-It 10,Shuwaikh Main,Shuwaikh Main,Stanley Cold Chisel 25kg,PCS,2,9.762,,credit,30/5/2026,169.884,Migrated from legacy system
+SLS-91286,31/3/2026,Modern Home Fix-It 10,Shuwaikh Main,Shuwaikh Main,Sata Thermal Insulation Sheet 25kg,PCS,6,26.083,6.138,credit,30/5/2026,,
+SLS-91287,2/3/2026, Al-Fahad Contracting  Est. 4 ,Ardiya Warehouse,Ardiya Warehouse,Metabo Hacksaw 10kg,PCS,6,15.591,,bank_transfer,,171.862,Migrated from legacy system
+SLS-91287,2/3/2026, Al-Fahad Contracting  Est. 4 ,Ardiya Warehouse,Ardiya Warehouse,Metabo Cement Bag 4L,PCS,4,19.579,,bank_transfer,,,
+SLS-91288,12/3/2026,Al-Wazzan Maintenance 6,Shuwaikh Main,Shuwaikh Main,Metabo Long Nose Pliers 20mm,PCS,6,20.938,,bank_transfer,,269.408,Migrated from legacy system
+SLS-91288,12/3/2026,Al-Wazzan Maintenance 6,Shuwaikh Main,Shuwaikh Main,DEWALT GATE VALVE 1500W,PCS,5,28.756,,bank_transfer,,,Migrated from legacy system
+SLS-91289,22/8/2025,Al-Mutairi Est. 6,Shuwaikh Main,Shuwaikh Main,Tolsen Platform Ladder 4L,PCS,8,7.912,,cash,,KWD 63.296,
+SLS-91290,1/2/2026,Desert Rose Interiors 12,Ardiya Warehouse,Ardiya Warehouse,Sata Super Glue 18L,PCS,9,0.408,,cash,,125.597,Migrated from legacy system
+SLS-91290,1/2/2026,Desert Rose Interiors 12,Ardiya Warehouse,Ardiya Warehouse,Stanley Spirit Level 18L,PCS,5,24.385,,cash,,,Migrated from legacy system
+SLS-91291,9/7/2026,Gulf Builders  Est. 2,Shuwaikh Main,Shuwaikh Main,Truper Gate Valve Large,PCS,11,32.089,13.753,credit,7/10/2026,339.226,
+SLS-91292,23/11/2025,"Al-Bahar Property Services 6,",Rai Branch,Rai Branch,Ingco Wood Screw 900W,PC,11,31.191,13.454,bank_transfer,,466.330,
+SLS-91292,23/11/2025,"Al-Bahar Property Services 6,",Rai Branch,Rai Branch,sata adjustable wrench 1/2 inch,PCS,4,20.749,KWD 1.534,bank_transfer,,,
+SLS-91292,23/11/2025,"Al-Bahar Property Services 6,",Rai Branch,Rai Branch,Karcher  Emulsion Paint XL,PCS,3,18.407,,bank_transfer,,,
+SLS-91293,22/11/2025,Al-Wazzan Maintenance  Est. 3,Shuwaikh Main,Shuwaikh Main,Hitachi Circular Saw 16 Gauge,PCS,9,8.479,,cash,,289.731,Migrated from legacy system
+SLS-91293,22/11/2025,Al-Wazzan Maintenance  Est. 3,Shuwaikh Main,Shuwaikh Main,Yato Garden Cart 10mm,PCS,6,35.570,,cash,,,
+SLS-91294,24/6/2026,Modern Home Fix-It 2,Rai Branch,Rai Branch,Karcher Platform Ladder 900W,PCS,10,18.168,KD 7.111,cash,,326.419,
+SLS-91294,24/6/2026,Modern Home Fix-It 2,Rai Branch,Rai Branch,Makita Wall Switch 20L,Nos,5,30.370,,cash,,,
+SLS-91295,2/10/2025,Fahad Al-Otaibi 13,Rai Branch,Rai Branch,Yato Hex Bolt 8mm,PCS,5,24.857,,bank_transfer,,427.792,
+SLS-91295,2/10/2025,Fahad Al-Otaibi 13,Rai Branch,Rai Branch,Ingco Garden Cart 750W,PCS,9,33.723,,bank_transfer,,,
+SLS-91296,29/6/2026,Ahmadi Villa Care 8,Ardiya Warehouse,Ardiya Warehouse,Skil PU Foam Filler Large,PCS,12,18.549,,cash,,296.820,Migrated from legacy system
+SLS-91296,29/6/2026,Ahmadi Villa Care 8,Ardiya Warehouse,Ardiya Warehouse,Gulf Star Grinding Disc 10kg,PCS,3,24.744,,cash,,,Migrated from legacy system
+SLS-91297,8/1/2026,Union Facility Services,Shuwaikh Main,Shuwaikh Main,Crown Kitchen Mixer 900W,pcs,11,KD 9.098,,cash,,100.078,Migrated from legacy system
+SLS-91298,8/7/2026,Al-Yaqout Villas  Est. 2,Ardiya Warehouse,Ardiya Warehouse,Makita PVC Conduit Pipe 24 Gauge,PCS,11,22.131,,cash,,338.403,Migrated from legacy system
+SLS-91298,8/7/2026,Al-Yaqout Villas  Est. 2,Ardiya Warehouse,Ardiya Warehouse,Skil Construction Adhesive XL,PCS,6,9.253,,cash,,,Migrated from legacy system
+SLS-91298,8/7/2026,Al-Yaqout Villas  Est. 2,Ardiya Warehouse,Ardiya Warehouse,"Hitachi Scaffolding Frame 20 Gauge,",PCS,3,13.148,,cash,,,
+SLS-91299,7/8/2025,Gulf Facility Management 7,Shuwaikh Main,Shuwaikh Main,Hitachi Screwdriver Set Medium,PCS,11,27.975,,credit,5/11/2025,KD 390.976,
+SLS-91299,7/8/2025,Gulf Facility Management 7,Shuwaikh Main,Shuwaikh Main,Metabo Paint Roller 20mm,PCS,3,28.822,3.215,credit,5/11/2025,,
+SLS-91300,9/12/2025,Al-Ajmi Interiors 10,Fahaheel Branch,Fahaheel Branch,Metabo Spray Paint Can Medium,PCS,8,173.229,KWD 24.771,cash,,1361.061,Migrated from legacy system
+SLS-91301,27/4/2026,Al-Fahad Contracting  Est. 13.,Shuwaikh Main,Shuwaikh Main,Crown Cold Chisel 1 inch,PCS,6,KWD 32.064,,credit,11/6/2026,192.384,
+SLS-91302,26/1/2026,Al-Roumi Renovation 8,Rai Branch,Rai Branch,Yato Tool Kit 1/4 inch Pieces,PCS,11,277.995,,credit,25/2/2026,"3,087.852",Migrated from legacy system
+SLS-91302,26/1/2026,Al-Roumi Renovation 8,Rai Branch,Rai Branch,Hitachi Combination Wrench 1kg,PCS,1,29.907,,credit,25/2/2026,,
+SLS-91303,15/2/2026,Al-Sabah Villa Services 4,Fahaheel Branch,Fahaheel Branch,Yato Dust Mask Respirator 16 Gauge,PCS,6,9.592,,credit,2/3/2026,288.573,
+SLS-91303,15/2/2026,Al-Sabah Villa Services 4,Fahaheel Branch,Fahaheel Branch,Truper Dust Mask Respirator 24 Gauge,PC,7,33.003,,credit,2/3/2026,,
+SLS-91304,20/12/2025,Nasser Al-Hajeri 12,Rai Branch,Rai Branch,Truper Hi-Vis Safety Vest 18 Gauge,PC,5,25.621,,bank_transfer,,128.105,
+SLS-91305,23/10/2025,AL-OSAIMI MAINTENANCE  EST. 5,Fahaheel Branch,Fahaheel Branch,Al-Fanar Electric Planer XL,PCS,7,19.842,,cash,,138.894,Migrated from legacy system
+SLS-91306,5/8/2026,Jahra Building Supplies Buyer 10,Rai Branch,Rai Branch,Truper Step Stool 10kg,PCS,11,19.257,,bank_transfer,,211.827,
+SLS-91307,7/11/2025,AL-RASHED VILLAS 10,Fahaheel Branch,Fahaheel Branch,Truper Electric Planer 24 Gauge,PCS,6,32.147,,cash,,343.462,Migrated from legacy system
+SLS-91307,7/11/2025,AL-RASHED VILLAS 10,Fahaheel Branch,Fahaheel Branch,Ingco PVC Pipe 20 Gauge,PCS,10,15.058,,cash,,,Migrated from legacy system
+SLS-91308,18/9/2025,Desert Rose Interiors 9,Ardiya Warehouse,Ardiya Warehouse,Bosch  Locking Pliers 450W,PCS,7,7.224,,bank_transfer,,420.909,Migrated from legacy system
+SLS-91308,18/9/2025,Desert Rose Interiors 9,Ardiya Warehouse,Ardiya Warehouse,Sata PU Foam Filler 25mm,PCS,9,27.351,,bank_transfer,,,
+SLS-91308,18/9/2025,Desert Rose Interiors 9,Ardiya Warehouse,Ardiya Warehouse,Black+Decker Wheelbarrow 25kg,PCS,6,20.697,,bank_transfer,,,Migrated from legacy system

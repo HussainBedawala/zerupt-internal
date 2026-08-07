@@ -1,0 +1,506 @@
+name,nameAlt,code,openingBalance,phone,email,taxNumber,paymentTermDays,creditLimit,status,addressLine1,addressLine2,city,state,postalCode,country,notes
+Al-Fahad Contracting,,CUST-1000,4691.349,+965 86097145,,,90,32349.547,active,83 Block 7,,Rai,,,Kuwait,
+Modern Home Fix-It  Est.,,CUST-1001,0.000,+965 70618214,modern.home.fixit1@example.com.kw,,90,14010.652,active,,,Farwaniya,,,Kuwait,Imported opening balance
+Al-Sabah Villa Services,,CUST-1002,4801.452,+965 59287050,alsabah.villa.services2@example.com.kw,,15,"13,049.460",active,15 Block 18,,Hawally,,,Kuwait,
+Bayt Al-Jomard  Est..,,CUST-1003,4586.351,+965 80482360,bayt.aljomard3@example.com.kw,,45,8393.009,active,11 St 9,,Kuwait City,,,Kuwait,Imported opening balance
+Al-Duaij Maintenance  Est.,,CUST-1004,0.000,+965 60391027,alduaij.maintenance4@example.com.kw,,30,"1,066.614",active,69 Block 13,,Ardiya,,,Kuwait,
+Gulf Builders  Est.,,CUST-1005,7618.384,+965 86581875,gulf.builders5@example.com.kw,,0,38653.281,active,3 St 2,,Kuwait City,,,Kuwait,
+Salem Al-Rashidi,,CUST-1006,0.000,+965 59549639,salem.alrashidi6@example.com.kw,,15,47152.183,inactive,57 Bldg 3,,Ahmadi,,,Kuwait,Imported opening balance
+Fahad Al-Otaibi,,CUST-1007,0.000,+965 95718191,fahad.alotaibi7@example.com.kw,,90,13838.929,active,75 Block 11,,Ardiya,,,Kuwait,
+Al-Mutairi Est.  Est.,,CUST-1008,4587.232,+965 64026657,almutairi.est.8@example.com.kw,,90,8200.368,active,,,Fahaheel,,,Kuwait,Imported opening balance
+New Kuwait Contracting,,CUST-1009,KWD 0.000,+965 95583736,new.kuwait.contracting9@example.com.kw,,45,KD 14772.351,active,18 Bldg 16,,Ahmadi,,,Kuwait,Imported opening balance
+Al-Ajmi Interiors  Est.,,CUST-1010,3359.163,+965 65241289,alajmi.interiors10@example.com.kw,,15,"4,193.028",active,1 Block 7,,Kuwait City,,,Kuwait,Imported opening balance
+Ahmad Al-Kandari,,CUST-1011,5002.423,+965 90883024,ahmad.alkandari11@example.com.kw,,15,44635.596,active,15 Bldg 7,,Salmiya,,,Kuwait,Imported opening balance
+Al-Enezi General Maintenance,,CUST-1012,0.000,+965 51739181,alenezi.general.maintenance12@example.com.kw,,30,36647.652,active,6 Bldg 18,,Salmiya,,,Kuwait,Imported opening balance
+Desert Rose Interiors,,CUST-1013,0.000,+965 71342314,,,15,41118.650,active,34 St 12,,Ahmadi,,,Kuwait,
+Al-Anjari Villas  Est.,,CUST-1014,4240.244,+965 88916322,,,60,810.497,active,16 Block 11,,Kuwait City,,,Kuwait,Imported opening balance
+Al-Roumi Renovation  Est.  ,,CUST-1015,1566.568,+965 64704328,alroumi.renovation15@example.com.kw,,15,25008.845,active,85 Bldg 18,,Kuwait City,,,Kuwait,
+Union Facility Services,,CUST-1016,0.000,+965 69752287,union.facility.services16@example.com.kw,,15,23227.209,active,60 Block 15,,Fahaheel,,,Kuwait,Imported opening balance
+Al-Yaqout Villas,,CUST-1017,4646.349,+965 70713233,alyaqout.villas17@example.com.kw,,15,41936.052,active,23 St 16,,Rai,,,Kuwait,
+Al-Qadi Household,,CUST-1018,0.000,+965 53790704,alqadi.household18@example.com.kw,,30,43372.064,active,92 St 16,,Fahaheel,,,Kuwait,
+Nasser Al-Hajeri  Est.,,CUST-1019,KWD 0.000,+965 74926012,nasser.alhajeri19@example.com.kw,,0,31687.090,blocked,40 Bldg 6,,Hawally,,,Kuwait,Imported opening balance
+AL-GHANIM HOME REPAIRS,,CUST-1020,KD 0.000,+965 96014146,alghanim.home.repairs20@example.com.kw,,45,34038.060,active,66 St 3,,Kuwait City,,,Kuwait,Imported opening balance
+Al-Bahar Property Services,,CUST-1021,3657.649,+965 92380161,albahar.property.services21@example.com.kw,,30,49869.234,active,5 St 16,,Ahmadi,,,Kuwait,
+"Gulf Facility Management,",,CUST-1022,0.000,+965 57002990,gulf.facility.management22@example.com.kw,,90,25122.503,active,78 Bldg 10,,Farwaniya,,,Kuwait,Imported opening balance
+Continental Maintenance Co.  Est.,,CUST-1023,2104.842,+965 71886100,continental.maintenance.co.23@example.com.kw,,0,20620.332,active,3 St 13,,Ahmadi,,,Kuwait,Imported opening balance
+  Al-Zamil Villas,,CUST-1024,1762.190,+965 83662331,alzamil.villas24@example.com.kw,,90,34505.858,active,,,Salmiya,,,Kuwait,Imported opening balance
+Bin Hindi Property  Est.,,CUST-1025,0.000,+965 50474812,bin.hindi.property25@example.com.kw,,15,14407.229,active,64 Block 9,,Salmiya,,,Kuwait,Imported opening balance
+AL-WAZZAN MAINTENANCE,,CUST-1026,4864.038,+965 77137129,alwazzan.maintenance26@example.com.kw,,45,29553.119,active,54 Block 4,,Ardiya,,,Kuwait,Imported opening balance
+Al-Marzouq Home,,CUST-1027,3702.628,+965 79362794,almarzouq.home27@example.com.kw,,90,17663.492,active,97 Block 9,,Ahmadi,,,Kuwait,Imported opening balance
+Farwaniya Fix-It Center  Est.,,CUST-1028,5497.088,+965 76507667,,,60,22672.701,active,6 Block 20,,Kuwait City,,,Kuwait,
+Salmiya Handyman Services,,CUST-1029,0.000,+965 74821118,salmiya.handyman.services29@example.com.kw,,45,40474.703,active,88 St 18,,Shuwaikh,,,Kuwait,
+Hawally Repair Shop,,CUST-1030,0.000,+965 57082097,hawally.repair.shop30@example.com.kw,,45,22510.025,active,3 Block 18,,Ardiya,,,Kuwait,
+Jahra Building Supplies Buyer,,CUST-1031,5133.260,+965 67167199,,,15,2962.109,active,57 Block 4,,Jahra,,,Kuwait,
+Ahmadi Villa Care  Est..,,CUST-1032,0.000,+965 63418224,ahmadi.villa.care32@example.com.kw,,0,47801.152,active,80 Bldg 4,,Ardiya,,,Kuwait,
+Fahaheel Home Services,,CUST-1033,KD 0.000,+965 52116056,fahaheel.home.services33@example.com.kw,,45,33454.774,active,82 St 16,,Kuwait City,,,Kuwait,Imported opening balance
+Al-Khaled General Trading,,CUST-1034,0.000,+965 53060510,alkhaled.general.trading34@example.com.kw,,45,13489.954,inactive,79 St 10,,Fahaheel,,,Kuwait,Imported opening balance
+Al-Nasser Renovation  Est.,,CUST-1035,0.000,+965 97122826,alnasser.renovation35@example.com.kw,,45,40448.344,active,41 Block 2,,Shuwaikh,,,Kuwait,Imported opening balance
+Al-Osaimi Maintenance,,CUST-1036,0.000,+965 91361004,,,60,KD 11362.701,active,25 Block 15,,Shuwaikh,,,Kuwait,
+First Gulf Interiors,,CUST-1037,1611.456,+965 93394250,first.gulf.interiors37@example.com.kw,,30,16790.123,active,33 Bldg 11,,Ardiya,,,Kuwait,Imported opening balance
+Al-Rashed Villas,,CUST-1038,0.000,+965 83337073,alrashed.villas38@example.com.kw,,15,11469.460,inactive,11 St 12,,Ardiya,,,Kuwait,
+ Al-Sanea Property ,,CUST-1039,0.000,+965 70735981,,,15,47377.073,active,32 St 8,,Shuwaikh,,,Kuwait,Imported opening balance
+ Al-Fahad Contracting  Est. 2 ,,CUST-1040,0.000,+965 70544624,alfahad.contracting40@example.com.kw,,15,16208.802,active,87 Block 3,,Ardiya,,,Kuwait,
+Modern Home Fix-It 2,,CUST-1041,1369.893,+965 77971195,,,30,28128.777,active,51 St 20,,Salmiya,,,Kuwait,Imported opening balance
+Al-Sabah Villa Services 2,,CUST-1042,6317.692,+965 56250640,alsabah.villa.services42@example.com.kw,,0,39438.838,active,,,Shuwaikh,,,Kuwait,Imported opening balance
+Bayt Al-Jomard 2,,CUST-1043,890.533,+965 51520840,bayt.aljomard43@example.com.kw,,45,9384.248,blocked,54 St 6,,Salmiya,,,Kuwait,
+Al-Duaij Maintenance 2,,CUST-1044,0.000,+965 92601210,alduaij.maintenance44@example.com.kw,,15,"4,567.207",active,97 Block 15,,Shuwaikh,,,Kuwait,Imported opening balance
+Gulf Builders  Est. 2,,CUST-1045,1705.447,+965 65914328,gulf.builders45@example.com.kw,,90,KD 42237.978,active,32 St 19,,Kuwait City,,,Kuwait,
+Salem Al-Rashidi  Est. 2,,CUST-1046,4063.167,+965 84531857,salem.alrashidi46@example.com.kw,,30,10700.707,inactive,,,Rai,,,Kuwait,
+Fahad Al-Otaibi 2,,CUST-1047,0.000,+965 88582161,fahad.alotaibi47@example.com.kw,,15,21675.319,active,22 Block 16,,Hawally,,,Kuwait,Imported opening balance
+Al-Mutairi Est.  Est. 2,,CUST-1048,0.000,+965 80557929,almutairi.est.48@example.com.kw,,60,KWD 14237.082,active,,,Salmiya,,,Kuwait,Imported opening balance
+"New Kuwait Contracting  Est. 2,",,CUST-1049,7730.137,+965 63217116,new.kuwait.contracting49@example.com.kw,,0,"38,717.522",active,77 St 17,,Fahaheel,,,Kuwait,Imported opening balance
+Al-Ajmi Interiors 2,,CUST-1050,"2,758.626",+965 90346253,alajmi.interiors50@example.com.kw,,90,30530.907,active,48 St 1,,Farwaniya,,,Kuwait,
+ Ahmad Al-Kandari  Est. 2 ,,CUST-1051,0.000,+965 72932217,ahmad.alkandari51@example.com.kw,,90,44828.319,active,80 St 17,,Ardiya,,,Kuwait,
+Al-Enezi General Maintenance  Est. 2,,CUST-1052,KWD 0.000,+965 55122194,alenezi.general.maintenance52@example.com.kw,,15,24720.310,active,,,Kuwait City,,,Kuwait,
+Desert Rose Interiors 2,,CUST-1053,0.000,+965 68462248,desert.rose.interiors53@example.com.kw,,60,22015.583,active,20 St 5,,Rai,,,Kuwait,
+AL-ANJARI VILLAS  EST. 2,,CUST-1054,KD 0.000,+965 85592282,alanjari.villas54@example.com.kw,,60,31948.622,active,,,Fahaheel,,,Kuwait,
+Al-Roumi Renovation 2,,CUST-1055,0.000,+965 99198645,alroumi.renovation55@example.com.kw,,30,28420.427,active,92 Block 8,,Fahaheel,,,Kuwait,Imported opening balance
+Union Facility Services 2,,CUST-1056,4089.924,+965 87841106,union.facility.services56@example.com.kw,,90,25968.020,active,22 Bldg 9,,Shuwaikh,,,Kuwait,
+Al-Yaqout Villas  Est. 2,,CUST-1057,3973.766,+965 80243123,alyaqout.villas57@example.com.kw,,0,21304.749,active,38 Bldg 16,,Ardiya,,,Kuwait,
+Al-Qadi Household 2,,CUST-1058,0.000,+965 87559960,alqadi.household58@example.com.kw,,90,28158.458,active,,,Salmiya,,,Kuwait,
+Nasser Al-Hajeri  Est. 2,,CUST-1059,1461.356,+965 97746519,nasser.alhajeri59@example.com.kw,,15,17045.734,active,9 St 17,,Rai,,,Kuwait,
+al-ghanim home repairs  est. 2,,CUST-1060,0.000,+965 75102313,alghanim.home.repairs60@example.com.kw,,45,38747.799,active,69 Block 3,,Rai,,,Kuwait,Imported opening balance
+Al-Bahar Property Services  Est. 2,,CUST-1061,3949.927,+965 75463414,albahar.property.services61@example.com.kw,,90,34984.514,active,58 St 14,,Farwaniya,,,Kuwait,Imported opening balance
+Gulf Facility Management  Est. 2,,CUST-1062,"6,249.745",+965 89006614,gulf.facility.management62@example.com.kw,,60,21231.915,active,82 Block 5,,Salmiya,,,Kuwait,Imported opening balance
+CONTINENTAL MAINTENANCE CO.  EST. 2  ,,CUST-1063,2146.702,+965 94040345,continental.maintenance.co.63@example.com.kw,,90,28698.789,active,49 St 9,,Farwaniya,,,Kuwait,
+Al-Zamil Villas 2,,CUST-1064,KWD 0.000,+965 93266392,alzamil.villas64@example.com.kw,,45,24700.304,active,48 St 15,,Fahaheel,,,Kuwait,
+Bin Hindi Property  Est. 2,,CUST-1065,KWD 6468.844,+965 94055653,bin.hindi.property65@example.com.kw,,30,39513.099,active,60 Block 18,,Ahmadi,,,Kuwait,Imported opening balance
+Al-Wazzan Maintenance 2,,CUST-1066,0.000,+965 67180696,alwazzan.maintenance66@example.com.kw,,0,42005.758,active,86 Block 13,,Hawally,,,Kuwait,Imported opening balance
+Al-Marzouq Home  Est. 2,,CUST-1067,6868.298,+965 57995089,almarzouq.home67@example.com.kw,,60,"27,943.610",active,79 Block 9,,Shuwaikh,,,Kuwait,
+Farwaniya Fix-It Center 2,,CUST-1068,6346.411,+965 81598615,farwaniya.fixit.center68@example.com.kw,,0,5904.514,active,75 Bldg 10,,Kuwait City,,,Kuwait,Imported opening balance
+Salmiya Handyman Services 2,,CUST-1069,KD 4164.566,+965 67098207,salmiya.handyman.services69@example.com.kw,,60,KD 45629.753,active,6 St 13,,Jahra,,,Kuwait,
+Hawally Repair Shop 2.,,CUST-1070,KWD 0.000,+965 87356879,hawally.repair.shop70@example.com.kw,,45,14238.369,active,22 St 20,,Fahaheel,,,Kuwait,Imported opening balance
+Jahra Building Supplies Buyer 2,,CUST-1071,0.000,+965 90794136,jahra.building.supplies.buyer71@example.com.kw,,90,10442.381,active,20 Bldg 6,,Ardiya,,,Kuwait,
+Ahmadi Villa Care  Est. 2,,CUST-1072,0.000,+965 58516300,ahmadi.villa.care72@example.com.kw,,45,24833.118,active,6 Block 11,,Kuwait City,,,Kuwait,
+Fahaheel Home Services 2,,CUST-1073,KWD 1855.145,+965 55337608,fahaheel.home.services73@example.com.kw,,0,1814.021,active,95 Block 11,,Ardiya,,,Kuwait,Imported opening balance
+Al-Khaled General Trading 2,,CUST-1074,6539.091,+965 63692458,alkhaled.general.trading74@example.com.kw,,30,14122.030,active,62 Block 4,,Shuwaikh,,,Kuwait,Imported opening balance
+Al-Nasser Renovation 2,,CUST-1075,0.000,+965 67669971,alnasser.renovation75@example.com.kw,,60,11896.951,active,,,Jahra,,,Kuwait,Imported opening balance
+Al-Osaimi Maintenance 2,,CUST-1076,6868.566,+965 62477334,alosaimi.maintenance76@example.com.kw,,90,4130.057,active,82 Block 14,,Fahaheel,,,Kuwait,
+First Gulf Interiors 2,,CUST-1077,5408.150,+965 58201698,first.gulf.interiors77@example.com.kw,,0,32437.323,active,,,Farwaniya,,,Kuwait,Imported opening balance
+Al-Rashed Villas 2,,CUST-1078,2262.266,+965 78677240,alrashed.villas78@example.com.kw,,45,KD 18763.780,active,98 Block 6,,Rai,,,Kuwait,
+Al-Sanea Property 2,,CUST-1079,0.000,+965 75058910,alsanea.property79@example.com.kw,,0,23789.005,active,34 St 3,,Ahmadi,,,Kuwait,
+Al-Fahad Contracting 3,,CUST-1080,0.000,+965 82411266,alfahad.contracting80@example.com.kw,,60,9233.707,active,43 Block 20,,Rai,,,Kuwait,Imported opening balance
+Modern Home Fix-It  Est. 3,,CUST-1081,"4,477.346",+965 86444890,modern.home.fixit81@example.com.kw,,60,19277.885,active,51 St 20,,Fahaheel,,,Kuwait,Imported opening balance
+Al-Sabah Villa Services 3,,CUST-1082,0.000,+965 85344512,alsabah.villa.services82@example.com.kw,,90,25234.785,active,43 Block 17,,Ahmadi,,,Kuwait,Imported opening balance
+Bayt Al-Jomard 3,,CUST-1083,0.000,+965 52493225,bayt.aljomard83@example.com.kw,,90,5637.661,active,31 Block 3,,Hawally,,,Kuwait,Imported opening balance
+  Al-Duaij Maintenance  Est. 3,,CUST-1084,4169.786,+965 93977716,alduaij.maintenance84@example.com.kw,,60,KWD 14684.189,active,52 Bldg 7,,Jahra,,,Kuwait,
+Gulf Builders 3,,CUST-1085,0.000,+965 64055193,gulf.builders85@example.com.kw,,60,17306.505,active,47 St 5,,Fahaheel,,,Kuwait,
+Salem Al-Rashidi 3,,CUST-1086,0.000,+965 63014567,salem.alrashidi86@example.com.kw,,15,20720.030,inactive,14 St 8,,Farwaniya,,,Kuwait,
+Fahad Al-Otaibi 3,,CUST-1087,4864.001,+965 62185014,fahad.alotaibi87@example.com.kw,,45,30455.660,active,9 Bldg 14,,Ahmadi,,,Kuwait,
+Al-Mutairi Est. 3,,CUST-1088,1111.921,+965 64301481,almutairi.est.88@example.com.kw,,60,30003.656,active,,,Kuwait City,,,Kuwait,Imported opening balance
+New Kuwait Contracting 3,,CUST-1089,994.201,+965 90706711,new.kuwait.contracting89@example.com.kw,,30,48691.211,active,19 Block 16,,Shuwaikh,,,Kuwait,
+Al-Ajmi Interiors 3,,CUST-1090,0.000,+965 56376346,alajmi.interiors90@example.com.kw,,0,11900.570,active,75 Block 3,,Hawally,,,Kuwait,
+Ahmad Al-Kandari 3,,CUST-1091,0.000,+965 60641821,ahmad.alkandari91@example.com.kw,,30,33215.946,active,87 Block 8,,Ahmadi,,,Kuwait,Imported opening balance
+Al-Enezi General Maintenance 3,,CUST-1092,5513.223,+965 67484690,,,30,21037.468,active,91 Block 15,,Ahmadi,,,Kuwait,Imported opening balance
+Desert Rose Interiors 3,,CUST-1093,3558.653,+965 62261278,desert.rose.interiors93@example.com.kw,,0,44705.229,active,92 Bldg 5,,Shuwaikh,,,Kuwait,
+Al-Anjari Villas  Est. 3,,CUST-1094,0.000,+965 98025053,alanjari.villas94@example.com.kw,,45,19687.695,active,91 Bldg 9,,Shuwaikh,,,Kuwait,Imported opening balance
+AL-ROUMI RENOVATION  EST. 3,,CUST-1095,7257.989,+965 65023019,alroumi.renovation95@example.com.kw,,30,8836.192,active,3 St 6,,Kuwait City,,,Kuwait,
+Union Facility Services  Est. 3  ,,CUST-1096,"3,860.697",+965 62850365,union.facility.services96@example.com.kw,,45,23335.140,active,65 St 2,,Farwaniya,,,Kuwait,Imported opening balance
+Al-Yaqout Villas 3,,CUST-1097,0.000,+965 53876348,alyaqout.villas97@example.com.kw,,90,KD 23385.177,active,34 St 4,,Ardiya,,,Kuwait,Imported opening balance
+Al-Qadi Household 3,,CUST-1098,KD 5213.917,+965 89636851,alqadi.household98@example.com.kw,,45,38419.502,active,80 St 19,,Fahaheel,,,Kuwait,
+Nasser Al-Hajeri 3,,CUST-1099,6212.012,+965 90487303,nasser.alhajeri99@example.com.kw,,30,31607.446,active,85 Bldg 8,,Salmiya,,,Kuwait,Imported opening balance
+Al-Ghanim Home Repairs 3,,CUST-1100,0.000,+965 99483068,alghanim.home.repairs100@example.com.kw,,15,15305.530,active,,,Kuwait City,,,Kuwait,
+Al-Bahar Property Services 3,,CUST-1101,1795.449,+965 90016419,,,0,4332.884,active,29 Bldg 4,,Rai,,,Kuwait,Imported opening balance
+Gulf Facility Management 3,,CUST-1102,"4,200.849",+965 67376600,gulf.facility.management102@example.com.kw,,0,4688.834,active,62 Bldg 12,,Farwaniya,,,Kuwait,Imported opening balance
+Continental Maintenance Co. 3,,CUST-1103,724.016,+965 71214647,continental.maintenance.co.103@example.com.kw,,0,12297.459,active,40 St 8,,Rai,,,Kuwait,
+Al-Zamil Villas 3.,,CUST-1104,2017.797,+965 96187973,alzamil.villas104@example.com.kw,,60,34936.222,active,8 Bldg 10,,Rai,,,Kuwait,
+Bin Hindi Property  Est. 3,,CUST-1105,7297.626,+965 61745925,bin.hindi.property105@example.com.kw,,60,KD 26691.911,active,9 Bldg 14,,Fahaheel,,,Kuwait,
+Al-Wazzan Maintenance  Est. 3,,CUST-1106,436.606,+965 50858064,alwazzan.maintenance106@example.com.kw,,0,20569.596,active,38 Bldg 12,,Kuwait City,,,Kuwait,Imported opening balance
+Al-Marzouq Home 3,,CUST-1107,0.000,+965 55786953,almarzouq.home107@example.com.kw,,90,31111.739,active,98 Block 7,,Shuwaikh,,,Kuwait,Imported opening balance
+Farwaniya Fix-It Center 3,,CUST-1108,0.000,+965 90948187,farwaniya.fixit.center108@example.com.kw,,90,43654.778,active,9 Block 8,,Shuwaikh,,,Kuwait,
+Salmiya Handyman Services  Est. 3,,CUST-1109,696.141,+965 98110148,salmiya.handyman.services109@example.com.kw,,90,49277.974,active,,,Shuwaikh,,,Kuwait,Imported opening balance
+Hawally  Repair Shop 3,,CUST-1110,0.000,+965 51281354,hawally.repair.shop110@example.com.kw,,0,6091.064,active,15 St 6,,Ahmadi,,,Kuwait,
+Jahra Building Supplies Buyer 3,,CUST-1111,7898.913,+965 99887177,jahra.building.supplies.buyer111@example.com.kw,,0,1878.523,active,79 Block 11,,Fahaheel,,,Kuwait,
+Ahmadi Villa Care 3,,CUST-1112,0.000,+965 84141819,ahmadi.villa.care112@example.com.kw,,0,46210.163,active,24 Bldg 14,,Kuwait City,,,Kuwait,Imported opening balance
+fahaheel home services 3,,CUST-1113,KD 3793.614,+965 77211973,fahaheel.home.services113@example.com.kw,,45,12917.838,active,32 St 6,,Kuwait City,,,Kuwait,Imported opening balance
+Al-Khaled General Trading 3,,CUST-1114,0.000,+965 73557993,alkhaled.general.trading114@example.com.kw,,60,43085.522,active,27 Block 6,,Rai,,,Kuwait,Imported opening balance
+Al-Nasser Renovation 3,,CUST-1115,0.000,+965 68689102,alnasser.renovation115@example.com.kw,,90,16382.332,active,11 Bldg 16,,Hawally,,,Kuwait,Imported opening balance
+Al-Osaimi Maintenance  Est. 3,,CUST-1116,KWD 0.000,+965 83470790,alosaimi.maintenance116@example.com.kw,,15,7707.405,active,,,Kuwait City,,,Kuwait,
+First Gulf Interiors 3,,CUST-1117,KD 0.000,+965 59093117,first.gulf.interiors117@example.com.kw,,15,47376.965,active,41 Block 9,,Jahra,,,Kuwait,
+Al-Rashed Villas 3  ,,CUST-1118,971.563,+965 54863029,alrashed.villas118@example.com.kw,,30,8007.302,active,42 Bldg 4,,Ardiya,,,Kuwait,
+Al-Sanea Property 3,,CUST-1119,2108.758,+965 85094866,alsanea.property119@example.com.kw,,0,5417.508,active,67 Bldg 14,,Kuwait City,,,Kuwait,
+ Al-Fahad Contracting  Est. 4 ,,CUST-1120,0.000,+965 95573149,alfahad.contracting120@example.com.kw,,0,KWD 36510.243,active,50 Bldg 7,,Hawally,,,Kuwait,
+Modern Home Fix-It  Est. 4,,CUST-1121,654.769,+965 99648955,modern.home.fixit121@example.com.kw,,0,18375.184,inactive,11 Block 17,,Ahmadi,,,Kuwait,Imported opening balance
+Al-Sabah Villa Services 4,,CUST-1122,0.000,+965 75150574,alsabah.villa.services122@example.com.kw,,15,30109.520,active,,,Ahmadi,,,Kuwait,Imported opening balance
+BAYT AL-JOMARD 4,,CUST-1123,3043.815,+965 64102271,bayt.aljomard123@example.com.kw,,15,743.265,active,1 Bldg 14,,Jahra,,,Kuwait,Imported opening balance
+  AL-DUAIJ MAINTENANCE 4,,CUST-1124,"7,183.232",+965 71760491,alduaij.maintenance124@example.com.kw,,15,"30,739.184",active,2 Block 14,,Jahra,,,Kuwait,
+Gulf Builders 4,,CUST-1125,0.000,+965 88277531,gulf.builders125@example.com.kw,,45,23101.987,active,14 Block 7,,Rai,,,Kuwait,Imported opening balance
+"Salem Al-Rashidi 4,",,CUST-1126,644.167,+965 84379187,salem.alrashidi126@example.com.kw,,15,1891.345,active,44 Block 7,,Fahaheel,,,Kuwait,Imported opening balance
+Fahad Al-Otaibi 4,,CUST-1127,0.000,+965 81648649,fahad.alotaibi127@example.com.kw,,15,26872.444,active,41 Block 13,,Fahaheel,,,Kuwait,
+Al-Mutairi Est. 4,,CUST-1128,7383.895,+965 77744038,almutairi.est.128@example.com.kw,,45,27500.978,active,8 Bldg 10,,Rai,,,Kuwait,
+New Kuwait Contracting 4,,CUST-1129,480.621,+965 96603242,new.kuwait.contracting129@example.com.kw,,90,44062.817,active,,,Fahaheel,,,Kuwait,Imported opening balance
+Al-Ajmi Interiors 4,,CUST-1130,0.000,+965 85802055,alajmi.interiors130@example.com.kw,,0,2776.684,active,8 Block 3,,Ahmadi,,,Kuwait,Imported opening balance
+Ahmad Al-Kandari  Est. 4,,CUST-1131,KWD 0.000,+965 95703137,ahmad.alkandari131@example.com.kw,,30,49666.736,active,71 Block 1,,Rai,,,Kuwait,Imported opening balance
+Al-Enezi General Maintenance  Est. 4,,CUST-1132,0.000,+965 55916871,alenezi.general.maintenance132@example.com.kw,,45,14159.523,active,,,Hawally,,,Kuwait,
+Desert Rose Interiors 4,,CUST-1133,4089.483,+965 71842765,desert.rose.interiors133@example.com.kw,,15,40261.604,active,66 Bldg 3,,Hawally,,,Kuwait,Imported opening balance
+Al-Anjari  Villas 4,,CUST-1134,KWD 2254.064,+965 90274611,alanjari.villas134@example.com.kw,,30,KWD 1888.038,active,17 St 20,,Farwaniya,,,Kuwait,
+Al-Roumi Renovation 4,,CUST-1135,0.000,+965 53334093,alroumi.renovation135@example.com.kw,,0,12015.689,active,90 Bldg 17,,Fahaheel,,,Kuwait,Imported opening balance
+Union Facility Services 4,,CUST-1136,155.598,+965 83706679,,,60,40256.792,active,86 Block 18,,Hawally,,,Kuwait,Imported opening balance
+Al-Yaqout Villas 4,,CUST-1137,0.000,+965 83329439,alyaqout.villas137@example.com.kw,,60,KD 8622.857,active,,,Farwaniya,,,Kuwait,Imported opening balance
+Al-Qadi Household 4  ,,CUST-1138,539.176,+965 70503318,alqadi.household138@example.com.kw,,30,KWD 27794.400,active,,,Rai,,,Kuwait,Imported opening balance
+Nasser Al-Hajeri 4,,CUST-1139,4525.242,+965 85884026,nasser.alhajeri139@example.com.kw,,30,"40,191.150",active,,,Kuwait City,,,Kuwait,Imported opening balance
+Al-Ghanim Home Repairs  Est. 4  ,,CUST-1140,0.000,+965 65261999,alghanim.home.repairs140@example.com.kw,,45,39987.442,active,3 Block 10,,Rai,,,Kuwait,
+Al-Bahar Property Services 4,,CUST-1141,0.000,+965 96482462,albahar.property.services141@example.com.kw,,30,20723.690,active,,,Fahaheel,,,Kuwait,Imported opening balance
+Gulf Facility Management 4,,CUST-1142,7890.500,+965 83047087,gulf.facility.management142@example.com.kw,,60,43608.002,active,67 Bldg 5,,Ardiya,,,Kuwait,Imported opening balance
+Continental Maintenance Co. 4,,CUST-1143,7676.197,+965 95648107,,,45,18162.358,active,100 Bldg 4,,Shuwaikh,,,Kuwait,
+Al-Zamil Villas 4,,CUST-1144,KWD 1780.100,+965 80397571,alzamil.villas144@example.com.kw,,60,"24,294.526",active,81 Bldg 18,,Ahmadi,,,Kuwait,Imported opening balance
+  Bin Hindi Property 4,,CUST-1145,7715.142,+965 78924874,bin.hindi.property145@example.com.kw,,15,43856.133,active,30 Block 13,,Jahra,,,Kuwait,
+Al-Wazzan Maintenance  Est. 4,,CUST-1146,19.629,+965 62809346,alwazzan.maintenance146@example.com.kw,,15,42312.933,inactive,,,Salmiya,,,Kuwait,Imported opening balance
+  Al-Marzouq Home 4.,,CUST-1147,0.000,+965 91933749,almarzouq.home147@example.com.kw,,15,17603.632,active,69 Bldg 16,,Fahaheel,,,Kuwait,Imported opening balance
+Farwaniya Fix-It Center 4,,CUST-1148,0.000,+965 84495913,farwaniya.fixit.center148@example.com.kw,,15,KWD 2685.179,active,65 St 20,,Salmiya,,,Kuwait,
+Salmiya Handyman Services 4,,CUST-1149,819.330,+965 50762131,salmiya.handyman.services149@example.com.kw,,90,33255.625,active,57 Block 12,,Ahmadi,,,Kuwait,
+Hawally Repair Shop 4,,CUST-1150,4921.413,+965 92342228,hawally.repair.shop150@example.com.kw,,0,3136.360,active,74 St 10,,Shuwaikh,,,Kuwait,
+Jahra Building Supplies Buyer 4,,CUST-1151,KD 0.000,+965 74557863,jahra.building.supplies.buyer151@example.com.kw,,45,"42,520.925",active,18 St 18,,Farwaniya,,,Kuwait,
+Ahmadi Villa Care 4,,CUST-1152,0.000,+965 86773133,ahmadi.villa.care152@example.com.kw,,60,3475.830,active,13 Block 14,,Rai,,,Kuwait,
+Fahaheel Home Services 4,,CUST-1153,1644.166,+965 56377096,fahaheel.home.services153@example.com.kw,,15,44773.785,active,76 St 10,,Shuwaikh,,,Kuwait,
+"Al-Khaled General Trading 4,",,CUST-1154,2290.379,+965 66782580,alkhaled.general.trading154@example.com.kw,,90,24409.124,active,3 Block 9,,Shuwaikh,,,Kuwait,
+Al-Nasser Renovation 4,,CUST-1155,3769.841,+965 52382219,alnasser.renovation155@example.com.kw,,45,30226.693,active,28 St 19,,Kuwait City,,,Kuwait,Imported opening balance
+Al-Osaimi Maintenance 4,,CUST-1156,97.685,+965 50456782,alosaimi.maintenance156@example.com.kw,,15,21533.730,active,92 Bldg 17,,Rai,,,Kuwait,Imported opening balance
+ First Gulf Interiors 4 ,,CUST-1157,1282.729,+965 97471779,first.gulf.interiors157@example.com.kw,,60,22169.577,active,2 Block 17,,Kuwait City,,,Kuwait,Imported opening balance
+AL-RASHED VILLAS 4,,CUST-1158,0.000,+965 59149925,alrashed.villas158@example.com.kw,,15,27739.621,active,,,Ardiya,,,Kuwait,
+Al-Sanea Property 4,,CUST-1159,0.000,+965 74708131,alsanea.property159@example.com.kw,,0,1035.038,active,23 Block 18,,Shuwaikh,,,Kuwait,
+Al-Fahad Contracting 5,,CUST-1160,0.000,+965 54035711,alfahad.contracting160@example.com.kw,,90,17658.301,active,99 St 10,,Jahra,,,Kuwait,
+Modern Home Fix-It  Est. 5,,CUST-1161,2600.347,+965 56855976,modern.home.fixit161@example.com.kw,,45,18650.631,active,5 Block 17,,Kuwait City,,,Kuwait,Imported opening balance
+Al-Sabah Villa Services 5,,CUST-1162,6297.856,+965 72467213,alsabah.villa.services162@example.com.kw,,45,29245.034,active,49 Block 7,,Jahra,,,Kuwait,
+Bayt Al-Jomard 5,,CUST-1163,1919.222,+965 62512279,bayt.aljomard163@example.com.kw,,90,35885.734,active,6 St 16,,Fahaheel,,,Kuwait,Imported opening balance
+Al-Duaij Maintenance  Est. 5,,CUST-1164,4345.814,+965 85722032,alduaij.maintenance164@example.com.kw,,30,31103.673,active,85 Bldg 6,,Shuwaikh,,,Kuwait,Imported opening balance
+Gulf Builders 5,,CUST-1165,0.000,+965 79854693,gulf.builders165@example.com.kw,,15,27650.091,active,36 Bldg 17,,Rai,,,Kuwait,Imported opening balance
+Salem Al-Rashidi 5  ,,CUST-1166,567.108,+965 99150721,salem.alrashidi166@example.com.kw,,45,41275.438,active,18 Block 11,,Jahra,,,Kuwait,
+Fahad Al-Otaibi  Est. 5.,,CUST-1167,5364.369,+965 74748712,fahad.alotaibi167@example.com.kw,,45,27034.533,active,9 Bldg 12,,Salmiya,,,Kuwait,
+  Al-Mutairi Est. 5,,CUST-1168,3950.169,+965 62538330,almutairi.est.168@example.com.kw,,90,26534.554,active,19 Block 12,,Hawally,,,Kuwait,Imported opening balance
+NEW KUWAIT CONTRACTING 5,,CUST-1169,0.000,+965 86588585,,,0,KWD 16038.568,active,,,Jahra,,,Kuwait,Imported opening balance
+Al-Ajmi Interiors  Est. 5,,CUST-1170,0.000,+965 63709556,alajmi.interiors170@example.com.kw,,60,49268.639,active,66 St 4,,Kuwait City,,,Kuwait,
+Ahmad Al-Kandari 5,,CUST-1171,0.000,+965 95575773,ahmad.alkandari171@example.com.kw,,30,18510.332,active,58 Block 10,,Hawally,,,Kuwait,
+Al-Enezi General Maintenance  Est. 5,,CUST-1172,1980.512,+965 81724488,alenezi.general.maintenance172@example.com.kw,,60,30731.554,active,55 Block 5,,Kuwait City,,,Kuwait,
+Desert Rose Interiors  Est. 5,,CUST-1173,0.000,+965 83113481,desert.rose.interiors173@example.com.kw,,30,40735.156,active,42 Block 12,,Jahra,,,Kuwait,
+Al-Anjari Villas 5,,CUST-1174,0.000,+965 55918302,alanjari.villas174@example.com.kw,,30,1803.571,active,86 St 20,,Farwaniya,,,Kuwait,
+Al-Roumi Renovation 5,,CUST-1175,7567.803,+965 90136399,alroumi.renovation175@example.com.kw,,60,9776.795,active,79 Block 18,,Ahmadi,,,Kuwait,
+Union Facility Services  Est. 5,,CUST-1176,3542.811,+965 59084929,union.facility.services176@example.com.kw,,15,20240.064,active,,,Hawally,,,Kuwait,
+Al-Yaqout Villas 5,,CUST-1177,2217.425,+965 85768899,alyaqout.villas177@example.com.kw,,0,26325.343,active,13 Bldg 14,,Hawally,,,Kuwait,
+Al-Qadi Household 5,,CUST-1178,0.000,+965 79369188,alqadi.household178@example.com.kw,,60,"21,074.318",active,,,Fahaheel,,,Kuwait,
+"Nasser Al-Hajeri 5,",,CUST-1179,0.000,+965 91915018,nasser.alhajeri179@example.com.kw,,45,14280.615,active,32 Bldg 9,,Hawally,,,Kuwait,Imported opening balance
+AL-GHANIM HOME REPAIRS 5,,CUST-1180,2612.537,+965 82107128,alghanim.home.repairs180@example.com.kw,,15,40014.700,active,45 Bldg 18,,Jahra,,,Kuwait,
+Al-Bahar Property Services 5,,CUST-1181,0.000,+965 67261404,albahar.property.services181@example.com.kw,,45,7131.331,inactive,74 St 16,,Ahmadi,,,Kuwait,
+GULF FACILITY MANAGEMENT 5,,CUST-1182,KWD 3220.422,+965 92690886,gulf.facility.management182@example.com.kw,,0,KD 34625.185,active,,,Ahmadi,,,Kuwait,
+Continental  Maintenance Co. 5,,CUST-1183,0.000,+965 88754537,continental.maintenance.co.183@example.com.kw,,15,26076.580,active,20 Block 10,,Ardiya,,,Kuwait,
+ Al-Zamil Villas  Est. 5 ,,CUST-1184,5610.132,+965 50762696,alzamil.villas184@example.com.kw,,45,21093.889,active,84 Bldg 4,,Hawally,,,Kuwait,Imported opening balance
+Bin Hindi Property  Est. 5,,CUST-1185,0.000,+965 87533034,bin.hindi.property185@example.com.kw,,15,KD 29809.218,active,3 St 20,,Rai,,,Kuwait,
+"Al-Wazzan Maintenance 5,",,CUST-1186,"3,752.860",+965 54396972,alwazzan.maintenance186@example.com.kw,,60,8164.649,inactive,83 St 10,,Fahaheel,,,Kuwait,
+Al-Marzouq Home 5,,CUST-1187,4820.436,+965 72189730,almarzouq.home187@example.com.kw,,45,KD 30365.891,active,27 Bldg 20,,Farwaniya,,,Kuwait,
+Farwaniya Fix-It Center 5,,CUST-1188,696.013,+965 69105211,farwaniya.fixit.center188@example.com.kw,,60,"2,080.739",active,88 St 19,,Rai,,,Kuwait,Imported opening balance
+Salmiya Handyman Services 5,,CUST-1189,5564.151,+965 50196060,salmiya.handyman.services189@example.com.kw,,0,5304.681,active,90 Bldg 8,,Kuwait City,,,Kuwait,Imported opening balance
+Hawally Repair Shop 5,,CUST-1190,0.000,+965 52098950,hawally.repair.shop190@example.com.kw,,45,27973.235,active,,,Shuwaikh,,,Kuwait,Imported opening balance
+Jahra Building Supplies Buyer  Est. 5,,CUST-1191,5285.033,+965 65541702,,,90,35874.198,active,73 Bldg 13,,Ardiya,,,Kuwait,Imported opening balance
+Ahmadi Villa Care 5,,CUST-1192,0.000,+965 93488422,ahmadi.villa.care192@example.com.kw,,0,36083.764,active,,,Shuwaikh,,,Kuwait,
+Fahaheel Home Services 5,,CUST-1193,0.000,+965 87605557,fahaheel.home.services193@example.com.kw,,30,26016.181,active,63 St 7,,Ahmadi,,,Kuwait,
+Al-Khaled General Trading 5,,CUST-1194,344.003,+965 54945769,alkhaled.general.trading194@example.com.kw,,30,10718.505,active,7 Bldg 9,,Shuwaikh,,,Kuwait,
+Al-Nasser Renovation 5,,CUST-1195,"4,836.038",+965 75672528,alnasser.renovation195@example.com.kw,,30,"48,943.492",active,55 Block 20,,Hawally,,,Kuwait,
+AL-OSAIMI MAINTENANCE  EST. 5,,CUST-1196,0.000,+965 51021925,alosaimi.maintenance196@example.com.kw,,30,"28,854.903",active,45 St 5,,Ahmadi,,,Kuwait,Imported opening balance
+First Gulf Interiors  Est. 5,,CUST-1197,5150.642,+965 73989306,first.gulf.interiors197@example.com.kw,,30,20686.984,active,59 Bldg 11,,Ahmadi,,,Kuwait,
+Al-Rashed Villas 5,,CUST-1198,0.000,+965 97113485,alrashed.villas198@example.com.kw,,30,39476.335,active,73 Block 14,,Salmiya,,,Kuwait,
+Al-Sanea Property 5,,CUST-1199,0.000,+965 50890675,alsanea.property199@example.com.kw,,30,23953.421,active,6 St 6,,Salmiya,,,Kuwait,
+Al-Fahad Contracting 6,,CUST-1200,2183.341,+965 96132842,alfahad.contracting200@example.com.kw,,15,26130.797,active,20 Block 15,,Fahaheel,,,Kuwait,Imported opening balance
+Modern Home Fix-It  Est. 6,,CUST-1201,0.000,+965 59249134,modern.home.fixit201@example.com.kw,,60,"13,710.647",active,36 St 7,,Ahmadi,,,Kuwait,Imported opening balance
+Al-Sabah Villa Services 6,,CUST-1202,0.000,+965 70937904,alsabah.villa.services202@example.com.kw,,30,32422.764,active,79 Bldg 18,,Ahmadi,,,Kuwait,
+Bayt Al-Jomard  Est. 6,,CUST-1203,1766.453,+965 57685751,bayt.aljomard203@example.com.kw,,15,"43,710.192",active,92 St 8,,Shuwaikh,,,Kuwait,Imported opening balance
+Al-Duaij Maintenance 6,,CUST-1204,5735.461,+965 79926946,alduaij.maintenance204@example.com.kw,,45,"12,013.834",active,11 St 13,,Salmiya,,,Kuwait,Imported opening balance
+Gulf Builders  Est. 6.,,CUST-1205,1025.244,+965 51485540,gulf.builders205@example.com.kw,,45,31670.749,active,52 Block 11,,Kuwait City,,,Kuwait,Imported opening balance
+SALEM AL-RASHIDI 6,,CUST-1206,0.000,+965 97950242,salem.alrashidi206@example.com.kw,,30,48478.475,active,46 St 12,,Shuwaikh,,,Kuwait,Imported opening balance
+Fahad Al-Otaibi 6,,CUST-1207,0.000,+965 82311931,,,30,3262.290,active,10 Block 7,,Ardiya,,,Kuwait,
+Al-Mutairi Est. 6,,CUST-1208,0.000,+965 90759493,almutairi.est.208@example.com.kw,,45,25165.301,active,12 Bldg 7,,Kuwait City,,,Kuwait,Imported opening balance
+New Kuwait Contracting 6,,CUST-1209,KD 0.000,+965 89452483,new.kuwait.contracting209@example.com.kw,,0,KWD 16347.138,active,41 Block 4,,Ardiya,,,Kuwait,
+Al-Ajmi  Interiors 6,,CUST-1210,2149.259,+965 55802416,alajmi.interiors210@example.com.kw,,30,37760.270,active,33 St 18,,Shuwaikh,,,Kuwait,
+Ahmad Al-Kandari 6,,CUST-1211,982.265,+965 54391122,ahmad.alkandari211@example.com.kw,,15,41869.142,active,62 St 20,,Farwaniya,,,Kuwait,Imported opening balance
+Al-Enezi General Maintenance 6,,CUST-1212,"5,662.812",+965 63788526,alenezi.general.maintenance212@example.com.kw,,90,12508.661,active,99 Bldg 9,,Ahmadi,,,Kuwait,
+Desert Rose Interiors 6,,CUST-1213,301.887,+965 54617220,desert.rose.interiors213@example.com.kw,,30,37310.779,active,71 Block 10,,Kuwait City,,,Kuwait,Imported opening balance
+Al-Anjari Villas 6,,CUST-1214,3380.346,+965 71396661,alanjari.villas214@example.com.kw,,90,"43,011.787",active,72 Block 11,,Rai,,,Kuwait,Imported opening balance
+Al-Roumi Renovation 6,,CUST-1215,"6,196.481",+965 83881628,alroumi.renovation215@example.com.kw,,0,18765.095,active,91 St 1,,Shuwaikh,,,Kuwait,
+Union Facility Services 6,,CUST-1216,KD 474.879,+965 87062431,union.facility.services216@example.com.kw,,60,KWD 6167.366,active,20 Block 11,,Farwaniya,,,Kuwait,
+Al-Yaqout Villas 6,,CUST-1217,3250.076,+965 78529979,alyaqout.villas217@example.com.kw,,45,KWD 16193.791,active,82 Bldg 2,,Fahaheel,,,Kuwait,Imported opening balance
+Al-Qadi Household  Est. 6,,CUST-1218,5155.509,+965 77868716,alqadi.household218@example.com.kw,,60,11362.765,active,78 Bldg 19,,Fahaheel,,,Kuwait,
+Nasser Al-Hajeri  Est. 6,,CUST-1219,4181.892,+965 52804405,nasser.alhajeri219@example.com.kw,,90,34787.332,active,86 Bldg 15,,Salmiya,,,Kuwait,
+Al-Ghanim Home Repairs 6,,CUST-1220,3463.347,+965 73978729,alghanim.home.repairs220@example.com.kw,,90,18839.576,active,16 Bldg 10,,Ahmadi,,,Kuwait,Imported opening balance
+"Al-Bahar Property Services 6,",,CUST-1221,1372.282,+965 98966566,albahar.property.services221@example.com.kw,,45,29644.086,active,51 St 10,,Ahmadi,,,Kuwait,Imported opening balance
+Gulf Facility Management 6,,CUST-1222,0.000,+965 81383442,gulf.facility.management222@example.com.kw,,45,44908.784,active,95 Bldg 11,,Shuwaikh,,,Kuwait,Imported opening balance
+Continental Maintenance Co. 6,,CUST-1223,KD 15.116,+965 75223424,continental.maintenance.co.223@example.com.kw,,0,22408.647,active,96 St 14,,Salmiya,,,Kuwait,Imported opening balance
+Al-Zamil Villas 6,,CUST-1224,"6,897.036",+965 93221724,alzamil.villas224@example.com.kw,,30,16426.220,active,64 St 1,,Jahra,,,Kuwait,
+BIN HINDI PROPERTY 6,,CUST-1225,KWD 7184.480,+965 53346523,bin.hindi.property225@example.com.kw,,30,31730.256,inactive,85 Bldg 4,,Kuwait City,,,Kuwait,
+Al-Wazzan Maintenance 6,,CUST-1226,0.000,+965 67288857,alwazzan.maintenance226@example.com.kw,,90,29514.402,active,100 St 20,,Hawally,,,Kuwait,Imported opening balance
+Al-Marzouq Home 6,,CUST-1227,0.000,+965 84112160,,,15,29039.900,blocked,,,Hawally,,,Kuwait,
+Farwaniya Fix-It Center 6,,CUST-1228,0.000,+965 81400277,farwaniya.fixit.center228@example.com.kw,,0,46679.363,active,62 St 3,,Rai,,,Kuwait,Imported opening balance
+Salmiya Handyman Services 6,,CUST-1229,800.245,+965 88420702,salmiya.handyman.services229@example.com.kw,,45,7779.383,active,47 Bldg 8,,Hawally,,,Kuwait,
+Hawally Repair Shop 6,,CUST-1230,0.000,+965 57612401,hawally.repair.shop230@example.com.kw,,90,18524.260,active,90 Bldg 1,,Rai,,,Kuwait,
+Jahra Building Supplies Buyer  Est. 6,,CUST-1231,2653.359,+965 80135783,jahra.building.supplies.buyer231@example.com.kw,,60,25077.207,active,89 St 13,,Ahmadi,,,Kuwait,Imported opening balance
+ahmadi villa care 6,,CUST-1232,KD 2761.457,+965 88897941,ahmadi.villa.care232@example.com.kw,,15,38706.621,active,3 Bldg 3,,Rai,,,Kuwait,Imported opening balance
+Fahaheel Home Services 6,,CUST-1233,5352.150,+965 60832033,fahaheel.home.services233@example.com.kw,,45,32804.385,blocked,19 Bldg 15,,Ahmadi,,,Kuwait,Imported opening balance
+Al-Khaled General Trading 6,,CUST-1234,6551.461,+965 89676092,alkhaled.general.trading234@example.com.kw,,45,39614.052,active,,,Shuwaikh,,,Kuwait,Imported opening balance
+Al-Nasser Renovation 6  ,,CUST-1235,"2,490.308",+965 67560619,alnasser.renovation235@example.com.kw,,15,KD 37067.294,inactive,60 Block 20,,Kuwait City,,,Kuwait,
+AL-OSAIMI MAINTENANCE 6,,CUST-1236,1614.407,+965 87590605,alosaimi.maintenance236@example.com.kw,,90,41115.151,active,6 St 2,,Jahra,,,Kuwait,Imported opening balance
+First Gulf Interiors 6,,CUST-1237,1802.275,+965 52623735,first.gulf.interiors237@example.com.kw,,60,44782.444,active,55 St 8,,Ahmadi,,,Kuwait,Imported opening balance
+al-rashed villas  est. 6,,CUST-1238,KD 4846.657,+965 79955284,alrashed.villas238@example.com.kw,,15,KWD 44372.007,active,27 St 6,,Salmiya,,,Kuwait,
+Al-Sanea Property 6,,CUST-1239,0.000,+965 76377944,alsanea.property239@example.com.kw,,30,"12,758.672",active,38 Bldg 6,,Rai,,,Kuwait,Imported opening balance
+Al-Fahad Contracting 7,,CUST-1240,KWD 6493.720,+965 59100010,alfahad.contracting240@example.com.kw,,0,36385.509,active,97 Block 7,,Hawally,,,Kuwait,
+Modern Home Fix-It 7,,CUST-1241,4815.810,+965 92288267,modern.home.fixit241@example.com.kw,,60,12497.648,active,53 St 2,,Fahaheel,,,Kuwait,Imported opening balance
+Al-Sabah Villa Services 7,,CUST-1242,5914.763,+965 60246596,alsabah.villa.services242@example.com.kw,,90,"40,167.601",active,,,Farwaniya,,,Kuwait,Imported opening balance
+Bayt Al-Jomard 7,,CUST-1243,0.000,+965 76654697,bayt.aljomard243@example.com.kw,,15,22753.867,active,67 Bldg 12,,Hawally,,,Kuwait,
+Al-Duaij Maintenance  Est. 7,,CUST-1244,488.677,+965 87576339,alduaij.maintenance244@example.com.kw,,0,32488.099,active,68 Block 17,,Rai,,,Kuwait,
+Gulf Builders 7,,CUST-1245,5257.511,+965 65954435,gulf.builders245@example.com.kw,,0,5295.219,active,60 Block 15,,Ardiya,,,Kuwait,
+Salem Al-Rashidi 7,,CUST-1246,0.000,+965 53839504,salem.alrashidi246@example.com.kw,,60,2328.626,active,84 St 13,,Rai,,,Kuwait,
+Fahad Al-Otaibi  Est. 7,,CUST-1247,1579.220,+965 64088082,fahad.alotaibi247@example.com.kw,,45,6914.141,blocked,56 Bldg 6,,Salmiya,,,Kuwait,
+Al-Mutairi Est. 7,,CUST-1248,0.000,+965 62260990,almutairi.est.248@example.com.kw,,0,43340.859,active,,,Farwaniya,,,Kuwait,
+New Kuwait Contracting 7,,CUST-1249,0.000,+965 70810900,new.kuwait.contracting249@example.com.kw,,60,1065.508,active,32 Bldg 7,,Hawally,,,Kuwait,
+Al-Ajmi Interiors 7,,CUST-1250,0.000,+965 91523508,alajmi.interiors250@example.com.kw,,60,KWD 33888.481,active,2 Block 9,,Fahaheel,,,Kuwait,
+Ahmad Al-Kandari 7,,CUST-1251,4652.318,+965 90589787,ahmad.alkandari251@example.com.kw,,30,12234.922,active,99 Block 8,,Ahmadi,,,Kuwait,
+Al-Enezi General Maintenance 7,,CUST-1252,KWD 0.000,+965 86648294,alenezi.general.maintenance252@example.com.kw,,60,KWD 19626.780,active,,,Hawally,,,Kuwait,
+Desert Rose Interiors 7,,CUST-1253,3808.962,+965 54428505,desert.rose.interiors253@example.com.kw,,30,41215.405,active,20 Block 11,,Hawally,,,Kuwait,
+Al-Anjari Villas 7,,CUST-1254,1959.371,+965 97893741,alanjari.villas254@example.com.kw,,30,15391.711,active,66 Bldg 19,,Ahmadi,,,Kuwait,
+"Al-Roumi Renovation 7,",,CUST-1255,2201.981,+965 51023209,alroumi.renovation255@example.com.kw,,0,19986.995,active,3 Block 14,,Hawally,,,Kuwait,Imported opening balance
+Union Facility Services  Est. 7,,CUST-1256,2044.886,+965 86312133,union.facility.services256@example.com.kw,,0,38612.023,active,,,Farwaniya,,,Kuwait,Imported opening balance
+Al-Yaqout Villas  Est. 7,,CUST-1257,7724.716,+965 76651017,,,60,"49,139.985",active,16 St 15,,Jahra,,,Kuwait,Imported opening balance
+ Al-Qadi Household  Est. 7 ,,CUST-1258,0.000,+965 79024388,alqadi.household258@example.com.kw,,90,16159.777,active,84 Block 17,,Ahmadi,,,Kuwait,
+Nasser Al-Hajeri 7,,CUST-1259,5252.581,+965 79580801,nasser.alhajeri259@example.com.kw,,90,23812.407,active,40 Block 18,,Hawally,,,Kuwait,
+Al-Ghanim Home Repairs  Est. 7,,CUST-1260,4204.419,+965 88329155,alghanim.home.repairs260@example.com.kw,,90,2086.003,active,17 Block 1,,Hawally,,,Kuwait,Imported opening balance
+Al-Bahar Property Services  Est. 7,,CUST-1261,KD 0.000,+965 93206248,albahar.property.services261@example.com.kw,,45,42246.652,active,34 Bldg 10,,Kuwait City,,,Kuwait,Imported opening balance
+Gulf Facility Management 7,,CUST-1262,3755.460,+965 74035281,gulf.facility.management262@example.com.kw,,90,49561.545,active,34 Block 3,,Farwaniya,,,Kuwait,
+continental maintenance co.  est. 7,,CUST-1263,"4,329.678",+965 94839586,continental.maintenance.co.263@example.com.kw,,30,3257.772,active,35 St 14,,Jahra,,,Kuwait,
+Al-Zamil Villas 7,,CUST-1264,2364.727,+965 84077239,,,90,1722.737,active,46 Block 6,,Jahra,,,Kuwait,
+Bin Hindi Property 7,,CUST-1265,0.000,+965 61023883,bin.hindi.property265@example.com.kw,,30,KD 44609.766,active,98 Block 15,,Fahaheel,,,Kuwait,
+ Al-Wazzan Maintenance  Est. 7 ,,CUST-1266,877.072,+965 88663404,alwazzan.maintenance266@example.com.kw,,45,8906.899,active,38 Bldg 18,,Fahaheel,,,Kuwait,
+Al-Marzouq Home 7,,CUST-1267,7267.870,+965 71299705,almarzouq.home267@example.com.kw,,45,34168.928,active,94 Block 1,,Hawally,,,Kuwait,Imported opening balance
+Farwaniya Fix-It Center 7,,CUST-1268,0.000,+965 82390387,farwaniya.fixit.center268@example.com.kw,,15,2646.386,active,13 St 11,,Hawally,,,Kuwait,Imported opening balance
+Salmiya Handyman Services 7,,CUST-1269,KWD 0.000,+965 78786559,salmiya.handyman.services269@example.com.kw,,15,40055.097,active,89 Block 17,,Jahra,,,Kuwait,
+Hawally Repair Shop 7,,CUST-1270,1804.563,+965 94508343,,,30,9223.066,active,61 Bldg 1,,Farwaniya,,,Kuwait,
+Jahra Building Supplies Buyer  Est. 7,,CUST-1271,7135.194,+965 59374164,jahra.building.supplies.buyer271@example.com.kw,,0,35059.794,active,72 Bldg 15,,Fahaheel,,,Kuwait,
+Ahmadi Villa Care 7,,CUST-1272,0.000,+965 60423663,ahmadi.villa.care272@example.com.kw,,90,33560.399,active,66 St 3,,Farwaniya,,,Kuwait,
+Fahaheel Home Services 7,,CUST-1273,272.663,+965 78910557,fahaheel.home.services273@example.com.kw,,90,24529.499,active,21 St 4,,Fahaheel,,,Kuwait,
+Al-Khaled General Trading 7,,CUST-1274,3301.393,+965 53182636,alkhaled.general.trading274@example.com.kw,,60,27915.721,active,27 Bldg 18,,Farwaniya,,,Kuwait,Imported opening balance
+Al-Nasser Renovation 7,,CUST-1275,2357.260,+965 85345598,alnasser.renovation275@example.com.kw,,30,2985.454,active,77 Bldg 3,,Rai,,,Kuwait,
+Al-Osaimi Maintenance  Est. 7,,CUST-1276,7331.642,+965 76365688,alosaimi.maintenance276@example.com.kw,,45,41788.806,inactive,34 Block 3,,Fahaheel,,,Kuwait,
+First Gulf Interiors  Est. 7,,CUST-1277,KD 1651.181,+965 82927573,first.gulf.interiors277@example.com.kw,,90,KWD 26541.616,active,31 St 14,,Farwaniya,,,Kuwait,
+Al-Rashed Villas  Est. 7,,CUST-1278,7335.090,+965 66072884,alrashed.villas278@example.com.kw,,0,32921.771,active,33 Bldg 4,,Farwaniya,,,Kuwait,Imported opening balance
+Al-Sanea Property  Est. 7,,CUST-1279,0.000,+965 77117806,alsanea.property279@example.com.kw,,60,21050.031,active,61 St 18,,Hawally,,,Kuwait,Imported opening balance
+  Al-Fahad Contracting 8,,CUST-1280,0.000,+965 99150355,alfahad.contracting280@example.com.kw,,45,42934.772,active,41 Bldg 7,,Ahmadi,,,Kuwait,
+Modern Home Fix-It  Est. 8,,CUST-1281,0.000,+965 89619476,modern.home.fixit281@example.com.kw,,45,18667.338,inactive,4 St 5,,Ardiya,,,Kuwait,
+Al-Sabah Villa Services 8,,CUST-1282,1683.146,+965 54933637,alsabah.villa.services282@example.com.kw,,30,KWD 45351.645,active,19 St 3,,Farwaniya,,,Kuwait,Imported opening balance
+Bayt Al-Jomard  Est. 8,,CUST-1283,6564.605,+965 51192141,bayt.aljomard283@example.com.kw,,90,KWD 5862.176,active,1 Bldg 2,,Rai,,,Kuwait,Imported opening balance
+Al-Duaij Maintenance  Est. 8,,CUST-1284,0.000,+965 57116580,alduaij.maintenance284@example.com.kw,,15,KD 28953.942,active,41 Bldg 5,,Farwaniya,,,Kuwait,
+Gulf Builders 8,,CUST-1285,2594.925,+965 54691513,gulf.builders285@example.com.kw,,90,17256.219,active,,,Shuwaikh,,,Kuwait,Imported opening balance
+Salem Al-Rashidi 8,,CUST-1286,7176.886,+965 91114870,,,45,38802.610,active,5 Block 10,,Fahaheel,,,Kuwait,Imported opening balance
+FAHAD AL-OTAIBI 8,,CUST-1287,KWD 363.508,+965 94781813,fahad.alotaibi287@example.com.kw,,30,36084.039,active,30 Block 19,,Ahmadi,,,Kuwait,
+Al-Mutairi Est. 8,,CUST-1288,"6,314.402",+965 56551726,almutairi.est.288@example.com.kw,,0,"17,895.479",active,31 St 10,,Kuwait City,,,Kuwait,
+New Kuwait Contracting 8,,CUST-1289,0.000,+965 66519172,new.kuwait.contracting289@example.com.kw,,90,"12,295.897",active,53 St 8,,Shuwaikh,,,Kuwait,Imported opening balance
+Al-Ajmi Interiors 8,,CUST-1290,2321.200,+965 51403781,alajmi.interiors290@example.com.kw,,15,20168.003,active,97 Bldg 6,,Salmiya,,,Kuwait,Imported opening balance
+Ahmad Al-Kandari 8,,CUST-1291,6447.840,+965 83955077,ahmad.alkandari291@example.com.kw,,90,15832.393,active,14 St 18,,Salmiya,,,Kuwait,
+  Al-Enezi General Maintenance  Est. 8,,CUST-1292,2009.209,+965 53122745,alenezi.general.maintenance292@example.com.kw,,0,3554.390,active,15 Block 18,,Ardiya,,,Kuwait,Imported opening balance
+Desert Rose Interiors 8,,CUST-1293,7610.080,+965 76183156,desert.rose.interiors293@example.com.kw,,90,"7,875.714",active,28 St 16,,Fahaheel,,,Kuwait,Imported opening balance
+Al-Anjari Villas 8,,CUST-1294,KWD 513.261,+965 50352926,alanjari.villas294@example.com.kw,,90,16533.742,active,43 St 2,,Ardiya,,,Kuwait,
+Al-Roumi Renovation 8,,CUST-1295,0.000,+965 76074085,alroumi.renovation295@example.com.kw,,30,7556.594,active,19 Bldg 8,,Salmiya,,,Kuwait,
+UNION FACILITY SERVICES 8,,CUST-1296,2173.756,+965 50960563,union.facility.services296@example.com.kw,,60,27175.048,active,5 Bldg 17,,Kuwait City,,,Kuwait,
+Al-Yaqout Villas 8,,CUST-1297,4064.221,+965 60974518,alyaqout.villas297@example.com.kw,,15,2692.477,active,25 Bldg 20,,Kuwait City,,,Kuwait,
+Al-Qadi Household  Est. 8,,CUST-1298,2829.467,+965 99103369,alqadi.household298@example.com.kw,,60,17648.124,active,74 Block 6,,Hawally,,,Kuwait,Imported opening balance
+Nasser Al-Hajeri 8,,CUST-1299,0.000,+965 96179643,nasser.alhajeri299@example.com.kw,,30,KWD 36897.438,active,8 St 19,,Ardiya,,,Kuwait,
+Al-Ghanim Home Repairs 8,,CUST-1300,0.000,+965 98554999,alghanim.home.repairs300@example.com.kw,,0,22816.214,active,15 Bldg 9,,Salmiya,,,Kuwait,Imported opening balance
+Al-Bahar Property Services 8,,CUST-1301,3266.046,+965 83390653,albahar.property.services301@example.com.kw,,60,15660.921,active,38 Bldg 11,,Salmiya,,,Kuwait,
+Gulf Facility Management 8,,CUST-1302,0.000,+965 53915738,gulf.facility.management302@example.com.kw,,45,31741.494,inactive,92 St 1,,Rai,,,Kuwait,Imported opening balance
+Continental Maintenance Co. 8,,CUST-1303,7053.971,+965 60089816,continental.maintenance.co.303@example.com.kw,,15,26922.939,active,75 Bldg 11,,Ardiya,,,Kuwait,Imported opening balance
+Al-Zamil Villas 8,,CUST-1304,0.000,+965 64986879,alzamil.villas304@example.com.kw,,45,6327.161,active,2 St 6,,Salmiya,,,Kuwait,
+BIN HINDI PROPERTY  EST. 8,,CUST-1305,0.000,+965 84328590,bin.hindi.property305@example.com.kw,,0,"16,495.421",blocked,94 Block 17,,Ahmadi,,,Kuwait,Imported opening balance
+Al-Wazzan Maintenance  Est. 8,,CUST-1306,0.000,+965 91000427,alwazzan.maintenance306@example.com.kw,,30,14298.084,active,,,Farwaniya,,,Kuwait,
+Al-Marzouq Home 8,,CUST-1307,4956.984,+965 50021047,almarzouq.home307@example.com.kw,,90,42854.063,active,65 St 20,,Fahaheel,,,Kuwait,Imported opening balance
+FARWANIYA FIX-IT CENTER 8,,CUST-1308,1811.898,+965 52095650,farwaniya.fixit.center308@example.com.kw,,15,46723.159,active,,,Rai,,,Kuwait,
+Salmiya Handyman Services  Est. 8,,CUST-1309,7657.719,+965 54263960,salmiya.handyman.services309@example.com.kw,,30,6388.909,active,41 Bldg 16,,Hawally,,,Kuwait,
+Hawally Repair Shop 8,,CUST-1310,KD 6123.952,+965 82257352,hawally.repair.shop310@example.com.kw,,60,28073.407,active,,,Fahaheel,,,Kuwait,
+Jahra Building Supplies Buyer 8,,CUST-1311,KWD 4384.850,+965 65545926,jahra.building.supplies.buyer311@example.com.kw,,0,43660.519,active,73 Bldg 10,,Salmiya,,,Kuwait,
+Ahmadi Villa Care 8,,CUST-1312,252.489,+965 78541745,ahmadi.villa.care312@example.com.kw,,60,"30,752.648",active,81 St 11,,Rai,,,Kuwait,
+Fahaheel Home Services 8,,CUST-1313,0.000,+965 61159591,fahaheel.home.services313@example.com.kw,,60,"39,097.031",active,55 St 15,,Salmiya,,,Kuwait,
+Al-Khaled General Trading 8,,CUST-1314,0.000,+965 62040518,alkhaled.general.trading314@example.com.kw,,0,23983.197,active,45 Bldg 1,,Kuwait City,,,Kuwait,
+Al-Nasser Renovation 8,,CUST-1315,0.000,+965 66727359,alnasser.renovation315@example.com.kw,,45,17830.343,active,14 Bldg 5,,Fahaheel,,,Kuwait,Imported opening balance
+Al-Osaimi Maintenance 8,,CUST-1316,KWD 5838.148,+965 99054188,alosaimi.maintenance316@example.com.kw,,15,42607.440,inactive,95 Bldg 5,,Rai,,,Kuwait,
+First Gulf Interiors 8,,CUST-1317,2261.837,+965 54012502,first.gulf.interiors317@example.com.kw,,60,32282.056,active,83 Bldg 7,,Ahmadi,,,Kuwait,Imported opening balance
+Al-Rashed Villas 8,,CUST-1318,1919.412,+965 66898190,,,90,4126.049,active,93 Block 8,,Jahra,,,Kuwait,
+Al-Sanea Property 8,,CUST-1319,1015.601,+965 77992637,alsanea.property319@example.com.kw,,30,40710.398,active,50 Block 4,,Ardiya,,,Kuwait,Imported opening balance
+Al-Fahad Contracting 9,,CUST-1320,"6,747.734",+965 81067469,,,0,41443.178,active,76 Bldg 1,,Hawally,,,Kuwait,
+  Modern Home Fix-It 9,,CUST-1321,7926.382,+965 85257827,modern.home.fixit321@example.com.kw,,30,41593.874,active,35 St 20,,Fahaheel,,,Kuwait,
+al-sabah villa services  est. 9,,CUST-1322,4861.028,+965 62015475,alsabah.villa.services322@example.com.kw,,45,12370.898,active,,,Farwaniya,,,Kuwait,Imported opening balance
+Bayt Al-Jomard  Est. 9,,CUST-1323,0.000,+965 93734836,,,0,34171.469,active,,,Rai,,,Kuwait,
+Al-Duaij Maintenance  Est. 9,,CUST-1324,KD 0.000,+965 95480998,alduaij.maintenance324@example.com.kw,,60,37852.357,active,70 Block 17,,Jahra,,,Kuwait,Imported opening balance
+GULF BUILDERS 9,,CUST-1325,0.000,+965 64674934,gulf.builders325@example.com.kw,,45,27227.929,active,20 Block 18,,Kuwait City,,,Kuwait,Imported opening balance
+Salem Al-Rashidi 9,,CUST-1326,0.000,+965 61034980,salem.alrashidi326@example.com.kw,,90,KWD 8772.396,active,37 Block 16,,Ahmadi,,,Kuwait,
+fahad al-otaibi 9,,CUST-1327,2411.811,+965 65811162,fahad.alotaibi327@example.com.kw,,60,49136.334,active,41 Block 9,,Fahaheel,,,Kuwait,
+Al-Mutairi Est. 9,,CUST-1328,5179.106,+965 73964910,almutairi.est.328@example.com.kw,,90,49281.121,active,11 St 19,,Rai,,,Kuwait,
+New Kuwait Contracting 9,,CUST-1329,5478.236,+965 68758088,new.kuwait.contracting329@example.com.kw,,30,42243.678,active,36 St 17,,Farwaniya,,,Kuwait,Imported opening balance
+Al-Ajmi Interiors  Est. 9,,CUST-1330,"5,337.253",+965 54182768,alajmi.interiors330@example.com.kw,,30,31467.957,active,82 St 6,,Fahaheel,,,Kuwait,
+Ahmad Al-Kandari  Est. 9,,CUST-1331,157.945,+965 77691196,ahmad.alkandari331@example.com.kw,,45,36732.940,active,24 Bldg 1,,Ahmadi,,,Kuwait,
+Al-Enezi General Maintenance  Est. 9,,CUST-1332,0.000,+965 79731506,alenezi.general.maintenance332@example.com.kw,,90,1741.699,blocked,60 St 1,,Ardiya,,,Kuwait,Imported opening balance
+Desert Rose Interiors 9,,CUST-1333,KWD 0.000,+965 91229611,desert.rose.interiors333@example.com.kw,,60,30744.287,active,11 Bldg 4,,Fahaheel,,,Kuwait,
+Al-Anjari Villas 9,,CUST-1334,0.000,+965 82688694,alanjari.villas334@example.com.kw,,0,8741.876,active,82 St 5,,Ahmadi,,,Kuwait,Imported opening balance
+al-roumi renovation 9,,CUST-1335,0.000,+965 98312089,alroumi.renovation335@example.com.kw,,0,47341.730,active,34 Bldg 3,,Ardiya,,,Kuwait,
+Union Facility Services  Est. 9,,CUST-1336,0.000,+965 96838509,union.facility.services336@example.com.kw,,30,30536.142,active,73 Block 1,,Ardiya,,,Kuwait,
+Al-Yaqout Villas 9,,CUST-1337,0.000,+965 73632171,alyaqout.villas337@example.com.kw,,45,47715.152,active,68 Block 9,,Fahaheel,,,Kuwait,
+Al-Qadi Household 9,,CUST-1338,0.000,+965 63823051,alqadi.household338@example.com.kw,,15,29667.753,active,,,Jahra,,,Kuwait,
+Nasser Al-Hajeri  Est. 9,,CUST-1339,0.000,+965 77930915,nasser.alhajeri339@example.com.kw,,45,42193.286,active,87 St 3,,Hawally,,,Kuwait,
+Al-Ghanim Home Repairs 9,,CUST-1340,"5,760.029",+965 80703469,alghanim.home.repairs340@example.com.kw,,90,8007.066,active,5 Bldg 18,,Hawally,,,Kuwait,
+ Al-Bahar Property Services 9 ,,CUST-1341,0.000,+965 86304965,albahar.property.services341@example.com.kw,,60,809.045,active,19 St 13,,Kuwait City,,,Kuwait,Imported opening balance
+GULF FACILITY MANAGEMENT  EST. 9,,CUST-1342,4572.840,+965 79217900,gulf.facility.management342@example.com.kw,,30,28124.301,active,73 Block 4,,Farwaniya,,,Kuwait,Imported opening balance
+  Continental Maintenance Co.  Est. 9,,CUST-1343,"1,209.495",+965 61818502,continental.maintenance.co.343@example.com.kw,,45,15846.780,active,,,Fahaheel,,,Kuwait,
+Al-Zamil Villas  Est. 9,,CUST-1344,7205.778,+965 94540917,alzamil.villas344@example.com.kw,,0,40867.397,active,10 Block 20,,Salmiya,,,Kuwait,Imported opening balance
+Bin Hindi Property 9,,CUST-1345,1627.621,+965 57450829,bin.hindi.property345@example.com.kw,,90,21337.914,active,67 Bldg 18,,Ardiya,,,Kuwait,
+Al-Wazzan Maintenance 9,,CUST-1346,3589.792,+965 75110306,alwazzan.maintenance346@example.com.kw,,30,KD 41449.685,active,66 Block 19,,Shuwaikh,,,Kuwait,
+Al-Marzouq Home 9,,CUST-1347,3215.467,+965 60996647,,,90,10480.868,active,17 Block 15,,Ahmadi,,,Kuwait,Imported opening balance
+Farwaniya Fix-It Center 9,,CUST-1348,0.000,+965 73380199,farwaniya.fixit.center348@example.com.kw,,45,4695.061,active,45 St 11,,Kuwait City,,,Kuwait,Imported opening balance
+Salmiya Handyman Services 9,,CUST-1349,0.000,+965 87755086,salmiya.handyman.services349@example.com.kw,,60,KD 16335.189,active,93 Bldg 6,,Jahra,,,Kuwait,Imported opening balance
+Hawally Repair Shop 9,,CUST-1350,4366.049,+965 73081909,hawally.repair.shop350@example.com.kw,,0,48170.268,active,89 St 9,,Farwaniya,,,Kuwait,Imported opening balance
+Jahra Building Supplies Buyer 9,,CUST-1351,0.000,+965 73148558,jahra.building.supplies.buyer351@example.com.kw,,60,40635.235,active,91 Block 20,,Salmiya,,,Kuwait,
+Ahmadi Villa Care 9,,CUST-1352,KD 4231.006,+965 53004784,ahmadi.villa.care352@example.com.kw,,30,8697.269,active,,,Hawally,,,Kuwait,
+FAHAHEEL HOME SERVICES 9,,CUST-1353,2365.993,+965 84652806,fahaheel.home.services353@example.com.kw,,60,47248.721,active,37 Block 9,,Jahra,,,Kuwait,
+ Al-Khaled General Trading  Est. 9 ,,CUST-1354,6308.293,+965 84775398,alkhaled.general.trading354@example.com.kw,,0,34443.867,active,,,Rai,,,Kuwait,Imported opening balance
+Al-Nasser Renovation 9,,CUST-1355,3132.170,+965 90992047,alnasser.renovation355@example.com.kw,,60,KWD 29669.659,active,67 Block 16,,Shuwaikh,,,Kuwait,
+Al-Osaimi Maintenance 9,,CUST-1356,3551.530,+965 86500155,alosaimi.maintenance356@example.com.kw,,15,803.921,active,6 Bldg 10,,Rai,,,Kuwait,Imported opening balance
+"First Gulf Interiors 9,",,CUST-1357,KWD 6600.530,+965 93967132,first.gulf.interiors357@example.com.kw,,90,38210.576,active,97 Block 9,,Salmiya,,,Kuwait,Imported opening balance
+ Al-Rashed Villas 9 ,,CUST-1358,0.000,+965 56286356,alrashed.villas358@example.com.kw,,30,KD 6228.601,active,58 Block 9,,Kuwait City,,,Kuwait,
+Al-Sanea Property 9,,CUST-1359,7952.606,+965 59487081,alsanea.property359@example.com.kw,,45,43206.112,active,1 St 2,,Hawally,,,Kuwait,
+Al-Fahad Contracting 10,,CUST-1360,"5,142.462",+965 98618781,alfahad.contracting360@example.com.kw,,0,12142.631,active,90 St 13,,Ahmadi,,,Kuwait,Imported opening balance
+Modern Home Fix-It 10,,CUST-1361,0.000,+965 67862622,modern.home.fixit361@example.com.kw,,60,11640.693,active,82 Block 10,,Fahaheel,,,Kuwait,Imported opening balance
+Al-Sabah Villa Services 10,,CUST-1362,"1,143.836",+965 90474374,alsabah.villa.services362@example.com.kw,,45,43584.867,active,85 St 13,,Hawally,,,Kuwait,Imported opening balance
+Bayt Al-Jomard 10,,CUST-1363,5939.121,+965 90434561,bayt.aljomard363@example.com.kw,,90,15119.199,active,22 Bldg 15,,Farwaniya,,,Kuwait,Imported opening balance
+al-duaij maintenance 10,,CUST-1364,1713.954,+965 64406725,alduaij.maintenance364@example.com.kw,,45,13475.629,blocked,72 St 14,,Ahmadi,,,Kuwait,
+Gulf Builders  Est. 10,,CUST-1365,706.077,+965 72688563,gulf.builders365@example.com.kw,,45,31268.600,active,14 Block 5,,Ardiya,,,Kuwait,
+Salem  Al-Rashidi 10,,CUST-1366,7132.491,+965 59286185,,,60,18887.426,active,,,Kuwait City,,,Kuwait,Imported opening balance
+Fahad Al-Otaibi 10  ,,CUST-1367,5031.334,+965 88196164,fahad.alotaibi367@example.com.kw,,45,"11,423.581",active,6 Block 1,,Shuwaikh,,,Kuwait,Imported opening balance
+Al-Mutairi Est. 10,,CUST-1368,4992.365,+965 74693254,almutairi.est.368@example.com.kw,,30,35821.858,active,51 Bldg 20,,Fahaheel,,,Kuwait,Imported opening balance
+New Kuwait Contracting 10,,CUST-1369,6990.319,+965 62187072,,,60,38633.663,active,49 Bldg 20,,Hawally,,,Kuwait,
+Al-Ajmi Interiors 10,,CUST-1370,4214.506,+965 54356786,alajmi.interiors370@example.com.kw,,45,14217.914,active,100 St 17,,Salmiya,,,Kuwait,
+ahmad al-kandari 10,,CUST-1371,118.835,+965 71344343,ahmad.alkandari371@example.com.kw,,0,40192.709,active,55 Bldg 18,,Farwaniya,,,Kuwait,Imported opening balance
+Al-Enezi General Maintenance  Est. 10,,CUST-1372,6282.124,+965 93707978,alenezi.general.maintenance372@example.com.kw,,30,10807.384,active,60 Bldg 6,,Fahaheel,,,Kuwait,
+Desert Rose Interiors 10,,CUST-1373,0.000,+965 74624345,desert.rose.interiors373@example.com.kw,,90,20471.879,active,21 Block 2,,Farwaniya,,,Kuwait,
+Al-Anjari Villas  Est. 10,,CUST-1374,1336.320,+965 79806229,alanjari.villas374@example.com.kw,,60,27781.772,active,55 Bldg 16,,Hawally,,,Kuwait,
+Al-Roumi Renovation 10.,,CUST-1375,"7,192.088",+965 55244140,alroumi.renovation375@example.com.kw,,0,31582.196,active,54 Bldg 9,,Ardiya,,,Kuwait,
+Union Facility Services 10.,,CUST-1376,596.391,+965 55953422,union.facility.services376@example.com.kw,,90,40829.627,active,20 Bldg 1,,Ardiya,,,Kuwait,
+Al-Yaqout Villas 10,,CUST-1377,7508.331,+965 74360452,alyaqout.villas377@example.com.kw,,0,"40,609.285",active,20 Block 4,,Fahaheel,,,Kuwait,Imported opening balance
+Al-Qadi Household  Est. 10,,CUST-1378,1133.518,+965 97146992,alqadi.household378@example.com.kw,,90,"19,916.395",active,71 Block 5,,Kuwait City,,,Kuwait,Imported opening balance
+Nasser Al-Hajeri  Est. 10,,CUST-1379,0.000,+965 56498046,nasser.alhajeri379@example.com.kw,,60,34294.033,active,77 Block 8,,Farwaniya,,,Kuwait,
+Al-Ghanim Home Repairs 10,,CUST-1380,5024.535,+965 86895933,alghanim.home.repairs380@example.com.kw,,30,31968.982,active,,,Fahaheel,,,Kuwait,Imported opening balance
+Al-Bahar Property Services 10,,CUST-1381,644.072,+965 62851340,albahar.property.services381@example.com.kw,,30,"6,428.063",active,85 St 15,,Ardiya,,,Kuwait,
+Gulf Facility Management  Est. 10,,CUST-1382,KD 6001.741,+965 98358293,gulf.facility.management382@example.com.kw,,60,42833.066,active,76 Block 1,,Hawally,,,Kuwait,Imported opening balance
+Continental Maintenance Co. 10,,CUST-1383,KD 0.000,+965 75267002,,,0,1686.998,active,,,Jahra,,,Kuwait,
+al-zamil villas 10,,CUST-1384,372.209,+965 80694972,alzamil.villas384@example.com.kw,,15,41360.749,active,74 Bldg 14,,Ardiya,,,Kuwait,Imported opening balance
+Bin Hindi Property 10,,CUST-1385,3440.559,+965 96719839,bin.hindi.property385@example.com.kw,,0,11867.597,active,,,Shuwaikh,,,Kuwait,
+Al-Wazzan Maintenance 10,,CUST-1386,0.000,+965 59740494,alwazzan.maintenance386@example.com.kw,,60,33370.030,active,58 Bldg 1,,Shuwaikh,,,Kuwait,Imported opening balance
+Al-Marzouq Home 10,,CUST-1387,0.000,+965 78097995,almarzouq.home387@example.com.kw,,60,17194.973,active,94 St 20,,Rai,,,Kuwait,Imported opening balance
+"Farwaniya  Fix-It Center 10,",,CUST-1388,6274.249,+965 77821072,,,30,42852.274,active,39 St 12,,Kuwait City,,,Kuwait,Imported opening balance
+  Salmiya Handyman Services 10,,CUST-1389,612.406,+965 88705835,salmiya.handyman.services389@example.com.kw,,60,44293.675,active,36 Block 11,,Rai,,,Kuwait,
+Hawally Repair Shop 10,,CUST-1390,0.000,+965 56000864,hawally.repair.shop390@example.com.kw,,90,"43,674.656",active,5 Bldg 3,,Jahra,,,Kuwait,Imported opening balance
+Jahra Building Supplies Buyer 10,,CUST-1391,0.000,+965 90207769,,,0,1320.325,active,73 Bldg 14,,Kuwait City,,,Kuwait,Imported opening balance
+ahmadi villa care 10,,CUST-1392,290.173,+965 97913197,ahmadi.villa.care392@example.com.kw,,15,2668.988,inactive,78 St 17,,Shuwaikh,,,Kuwait,Imported opening balance
+Fahaheel Home Services 10,,CUST-1393,3038.561,+965 93232487,fahaheel.home.services393@example.com.kw,,30,26202.497,active,99 Block 17,,Farwaniya,,,Kuwait,
+Al-Khaled General Trading  Est. 10,,CUST-1394,0.000,+965 90685372,alkhaled.general.trading394@example.com.kw,,45,14563.839,blocked,4 Block 11,,Farwaniya,,,Kuwait,Imported opening balance
+Al-Nasser Renovation 10,,CUST-1395,797.793,+965 68707864,alnasser.renovation395@example.com.kw,,0,48001.700,active,79 St 10,,Ahmadi,,,Kuwait,
+Al-Osaimi Maintenance 10,,CUST-1396,KWD 0.000,+965 77559687,alosaimi.maintenance396@example.com.kw,,15,26867.202,active,90 Block 20,,Salmiya,,,Kuwait,
+First Gulf Interiors  Est. 10,,CUST-1397,2829.192,+965 63042347,first.gulf.interiors397@example.com.kw,,90,KWD 32385.919,active,19 St 18,,Ardiya,,,Kuwait,Imported opening balance
+AL-RASHED VILLAS 10,,CUST-1398,0.000,+965 69489037,alrashed.villas398@example.com.kw,,15,30059.440,active,88 Bldg 15,,Kuwait City,,,Kuwait,Imported opening balance
+Al-Sanea Property 10,,CUST-1399,"2,208.122",+965 63288918,alsanea.property399@example.com.kw,,60,45582.047,active,34 Bldg 16,,Kuwait City,,,Kuwait,
+al-fahad contracting 11,,CUST-1400,KD 0.000,+965 74791925,alfahad.contracting400@example.com.kw,,90,28810.799,active,,,Jahra,,,Kuwait,
+Modern Home Fix-It 11,,CUST-1401,825.229,+965 51378274,,,45,KD 44865.669,active,95 St 9,,Fahaheel,,,Kuwait,
+Al-Sabah Villa Services 11,,CUST-1402,KWD 0.000,+965 72661096,alsabah.villa.services402@example.com.kw,,15,KWD 41343.715,inactive,49 Bldg 8,,Salmiya,,,Kuwait,
+Bayt Al-Jomard 11,,CUST-1403,810.834,+965 84536941,bayt.aljomard403@example.com.kw,,45,21668.618,active,,,Jahra,,,Kuwait,Imported opening balance
+Al-Duaij Maintenance 11,,CUST-1404,0.000,+965 75266569,alduaij.maintenance404@example.com.kw,,15,KD 46937.460,active,6 Block 10,,Hawally,,,Kuwait,Imported opening balance
+Gulf Builders 11,,CUST-1405,4200.431,+965 75473562,gulf.builders405@example.com.kw,,30,49195.882,active,61 Block 10,,Ahmadi,,,Kuwait,Imported opening balance
+Salem Al-Rashidi 11,,CUST-1406,5143.094,+965 69612106,salem.alrashidi406@example.com.kw,,15,4022.669,active,,,Kuwait City,,,Kuwait,
+Fahad Al-Otaibi 11,,CUST-1407,0.000,+965 59491288,fahad.alotaibi407@example.com.kw,,60,"15,469.690",active,1 St 15,,Shuwaikh,,,Kuwait,Imported opening balance
+Al-Mutairi Est. 11,,CUST-1408,3178.733,+965 73471532,almutairi.est.408@example.com.kw,,60,35963.265,active,15 St 9,,Salmiya,,,Kuwait,Imported opening balance
+New Kuwait Contracting 11,,CUST-1409,3474.438,+965 71095478,new.kuwait.contracting409@example.com.kw,,45,34883.537,active,,,Rai,,,Kuwait,
+Al-Ajmi Interiors 11,,CUST-1410,2786.640,+965 59435543,alajmi.interiors410@example.com.kw,,15,44291.549,active,,,Kuwait City,,,Kuwait,
+Ahmad Al-Kandari 11,,CUST-1411,0.000,+965 57412358,ahmad.alkandari411@example.com.kw,,60,"40,391.781",active,98 St 5,,Salmiya,,,Kuwait,
+Al-Enezi General Maintenance 11,,CUST-1412,0.000,+965 65261831,alenezi.general.maintenance412@example.com.kw,,60,11708.168,active,38 Block 5,,Hawally,,,Kuwait,
+Desert Rose Interiors  Est. 11,,CUST-1413,KWD 5806.539,+965 58384834,,,0,45035.071,active,15 St 7,,Salmiya,,,Kuwait,
+al-anjari villas 11,,CUST-1414,0.000,+965 98680021,alanjari.villas414@example.com.kw,,30,13094.987,active,79 St 6,,Ahmadi,,,Kuwait,Imported opening balance
+Al-Roumi Renovation 11,,CUST-1415,0.000,+965 53122783,alroumi.renovation415@example.com.kw,,60,KWD 7299.774,active,86 Bldg 4,,Farwaniya,,,Kuwait,Imported opening balance
+Union Facility Services  Est. 11,,CUST-1416,KWD 494.585,+965 89463442,,,15,9572.442,active,96 Bldg 7,,Farwaniya,,,Kuwait,
+ Al-Yaqout Villas 11 ,,CUST-1417,KWD 0.000,+965 87689831,alyaqout.villas417@example.com.kw,,30,39504.994,active,73 Block 1,,Jahra,,,Kuwait,Imported opening balance
+Al-Qadi Household 11,,CUST-1418,1648.190,+965 62097080,alqadi.household418@example.com.kw,,90,"33,918.746",active,,,Farwaniya,,,Kuwait,
+nasser al-hajeri 11,,CUST-1419,0.000,+965 61593617,nasser.alhajeri419@example.com.kw,,90,11330.157,active,34 St 15,,Kuwait City,,,Kuwait,
+Al-Ghanim Home Repairs 11,,CUST-1420,1504.357,+965 59295793,alghanim.home.repairs420@example.com.kw,,30,20402.320,active,2 St 7,,Salmiya,,,Kuwait,Imported opening balance
+al-bahar property services  est. 11,,CUST-1421,KD 5839.048,+965 64899849,albahar.property.services421@example.com.kw,,60,25331.886,active,48 Bldg 17,,Salmiya,,,Kuwait,
+Gulf Facility Management 11,,CUST-1422,4133.514,+965 55037279,,,45,37592.709,active,4 St 12,,Ahmadi,,,Kuwait,Imported opening balance
+Continental Maintenance Co. 11,,CUST-1423,0.000,+965 62414745,continental.maintenance.co.423@example.com.kw,,30,"20,506.173",active,,,Jahra,,,Kuwait,
+Al-Zamil Villas 11,,CUST-1424,0.000,+965 68019461,alzamil.villas424@example.com.kw,,45,30051.552,active,78 Bldg 5,,Jahra,,,Kuwait,Imported opening balance
+Bin Hindi Property 11,,CUST-1425,KD 0.000,+965 74101763,bin.hindi.property425@example.com.kw,,45,13457.737,active,47 Block 11,,Ahmadi,,,Kuwait,
+Al-Wazzan Maintenance 11,,CUST-1426,4666.692,+965 56882657,alwazzan.maintenance426@example.com.kw,,60,16629.921,active,95 Bldg 13,,Salmiya,,,Kuwait,
+Al-Marzouq Home 11,,CUST-1427,"4,204.205",+965 96874774,almarzouq.home427@example.com.kw,,90,12413.748,active,99 St 10,,Ahmadi,,,Kuwait,
+Farwaniya Fix-It Center 11,,CUST-1428,3789.468,+965 72635095,farwaniya.fixit.center428@example.com.kw,,30,4355.284,active,,,Jahra,,,Kuwait,
+Salmiya Handyman Services 11,,CUST-1429,6530.757,+965 97278455,salmiya.handyman.services429@example.com.kw,,60,"20,811.025",active,66 St 18,,Hawally,,,Kuwait,Imported opening balance
+Hawally Repair Shop 11,,CUST-1430,0.000,+965 90685834,hawally.repair.shop430@example.com.kw,,90,49511.053,active,,,Kuwait City,,,Kuwait,
+Jahra Building Supplies Buyer 11,,CUST-1431,3944.630,+965 65822461,jahra.building.supplies.buyer431@example.com.kw,,90,"31,054.973",active,80 Bldg 15,,Jahra,,,Kuwait,Imported opening balance
+Ahmadi Villa Care 11,,CUST-1432,0.000,+965 82689039,ahmadi.villa.care432@example.com.kw,,90,29243.810,active,78 Bldg 19,,Jahra,,,Kuwait,
+Fahaheel Home Services 11,,CUST-1433,KD 0.000,+965 55637826,fahaheel.home.services433@example.com.kw,,90,35961.385,active,92 St 8,,Kuwait City,,,Kuwait,
+Al-Khaled General Trading 11,,CUST-1434,0.000,+965 74859659,alkhaled.general.trading434@example.com.kw,,90,KWD 1215.770,active,38 Block 10,,Jahra,,,Kuwait,Imported opening balance
+Al-Nasser Renovation  Est. 11,,CUST-1435,0.000,+965 56846576,alnasser.renovation435@example.com.kw,,90,42182.910,active,28 St 1,,Ardiya,,,Kuwait,Imported opening balance
+Al-Osaimi Maintenance 11,,CUST-1436,6162.349,+965 84467234,alosaimi.maintenance436@example.com.kw,,30,868.693,active,59 Bldg 18,,Jahra,,,Kuwait,Imported opening balance
+First Gulf Interiors 11,,CUST-1437,0.000,+965 95929622,first.gulf.interiors437@example.com.kw,,0,35213.985,active,57 Bldg 5,,Ahmadi,,,Kuwait,Imported opening balance
+Al-Rashed Villas 11,,CUST-1438,0.000,+965 99601977,alrashed.villas438@example.com.kw,,0,KD 39598.531,active,47 St 9,,Fahaheel,,,Kuwait,Imported opening balance
+Al-Sanea Property 11,,CUST-1439,0.000,+965 93460382,alsanea.property439@example.com.kw,,0,11370.288,active,48 Bldg 20,,Kuwait City,,,Kuwait,Imported opening balance
+Al-Fahad Contracting 12,,CUST-1440,7085.085,+965 56457531,alfahad.contracting440@example.com.kw,,90,37056.056,active,58 St 11,,Fahaheel,,,Kuwait,
+Modern Home Fix-It 12,,CUST-1441,4848.351,+965 61492500,modern.home.fixit441@example.com.kw,,30,7781.783,active,49 Bldg 11,,Fahaheel,,,Kuwait,Imported opening balance
+Al-Sabah Villa Services 12,,CUST-1442,0.000,+965 70543949,alsabah.villa.services442@example.com.kw,,30,38911.775,active,99 St 3,,Jahra,,,Kuwait,
+Bayt Al-Jomard  Est. 12,,CUST-1443,KD 822.810,+965 98934426,,,45,15709.161,active,28 St 8,,Kuwait City,,,Kuwait,
+Al-Duaij Maintenance  Est. 12.,,CUST-1444,3756.781,+965 54484136,alduaij.maintenance444@example.com.kw,,15,14695.644,active,31 Block 5,,Fahaheel,,,Kuwait,Imported opening balance
+Gulf  Builders  Est. 12,,CUST-1445,"6,315.780",+965 95601548,gulf.builders445@example.com.kw,,60,17951.572,active,,,Fahaheel,,,Kuwait,
+Salem Al-Rashidi 12,,CUST-1446,1262.481,+965 59146134,salem.alrashidi446@example.com.kw,,0,12970.108,active,29 Bldg 17,,Ardiya,,,Kuwait,Imported opening balance
+Fahad Al-Otaibi 12,,CUST-1447,1046.041,+965 72075395,fahad.alotaibi447@example.com.kw,,15,19334.079,active,79 Block 9,,Jahra,,,Kuwait,
+Al-Mutairi Est.  Est. 12,,CUST-1448,KWD 6248.868,+965 66730357,almutairi.est.448@example.com.kw,,45,19162.641,active,,,Fahaheel,,,Kuwait,Imported opening balance
+New Kuwait Contracting  Est. 12,,CUST-1449,5449.313,+965 57972014,new.kuwait.contracting449@example.com.kw,,90,KWD 49218.593,active,91 Bldg 17,,Kuwait City,,,Kuwait,Imported opening balance
+Al-Ajmi Interiors  Est. 12,,CUST-1450,0.000,+965 79270512,alajmi.interiors450@example.com.kw,,60,KD 48971.673,active,47 Block 3,,Ahmadi,,,Kuwait,Imported opening balance
+Ahmad Al-Kandari 12,,CUST-1451,7022.358,+965 61742926,ahmad.alkandari451@example.com.kw,,30,2474.775,active,61 Bldg 16,,Ahmadi,,,Kuwait,Imported opening balance
+Al-Enezi General Maintenance  Est. 12,,CUST-1452,"1,601.488",+965 89755872,alenezi.general.maintenance452@example.com.kw,,90,4313.050,active,22 St 15,,Ardiya,,,Kuwait,Imported opening balance
+Desert Rose Interiors 12,,CUST-1453,KWD 1012.129,+965 79706719,,,45,"19,860.561",active,32 Block 1,,Shuwaikh,,,Kuwait,Imported opening balance
+al-anjari villas 12,,CUST-1454,4007.001,+965 76059975,alanjari.villas454@example.com.kw,,15,17277.249,active,86 Block 17,,Jahra,,,Kuwait,Imported opening balance
+Al-Roumi Renovation 12,,CUST-1455,4781.643,+965 94476176,alroumi.renovation455@example.com.kw,,60,28396.209,active,,,Ahmadi,,,Kuwait,
+Union Facility Services 12,,CUST-1456,0.000,+965 90964753,union.facility.services456@example.com.kw,,60,43359.547,active,92 Bldg 19,,Kuwait City,,,Kuwait,Imported opening balance
+Al-Yaqout Villas  Est. 12,,CUST-1457,KWD 2713.526,+965 70031542,alyaqout.villas457@example.com.kw,,90,32104.427,active,72 Bldg 17,,Hawally,,,Kuwait,Imported opening balance
+Al-Qadi Household 12,,CUST-1458,6371.980,+965 76781292,alqadi.household458@example.com.kw,,30,"30,272.127",active,39 Block 3,,Rai,,,Kuwait,
+Nasser Al-Hajeri 12,,CUST-1459,0.000,+965 75457472,,,60,33582.430,active,25 Block 6,,Rai,,,Kuwait,
+ Al-Ghanim Home Repairs  Est. 12 ,,CUST-1460,0.000,+965 61499952,alghanim.home.repairs460@example.com.kw,,45,26887.332,active,38 Block 12,,Kuwait City,,,Kuwait,Imported opening balance
+"Al-Bahar Property Services  Est. 12,",,CUST-1461,4778.296,+965 51945887,albahar.property.services461@example.com.kw,,30,45516.289,active,94 Bldg 2,,Rai,,,Kuwait,
+Gulf Facility Management 12.,,CUST-1462,566.949,+965 90885253,,,45,36250.353,active,75 Block 12,,Salmiya,,,Kuwait,
+Continental Maintenance Co. 12,,CUST-1463,0.000,+965 56442809,continental.maintenance.co.463@example.com.kw,,90,44915.087,active,85 Block 9,,Ardiya,,,Kuwait,Imported opening balance
+Al-Zamil Villas 12,,CUST-1464,0.000,+965 61031309,alzamil.villas464@example.com.kw,,0,6453.943,active,1 Block 1,,Fahaheel,,,Kuwait,
+Bin Hindi Property  Est. 12,,CUST-1465,7868.392,+965 51140530,bin.hindi.property465@example.com.kw,,0,"19,451.074",active,,,Ardiya,,,Kuwait,
+Al-Wazzan Maintenance 12  ,,CUST-1466,KD 0.000,+965 77105304,,,15,41495.978,active,,,Fahaheel,,,Kuwait,Imported opening balance
+Al-Marzouq Home 12,,CUST-1467,0.000,+965 61679122,almarzouq.home467@example.com.kw,,30,44065.821,active,81 Bldg 12,,Jahra,,,Kuwait,
+Farwaniya Fix-It Center  Est. 12,,CUST-1468,0.000,+965 81053136,farwaniya.fixit.center468@example.com.kw,,45,3876.561,active,46 St 14,,Rai,,,Kuwait,Imported opening balance
+Salmiya Handyman Services 12,,CUST-1469,KD 1791.403,+965 54300008,salmiya.handyman.services469@example.com.kw,,0,35884.726,active,36 Block 10,,Ardiya,,,Kuwait,Imported opening balance
+Hawally Repair Shop 12,,CUST-1470,1351.711,+965 84422369,hawally.repair.shop470@example.com.kw,,60,47182.876,active,2 Bldg 19,,Rai,,,Kuwait,
+Jahra Building Supplies Buyer 12,,CUST-1471,5636.968,+965 86066418,jahra.building.supplies.buyer471@example.com.kw,,60,13357.627,active,12 St 4,,Kuwait City,,,Kuwait,Imported opening balance
+Ahmadi Villa Care 12,,CUST-1472,0.000,+965 58993071,ahmadi.villa.care472@example.com.kw,,15,7915.712,active,,,Jahra,,,Kuwait,
+Fahaheel Home Services  Est. 12,,CUST-1473,2394.718,+965 74991581,fahaheel.home.services473@example.com.kw,,30,29684.292,active,49 Bldg 10,,Rai,,,Kuwait,Imported opening balance
+Al-Khaled General Trading  Est. 12  ,,CUST-1474,0.000,+965 70879261,alkhaled.general.trading474@example.com.kw,,0,14904.833,blocked,89 Block 19,,Shuwaikh,,,Kuwait,Imported opening balance
+al-nasser renovation 12,,CUST-1475,KWD 0.000,+965 99126594,,,90,36911.651,active,98 St 15,,Hawally,,,Kuwait,
+al-osaimi maintenance 12,,CUST-1476,KD 4373.453,+965 86582377,,,60,21560.458,active,,,Fahaheel,,,Kuwait,
+First Gulf Interiors 12,,CUST-1477,0.000,+965 73269400,first.gulf.interiors477@example.com.kw,,45,19675.795,active,70 St 1,,Shuwaikh,,,Kuwait,Imported opening balance
+Al-Rashed Villas 12.,,CUST-1478,0.000,+965 60369208,alrashed.villas478@example.com.kw,,0,19435.634,active,70 Bldg 19,,Farwaniya,,,Kuwait,
+Al-Sanea Property  Est. 12,,CUST-1479,184.102,+965 69080057,alsanea.property479@example.com.kw,,15,42220.449,active,92 St 18,,Farwaniya,,,Kuwait,Imported opening balance
+Al-Fahad Contracting  Est. 13.,,CUST-1480,1956.104,+965 71405727,alfahad.contracting480@example.com.kw,,45,12301.604,active,22 Block 9,,Jahra,,,Kuwait,
+Modern Home Fix-It 13,,CUST-1481,4073.616,+965 91387628,modern.home.fixit481@example.com.kw,,90,38176.605,active,68 Block 4,,Salmiya,,,Kuwait,
+AL-SABAH VILLA SERVICES 13,,CUST-1482,6741.194,+965 65895787,,,15,26747.052,active,9 Bldg 3,,Kuwait City,,,Kuwait,Imported opening balance
+  Bayt Al-Jomard 13,,CUST-1483,KD 3446.919,+965 85303023,bayt.aljomard483@example.com.kw,,60,8462.448,active,36 Bldg 20,,Salmiya,,,Kuwait,Imported opening balance
+Al-Duaij Maintenance 13,,CUST-1484,2390.914,+965 84332197,alduaij.maintenance484@example.com.kw,,0,KWD 21077.405,active,54 St 10,,Farwaniya,,,Kuwait,Imported opening balance
+"gulf builders  est. 13,",,CUST-1485,0.000,+965 62038096,gulf.builders485@example.com.kw,,60,35441.599,active,,,Kuwait City,,,Kuwait,
+Salem Al-Rashidi 13,,CUST-1486,6120.399,+965 92800807,salem.alrashidi486@example.com.kw,,15,18017.748,active,42 Block 13,,Ardiya,,,Kuwait,Imported opening balance
+Fahad Al-Otaibi 13,,CUST-1487,0.000,+965 92322831,fahad.alotaibi487@example.com.kw,,0,13134.654,active,41 St 7,,Ahmadi,,,Kuwait,
+Al-Mutairi Est. 13,,CUST-1488,0.000,+965 60683962,almutairi.est.488@example.com.kw,,45,34874.838,active,59 St 14,,Jahra,,,Kuwait,
+New Kuwait Contracting 13,,CUST-1489,0.000,+965 61471769,new.kuwait.contracting489@example.com.kw,,30,847.019,active,98 Block 18,,Kuwait City,,,Kuwait,
+Al-Ajmi Interiors 13,,CUST-1490,5372.559,+965 57217703,alajmi.interiors490@example.com.kw,,15,KD 35110.482,active,100 St 11,,Ardiya,,,Kuwait,Imported opening balance
+Ahmad Al-Kandari  Est. 13,,CUST-1491,3144.805,+965 98875489,,,90,32316.763,active,86 Bldg 10,,Kuwait City,,,Kuwait,Imported opening balance
+Al-Enezi General Maintenance  Est. 13,,CUST-1492,0.000,+965 81306901,alenezi.general.maintenance492@example.com.kw,,60,23791.964,active,72 Block 2,,Jahra,,,Kuwait,
+Desert Rose Interiors 13,,CUST-1493,0.000,+965 99057828,desert.rose.interiors493@example.com.kw,,90,33337.761,active,15 St 4,,Ahmadi,,,Kuwait,Imported opening balance
+Al-Anjari Villas  Est. 13,,CUST-1494,0.000,+965 84499839,alanjari.villas494@example.com.kw,,45,16052.367,active,86 Block 12,,Salmiya,,,Kuwait,Imported opening balance
+Al-Roumi Renovation 13,,CUST-1495,6687.754,+965 78562457,alroumi.renovation495@example.com.kw,,60,45521.254,active,,,Hawally,,,Kuwait,
+Union Facility Services 13,,CUST-1496,0.000,+965 51182037,union.facility.services496@example.com.kw,,0,47842.256,active,,,Salmiya,,,Kuwait,Imported opening balance
+Al-Yaqout Villas 13,,CUST-1497,4947.016,+965 89633054,alyaqout.villas497@example.com.kw,,15,36822.157,active,65 Block 13,,Kuwait City,,,Kuwait,
+  Al-Qadi Household  Est. 13,,CUST-1498,6559.857,+965 70639551,alqadi.household498@example.com.kw,,15,23491.359,active,46 Block 2,,Ahmadi,,,Kuwait,
+NASSER AL-HAJERI 13,,CUST-1499,0.000,+965 51087428,nasser.alhajeri499@example.com.kw,,90,23061.358,active,73 Block 8,,Hawally,,,Kuwait,Imported opening balance
+Desert Rose Interiors 2,,CUST-9719,0.000,+965 96273212,dup3131@example.com.kw,,60,22015.583,active,,,Rai,,,Kuwait,Imported opening balance
+Bayt Al-Jomard 5,,CUST-9652,0.000,+965 69649873,dup2354@example.com.kw,,90,35885.734,active,9 Bldg 19,,Fahaheel,,,Kuwait,Imported opening balance
+Nasser Al-Hajeri  Est. 10,,CUST-9541,0.000,+965 97063749,dup3489@example.com.kw,,60,34294.033,active,74 Block 8,,Farwaniya,,,Kuwait,
+Al-Zamil Villas,,CUST-9083,0.000,+965 78483555,dup3137@example.com.kw,,90,34505.858,active,27 Block 10,,Salmiya,,,Kuwait,Imported opening balance
+Al-Bahar Property Services  Est. 11,,CUST-9174,0.000,+965 69060117,,,60,25331.886,active,7 Block 4,,Salmiya,,,Kuwait,

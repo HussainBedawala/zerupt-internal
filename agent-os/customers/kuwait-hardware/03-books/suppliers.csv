@@ -1,0 +1,83 @@
+name,nameAlt,code,openingBalance,phone,email,taxNumber,paymentTermDays,status,addressLine1,addressLine2,city,state,postalCode,country,notes
+Al-Sanea W.L.L.,,SUP-1000,6796.843,+965 56287088,alsanea0@example.com.kw,,60,active,67 Block 19,,Ahmadi,,,Kuwait,Imported opening balance
+Al-Rashed W.L.L.,,SUP-1001,4799.347,+965 87181093,alrashed1@example.com.kw,,0,active,,,Shuwaikh,,,Kuwait,Imported opening balance
+Gulf Hardware W.L.L.,,SUP-1002,0.000,+965 85168960,gulf.hardware2@example.com.kw,,60,active,8 Bldg 11,,Ardiya,,,Kuwait,
+al-kuwait building materials est..,,SUP-1003,KWD 0.000,+965 61278176,alkuwait.building.materials3@example.com.kw,,30,active,76 St 7,,Hawally,,,Kuwait,Imported opening balance
+Al-Zamil Trading Co.,,SUP-1004,KWD 0.000,+965 80941996,alzamil4@example.com.kw,,30,active,17 Block 1,,Ahmadi,,,Kuwait,
+National Tools W.L.L.,,SUP-1005,0.000,+965 89822134,national.tools5@example.com.kw,,0,active,81 Block 6,,Farwaniya,,,Kuwait,Imported opening balance
+AL-GHANIM TRADING CO.,,SUP-1006,KWD 5826.927,+965 70983860,alghanim6@example.com.kw,,90,active,55 Bldg 16,,Fahaheel,,,Kuwait,Imported opening balance
+Sultan Center Trading Co.,,SUP-1007,KD 0.000,+965 67394798,sultan.center7@example.com.kw,,45,inactive,1 Bldg 19,,Ardiya,,,Kuwait,Imported opening balance
+Al-Marzouq Trading Est.,,SUP-1008,0.000,+965 80534840,almarzouq8@example.com.kw,,15,active,64 Bldg 17,,Kuwait City,,,Kuwait,Imported opening balance
+Al-Bahar W.L.L.,,SUP-1009,3443.820,+965 63898254,albahar9@example.com.kw,,90,inactive,62 Block 16,,Shuwaikh,,,Kuwait,
+Kuwait Steel W.L.L.,,SUP-1010,6347.377,+965 56018187,kuwait.steel10@example.com.kw,,90,active,32 Block 17,,Ahmadi,,,Kuwait,
+Al-Fahad General Trading Co. W.L.L.,,SUP-1011,5223.403,+965 99896560,alfahad11@example.com.kw,,30,active,54 Bldg 18,,Kuwait City,,,Kuwait,Imported opening balance
+Union Hardware W.L.L.,,SUP-1012,0.000,+965 99069012,union.hardware12@example.com.kw,,15,active,34 St 15,,Farwaniya,,,Kuwait,Imported opening balance
+Al-Qadi Est.,,SUP-1013,0.000,+965 59078170,alqadi13@example.com.kw,,15,active,38 Bldg 18,,Ahmadi,,,Kuwait,Imported opening balance
+Al-Mutawa Trading Est.,,SUP-1014,3116.573,+965 93081813,almutawa14@example.com.kw,,90,active,61 St 14,,Rai,,,Kuwait,
+Gulf Fasteners Trading Co.,,SUP-1015,1011.685,+965 87843399,gulf.fasteners15@example.com.kw,,0,active,66 Bldg 15,,Shuwaikh,,,Kuwait,
+al-ostath general trading co. w.l.l.,,SUP-1016,KWD 2711.399,+965 52515270,alostath16@example.com.kw,,0,active,21 Block 20,,Ardiya,,,Kuwait,Imported opening balance
+Middle East Tools W.L.L.,,SUP-1017,0.000,+965 93732420,middle.east.tools17@example.com.kw,,90,inactive,26 Bldg 12,,Ardiya,,,Kuwait,Imported opening balance
+Al-Wazzan W.L.L.,,SUP-1018,0.000,+965 78539127,alwazzan18@example.com.kw,,15,active,81 Block 15,,Ardiya,,,Kuwait,
+Bin Hindi Est.,,SUP-1019,4597.356,+965 88500078,bin.hindi19@example.com.kw,,60,active,88 St 15,,Hawally,,,Kuwait,
+Al-Duaij Trading Co.,,SUP-1020,1017.576,+965 55941602,alduaij20@example.com.kw,,90,active,21 St 16,,Fahaheel,,,Kuwait,Imported opening balance
+Kuwait Paint General Trading Co. W.L.L.,,SUP-1021,0.000,+965 90150847,kuwait.paint21@example.com.kw,,45,blocked,87 Block 10,,Jahra,,,Kuwait,Imported opening balance
+Al-Hajeri W.L.L.,,SUP-1022,KD 0.000,+965 98666200,alhajeri22@example.com.kw,,0,active,,,Kuwait City,,,Kuwait,
+Al-Roumi General Trading Co. W.L.L.,,SUP-1023,KWD 3471.506,+965 92652376,alroumi23@example.com.kw,,0,active,,,Salmiya,,,Kuwait,
+Al-Sabah Trading Trading Co.,,SUP-1024,0.000,+965 94363925,alsabah.trading24@example.com.kw,,90,active,49 Block 10,,Hawally,,,Kuwait,
+gulf safety supplies est.,,SUP-1025,5419.315,+965 51264340,gulf.safety.supplies25@example.com.kw,,90,active,21 Block 7,,Farwaniya,,,Kuwait,Imported opening balance
+Al-Ajmi General Trading Co. W.L.L.,,SUP-1026,0.000,+965 62981574,alajmi26@example.com.kw,,30,active,,,Ardiya,,,Kuwait,Imported opening balance
+CONTINENTAL HARDWARE GENERAL TRADING CO. W.L.L.,,SUP-1027,3731.331,+965 77128346,continental.hardware27@example.com.kw,,60,active,4 Bldg 17,,Jahra,,,Kuwait,Imported opening balance
+Al-Yaqout Trading Co.,,SUP-1028,"1,844.799",+965 55163357,alyaqout28@example.com.kw,,15,active,79 St 9,,Salmiya,,,Kuwait,
+  Salem Trading Trading Co.,,SUP-1029,1635.594,+965 60993696,salem.trading29@example.com.kw,,60,active,18 Block 11,,Ahmadi,,,Kuwait,Imported opening balance
+al-khaled trading est.,,SUP-1030,3900.031,+965 81238893,alkhaled30@example.com.kw,,0,active,70 St 4,,Ardiya,,,Kuwait,
+Desert Star Hardware W.L.L.,,SUP-1031,6080.368,+965 95101621,desert.star.hardware31@example.com.kw,,15,active,,,Shuwaikh,,,Kuwait,
+Al-Anjari Est.,,SUP-1032,7743.800,+965 93513228,alanjari32@example.com.kw,,45,inactive,39 Bldg 6,,Salmiya,,,Kuwait,Imported opening balance
+Gulf Ironmongery General Trading Co. W.L.L.,,SUP-1033,KWD 0.000,+965 95236361,gulf.ironmongery33@example.com.kw,,30,active,,,Ahmadi,,,Kuwait,Imported opening balance
+al-nasser w.l.l.,,SUP-1034,"2,921.412",+965 80896482,alnasser34@example.com.kw,,90,active,,,Shuwaikh,,,Kuwait,
+Bin Nakhi Trading Est.,,SUP-1035,0.000,+965 58221344,bin.nakhi35@example.com.kw,,60,active,86 Block 14,,Salmiya,,,Kuwait,
+Al-Enezi Est.,,SUP-1036,1961.983,+965 94356873,alenezi36@example.com.kw,,60,active,,,Shuwaikh,,,Kuwait,Imported opening balance
+Kuwait Adhesives W.L.L.,,SUP-1037,0.000,+965 77284586,kuwait.adhesives37@example.com.kw,,0,active,15 St 1,,Rai,,,Kuwait,Imported opening balance
+Al-Osaimi Trading Co.,,SUP-1038,3759.672,+965 82161293,alosaimi38@example.com.kw,,90,active,42 Bldg 19,,Farwaniya,,,Kuwait,
+First Gulf Tools Est.,,SUP-1039,KD 6827.894,+965 61632463,first.gulf.tools39@example.com.kw,,30,active,27 St 5,,Rai,,,Kuwait,Imported opening balance
+Al-Sanea Trading Co. 2,,SUP-1040,KWD 6975.236,+965 53129275,alsanea40@example.com.kw,,15,active,57 Bldg 1,,Hawally,,,Kuwait,Imported opening balance
+Al-Rashed W.L.L. 2,,SUP-1041,"6,091.944",+965 75696620,alrashed41@example.com.kw,,0,active,12 St 1,,Shuwaikh,,,Kuwait,
+gulf hardware trading est. 2,,SUP-1042,7785.808,+965 56326328,gulf.hardware42@example.com.kw,,15,active,15 St 10,,Farwaniya,,,Kuwait,
+Al-Kuwait Building Materials Trading Est. 2,,SUP-1043,0.000,+965 55781167,alkuwait.building.materials43@example.com.kw,,30,active,58 Block 12,,Salmiya,,,Kuwait,Imported opening balance
+AL-ZAMIL TRADING CO. 2,,SUP-1044,0.000,+965 84070396,alzamil44@example.com.kw,,45,inactive,,,Ardiya,,,Kuwait,
+National Tools W.L.L. 2,,SUP-1045,784.387,+965 96941548,national.tools45@example.com.kw,,45,active,9 Block 18,,Fahaheel,,,Kuwait,Imported opening balance
+Al-Ghanim W.L.L. 2,,SUP-1046,91.137,+965 59166038,alghanim46@example.com.kw,,45,active,,,Ardiya,,,Kuwait,Imported opening balance
+Sultan Center General Trading Co. W.L.L. 2,,SUP-1047,0.000,+965 75228679,sultan.center47@example.com.kw,,45,active,19 St 7,,Salmiya,,,Kuwait,Imported opening balance
+Al-Marzouq Trading Co. 2,,SUP-1048,0.000,+965 71724646,almarzouq48@example.com.kw,,90,active,35 Bldg 17,,Farwaniya,,,Kuwait,Imported opening balance
+Al-Bahar W.L.L. 2,,SUP-1049,3956.143,+965 79375098,,,90,active,,,Kuwait City,,,Kuwait,
+Kuwait Steel Est. 2,,SUP-1050,"6,848.896",+965 61379565,kuwait.steel50@example.com.kw,,45,active,37 St 18,,Fahaheel,,,Kuwait,Imported opening balance
+"Al-Fahad Trading Co. 2,",,SUP-1051,1019.155,+965 56128967,alfahad51@example.com.kw,,0,inactive,,,Fahaheel,,,Kuwait,Imported opening balance
+Union Hardware W.L.L. 2,,SUP-1052,KD 384.037,+965 94201751,union.hardware52@example.com.kw,,60,active,,,Ahmadi,,,Kuwait,
+Al-Qadi Est. 2,,SUP-1053,7521.664,+965 89498340,alqadi53@example.com.kw,,45,active,,,Shuwaikh,,,Kuwait,Imported opening balance
+Al-Mutawa General Trading Co. W.L.L. 2,,SUP-1054,6529.375,+965 50566955,almutawa54@example.com.kw,,90,active,52 Block 10,,Jahra,,,Kuwait,
+Gulf Fasteners Trading Est. 2,,SUP-1055,KWD 0.000,+965 53064512,gulf.fasteners55@example.com.kw,,90,active,62 St 2,,Kuwait City,,,Kuwait,Imported opening balance
+Al-Ostath Trading Co. 2,,SUP-1056,2541.641,+965 59774452,alostath56@example.com.kw,,45,active,,,Jahra,,,Kuwait,
+Middle East Tools General Trading Co. W.L.L. 2,,SUP-1057,0.000,+965 68050111,middle.east.tools57@example.com.kw,,60,active,96 Bldg 3,,Ardiya,,,Kuwait,
+Al-Wazzan Est. 2,,SUP-1058,0.000,+965 80803987,alwazzan58@example.com.kw,,60,inactive,23 Block 18,,Farwaniya,,,Kuwait,Imported opening balance
+Bin Hindi Est. 2,,SUP-1059,4427.446,+965 59396850,bin.hindi59@example.com.kw,,15,active,30 St 4,,Farwaniya,,,Kuwait,Imported opening balance
+AL-DUAIJ TRADING EST. 2,,SUP-1060,5616.035,+965 72465432,alduaij60@example.com.kw,,45,inactive,28 Block 4,,Farwaniya,,,Kuwait,
+Kuwait Paint W.L.L. 2,,SUP-1061,0.000,+965 64862093,kuwait.paint61@example.com.kw,,0,active,18 Bldg 4,,Farwaniya,,,Kuwait,
+Al-Hajeri Trading Co. 2,,SUP-1062,269.867,+965 78204377,alhajeri62@example.com.kw,,0,active,,,Ardiya,,,Kuwait,
+Al-Roumi Trading Co. 2,,SUP-1063,0.000,+965 94527710,alroumi63@example.com.kw,,90,active,68 St 1,,Shuwaikh,,,Kuwait,
+Al-Sabah Trading W.L.L. 2,,SUP-1064,0.000,+965 83288626,alsabah.trading64@example.com.kw,,15,active,99 Block 8,,Hawally,,,Kuwait,Imported opening balance
+gulf safety supplies w.l.l. 2,,SUP-1065,0.000,+965 84603149,,,15,active,69 St 17,,Rai,,,Kuwait,Imported opening balance
+Al-Ajmi Est. 2  ,,SUP-1066,0.000,+965 53097012,alajmi66@example.com.kw,,90,active,,,Ardiya,,,Kuwait,
+Continental Hardware Trading Est. 2,,SUP-1067,7371.354,+965 84435581,continental.hardware67@example.com.kw,,15,active,12 St 19,,Jahra,,,Kuwait,Imported opening balance
+AL-YAQOUT  W.L.L. 2,,SUP-1068,0.000,+965 74016747,,,45,active,,,Ardiya,,,Kuwait,
+Salem Trading Trading Est. 2,,SUP-1069,7523.990,+965 82045350,salem.trading69@example.com.kw,,30,blocked,,,Fahaheel,,,Kuwait,
+Al-Khaled General Trading Co. W.L.L. 2,,SUP-1070,6566.294,+965 52386669,alkhaled70@example.com.kw,,60,active,26 Block 4,,Fahaheel,,,Kuwait,Imported opening balance
+Desert Star Hardware Trading Co. 2,,SUP-1071,4879.683,+965 96718150,,,45,active,20 Bldg 11,,Salmiya,,,Kuwait,Imported opening balance
+Al-Anjari Est. 2  ,,SUP-1072,4999.555,+965 87170140,alanjari72@example.com.kw,,90,active,63 St 20,,Rai,,,Kuwait,
+gulf ironmongery trading est. 2,,SUP-1073,7910.196,+965 97968029,gulf.ironmongery73@example.com.kw,,90,active,21 St 20,,Shuwaikh,,,Kuwait,Imported opening balance
+Al-Nasser  W.L.L. 2,,SUP-1074,0.000,+965 84965514,alnasser74@example.com.kw,,60,active,29 St 9,,Shuwaikh,,,Kuwait,Imported opening balance
+Bin  Nakhi General Trading Co. W.L.L. 2,,SUP-1075,1267.775,+965 62823210,bin.nakhi75@example.com.kw,,45,active,46 Bldg 2,,Hawally,,,Kuwait,Imported opening balance
+Al-Enezi W.L.L. 2,,SUP-1076,KWD 5909.195,+965 96660342,alenezi76@example.com.kw,,30,active,42 St 20,,Farwaniya,,,Kuwait,Imported opening balance
+Kuwait Adhesives General Trading Co. W.L.L. 2,,SUP-1077,0.000,+965 54489865,kuwait.adhesives77@example.com.kw,,45,active,48 St 16,,Hawally,,,Kuwait,Imported opening balance
+Al-Osaimi General Trading Co. W.L.L. 2,,SUP-1078,6481.923,+965 85347273,alosaimi78@example.com.kw,,45,active,23 St 2,,Kuwait City,,,Kuwait,
+first gulf tools trading co. 2,,SUP-1079,KWD 0.000,+965 98981692,first.gulf.tools79@example.com.kw,,45,active,,,Rai,,,Kuwait,
+Sultan Center Trading Co.,,SUP-9458,0.000,+965 83438802,dup6166@example.com.kw,,45,active,70 St 10,,Ardiya,,,Kuwait,
+Al-Bahar W.L.L.,,SUP-9794,0.000,+965 90830877,dup4395@example.com.kw,,90,active,16 Block 11,,Shuwaikh,,,Kuwait,Imported opening balance

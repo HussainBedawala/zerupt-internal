@@ -122,7 +122,7 @@ erp/
 
 ## Drizzle Migrations
 
-Schema in `packages/db/src/schema/` (tenant) and `packages/db-admin/src/schema/` (admin); each has its own `drizzle.config.ts`. Env: `DATABASE_TENANT_URL` → `zerupt_tenant_dev`, `DATABASE_ADMIN_URL` → `zerupt_admin`.
+Schema in `packages/db/src/schema/` (tenant) and `packages/db-admin/src/schema/` (admin); each has its own `drizzle.config.ts`. Migrator env (the DIRECT, non-pooled URLs): `DIRECT_URL_TENANT` → `zerupt_tenant_dev`, `DIRECT_URL_ADMIN` → `zerupt_admin`. **`DATABASE_*_URL` are the POOLED runtime URLs and are NOT read by drizzle-kit** — setting one leaves the config falling through to `.env`, which migrates a different database and still exits 0. Each config now prints `[drizzle:tenant] target database "..." on host "..."` before applying; read that line every time.
 
 ```bash
 cd /Users/hus3ain/Development/Zerupt/erp/packages/db   # or db-admin

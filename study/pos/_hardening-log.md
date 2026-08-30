@@ -56,7 +56,7 @@ inventory/GL listeners. The gaps are in correctness holes, UX, and missing "prop
 | # | Layer | Core scope |
 |---|-------|------------|
 | 0 | Register/shift + cash integrity | `pos_cash_movements.approvedById` NOT NULL + service guard; denomination-based **blind close** UI; X-report (mid-shift); Z-report `expectedCash` **void-exclusion** fix; pay-in/out reason codes |
-| 1 | Transaction lifecycle + three-way tie-out | `grandTotal = subtotal+tax−discount` DB CHECK; `costAtSale=0` guard/flag; `pos_receipts` row-semantics fix (row at first print, reprintCount starts 1); tie-out regression tests; scan-anywhere; price-check mode |
+| 1 | Transaction lifecycle + three-way tie-out | `grandTotal = subtotal+tax−discount` app-level assertion in `pay()` (DB CHECK added later, mig 0309); `costAtSale=0` guard/flag; `pos_receipts` row-semantics fix (row at first print, reprintCount starts 1); tie-out regression tests; scan-anywhere; price-check mode |
 | 2 | Payments / tender (+ **layout BUILD↔SETTLE**) | **split/multi-tender** inline UI + running remaining; quick-cash denom buttons; giant dwelling CHANGE DUE; `changeGiven>0` blocked on non-cash (DB CHECK); block/guard gift_card+store_credit (no backing table); cash rounding per market |
 | 3 | Discounts / promotions | order-level discount; **approval gate (PIN + threshold)** for line & order discount; promo/coupon entry (scope-dependent) |
 | 4 | Returns / exchanges | **no-receipt return** (manager PIN, store-credit refund, current-price basis); returns-through-main-cart; in-cart return lookup + scan-receipt-QR; return reversal tie-out |

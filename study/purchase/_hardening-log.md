@@ -114,3 +114,22 @@ adapter field drops) — that is exactly why the source-scanning enum-parity gua
 ### Debt noted
 Five near-identical private approval-toggle helpers now exist (payment/bill/return/invoice/refund).
 One shared `ApprovalToggleService` is the right consolidation once those files are free.
+
+---
+
+## 2026-09-02: bill-matched receipt payable audit
+
+A code-level audit of `has_supplier_invoice` (bill-matched vs accrual GRN) surfaced one already-fixed
+defect and three open ones.
+
+| # | Finding | Status |
+|---|---|---|
+| 1 | A bill-matched receipt (`has_supplier_invoice = true`) credits Trade Payables (2111) directly and never produces a `purchase_invoices` row (`assertGrnsBillable` refuses to bill it). Supplier Payments allocates only against `purchaseInvoiceId`, so that payable was structurally unpayable. | OPEN — decided fix in progress: generalise the Direct Purchase pattern so every receipt always accrues into 2121, and `hasSupplierInvoice = true` additionally composes a real, payable bill through the same shared machinery in the same step. |
+| 2 | Purchase return against a bill-matched GRN posted to the wrong control account: `resolveMatchedFractionByLineId` scored the split from `grn_lines.billed_qty` alone, which a bill-matched receipt never populates, so it always scored "fully accrual" and debited 2121 — an account the receipt never credited. 2121 went negative, 2111 stayed credited forever, and the receipt's input tax was never reversed. | FIXED same session in `purchase-returns.service.ts`: the split now asks (a) which account the receipt credited (`has_supplier_invoice`), then (b) only on the accrual path, how much has since been billed (`billed_qty`). Regression test `EDGE 10c`. |
+| 3 | Blocked input tax on a bill-matched receipt diverges from the cost pool: recoverable tax is excluded from inventory cost, but the divergence isn't reconciled the same way the accrual path reconciles it at bill time. | OPEN, being fixed separately. |
+| 4 | Outbox joint-failure exposure: `@OnEvent suppressErrors: true` on the GRN/bill listener pair can silently drop one leg of a two-document posting (receipt + bill) under the generalised-accrual design, the same class of gap `runDurableGated` was built to close elsewhere in the codebase. | OPEN, being fixed separately. |
+
+Docs corrected for staleness found during this audit: `layer-5-payments-returns/04-purchase-returns.md`
+(H4 wrongly asserted the return debited 2111 on a matched GRN), `layer-2-grn-receipt/04-gr-ir-accrual.md`,
+`layer-2-grn-receipt/05-dual-path-receipt.md`, `agent-os/product/modules/purchase/03-goods-received-note.md`,
+`agent-os/product/modules/accounting/07-event-mappings.md`.

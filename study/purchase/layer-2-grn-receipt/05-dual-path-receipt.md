@@ -14,6 +14,24 @@
 | `hasSupplierInvoice` on GRN | User-specified | Always `false` (accrual path; bill then clears 2121) |
 | Document numbers | User sees GRN-XXXX and PO-XXXX | User sees only PINV-XXXX (GRN number is internal, PO is DP- placeholder) |
 
+## When To Use Which (previously undocumented, reverse-engineered from the code)
+
+There is no in-product guidance choosing between the two paths; the distinction is real and
+load-bearing but only existed in code until now:
+
+- **Formal Path (PO → GRN → bill)** — for PO-driven receiving that needs a three-way match:
+  ordering ahead, partial/staged receipts against one PO, receiving discrepancies (qty/price)
+  that must be reconciled against what was ordered, and any workflow where a separate approver
+  raises the PO before goods arrive.
+- **Direct Purchase Path** — for no-PO, single-screen quick entry: walk-in supplier purchases,
+  small/ad-hoc buys, or any case where the goods and the "order" arrive at the same moment and a
+  formal PO would just be paperwork after the fact. Optimized for an inventory-only shopkeeper who
+  wants stock in and (optionally) paid in one save.
+
+Both paths converge on the same ledger machinery (GRN confirm + bill compose), so neither is a
+second accounting engine — the choice is purely about how much process ceremony the purchase
+needs.
+
 ## Formal Path Flow
 
 ```
@@ -88,7 +106,13 @@ CR  AP 2111
 `direct-purchase.service.ts:219`:
 > "The bill then clears 2121 + posts input tax + CR AP 2111. Net ledger equals the matched-receipt outcome AND yields a payable bill to settle (fromGrn requires an accrual GRN)."
 
-If `hasSupplierInvoice = true` were used, the GRN confirm would immediately CR AP 2111 and DR Input Tax — but then bill confirm would try to debit 2121 (clearing) with zero `accrualClearedAmount`. The split avoids any double-posting risk.
+If `hasSupplierInvoice = true` were used, the GRN confirm would immediately CR AP 2111 and DR Input Tax — but then bill confirm would try to debit 2121 (clearing) with zero `accrualClearedAmount`. The split avoids any double-posting risk. It also sidesteps a real defect that `hasSupplierInvoice = true` GRNs have on the formal PO→GRN path today: `assertGrnsBillable` refuses to ever bill a matched receipt, and Supplier Payments only allocates against a bill, so a matched receipt's payable was structurally unpayable (see `04-gr-ir-accrual.md`).
+
+**DECIDED TARGET (implementation in progress):** this Direct Purchase pattern — always accrue into
+2121, then compose the bill through the same shared machinery — is being generalised to EVERY
+GRN. Once shipped, `hasSupplierInvoice = true` on a formal GRN will mean "compose the bill in the
+same step" rather than "skip the accrual and credit 2111 directly," which removes the asymmetry
+this section describes. See `study/purchase/_hardening-log.md`.
 
 ### Approval Threshold Gate
 

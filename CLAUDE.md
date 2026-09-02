@@ -47,6 +47,7 @@ Most code here is written by delegated subagents, and they do NOT reliably inher
 
 - When you delegate an **implementation** task (writing / refactoring / fixing code — e.g. general-purpose, `build-error-resolver`, `tdd-guide`), you MUST paste the lazy-first ladder + the reuse targets above into the subagent's prompt. Assume the subagent starts blank.
 - **Do NOT** put lazy/minimal framing into **reviewer or auditor** subagents (`code-reviewer`, `accounting-reviewer`, `security-reviewer`, `nestjs-reviewer`, `database-reviewer`, etc.). They must stay maximally paranoid. Lazy is for building — never for guarding money / auth / tenant paths.
+- **Subagents WRITE tests, they do not RUN them.** Every delegation prompt must say so. No typecheck / lint / i18n:check / repeated verification passes either — the main loop runs one targeted pass at the end, on a settled tree (a suite run mid-flight reads other agents' half-written files and produces phantom failures). Ask the agent for an inventory of what it WROTE vs actually RAN, and forbid claiming a test passes it never executed. **Never ask for "test counts" or "confirm it's green"** — that instruction alone causes the run-loop. If a task genuinely needs iteration (e.g. realigning positional DB mocks), name the ONE suite and cap the runs (3 max).
 
 ### Never lazy about (non-negotiable, whatever the rung)
 

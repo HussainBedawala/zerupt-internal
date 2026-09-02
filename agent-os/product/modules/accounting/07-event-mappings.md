@@ -157,7 +157,16 @@ CR  Trade Receivables                 [full invoice amount]
 
 ### `purchase.grn.confirmed` — Goods Received
 
-**With supplier invoice (matched):**
+> **DECIDED TARGET (implementation in progress):** the "matched" path below made a
+> bill-matched receipt's payable structurally unpayable — Supplier Payments allocates only
+> against a `purchase_invoices` row, and `assertGrnsBillable` refuses to ever bill a receipt
+> that already credited 2111 directly. The decided fix: every GRN confirm always accrues into
+> GRN Accrual (2121) as below, and `hasSupplierInvoice = true` additionally composes a real
+> `purchase_invoices` row through the same shared machinery in the same step, so it still ends
+> up with a payable bill. See `study/purchase/_hardening-log.md` and
+> `purchase/03-goods-received-note.md`.
+
+**With supplier invoice (matched — being replaced, see note above):**
 ```
 DR  Merchandise Inventory (1141)      [net purchase, FN]
 DR  Input Tax Recoverable (1162)      [tax, FN]

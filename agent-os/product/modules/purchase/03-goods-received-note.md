@@ -14,7 +14,7 @@
 | `status` | enum | `Draft`, `Confirmed` |
 | `currency` | string | From PO |
 | `exchangeRate` | decimal | Rate at GRN confirmation |
-| `hasSupplierInvoice` | boolean | If false → accrual posting |
+| `hasSupplierInvoice` | boolean | **DECIDED TARGET, not yet shipped** — a WORKFLOW choice only ("bill it now" vs "bill it when the invoice arrives"). Every receipt accrues into GRN Accrual 2121 the same way; `true` additionally composes the bill through the same shared code in the same step. See "Accrual vs matched" below. |
 | `supplierInvoiceNumber` | string | If matched |
 | `subtotal` | decimal | |
 | `taxTotal` | decimal | |
@@ -82,7 +82,18 @@ On `Draft → Confirmed`:
 4. Update PO line `receivedQty` += GRN line `receivedQty`
 5. PO status auto-transitions if applicable
 
-**Accrual vs matched:** If `hasSupplierInvoice = false`, accounting posts to GRN Accrual (2121). When invoice arrives later, accrual is reversed and Trade Payables (2111) is credited. See `accounting/07-event-mappings.md`.
+**Accrual vs matched (DECIDED TARGET — implementation in progress, see `study/purchase/_hardening-log.md`):**
+As shipped today, `hasSupplierInvoice = true` makes the receipt credit Trade Payables (2111)
+directly, and `false` credits GRN Accrual (2121) for a later bill to clear. This made
+`hasSupplierInvoice` an accounting axis, and a bill-matched receipt (`true`) can never be billed
+(`assertGrnsBillable` refuses it) — so its payable was structurally impossible to pay through
+Supplier Payments, which allocates only against `purchaseInvoiceId`.
+
+The decided fix generalises the Direct Purchase pattern: EVERY receipt takes the accrual path
+(always credits 2121), and `hasSupplierInvoice = true` additionally composes the bill through the
+same shared machinery in one step, so a matched receipt still ends up with a real, payable
+`purchase_invoices` row. `hasSupplierInvoice` becomes purely a workflow choice — bill immediately
+vs. bill later — never a different ledger path. See `accounting/07-event-mappings.md`.
 
 ---
 

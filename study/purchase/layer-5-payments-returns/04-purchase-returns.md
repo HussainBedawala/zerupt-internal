@@ -93,11 +93,26 @@ The 1192 clearing account nets to zero across both JEs. This prevents the AP-sid
 
 ### H4 — Source-GRN Split
 
-The AP debit must reverse the SAME control account the receipt originally credited:
-- `hasSupplierInvoice = true` (matched GRN) → receipt credited 2111 → return debits 2111.
-- `hasSupplierInvoice = false` (accrual-only GRN) → receipt credited 2121 → return debits 2121.
+The AP debit must reverse the SAME control account the receipt originally credited. As originally
+written, the split (`resolveMatchedFractionByLineId`) scored this from `grn_lines.billed_qty`
+alone, which is a defect: a bill-matched receipt (see below) never accrues `billed_qty`, so it
+always scored 0 = "fully accrual" and debited 2121 — an account the receipt never credited. 2121
+went negative, 2111 stayed credited forever, and the input tax the receipt claimed was never
+reversed.
 
-Resolved in `resolveGrnInvoiceFlags` (`service.ts:796`) after confirm, passed in the event payload.
+**Fixed.** The split now asks two questions in order:
+1. Which control account did the receipt actually credit? (`has_supplier_invoice`, the same
+   question `resolveGrnCounterpartLeg` answers for confirm/void/cost-correction.)
+2. Only on the accrual path, how much has since been billed? (`billed_qty` — never the flag.)
+
+So:
+- `hasSupplierInvoice = true` (bill-matched GRN) → receipt credited 2111 directly → return debits 2111.
+- `hasSupplierInvoice = false` (accrual GRN) → receipt credited 2121; the billed portion has since
+  moved to 2111 via the bill → return splits the debit across 2121 (unbilled) and 2111 (billed) by
+  `billed_qty`.
+
+Regression test: `EDGE 10c` in `purchase-returns.service.spec.ts`. Resolved in
+`resolveGrnInvoiceFlags` (`service.ts:796`) after confirm, passed in the event payload.
 
 ## Dual Path
 

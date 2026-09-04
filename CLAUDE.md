@@ -162,6 +162,7 @@ Vitest for web/shared. **`pnpm --filter @zerupt/web test -- <path>` does NOT fil
 - **Validate with the real parser, never string surgery** — a protocol-relative URL fix using `startsWith` left `/\evil.com` open because WHATWG normalises backslash to slash. Parse with `URL`, then check the parsed parts
 - **Validate layout/format constants against the WORST-CASE country**, never the launch customer's. A 96px column floor looked perfect in Kuwait (KWD, no tax) and broke every Indian GST invoice (more columns, 2dp)
 - **`check-drift.sh` exit code misleads through a pipe** — `... | tail` reports 0 while the checker itself exits 1. Read the violation-count line, or check `_arch_check.py`'s own exit code. Run it from the ROOT repo, not `erp/`
+- **Overflow clipping only contains descendants whose containing block is inside the clipper** — an absolutely positioned descendant with no positioned ancestor (every `sr-only` element, e.g. a chart's accessible data list) resolves against the initial containing block, escapes the shell's `overflow-hidden`/`overflow-clip`, and grows the document scroll height (whole app shell scrolls up, black void below). The shell root and `<main>` carry `relative` for this; pinned by `shell/app-shell.test.ts`
 - **Translations** — `en/` is source of truth; `pnpm --filter @zerupt/web i18n:check` verifies ar/en parity
 - **Code review** — fix all findings (CRITICAL→LOW) same session. Write to `erp/.review-findings.md` (gitignored), fix one by one, delete when done.
 

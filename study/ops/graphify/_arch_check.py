@@ -24,7 +24,12 @@ from collections import defaultdict
 LAYERS = [
     (0, "accounting", re.compile(r"apps/api/src/(journal-entries|fiscal-period|accounts|accounting|general-ledger|trial-balance|chart-of-accounts|close-management|journal[-/]|ledger)")),
     (0, "inventory",  re.compile(r"apps/api/src/(inventory|stock[-/]|batch)")),
-    (1, "upper",      re.compile(r"apps/api/src/(pos|sales|purchase|grn|credit-note)")),
+    # `expenses` is tier 1 like every other document module. It was invisible to
+    # this checker when the module was added (matching no regex, layer_of ->
+    # None), so accounting -> expenses imports would have passed silently. The
+    # module is top level precisely so it does NOT depend on suppliers/bills; it
+    # must still point DOWN toward accounting, never be depended on BY it.
+    (1, "upper",      re.compile(r"apps/api/src/(pos|sales|purchase|expenses|grn|credit-note)")),
 ]
 DEP_RELATIONS = {"imports", "imports_from", "calls"}
 

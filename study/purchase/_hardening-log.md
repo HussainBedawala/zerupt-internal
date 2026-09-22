@@ -133,3 +133,28 @@ Docs corrected for staleness found during this audit: `layer-5-payments-returns/
 (H4 wrongly asserted the return debited 2111 on a matched GRN), `layer-2-grn-receipt/04-gr-ir-accrual.md`,
 `layer-2-grn-receipt/05-dual-path-receipt.md`, `agent-os/product/modules/purchase/03-goods-received-note.md`,
 `agent-os/product/modules/accounting/07-event-mappings.md`.
+
+---
+
+## 2026-09-20: index rebuild lock window (migrations 0397/0398)
+
+Migrations `0397_partial_unique_purchase_order_idempotency_key` and
+`0398_partial_unique_direct_sales_idempotency_key` each `DROP INDEX` then `CREATE UNIQUE INDEX`
+to add the void/cancel predicate required by
+`project_void_must_release_user_identifiers` (a unique index over a user-typed identifier must
+exclude voided rows, or a void burns that identifier forever).
+
+**The pattern to not repeat unthinkingly.** Both run inside the drizzle migrator's single
+transaction, so the rebuild takes `ACCESS EXCLUSIVE` on `purchase_orders` / `direct_sales` for
+its whole duration, and every reader and writer of those tables blocks behind it. It is
+negligible today: pre-launch, the largest tenant table is a few hundred rows and the rebuild is
+milliseconds.
+
+It stops being negligible the moment any tenant's `purchase_orders` or `direct_sales` grows
+large. At that point a drop-and-recreate of this kind must go through the deferred-DDL manifest
+(`deferred-ddl-manifest.ts`, step 5/5 of `migrate-all.cli`) as `CREATE INDEX CONCURRENTLY`,
+which cannot run inside the migrator transaction — see
+`project_drizzle_migrator_single_transaction`. Declare it in the same PR as the migration.
+
+No action needed now. Recorded so the next person adding a predicate to an existing unique index
+checks table size first instead of copying 0397.

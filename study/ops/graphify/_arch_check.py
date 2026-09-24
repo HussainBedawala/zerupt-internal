@@ -29,7 +29,7 @@ LAYERS = [
     # None), so accounting -> expenses imports would have passed silently. The
     # module is top level precisely so it does NOT depend on suppliers/bills; it
     # must still point DOWN toward accounting, never be depended on BY it.
-    (1, "upper",      re.compile(r"apps/api/src/(pos|sales|purchase|expenses|grn|credit-note)")),
+    (1, "upper",      re.compile(r"apps/api/src/(pos|sales|purchase|expenses|receipts|grn|credit-note)")),
 ]
 DEP_RELATIONS = {"imports", "imports_from", "calls"}
 

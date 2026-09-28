@@ -29,9 +29,23 @@ LAYERS = [
     # None), so accounting -> expenses imports would have passed silently. The
     # module is top level precisely so it does NOT depend on suppliers/bills; it
     # must still point DOWN toward accounting, never be depended on BY it.
+    # `common` is tier 0 for the same reason accounting/inventory are: it exists to
+    # BE depended on. It matched no regex before, so layer_of() returned None and the
+    # violation check (`if ls and lt`) skipped every edge touching common/ in BOTH
+    # directions -- the identical blind spot recorded above for `expenses`. That is
+    # how a common/ -> sales/ import (tender-set.ts importing sales' decimal.config)
+    # passed the gate green. Registered so it cannot happen silently again.
+    (0, "common",     re.compile(r"apps/api/src/common(/|$)")),
     (1, "upper",      re.compile(r"apps/api/src/(pos|sales|purchase|expenses|receipts|grn|credit-note)")),
 ]
 DEP_RELATIONS = {"imports", "imports_from", "calls"}
+
+
+def is_spec(path):
+    """Test files are excluded as violation sources (see main())."""
+    return bool(path) and (
+        ".spec." in path or ".test." in path or "/__tests__/" in path
+    )
 
 
 def layer_of(path):
@@ -59,9 +73,15 @@ def main(graph_path):
         if "apps/api/src" in sf and "apps/api/src" in tf and sf != tf:
             if rel in ("imports", "imports_from"):
                 file_imports[sf].add(tf)
-        ls, lt = layer_of(sf), layer_of(tf)
-        if ls and lt and ls[0] < lt[0]:
-            violations.append((ls[1], sf, lt[1], tf, rel))
+        # Architecture invariants govern SHIPPED code, not test scaffolding. A spec
+        # that imports a feature DTO to exercise a shared schema is legitimate and
+        # says nothing about runtime coupling, so specs are not violation SOURCES.
+        # Without this, registering `common` turned 13 spec imports red on day one,
+        # and a checker that is red for a non-reason gets deleted rather than heeded.
+        if not is_spec(sf):
+            ls, lt = layer_of(sf), layer_of(tf)
+            if ls and lt and ls[0] < lt[0]:
+                violations.append((ls[1], sf, lt[1], tf, rel))
 
     # ---- 2. file-level import cycles (Tarjan SCC) ----
     index = {}

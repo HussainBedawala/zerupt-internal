@@ -1,4 +1,4 @@
-<!-- Zerupt internal knowledge base | Migration intake: what already exists | Updated: 2026-09-27 -->
+<!-- Zerupt internal knowledge base | Migration intake: what already exists | Updated: 2026-10-02 -->
 # What already exists
 
 Part of the [Zerupt Migration Intake Specification](README.md).
@@ -116,3 +116,44 @@ One detail worth copying rather than rediscovering: **workers run outside a web 
 1. How large can the progress field realistically get before it becomes a problem?
 2. Do the existing templates cover every field this specification says we need, or do some templates need extra columns?
 3. Is a template needed for each history document type, or does history arrive another way?
+
+---
+
+## 7. Status update: what has been built since
+
+Several of the "genuinely new" items above now exist. The replay engine lives inside the backend as a service (`apps/api/src/migration-replay/`) and its record schemas and problem codes live in `packages/shared/src/migration-replay/`. The first adapter is [the Merpec exporter](merpec-exporter.md).
+
+### 7.1 Performance and operations
+
+**The accounting outbox poller works per tenant now.** Replay posts documents faster than the old poller drained them, and one busy tenant used to wake every tenant's database. Now:
+
+- A nudge (the wake-up sent after a commit) **carries its tenant id**. Only that tenant goes "hot", on its own ladder (1 second, 2, 4 and so on, dropping off when idle). The global idle ladder is not reset, so one tenant's activity no longer wakes the fleet. A nudge with no tenant id still resets the global ladder, as a safe default.
+- A hot tenant is **drained for up to 20 rounds** of 10 rows in one tick, stopping early at a short round, a round that made no progress (only deferrals), or **20 seconds** of wall clock, so a slow tenant cannot hold the poller's lock against others.
+- A full sweep of every tenant still runs on the slow ladder, one round per tenant. It is the crash-recovery safety net.
+- **Reconcile runs only on a sweep**, never on a hot tick, so a tenant's first nudge never pays for the drift scan.
+- Every timer arm is floored at the **minimum interval** (1 second), so a tick that finds the poller busy cannot re-arm at zero and spin.
+
+*Code: `accounting-events/outbox-poller.service.ts`, `outbox-hot-ladder.ts`, `accounting-events.constants.ts`.*
+
+**The direct sale reads its items in one query.** `DirectSaleService` loads every line's item with one batched read (`preloadItems`) instead of a full read per line. Errors come out the same, in line order.
+
+**The history runner settles the outbox at three points:** each business-day boundary after something was applied, before a sale that needs the live cost average (see [Layer 5a](layer-5a-sales.md)), and at the end of each layer. A dead letter pauses the run.
+
+### 7.2 Migrations this work depends on
+
+These must be applied before the replay engine and the changes in this document work. Tenant database, in `packages/db/drizzle/`:
+
+| Migration | What it adds |
+|---|---|
+| 0421 | Supplied-number and source reference columns on `sequence_reservations` (keeping the customer's document numbers) |
+| 0422 | The migration bundle and record tables |
+| 0423 | A bundle, layer and status index on migration records, and a check that a record's step is `post` or `void` |
+| 0424 | `pinned_short_qty` on item cost pools, with bounds checks |
+| 0425 | `journal_entries.migration_bundle_id`, which bundle's replay posted an entry |
+| 0426 | Named print layouts (several named layouts per scope and document type, one default). Not migration-specific, but part of the same range |
+| 0427 | **Settlement discount** as a first-class figure on sales and purchase invoices, receipt and payment allocations and vouchers, and the confirm-percent setting. The invoice balance check now subtracts it |
+| 0428 | The `tcn` (tax credit note) document type |
+| 0429 | A 0 to 100 check on the settlement-discount confirm percent |
+
+Admin database, in `packages/db-admin/drizzle/`: **0053** adds `tenants.data_migration_enabled` (default false), a guard refuses the migration routes for a tenant until an admin turns it on.
+

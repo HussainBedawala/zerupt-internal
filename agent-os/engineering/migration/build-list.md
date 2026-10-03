@@ -1,4 +1,4 @@
-<!-- Zerupt internal knowledge base | Migration intake: what we must build | Updated: 2026-09-27 -->
+<!-- Zerupt internal knowledge base | Migration intake: what we must build | Updated: 2026-10-02 -->
 # What we must build
 
 Part of the [Zerupt Migration Intake Specification](README.md).
@@ -21,11 +21,13 @@ Every gap found across the nine layers, in one place, ordered by how much it mat
 
 ---
 
-### 1.2 Use the customer's cost on historical sales 🔴
+### 1.2 Use the customer's cost on historical sales ✅ BUILT
 
 **The problem:** no public path accepts a cost on a sale, so a replayed sale is costed at today's average. Every historical profit figure would differ from what they are used to.
 
 **The build:** thread the existing cost parameter through the migration path. **The mechanism already exists** and is used by the amend process and by goods returns, which already put stock back at the original cost. This is wiring, not invention.
+
+**Status: built.** A sale line's `unitCost` is optional. Present, it is pinned as the cost of sale. Absent, the line is costed at the live company-wide average of that moment, the history runner settles the outbox first when needed so same-day costing is deterministic, and the warning `uncosted_sale_provisional_cost` marks a sale that fell to provisional cost. See [Layer 5a](layer-5a-sales.md).
 
 *Found in: [Layer 5a](layer-5a-sales.md)*
 

@@ -1,4 +1,4 @@
-<!-- Zerupt internal knowledge base | Migration intake: Layer 5b | Updated: 2026-09-27 -->
+<!-- Zerupt internal knowledge base | Migration intake: Layer 5b | Updated: 2026-10-02 -->
 # Layer 5b: Purchase and stock movement history
 
 Part of the [Zerupt Migration Intake Specification](README.md).
@@ -79,6 +79,15 @@ Optional, and handled two ways:
 |---|---|
 | On the supplier's own invoice | Spread across the lines **by value** and added to the cost before posting. No second document |
 | By cash, bank or a third party | A proper landed cost record, posted against the goods receipt |
+
+**In the replay record, this is `freightOnInvoice`.** It is one money figure on the purchase invoice. The replay sends it as a freight row billed on the supplier invoice, and Zerupt spreads it by value into the line costs. The record's `freightOnInvoice` carries two kinds of cost:
+
+- freight and clearing charges billed with the purchase, and
+- **non-reclaimable purchase tax**, when the company cannot reclaim it (for example a company that is not VAT registered). That tax is part of what the goods cost, so it is capitalised into the same figure.
+
+Both are capitalised into inventory cost (the IAS 2 treatment) **by Zerupt's own accounting, not by copying where the source system booked them**. So an individual GL account balance in Zerupt can differ from the same account in the source, while the document totals and the supplier's balance still match. Expect this on the reconciliation report and explain it to the customer up front.
+
+*Code: `handlers/purchase-invoice.handler.ts`; the Merpec side is in [the Merpec exporter](merpec-exporter.md).*
 
 ⚠️ **The one-call path only spreads by value.** If the old system spread freight by weight, or somebody typed in the split by hand, that exact allocation cannot be reproduced through this door. The full landed-cost engine supports other methods, but it is a different, longer route.
 

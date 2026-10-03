@@ -1,4 +1,4 @@
-<!-- Zerupt internal knowledge base | Migration intake: Layer 5c | Updated: 2026-09-27 -->
+<!-- Zerupt internal knowledge base | Migration intake: Layer 5c | Updated: 2026-10-02 -->
 # Layer 5c: Money movements (receipts, payments and journals)
 
 Part of the [Zerupt Migration Intake Specification](README.md).
@@ -55,9 +55,32 @@ What a receipt voucher needs:
 | Part payment of an invoice | Yes, any amount up to what is outstanding |
 | **Settling an opening-balance invoice** | **Yes.** Same path as any other |
 | Money received with nothing to apply it to | Yes, held as a deposit, applied or refunded later |
-| Early-payment discount at settlement | Appears to exist, not fully traced |
+| **Early-payment discount at settlement** | **Yes, a first-class field.** See section 3a |
 
 Supplier payments work the same way, in mirror image, including against opening bills.
+
+### 3a. Settlement discount in the replay record ✅
+
+A settlement discount (cash discount given or taken when an invoice is settled) is a first-class field on `customerReceipt` and `supplierPayment` history records. **No journal workaround and no synthetic discount account is used.** The replay hands each discount to the live settlement service as an explicit figure, and the live service posts it.
+
+| Field | Meaning |
+|---|---|
+| Record `amount` | The **cash** received or paid. It never includes the discount. The tenders carry this figure |
+| Allocation `amount` | The **gross** settled on that invoice or bill, which is cash plus discount |
+| Allocation `discount` | Optional. The discount part of that gross. Zero or absent means none. Never negative |
+| Record `discount` | Optional header total. When present it must equal the sum of the allocation discounts |
+
+Rules, checked when the bundle is validated:
+
+1. The sum of (allocation `amount` minus allocation `discount`) must not exceed the record `amount`. Any cash left over stays as a deposit (customer) or advance (supplier).
+2. A discount cannot exceed the allocation it belongs to.
+3. A discount needs allocations. There is no document to discount without one.
+4. **A supplier payment with a discount must allocate its whole amount.** The part-allocated advance path cannot carry a discount, so that shape is refused.
+5. A discount is allowed on an opening receivable or opening payable allocation, because the live service settles an opening balance the same way as an invoice or bill.
+
+After posting, the handler reads the voucher back and checks both the cash applied and the discount granted against the source.
+
+*Code: `packages/shared/src/migration-replay/records-history.ts` and `settlement-discount.ts`; handlers `customer-receipt.handler.ts` and `supplier-payment.handler.ts`.*
 
 ---
 
@@ -141,7 +164,7 @@ There is no "already void" state to write. Everything is post, then reverse.
 | Cheques: number, cheque date, and what happened to it | A full life, not just a final state |
 | Manual journals: date, lines, accounts, amounts, and any party | Party-tagged ones need the internal route |
 | Voided documents, with a reason if recorded | |
-| Early-payment discounts and write-offs | Needs confirming |
+| Early-payment discounts, per invoice or bill | Carried as the allocation `discount`. Write-offs have no field of their own |
 
 ---
 
@@ -156,13 +179,15 @@ There is no "already void" state to write. Everything is post, then reverse.
 | Backdated foreign journals without historical rates | Refused |
 | Maker-checker left on during migration | Everything waits for approval |
 | Amounts with more precision than we allow | Refused |
+| A discounted supplier payment that does not allocate its whole amount | Refused. Allocate fully |
+| Putting the discount inside the record `amount` | Cash would be overstated. The record `amount` is cash only; the discount rides on the allocations |
 
 ---
 
 ## 11. Open questions
 
 1. ~~Can a migration use the internal route that accepts party and due date?~~ **Resolved: yes.** See finding 3.
-2. How exactly do settlement discounts and write-offs work on a receipt?
+2. ~~How exactly do settlement discounts work on a receipt?~~ **Resolved.** See section 3a. Write-offs (a balance forgiven with no cash) still have no dedicated field.
 3. Is there a limit on how many invoices one receipt can settle?
 
 Also confirmed while answering question 1: the posting engine **requires** a party on any control-account line and **requires** a due date on any line that creates a receivable or payable. So a replay that forgets them does not silently produce empty statements. It is refused. That is better than the audit feared.

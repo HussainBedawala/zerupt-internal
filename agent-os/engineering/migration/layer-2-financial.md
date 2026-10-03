@@ -1,4 +1,4 @@
-<!-- Zerupt internal knowledge base | Migration intake: Layer 2 | Updated: 2026-09-27 -->
+<!-- Zerupt internal knowledge base | Migration intake: Layer 2 | Updated: 2026-10-02 -->
 # Layer 2: Financial foundation (the accounts and the rules of money)
 
 Part of the [Zerupt Migration Intake Specification](README.md).
@@ -50,7 +50,9 @@ The database itself checks that the type, subtype and normal balance make sense 
 
 The template setup is safe to run more than once. It skips any code that already exists, so it never overwrites the customer's work.
 
-**The one restriction:** accounts our template marks as system accounts cannot be deleted, renumbered or switched off. They can be renamed. So the customer's chart can look like theirs, while the machinery underneath keeps working.
+**The one restriction:** accounts our template marks as system accounts cannot be deleted, renumbered or switched off. They can be renamed.
+
+**Renaming on match, in the replay.** When a source account is matched to an existing Zerupt account, the replay renames that account to the source's wording. Only `name` and `nameAlt` change. Code, type, header flag and system role are never touched, and a name the source does not state is left as it is, so an Arabic name seeded at onboarding survives an English-only source. The rename is audited. It also runs on a resume when the name still differs, so a rename that failed the first time is retried and one that landed is never repeated. Two non-blocking warnings: `account_rename_failed` (the rename did not land) and `account_rename_audit_failed` (it landed but its audit row did not, a distinct warning, never silent). *Code: `layers/financial-accounts.step.ts`, `financial-accounts.rules.ts`.* So the customer's chart can look like theirs, while the machinery underneath keeps working.
 
 ---
 

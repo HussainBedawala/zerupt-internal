@@ -24,7 +24,7 @@ Every business event and its exact journal entry. Account codes reference `04-ch
 ```
 DR  Cash Register (1112)              [cash amount]
 DR  Bank Account (112x)               [card amount]
-DR  Customer Deposits (2151)          [store credit used]
+DR  Store Credit Liability (2153)      [store credit used]
 DR  Gift Card Liability (2152)        [gift card used]
 CR  Product Sales (4110)              [net revenue before tax]
 CR  Output Tax Payable (2131)         [tax per component]

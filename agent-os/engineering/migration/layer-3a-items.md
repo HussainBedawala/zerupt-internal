@@ -1,4 +1,4 @@
-<!-- Zerupt internal knowledge base | Migration intake: Layer 3a | Updated: 2026-09-27 -->
+<!-- Zerupt internal knowledge base | Migration intake: Layer 3a | Updated: 2026-10-02 -->
 # Layer 3a: Items
 
 Part of the [Zerupt Migration Intake Specification](README.md).
@@ -102,7 +102,13 @@ So a source system with four cross-reference code columns maps straight in, one 
 
 Each price list has its own currency. One list can be the default.
 
-⚠️ **Gap found: a fourth price level (a "special" price) is not wired into the item import today.** The general price-list machinery is flexible enough to hold it, and wholesale already works this way, so it is probably a small piece of wiring. **This needs confirming before migrating a customer who uses four price levels.**
+✅ **Resolved for the replay path: any number of named price levels.** The replay item record carries `prices`, a list of `{listName, amount}` (up to 50). Each entry is written onto the tenant's price list of that name, found or created, at a minimum quantity of 1. So wholesale, special and any other level travel the same way. Rules:
+
+- A list whose currency does not match is skipped with the warning `price_list_currency_mismatch`, because a number in the wrong currency on a live list is a wrong price.
+- A list named twice for one item keeps the first and warns `price_duplicate`.
+- A list or row that fails to write warns `price_list_failed` or `prices_failed`.
+
+The base `sellingPrice` and `costPrice` stay on the item itself.
 
 ---
 
@@ -121,6 +127,28 @@ Each price list has its own currency. One list can be the default.
 So before importing an auto-parts catalogue we must decide the family list, and decide what happens to items that do not fit any of them. A catch-all family is the sensible answer.
 
 An item with no part details is still a perfectly good ordinary item, so the pack really is an overlay.
+
+---
+
+### Item fields in the replay record
+
+On top of the base item, the replay record accepts:
+
+| Field | Notes |
+|---|---|
+| `brandName` | Brand **by name**. With the auto-parts pack off it lands in the item's free-text brand. With the pack on, a part brand is found or created by name |
+| `partNumber` | The item's part number (up to 100 characters) |
+| `alternateCodes` | Up to 100 cross-reference codes, each `{code, type}`. A code with no type lands as `other` |
+| `prices` | Named price-list prices, see section 6 |
+| `familyCode`, `fitments` | **Auto-parts pack only.** Fitments are make, model, optional year range and engine (up to 200 per item) |
+
+**Pack-only fields on a tenant without the pack are a blocking problem:** `pack_fields_without_pack`. The same check runs at validate time and again in the writer, so such an item is never half-written. Note also that with the pack on, a part with no `familyCode` is still given a family by the product (a singleton family per part), so no catch-all family is created by the replay.
+
+**Child rows are warnings, not failures.** Alternate codes, price tiers, packs and barcodes are written after the item commits. One that does not land warns on the item (`alternate_codes_failed`, `price_list_failed`, `prices_failed`, `price_duplicate`, `price_list_currency_mismatch`, `pack_failed`, `pack_duplicate`, `barcodes_failed`, `barcode_rejected`, `barcode_collision`) and never rolls the item back. **On a resume, the idempotent children (alternate codes, price tiers) are written again for the items this migration itself created**, so a crash between the item and its children heals itself. An item that was only linked to an existing row is the operator's own record, and its children are never touched.
+
+One known gap: the item's `taxCodeRef` is not written to the item, because items carry a tax group and the record carries a tax code. Document lines resolve tax from their own `taxCodeRef`.
+
+*Code: `layers/masters-items.writer.ts` and `masters-items.extras.ts`; schema in `packages/shared/src/migration-replay/records-masters.ts`.*
 
 ---
 
@@ -166,13 +194,14 @@ No throughput concern for 9,200 items.
 | Assuming FIFO can be set per item | It cannot. Weighted average only |
 | Forgetting part families | The database refuses those rows |
 | Barcodes duplicated across items | Refused. Must be cleaned first |
-| Expecting a fourth price level to just work | Not wired today. Needs confirming |
+| Sending a price list in a different currency from the existing list | Skipped with `price_list_currency_mismatch` |
+| Sending family or fitment data to a tenant without the auto-parts pack | Blocked with `pack_fields_without_pack` |
 
 ---
 
 ## 11. Open questions
 
-1. **Is a fourth price level supported in the item import?** Only wholesale is wired today. The general machinery looks capable. Needs a code check.
+1. ~~Is a fourth price level supported?~~ **Resolved for the replay path** through `prices`. The older template import still wires only wholesale.
 2. **Where is the auto-parts pack switched on and checked?** The auditor could not find the entitlement check inside the auto-parts code. Needs a targeted look, because everything above assumes the pack is on for parts customers.
 3. **Is anything auto-created at signup for units, categories or price lists?** Nothing was found, but the onboarding steps were not read in full.
 

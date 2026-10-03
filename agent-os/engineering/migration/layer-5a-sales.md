@@ -1,4 +1,4 @@
-<!-- Zerupt internal knowledge base | Migration intake: Layer 5a | Updated: 2026-09-27 -->
+<!-- Zerupt internal knowledge base | Migration intake: Layer 5a | Updated: 2026-10-02 -->
 # Layer 5a: Sales history
 
 Part of the [Zerupt Migration Intake Specification](README.md).
@@ -13,11 +13,20 @@ Part of the [Zerupt Migration Intake Specification](README.md).
 
 **2. Backdating works.** ✅ A sale carries its own date, and that date drives the accounting period, the tax rate used, the due date and the recorded time. A sale recorded today but dated January 2026 posts to January 2026.
 
-**3. The cost gap is real, and it is the one thing standing between us and "as is".** ❌ No public path lets us supply the cost of a sale. Cost is worked out by our own average-cost engine at the moment of import. So a replayed sale gets **today's average cost, not the cost the old system recorded**.
+**3. The cost gap is closed.** ✅ A replayed sale line can carry the old system's cost, and the line's `unitCost` is **optional**.
 
-   The mechanism exists internally: there is a parameter that forces a specific cost, used by the amend process and by returns. It is deliberately not exposed to any outside caller. **So the build is to thread that parameter through the migration path, not to invent anything.** Small piece of work, enormous consequence: without it, every profit figure in their history differs from what they are used to.
+   - **`unitCost` present:** the source's own historical cost is pinned as that line's cost of sale. This is the existing cost mechanism used by the amend process and by goods returns, threaded through the replay path.
+   - **`unitCost` absent:** the line is costed the way a live sale is costed, at the **company-wide weighted average cost of that moment**. Replay runs in date order, so that average is the running average as of the sale. If the stock cannot cover the sale (stock below the quantity, or never received), the sale takes a provisional or zero cost and the next receipt posts the true-up. That is correct Zerupt behaviour but it moves cost between periods compared with the source, so the record carries the warning `uncosted_sale_provisional_cost`.
+   - **Deterministic same-day costing.** Receipts reach the cost average through the accounting outbox, which is applied asynchronously. So before a sale with an uncosted line, the history runner settles the outbox if anything was applied since the last settle. A same-day receipt followed by a sale then costs identically on every run, whatever the poller timing.
+   - If only some lines carry a cost, those are pinned and a stock line without one is costed at the pool average as of the sale date, never at zero.
 
-**4. Totals are always recalculated.** Prices and discounts are supplied by us, then the system works out the line totals and tax itself. We cannot hand it a finished invoice and say "store this". For a no-tax country the arithmetic is simple enough that differences are unlikely. For a VAT country it is a genuine risk and needs testing early.
+   *Code: `handlers/sales-invoice.handler.ts`, `handlers/uncosted-sale.ts`, `layers/history.runner.ts` under `apps/api/src/migration-replay/`.*
+
+**4. Totals are always recalculated, and then checked against the source.** Prices and discounts are supplied by us, then the system works out the line totals and tax itself. We cannot hand it a finished invoice and say "store this". For a no-tax country the arithmetic is simple enough that differences are unlikely. For a VAT country it is a genuine risk and needs testing early.
+
+   The safety net: when the record carries a source total, the sale is confirmed and its total compared with the source **inside the same transaction**. A difference of one minor unit or more throws `fidelity_mismatch` and rolls the sale back, so nothing half-right is stored. This in-transaction guard (`assertConfirmedTotal`) replaced the separate preview pass for sales, so each sale is worked out once, not twice. Other document kinds still use a preview pass.
+
+   There is **one** tolerance, shared by the validate-time preview, the in-transaction guard and the post-verify (`totalsDiffer` and `fidelityMismatch` in `handlers/support.ts`). Two totals differ when they are one full minor unit or more apart, at the **coarser** of the source's declared decimals and the currency's own. A source declaring more decimals than the currency books can therefore never make the check stricter than the ledger.
 
 **5. Counter sales need a till session.** A POS transaction must belong to a register and a shift. There is no way to record one without them, so historical counter sales either need invented shifts or should be brought in as ordinary sales invoices instead.
 
@@ -39,6 +48,22 @@ Part of the [Zerupt Migration Intake Specification](README.md).
 | Void fields | conditional | Reason and approver required together |
 
 Per line: item, description, quantity (above zero), unit price, discount, tax group, warehouse (required for stock items), and a frozen snapshot of the pack unit used.
+
+### What the replay record carries for a sale
+
+| Field | Need | Notes |
+|---|---|---|
+| Per line `unitCost` | **optional** | Present: pinned as the cost of sale. Absent: costed at the live company-wide average. See finding 3 |
+| Per line `taxCodeRef` | **optional** | Absent: the tax group is resolved exactly as a live sale resolves it (item, then customer, then the legal entity default). A no-tax country needs none |
+| `billDiscount` | optional, never negative | A header discount after line discounts and before tax. Replayed as the direct sale's own order discount (an amount), which the totals engine spreads into the lines |
+| `totals.total` | optional | When present, drives the fidelity guard above |
+
+**Two blocking problems protect tax fidelity:**
+
+| Problem | When |
+|---|---|
+| `tax_in_no_tax_country` | A sale carries a non-zero `taxTotal` but the company's country has no sales tax. Never folded into the price. The operator decides |
+| `tax_unverifiable_without_total` | A VAT sale has a line with no `taxCodeRef` and the sale has no `totals.total`. The default tax group cannot be proven against anything, so the export must send a total or the codes |
 
 **`costAtSale` is filled in by the system, not by us.** That is the gap in finding 3.
 
@@ -72,11 +97,11 @@ It takes a **sale date**, which is threaded all the way through. So backdating i
 | Warehouse | We supply, or it uses the branch default |
 | Tax group | We supply, or it uses the item's |
 | Line totals, tax amounts, invoice totals | **The system calculates** |
-| **Cost of sale** | **The system calculates.** ❌ This is the gap |
+| **Cost of sale** | **We supply it when we have it** (`unitCost`). If absent, the system costs it at the live average |
 | Due date | We supply, or it is worked out from payment terms, defaulting to 30 days |
 | Document number | The system assigns |
 
-So our fidelity rule is only partly satisfied today. We control the inputs, the system computes the outputs.
+So we control the inputs, and the system computes the outputs and checks the total against the source. Cost is the one output we can also pin.
 
 **What this means in practice for a no-tax customer:** line total is quantity times price minus discount. Our arithmetic and theirs will agree. Low risk.
 
@@ -152,7 +177,7 @@ The existing import posts them one at a time on purpose, so that sale number 900
 | Branch, and warehouse per line | |
 | Currency and rate | |
 | Per line: item, quantity, unit price, discount, tax group | |
-| **Per line: the cost the old system recorded** | Needed for the build in finding 3 |
+| **Per line: the cost the old system recorded** | Optional. Send it to reproduce their profit figures. Leave it out and the live average cost is used, with a warning when stock is short |
 | Payment terms or due date | |
 | Paid or credit, and how it was paid | Drives whether a receipt is created |
 | Salesperson | If they use one |
@@ -165,12 +190,14 @@ The existing import posts them one at a time on purpose, so that sale number 900
 
 | Trap | Consequence |
 |---|---|
-| **Cost taken from today's average instead of theirs** | Every historical profit figure differs. The one that must be fixed |
+| Leaving `unitCost` out when the customer's profit figures must match | Costs fall to the running company-wide average, and short stock gets a provisional cost with a warning |
 | Invoice numbers renumbered | Their paperwork stops matching |
 | Credit note with no original invoice in range | Cannot be created |
 | Counter sales without shifts | Cannot be created |
 | Credit limit blocking historical sales | Needs an override, or half the history refuses |
-| Assuming we can supply finished totals | We cannot. Only the inputs |
+| Assuming we can supply finished totals | We cannot. Only the inputs. A total that does not reproduce is refused with `fidelity_mismatch` |
+| VAT line with no tax code and no source total | Blocked with `tax_unverifiable_without_total` |
+| Tax on a sale in a country with no sales tax | Blocked with `tax_in_no_tax_country` |
 | VAT rounding differing from theirs | Small per line, large across 20,000 lines |
 
 ---
@@ -180,4 +207,4 @@ The existing import posts them one at a time on purpose, so that sale number 900
 1. **Does a till shift have to be open when a transaction is written, or does any shift do?** Decides how painful synthetic shifts would be.
 2. **Do tax rates carry history far enough back?** If not, an old document could be taxed at today's rate.
 3. **How many rows does the existing sales import accept per file?** Sets the batch size.
-4. Can the cost parameter be threaded through without disturbing the amend process that uses it today? This is the build, and it needs a careful look.
+4. ~~Can the cost parameter be threaded through without disturbing the amend process?~~ **Resolved.** The cost is pinned through the same cost-basis mechanism; see finding 3.

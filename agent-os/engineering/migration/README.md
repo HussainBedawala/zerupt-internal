@@ -1,4 +1,4 @@
-<!-- Zerupt internal knowledge base | Migration intake specification | Updated: 2026-09-27 -->
+<!-- Zerupt internal knowledge base | Migration intake specification | Updated: 2026-10-02 -->
 # Zerupt Migration Intake Specification
 
 **This is the single source of truth for what Zerupt needs in order to take a business's data out of any other system and bring it into Zerupt.**
@@ -218,7 +218,8 @@ The field tables use these columns:
 | [Layer 6: People and access](layer-6-people.md) | Written |
 | [Layers 7 and 8: Peripherals and proof](layer-7-8-peripherals-proof.md) | Written |
 | [What already exists](existing-machinery.md) | Written |
-| [What we must build](build-list.md) | Written |
-| Machine-readable schemas and validator | Not started |
+| [What we must build](build-list.md) | Written, with built items marked |
+| [The Merpec exporter](merpec-exporter.md) | Written. The first adapter, built |
+| Machine-readable schemas and validator | Built for the replay bundle: `packages/shared/src/migration-replay/` holds the record schemas and the problem code table |
 
 The layer sections are produced by auditing the actual Zerupt schema and services, module by module, rather than from memory or from existing documentation, because documentation drifts and the database does not.

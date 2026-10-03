@@ -1,4 +1,4 @@
-<!-- Zerupt internal knowledge base | Migration intake: Layer 3b | Updated: 2026-09-27 -->
+<!-- Zerupt internal knowledge base | Migration intake: Layer 3b | Updated: 2026-10-02 -->
 # Layer 3b: Customers and suppliers
 
 Part of the [Zerupt Migration Intake Specification](README.md).
@@ -52,6 +52,23 @@ Both have their own child lists:
 - **Addresses:** a label such as Billing or Shipping, address lines, city and country. Many per party. Line 1, city and country are required on each.
 
 Note: the address country is **free text**, not a proper country code. Messy legacy values will be accepted as they are.
+
+---
+
+### Party fields in the replay record
+
+The replay customer and supplier records carry, beyond name and code:
+
+| Field | Notes |
+|---|---|
+| `address` | One postal address. Line 1, city and country are mandatory, never invented. Written in batches after the parties. A failed address warns `address_failed` and never rolls the party back. On a resume the address is written only if the party has none yet, so it is never duplicated |
+| `status` | `active`, `inactive` or `blocked` |
+| `blockedReason` | **Required when `status` is `blocked`**, checked by the record's schema and by the database |
+| `creditLimit` | A money string. Zero or absent means no limit |
+
+A party that was created by this migration has its address re-checked on resume. A party that was only linked to an existing record is left alone.
+
+*Code: `layers/masters.runner.ts`, `masters-parties.addresses.ts`; schema in `records-masters.ts`.*
 
 ---
 

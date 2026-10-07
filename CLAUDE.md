@@ -131,7 +131,7 @@ npx drizzle-kit generate   # SQL only (no apply)   ·   migrate   # apply pendin
 npx drizzle-kit push       # direct push (dev only) ·   check     # validate vs DB
 ```
 
-Data backfills: `generate` → edit the SQL → `migrate`. CHECK constraints / partial indexes via `.check()` in schema.
+Data backfills: `generate` → edit the SQL → `migrate`. **After any tenant migration change, regenerate the provisioning snapshot:** `SNAPSHOT_BUILD_SUPERUSER_URL=<dev superuser url> pnpm --filter @zerupt/db snapshot:generate` (pre-commit blocks a stale one); run `snapshot:equivalence` before shipping. CHECK constraints / partial indexes via `.check()` in schema.
 
 ---
 

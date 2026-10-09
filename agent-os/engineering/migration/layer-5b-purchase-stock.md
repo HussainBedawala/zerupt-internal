@@ -107,6 +107,21 @@ The payable posts to the trade payables control account, **tagged with the suppl
 
 So a historical return comes across with the right stock effect and the right supplier credit, with any difference shown rather than hidden.
 
+**Two shapes in the replay contract** (`purchaseReturn`, any source system):
+
+| Shape | Header | Each line | Cost the stock leaves at |
+|---|---|---|---|
+| Bill-linked | `billRef` (supplier read off the bill; an optional `supplierRef` must match it) | `billLineNo`, `quantity`, `unitCost` | the bill line's receipt cost |
+| Free-standing (no original bill) | `supplierRef` required, no `billRef` | `itemRef`, `warehouseRef`, `quantity`, `unitPrice`, optional `taxCodeRef` | the item's **weighted average cost** at that moment |
+
+Mixing the two line shapes in one return, or a free-standing return with no `supplierRef`, is refused at validation (`schema_invalid`, with the field named). The warehouse must belong to the return's branch; the purchase module enforces this and its error surfaces as is. With no bill, the whole supplier debit becomes a refundable / payable reduction on the supplier, not a reduction of a particular bill.
+
+**WAC caveat (free-standing only):** the source system's own cost for those goods is not used. Stock leaves at Zerupt's running average cost on the return date, and the gap between that and `unitPrice` posts to purchase price variance (5210). Stock value therefore matches Zerupt's history, not the source's, and the 5210 balance after migration can differ from the source. The posted document total still has to match the source total (`verify`).
+
+**Opening stock must be dated before the earliest free-standing return.** A free-standing return's stock-out is always blocked from taking on-hand below zero (it ignores the tenant's negative-stock setting). If the item has no receipt (opening stock, purchase or adjustment) replayed on or before the return date, the return document posts but its stock relief is refused and lands as an outbox dead letter (`outbox_dead_letter`) instead of relieving the pool. Date the opening stock, or the receipts that bring the goods in, before the earliest free-standing return. No proof checks the value a free-standing return relieves, so exporters must report the count and source value of free-standing returns and any return of an item with no earlier receipt.
+
+Line rules on both shapes: `quantity` must be greater than 0, and the price (`unitCost` bill-linked, `unitPrice` free-standing) must be 0 or more (`schema_invalid` with the field path). A supplier on a bill-linked return that is not the bill's supplier is refused with `supplier_mismatch`, so exporters should always send `supplierRef` when the source records one.
+
 ---
 
 ## 7. Transfers, adjustments, damage

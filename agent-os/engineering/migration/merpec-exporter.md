@@ -42,7 +42,7 @@ Only changes of shape are allowed, and each is counted in the summary.
 
 | Merpec shape | Zerupt shape |
 |---|---|
-| A location (selling site and stock site in one) | A **branch plus a warehouse** under it, both with the location code |
+| A location (selling site and stock site in one) | A **branch plus a warehouse** under it, both with the location code. If the tenant already has a branch for that site (for example the onboarding head office), the operator links the location to it at mapping; the exporter never decides this, and a duplicate create is refused. See [Layer 1](layer-1-structure.md) |
 | A voucher with several lines | One record per line, numbered `<SrNo>#<Sr>`. A one-line voucher keeps its own number |
 | A stock adjustment mixing ADD and LESS | One record per type, `<SrNo>#ADD` and `<SrNo>#LESS` |
 | A cash or bank sales return | A credit note plus a customer refund |

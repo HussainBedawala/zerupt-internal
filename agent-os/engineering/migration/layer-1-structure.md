@@ -60,6 +60,7 @@ A branch is a shop, an outlet or an office.
 - **The number of branches is capped by the plan.** A five-branch customer needs a plan that allows five. Check this before starting.
 - Creating a branch **automatically creates its default warehouse**, so never create that warehouse yourself.
 - A branch cannot be deleted while things point at it.
+- **Never create a second head office.** A source location that matches an existing branch by code or name must be linked to it. The mapping step has no default: every branch row is either linked or explicitly "create new", and the server refuses a create whose code or name duplicates an existing branch unless the operator confirms it (`MAPPING_BRANCH_DUPLICATE_CREATE`). Opening party stubs follow their journal's branch, never the oldest branch.
 
 ---
 

@@ -48,6 +48,10 @@ Only changes of shape are allowed, and each is counted in the summary.
 | A cash or bank sales return | A credit note plus a customer refund |
 | A return line on an item sold across several invoice lines | Split across those lines in order, never past each line's sold quantity |
 | A purchase return with no `PurchaseSrNo` ("Invoice Not Available") | A **free-standing** `purchaseReturn`: no `billRef`, `supplierRef` = `SupplierCode`, and each line `itemRef` = `ItemCode`, `warehouseRef` = the header `LocationCode` (the same warehouse ref purchases use), `unitPrice` = `Rate`. Stock leaves at Zerupt's weighted average cost, not at `Rate`, and the gap posts to price variance. See [Layer 5b](layer-5b-purchase-stock.md) |
+| A purchase return whose bill belongs to **another supplier**, or with quantity no remaining bill line can take (PRV5000001) | The return document's `SupplierCode` is the fact: the same **free-standing** `purchaseReturn` for its own supplier, no `billRef` (the contract forbids mixed line types). `PurchaseSrNo` stays in `extras` as `MerpecPurchaseSrNo`, warned `return_not_creditable`. The bill's lines are not consumed |
+| A sales bill's `BillDiscount` on a bill with **no tax** (no taxed line, no Merpec tax: every Kuwait/Qatar bill) | Zerupt's **native** `billDiscount` (the direct sale's order discount, pro-rated into the lines by the sales totals engine). Merpec takes it after tax and Zerupt before tax, which is the same figure only on an untaxed bill. No journal |
+| A purchase total below line nets + tax (Merpec's purchase `BillDiscount`, FP40000028) on an untaxed bill | **Native line discounts**: the header discount pro-rated over the line nets at the currency's decimals by the shared `allocateProportionalWithResidual`, exactly how DirectPurchase applies a header discount (net method, so item cost and AP are net of it). The `purchaseInvoice` contract has no header discount field; this posts the same thing. Each line keeps `MerpecDiscount` and `BillDiscountShare` in `extras` |
+| A receipt's **negative** bill adjustment (it spends a sales return's credit: RV40000021 `CRV5000038 -10`) | Netted out of the positive allocations in row order (only the receipt's own customer's invoices), so the receipt carries **cash only**. For each invoice the credit landed on, one `journal` `<receipt>#RETURNCREDIT-<n>` right after the receipt: Dr sales return / Cr AR control (customer), `linkedInvoiceRef` = that invoice, so the replay settles the invoice through its one settlement writer. The same amount is taken off the return's own face-value journal (dropped at 0), so the customer's GL total is unchanged |
 | A journal line on a customer or supplier code | A **synthetic AR or AP control account** plus the party. The due date is the journal date, because Merpec has none and the posting engine requires one on every receivable or payable line |
 | A voucher line with a Discount | Receipt or payment `amount` and tender equal the **cash** (line amount minus Discount). Allocations keep Merpec's gross bill amounts. Each allocation carries its share as `discount`, plus the header `discount`. No generated journal and no synthetic discount account. See [Layer 5c](layer-5c-money.md) |
 | The discount on one voucher line | Shared **pro rata over the bills** it cleared, floored at the finest scale in play, with the rounding remainder handed out in row order up to each bill's headroom. Deterministic. A discount larger than the allocations is capped and the shortfall is counted |
@@ -60,6 +64,20 @@ Two accounting choices follow the replay rules:
 
 - **Sales lines carry no `unitCost`.** Zerupt costs them at the live company-wide average during replay. See [Layer 5a](layer-5a-sales.md).
 - **Purchase freight and, for a company not registered for VAT, the purchase tax are capitalised** through `freightOnInvoice`. A VAT company's lines carry `taxCodeRef` instead. See [Layer 5b](layer-5b-purchase-stock.md).
+
+### Face value: native first, journal last
+
+Merpec's document total (what the party owes) and its recorded VAT are the customer's figures. Each document is sent as **Zerupt will post it** and Zerupt's own logic produces the books. A `<doc>#FACEVALUE` journal (party leg, cash leg, VAT leg, residual to Merpec's discount or sales-return account) follows a document **only where Zerupt has no native representation**:
+
+| Case | Why a journal |
+|---|---|
+| Post-tax `BillDiscount` on a **taxed** bill, or a header `TaxAmount` that differs from Zerupt's per-line tax | Zerupt's bill discount is pre-tax; sending it would rewrite the VAT Merpec filed |
+| A purchase total below lines + tax on a **taxed** bill, or below the line nets themselves | Same VAT reason; no line can carry a discount above its net |
+| A sales return with **no invoice line to credit** (no `SalesSrNo`, or its items are not on the invoice) | Zerupt has **no invoice-less credit note**: the contract requires `creditNote.invoiceRef`, `CreditNotesService` requires an invoice, and a receipt cannot apply a credit note. The money is the journal (Cr AR customer / Dr sales return), the goods come back through `<SrNo>#STOCK` |
+
+When the journal relieves an invoice or bill (Merpec below Zerupt) it names it (`linkedInvoiceRef` / `linkedBillRef`) and the replay settles that document. The receipt and payment caps walk counts that relief when it measures what is still open.
+
+A spent return credit is recognised on the **receipt's date**, not the return's: between the two dates Zerupt shows the applied part as still owed. The cutover party balance, the invoice balances and the cash are Merpec's.
 
 ---
 

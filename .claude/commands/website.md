@@ -38,7 +38,7 @@ Examples:
 - `website/DEV-46-waitlist-form`
 - `website/DEV-47-blog-system`
 
-Run: `cd /Users/hus3ain/Development/Zerupt/erp && git checkout -b <branch>`
+Run: `cd erp && git checkout -b <branch>` (from the root)
 
 If `apps/website/` doesn't exist yet, note this and inform the user that the website app needs to be initialized first (scaffold with Next.js in the monorepo).
 

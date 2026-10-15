@@ -75,7 +75,7 @@ pnpm only · conventional commits (all lowercase, body <100 chars) · TypeScript
 | `zerupt-erp` | `/Zerupt/erp/` | `github.com/HussainBedawala/zerupt-erp.git` | All code — apps, packages, migrations |
 | `zerupt-internal` | `/Zerupt/` (root) | `github.com/HussainBedawala/zerupt-internal.git` | Non-code — CLAUDE.md, study/, agent-os/, .claude/ |
 
-- NEVER mix them. **Always `cd /Users/hus3ain/Development/Zerupt/erp` before branching/committing code.**
+- NEVER mix them. **Always `cd erp` (from this root) before branching/committing code.**
 - Both push to `origin main`. Root repo is private.
 - **Shell:** quote bracket paths (`[locale]` breaks zsh globs): `git add "apps/web/src/app/[locale]/layout.tsx"`
 - **Commits:** commitlint enforces all-lowercase subjects; body lines under 100 chars.
@@ -126,7 +126,7 @@ erp/
 Schema in `packages/db/src/schema/` (tenant) and `packages/db-admin/src/schema/` (admin); each has its own `drizzle.config.ts`. Migrator env (the DIRECT, non-pooled URLs): `DIRECT_URL_TENANT` → `zerupt_tenant_dev`, `DIRECT_URL_ADMIN` → `zerupt_admin`. **`DATABASE_*_URL` are the POOLED runtime URLs and are NOT read by drizzle-kit** — setting one leaves the config falling through to `.env`, which migrates a different database and still exits 0. Each config now prints `[drizzle:tenant] target database "..." on host "..."` before applying; read that line every time.
 
 ```bash
-cd /Users/hus3ain/Development/Zerupt/erp/packages/db   # or db-admin
+cd erp/packages/db   # or db-admin (from this root)
 npx drizzle-kit generate   # SQL only (no apply)   ·   migrate   # apply pending
 npx drizzle-kit push       # direct push (dev only) ·   check     # validate vs DB
 ```
@@ -140,7 +140,7 @@ Data backfills: `generate` → edit the SQL → `migrate`. **After any tenant mi
 Jest for API (`*.spec.ts` colocated). **`--testPathPatterns` (plural) silently matches 0 files** in Jest 30 — run `npx jest <filename-pattern>` from `erp/apps/api/` instead, and always confirm "Test Suites: N" in output (`pnpm ... test` exits 0 with no matches via passWithNoTests).
 
 ```bash
-cd /Users/hus3ain/Development/Zerupt/erp/apps/api
+cd erp/apps/api
 npx jest audit --no-coverage         # matches by filename
 ```
 

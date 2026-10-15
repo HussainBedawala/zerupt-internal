@@ -44,7 +44,7 @@ Ask: **"Start this issue? (yes / skip / pick different)"** → If yes, `save_iss
 
 ## PHASE 2: BRANCH
 
-From `erp/` directory (`cd /Users/hus3ain/Development/Zerupt/erp`):
+From the `erp/` directory (`cd erp` from the root):
 1. Ensure `main` is up to date and no unmerged branches exist
 2. `git checkout -b <prefix>/<DEV-XX>-<short-kebab>` (see CLAUDE.md for prefix mapping)
 3. Confirm with `git branch`

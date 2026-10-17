@@ -131,7 +131,7 @@ npx drizzle-kit generate   # SQL only (no apply)   ·   migrate   # apply pendin
 npx drizzle-kit push       # direct push (dev only) ·   check     # validate vs DB
 ```
 
-Data backfills: `generate` → edit the SQL → `migrate`. **After any tenant migration change, regenerate the provisioning snapshot:** `SNAPSHOT_BUILD_SUPERUSER_URL=<dev superuser url> pnpm --filter @zerupt/db snapshot:generate` (pre-commit blocks a stale one); run `snapshot:equivalence` before shipping. CHECK constraints / partial indexes via `.check()` in schema.
+Data backfills: `generate` → edit the SQL → `migrate`. **After any tenant migration change, regenerate the provisioning snapshot:** `pnpm --filter @zerupt/db snapshot:generate` (pre-commit blocks a stale one); run `snapshot:equivalence` before shipping. Both default to the LOCAL Homebrew PG17 (`brew services start postgresql@17`), ~6s each, **no URL or env var needed**. Agents: do NOT stop to ask for a superuser URL; local `psql -d postgres` works as the OS user. Only if local PG17 is unavailable, the dev Neon superuser is `POSTGRES_SUPERUSER_URL` in `erp/.env` (export it as `SNAPSHOT_BUILD_SUPERUSER_URL`). NEVER point `SNAPSHOT_BUILD_SUPERUSER_URL` at Neon: same output, but RTT-bound (~3 min / ~24 min). CHECK constraints / partial indexes via `.check()` in schema.
 
 ---
 

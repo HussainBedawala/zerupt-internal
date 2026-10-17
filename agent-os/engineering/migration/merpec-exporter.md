@@ -21,9 +21,9 @@ Where it lives: `erp/tools/merpec-export/` (workspace package `@zerupt/merpec-ex
 | Country | Read from the company address, or given with `--country` when the address names none |
 | Output folder | `<out>/<CompanyId>-<YYYYMMDD>/` |
 | `bundle.ndjson` | The envelope line, then records by layer: structure, financial, masters, history in `seq` order, proof |
-| `summary.md` | Rows in against records out, transformations, observations, fields not carried, unconverted tables, unknown forms, validation problems, open questions |
-| `problems.json` | Every schema problem found by Zerupt's own shared schemas, with the NDJSON line number |
-| `raw/` | The API responses as received, reused on the next run unless `--fetch` |
+| `summary.md` | Rows in against records out, transformations, observations, fields not carried, unconverted tables, unknown forms, the accounts the operator must map, every finding grouped by code (document, date, figures from the issue's structured fields), open questions |
+| `problems.json` | The shared `MigrationProblemsFile`: `{formatVersion, summary, unusable, issues}`. One `MigrationIssue` per finding (section 6) |
+| `raw/` | The API responses as received, reused on the next run unless `--fetch`. The `COMPANY` credential and access-right tables (`User`, `UserRole`, `Rights`, `rightsmast`, `rolemast`, `Menu`) are stripped before saving and again when a dump is read, so no password hash ever reaches disk, the report or the bundle |
 
 ---
 
@@ -80,16 +80,49 @@ Merpec's document total (what the party owes) and its recorded VAT are the custo
 
 When the journal relieves an invoice or bill (Merpec below Zerupt) it names it (`linkedInvoiceRef` / `linkedBillRef`) and the replay settles that document. The receipt and payment caps walk counts that relief when it measures what is still open.
 
+**The residual is bounded, never a plug.** What the journal sends to the discount account (Merpec total less Zerupt total, less the VAT delta) must equal the part of the document's `BillDiscount` that Zerupt does not already absorb (sales and purchase alike; 0 when sent natively; on a purchase the expenses and non-VAT capitalised tax absorb the discount first, so only `BillDiscount` beyond them rides the journal) or be rounding: at most one minor unit of the base currency per line (KWD 0.001, AED 0.01). Both may combine. The `BillDiscount` is cross-checked against Merpec's header identity, `Amount - Discount - BillDiscount + Tax = Total`, within a fixed two minor units (the header rounds once, not per line); a disagreement rejects the document. A purchase total ABOVE lines + tax + expenses beyond rounding (which would be silently capitalised as freight) is rejected too. A 0.01 source rounding gap with `BillDiscount` 0 (FP52000031) passes, a real header discount (FP52000170, 163.54) passes, and Zerupt-side drift fails. A one-time warning is raised when the `BillDiscount` column is missing from the whole table. Returns are not bounded: their residual is the credited amount itself.
+
+A document that fails the bound is **rejected, not aborted**: it is excluded from `bundle.ndjson` together with everything that depends on it (the same cascade as `--skip-invalid`, but always on; it follows credit notes, refunds, receipt/payment allocations and journals linked to the document), listed in `excluded.ndjson` and the `summary.md` exclusion section with the full message (document, expected discount, unexplained amount), printed to stderr as `REJECTED ...`, the envelope carries `rejectedCount` (downstream must refuse a bundle with any), the bundle is flagged unusable if it still has validation problems, and the run exits **non-zero**. The rest of the export completes. The journal posts to the Merpec system accounts `SA10000014` (sales discount) and `SA10000019` (purchase discount); the exporter cannot see which tenant account is active, so the operator must map them on the mapping screen to the tenant's ACTIVE discount accounts (prod: 4300 sales, 4810 purchase; not the inactive 5031).
+
 A spent return credit is recognised on the **receipt's date**, not the return's: between the two dates Zerupt shows the applied part as still owed. The cutover party balance, the invoice balances and the cash are Merpec's.
 
 ---
 
 ## 4. History order
 
-Merpec has no global sequence number. So `seq` is the position after sorting by date, then a configured day order for document types (`HISTORY_DAY_ORDER` in `src/config.ts`), then Merpec's creation timestamp, then the legacy id. The envelope window runs from the day before the first event (exclusive) to the last event.
+Merpec has no global sequence number. So `seq` is the position after sorting by date, then a configured day order for document types (`HISTORY_DAY_ORDER` in `src/config.ts`), then Merpec's creation timestamp, then the legacy id. The envelope window runs from the day before the first event (exclusive) to the last event. A document dated after the company's own "today" (the calendar date in the company's timezone, not the machine's) is kept in the bundle with a blocking `date_in_future` issue but is left out of the window and the cutover, so one mistyped year (FP25000100 dated 2036) cannot move the cutover ten years out.
 
 ---
 
 ## 5. Open questions
 
 Printed at the end of every `summary.md`, from `src/open-questions.ts`.
+
+---
+
+## 6. Findings: one issue shape
+
+Every finding is a shared `MigrationIssue` (`@zerupt/shared`, `migration-replay/issue.ts`), built by the one `issue()` factory in `src/issues.ts`. Severity and the operator's ways out come from the shared registry, never from the exporter. Ids ride as structured fields: `entity {kind, legacyId, lineNo?, sourceForm, sourceKey}`, `docRef {number, date}`, `field`, `expected / actual / delta`, `related[]`, `params`. Nothing is parsed back out of message text, and no id is embedded in a summary key.
+
+| Code | Severity | When |
+|---|---|---|
+| `date_in_future` | blocking | document dated after the company's today; kept, excluded from the window |
+| `negative_stock_before_opening` | warning | replaying stock in `HISTORY_DAY_ORDER` takes an item/warehouse below zero. First negative date, shortfall, the documents involved. `Company.IsNegSellingAllow` rides in `params`. Dates are never moved |
+| `currency_unresolved` / `fx_not_supported` | blocking | `PURCHASE.CurrencyCode` ("3067CAED") is resolved to ISO through `PURCHASE.Currency`; an unresolvable code, a foreign bill whose lines do not prove the conversion, or a non-numeric rate rejects that bill (excluded with its dependants). The run never aborts |
+| `voucher_header_mismatch` | warning | receipt/payment header total differs from its lines (gross or net of discount), or a sales bill whose Total is not `Amount + Tax - BillDiscount` (InvoiceNo 3352, 3973), or a purchase total above lines + tax + expenses |
+| `bill_discount_post_tax` | info | Merpec's post-tax round-off (`Total = Amount + Tax - BillDiscount`), held by the face-value journal |
+| `face_value_adjusted` | warning | any other face-value journal of one minor unit or more; the split is in `params` |
+| `face_value_rounding_summary` | info | ONE roll-up of every face-value journal below one minor unit (and purchase total gaps of 1-2 minor units), with the count and the first 100 documents in `related` |
+| `vat_rate_unmapped` | blocking | a VAT-company line whose rate has no unique `ITEM.VAT` code (15 %, 30 %); one issue per line. Rates are compared by value ("5", "5.00" and "5 %" are the same rate) |
+| `journal_unbalanced` | blocking | an emitted journal whose debits differ from its credits |
+| `duplicate_source_key` | warning | two source rows share a natural key (SrNo, AccountCode..., sales `InvoiceNo`), or a derived id (`<SrNo>#FACEVALUE`) is emitted twice. The lookup Maps keep only the last row of a key, so repeats are collected before they can collapse |
+| `schema_invalid` (source row) | warning | a row that fails its Merpec schema is excluded and reported; the run continues. Only an unreadable `COMPANY.Company` aborts |
+| `document_redated` | info | a receipt/payment moved to the date of a document it allocates to; `params {from, to}` |
+| `allocation_adjusted` | info | an allocation cut to the open balance or dropped (nothing open, or another party's document), or a return credit moved onto the invoice-settling journals; the referenced document is in `related` |
+| `required_mapping` | blocking | a Merpec system account the journals post to (`SA100000xx`) is missing from the chart |
+| `missing_ref` | warning | `CustomerCode` of a sales bill or return not in `CUSTOMER`, unresolved payment bills, a proof balance with no account |
+| `tax_in_no_tax_country` / `fidelity_mismatch` (field `IsVAT`) | warning | `Company.IsVAT` disagrees with `countryHasConsumptionTax(country)` |
+
+`unusable` (also on the envelope) is true when a finding was aborted, or documents were rejected and the bundle still has validation problems. The envelope also carries `rejectedCount` and `requiredMappings` (every synthetic account the export invented, `MERPEC-AR-CONTROL`, `MERPEC-AP-CONTROL`, `MERPEC-*-DISCOUNT`, and every hard-wired Merpec system account the journals post to, each with its role), which the operator maps on the mappings screen.
+
+Money rounds half-even everywhere through `src/rounding.ts`; each call site names its mode, and the CLI pins the global `Decimal` default once at entry.

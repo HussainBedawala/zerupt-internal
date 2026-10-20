@@ -40,6 +40,8 @@ Every Merpec record becomes its Zerupt record **at face value**. The exporter ne
 
 Only changes of shape are allowed, and each is counted in the summary.
 
+**Masters a document names but the company's master lists lack.** Merpec's per-company dump can hold a document whose customer, supplier, item or location is not in that company's masters (company 3066's bill SB18000239 names customer SA21000070, location 306701HO and item IM21004826). Decision: import what the API returns; a document is never excluded for this. Before the lookups are built, every such code (read from the ref columns of every document kind: sales bills, returns, purchases, purchase returns, stock adjustments, transfers, journal / receipt / payment lines and their bill-adjustment rows) becomes a minimal source-shaped master row and goes through the normal converters, so a stub location is a branch + warehouse, a stub customer or supplier is an active party, and a stub item is stock-tracked (its stock can go negative). The name is the code, or for an item the line Description, else PartNo. Each stub raises one `source_value_defaulted` finding naming the code and the documents that reference it. A voucher line's `AccountCode` can be a chart account or a party, so it is not stubbed. A missing DOCUMENT ref (an invoice or bill that does not exist) is still excluded by the reference check.
+
 | Merpec shape | Zerupt shape |
 |---|---|
 | A location (selling site and stock site in one) | A **branch plus a warehouse** under it, both with the location code. If the tenant already has a branch for that site (for example the onboarding head office), the operator links the location to it at mapping; the exporter never decides this, and a duplicate create is refused. See [Layer 1](layer-1-structure.md) |
@@ -120,7 +122,8 @@ Every finding is a shared `MigrationIssue` (`@zerupt/shared`, `migration-replay/
 | `document_redated` | info | a receipt/payment moved to the date of a document it allocates to; `params {from, to}` |
 | `allocation_adjusted` | info | an allocation cut to the open balance or dropped (nothing open, or another party's document), or a return credit moved onto the invoice-settling journals; the referenced document is in `related` |
 | `required_mapping` | blocking | a Merpec system account the journals post to (`SA100000xx`) is missing from the chart |
-| `missing_ref` | warning | `CustomerCode` of a sales bill or return not in `CUSTOMER`, unresolved payment bills, a proof balance with no account |
+| `missing_ref` | warning | unresolved payment bills, a proof balance with no account, a document ref (invoice or bill) the bundle does not hold |
+| `source_value_defaulted` | info | a stub master created for a customer, supplier, item or location that documents name but the masters lack; `related` lists the documents |
 | `tax_in_no_tax_country` / `fidelity_mismatch` (field `IsVAT`) | warning | `Company.IsVAT` disagrees with `countryHasConsumptionTax(country)` |
 
 `unusable` (also on the envelope) is true when a finding was aborted, or documents were rejected and the bundle still has validation problems. The envelope also carries `rejectedCount` and `requiredMappings` (every synthetic account the export invented, `MERPEC-AR-CONTROL`, `MERPEC-AP-CONTROL`, `MERPEC-*-DISCOUNT`, and every hard-wired Merpec system account the journals post to, each with its role), which the operator maps on the mappings screen.

@@ -223,3 +223,26 @@ The field tables use these columns:
 | Machine-readable schemas and validator | Built for the replay bundle: `packages/shared/src/migration-replay/` holds the record schemas and the problem code table |
 
 The layer sections are produced by auditing the actual Zerupt schema and services, module by module, rather than from memory or from existing documentation, because documentation drifts and the database does not.
+
+## How a run handles problems (2026-10)
+
+The history layer (layer 5) no longer stops at the first bad record. It keeps going and collects everything, so the operator handles all problems in one pass.
+
+| Situation | What the run does |
+|---|---|
+| A record is refused (bad data, missing reference, business rule) | The record is marked rejected. The run continues. |
+| A record refers to a rejected or skipped document (invoice, credit note, receipt, bill, cheque, allocation...) | It is not attempted. It is rejected as `blocked_by_dependency`, so nothing is posted on top of a missing document. Which fields count as references comes from the contract's `*Ref` fields, never a hand list. |
+| A document posts but its total differs from the source | Kept as `posted_with_mismatch`. The run continues. Finish still needs every mismatch accepted. |
+| A transfer's sending warehouse is short | Transfers are strict except under migration replay: the replay sends and the sending warehouse goes negative, as in the source (one average cost per item and entity, so a transfer moves quantity, never value). Info issue `transfer_negative_stock` names the item, warehouse and how far below zero; never pauses. Live transfers stay strict. |
+| A transfer from a warehouse to itself | Nothing is posted. The record is closed as an audited no-op with info issue `transfer_same_warehouse`. |
+| A pinned-cost residual is refused | The record is retried once with the residual override (posted to inventory variance). Info issue `pinned_residual_auto_posted`. |
+| An unexpected error | The operator message stays generic. A cleaned technical detail (error type, SQLSTATE, constraint / column / table, redacted text) is stored and shown only to people who can run the migration. |
+| Outbox dead letter, audit write failure | Still pauses the run (infrastructure, not one record). The dead-letter issue carries the listener's cleaned error and the source document id. |
+
+At the end of the layer the run pauses once at the layer gate and every rejected and mismatched record gets its own issue row (paged, no cap). Bulk accept and bulk skip work per problem code, optionally narrowed to one record kind, and the screen repeats the call until the whole list is done. Layer 4 (opening balances) still stops at its first error, because its steps post whole balanced opening journals that later steps tie against.
+
+A real (non-migration) journal entry found during a run still stops it; the pause now names the entries (number, date, source).
+
+Removed actions: `allow_negative_stock` (a replayed transfer may go negative on its own; see above) and `cap_to_remaining` (never implemented; capping a credit changes money and needs per-kind handler support).
+
+Exporter notes the issue model accepts: `source_value_defaulted` (info, e.g. a blank supplier invoice number filled with the document number) and `source_row_not_carried` (warning, e.g. an empty journal or an orphan line).

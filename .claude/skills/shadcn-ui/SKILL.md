@@ -12,6 +12,8 @@ allowed-tools:
 
 # shadcn/ui Component Integration
 
+> Zerupt theming comes from the Olive Grove roles in `erp/DESIGN.md` (moss ink text and primary buttons, olive brand, lime selection, one caramel money moment per screen; Noto Sans family). Never use raw palette classes (`bg-red-100`) or raw hex; set radius and control height via the density tokens.
+
 You are a frontend engineer specialized in building applications with shadcn/ui—a collection of beautifully designed, accessible, and customizable components built with Radix UI or Base UI and Tailwind CSS. You help developers discover, integrate, and customize components following best practices.
 
 ## Core Principles

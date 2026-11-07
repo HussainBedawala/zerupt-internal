@@ -12,7 +12,7 @@ tldr: The emotional and experiential blueprint for the whole zerupt.com site. De
 
 ## 0. The single experiential idea
 
-The whole site is **one owner's day, reversed.** It opens in the dark (the 10pm trap, anxiety, no control) and walks the visitor into the light (the morning glance at the phone, total calm, in command). The visitor should physically feel the temperature change as they scroll: from tense and dim to warm and clear. We engineer this with pacing, contrast (dark bands to cream), one accent (citron) that grows as "Zerupt acts," and copy that moves from *their fear in their words* to *their new life as fact.*
+The whole site is **one owner's day, reversed.** It opens in the dark (the 10pm trap, anxiety, no control) and walks the visitor into the light (the morning glance at the phone, total calm, in command). The visitor should physically feel the temperature change as they scroll: from tense and dim to warm and clear. We engineer this with pacing, contrast (forest night bands to cornsilk and cream), one accent (lime) that grows as "Zerupt acts," and copy that moves from *their fear in their words* to *their new life as fact.*
 
 We are not selling software. We are selling the moment the owner exhales.
 
@@ -32,11 +32,11 @@ Each page, and each section within the homepage, is engineered to hand the visit
 
 ### Design principles that make them FEEL it (govern every page)
 - **Contrast as emotion.** Dark = the trap and the tension. Cream = relief and clarity. We move between them deliberately, never decoratively.
-- **Citron = the pulse of the team.** Citron is scarce and meaningful: it appears the moment "Zerupt acts" (a finding, a next move, a live counter). It grows in presence as the story resolves. Never decoration.
+- **Lime = the pulse of the team.** Lime is scarce and meaningful: it appears the moment "Zerupt acts" (a finding, a next move, a live counter). It grows in presence as the story resolves. Never decoration.
 - **One thing moves at a time.** Calm, assured motion (brand-foundation §17). Nothing bounces. The site feels in control because it *is* in control. The medium is the message.
 - **Real faces, real shops.** Photography of real GCC owners and shops (the `photography-shotlist.md`) carries the emotion text cannot. The owner is always the hero in frame; Zerupt is the quiet force.
 - **The team feels alive.** Zee and the roster have a consistent visual identity and a calm "thinking/acting" pulse. They are characters, not icons.
-- **Numbers in mono, always true.** IBM Plex Mono for every figure. The precision is felt as trust. We never show a fake-looking dashboard; we show real, plausible GCC data.
+- **Numbers exact, always true.** Noto Sans tabular numerals for every figure (Noto Sans Mono is for eyebrows, code and labels only). The precision is felt as trust. We never show a fake-looking dashboard; we show real, plausible GCC data.
 - **Bilingual as art.** Arabic is art-directed, not translated. The Arabic site must feel *designed in Arabic*, with equal weight and beauty, not flipped.
 - **Sound is optional and earned.** Any audio (see Part 3) is off by default, tasteful, and reinforces calm-then-resolve. Never autoplay noise.
 
@@ -80,7 +80,7 @@ The homepage IS the three-act story. Each section below lists its **story beat, 
 ### Section 1, Hero (the hook): the trap named as a promise
 - **Beat:** Act 1 problem, framed as the Act 2 solution. Lead with control/trust (founder-confirmed hook).
 - **Feeling:** instant recognition + intrigue. "Wait, a team that can't steal or quit?"
-- **Mechanism:** dark or warm-dim canvas (we open in the owner's late evening). The control hook headline ("the team that runs your shop for you, no salaries, no theft, no sick days, no mistakes"). One primary CTA. A single citron spark wakes as the team "comes online." A real owner's face or a calm shop scene anchors it, not a generic graphic.
+- **Mechanism:** dark or warm-dim canvas (we open in the owner's late evening). The control hook headline ("the team that runs your shop for you, no salaries, no theft, no sick days, no mistakes"). One primary CTA. A single lime spark wakes as the team "comes online." A real owner's face or a calm shop scene anchors it, not a generic graphic.
 - **Transition out:** the visitor is intrigued but skeptical. We immediately prove we understand them.
 
 ### Section 2, The trap (recognition): their 10pm, in their words
@@ -104,13 +104,13 @@ The homepage IS the three-act story. Each section below lists its **story beat, 
 ### Section 5, Your Next Move (the signature difference): the brand's soul
 - **Beat:** Act 3 engine. The growth advisor.
 - **Feeling:** "This does not just hold the line, it makes me money." Quiet awe.
-- **Mechanism:** KEEP the existing dark NextMove band (it already works). The one place citron carries full meaning. A real, plausible next-move card ("Reorder Basmati 5kg, you run out Thursday"). This is the single most ownable moment on the site.
+- **Mechanism:** KEEP the existing dark NextMove band (it already works). The one place lime carries full meaning. A real, plausible next-move card ("Reorder Basmati 5kg, you run out Thursday"). This is the single most ownable moment on the site.
 - **Transition:** awe becomes trust as we de-risk with the offer.
 
 ### Section 6, The offer + guarantee (trust): the safest yes in retail software
 - **Beat:** Act 2 authority. The Grand Slam Offer, assembled in one frame.
 - **Feeling:** "I cannot lose." Risk evaporates.
-- **Mechanism:** the offer stack (up and running in 2 hours or we do it free; 30 days or every fil back; no card; pay nothing until up and running; Founding 50 frozen pricing). A live seat counter (citron). This block sits ABOVE pricing (trust before price).
+- **Mechanism:** the offer stack (up and running in 2 hours or we do it free; 30 days or every fil back; no card; pay nothing until up and running; Founding 50 frozen pricing). A live seat counter (lime). This block sits ABOVE pricing (trust before price).
 - **Transition:** trust + a clear offer makes them ready to weigh price.
 
 ### Section 7, Proof it is real (belief): the product, doing the work

@@ -15,7 +15,7 @@ tldr: 16 shots covering every website section. Each shot has framing, lighting, 
 Append this fragment to **every** individual prompt. Treat it as the base layer.
 
 ### Shared style sentence
-> Documentary editorial photography, 35mm equivalent lens, Kodak Portra 400 film emulation, shallow depth of field, natural warm afternoon light (golden hour or diffused window light), warm shadows pushed toward deep ink-black (#141310), warm highlights toward aged cream (#F9F7F5), slight film grain, no digital sharpening artifacts, no motion blur, no color grading toward blue or teal, no staged studio lighting, no catchlights from ring lights, real environment, candid moment, no text overlays, no visible logos or brand names, photojournalism quality
+> Documentary editorial photography, 35mm equivalent lens, Kodak Portra 400 film emulation, shallow depth of field, natural warm afternoon light (golden hour or diffused window light), warm shadows pushed toward deep forest-black (#0F1A0E), warm highlights toward aged cream (#F7F6EF), midtones graded toward olive, sand and caramel, slight film grain, no digital sharpening artifacts, no motion blur, no color grading toward blue or teal, no staged studio lighting, no catchlights from ring lights, real environment, candid moment, no text overlays, no visible logos or brand names, photojournalism quality
 
 ### Shared negative prompt fragment
 > stock photography, corporate office, laptop with glowing screen, hologram, blue LED light, teal gradient, neon, ring light catchlights, perfect teeth smile direct at camera, model posing, diversity stock, pointing at whiteboard, smart city, data visualization on screen, fake food styling, filter-heavy Instagram aesthetics, oversaturated, HDR tone mapping, AI face artifacts, floating UI elements, visible digital screens unless intentional, text in frame, watermark, logo, brand name, plastic props
@@ -35,7 +35,7 @@ Append this fragment to **every** individual prompt. Treat it as the base layer.
 | Dust, grain, natural shadow, imperfect light | Heavy retouching, skin smoothing, HDR |
 | Wide negative space on one side for text overlay | Busy full-frame compositions with no breathing room |
 | Documentary crop: subjects slightly off-center, rule of thirds | Dead center portrait composition |
-| Dark ink shadows that can hold reversed-out white type | Blown-out white backgrounds |
+| Dark forest shadows that can hold reversed-out white type | Blown-out white backgrounds |
 
 ---
 
@@ -49,9 +49,9 @@ Append this fragment to **every** individual prompt. Treat it as the base layer.
 
 **Framing:** Wide 16:9 or 3:2. Owner behind a baqala counter, shot from slight low angle across the counter surface. The counter edge forms a strong horizontal in the lower third. Owner is mid-action — reaching for something on the shelf, or counting change — NOT looking at camera. Leave top-left quadrant relatively open (cream/dark gradient) for headline text. Deep focus on counter goods (dates tin, Laban carton, SIM card rack) with owner softly sharp in the background.
 
-**Lighting:** Late afternoon window light from camera-left. Warm amber spill across the counter surface. Owner's face half-lit, half in warm shadow. Push shadows deep toward ink-black. No fill light. The far side of the shop falls into shadow.
+**Lighting:** Late afternoon window light from camera-left. Warm amber spill across the counter surface. Owner's face half-lit, half in warm shadow. Push shadows deep toward forest-black. No fill light. The far side of the shop falls into shadow.
 
-**Color grade:** Warm amber highlights → deep ink shadows. Slight Portra 400 color shift (slightly warm skin, slightly desaturated greens). This photo will be placed on cream canvas — it must hold contrast without fighting the cream.
+**Color grade:** Warm amber highlights → deep forest shadows. Slight Portra 400 color shift (slightly warm skin, slightly desaturated greens). This photo will be placed on cream canvas — it must hold contrast without fighting the cream.
 
 ```json
 {
@@ -60,9 +60,9 @@ Append this fragment to **every** individual prompt. Treat it as the base layer.
   "negative_prompt": "stock photography, smiling at camera, posing, blue light, teal, neon, ring light, hologram, laptop, glowing screen, text, logo, studio lighting, HDR, oversaturated, Western grocery products, plastic props, AI face artifacts",
   "aspect_ratio": "16:9",
   "style": "documentary editorial, Kodak Portra 400 film, photojournalism",
-  "lighting": "warm golden afternoon, window light from camera-left, no fill, deep ink shadows",
+  "lighting": "warm golden afternoon, window light from camera-left, no fill, deep forest shadows",
   "mood": "quiet authority, a man who knows every item in his shop",
-  "usage_notes": "Primary hero background. Will be placed under cream/ink gradient overlay. Needs strong shadow areas in top-left for headline text legibility."
+  "usage_notes": "Primary hero background. Will be placed under cream/forest-night gradient overlay. Needs strong shadow areas in top-left for headline text legibility."
 }
 ```
 
@@ -101,7 +101,7 @@ Append this fragment to **every** individual prompt. Treat it as the base layer.
 
 **Lighting:** Overhead or side-from-window natural light. Harsh enough to create shadow in the invoice folds, readable detail on the text. No fill flash.
 
-**Color grade:** Slightly cooler than the warm shop shots — invoice paper should read as white/cream. Hands warm amber. Shadows toward ink.
+**Color grade:** Slightly cooler than the warm shop shots — invoice paper should read as white/cream. Hands warm amber. Shadows toward forest night.
 
 ```json
 {
@@ -124,9 +124,9 @@ Append this fragment to **every** individual prompt. Treat it as the base layer.
 
 **Framing:** 3:2 or 16:9 horizontal. Shot straight-on or at a slight diagonal angle along a dense shelf, filling the frame with authentic regional products — Vimto, Nido powder, Indomie, Laban, canned lentils with Arabic packaging, ghee tins, sugar sacks. The shelf label tags are hand-written or printed on small strips. Some items are slightly misaligned (real). Composition: products fill 60% of frame, leaving 40% on one side in darker, out-of-focus shadow for text overlay potential.
 
-**Lighting:** Ambient shop fluorescent mixed with a shaft of natural light from one side. The fluorescent gives a subtle warm-green cast that feels authentic, not clinical. Push shadows toward ink-black.
+**Lighting:** Ambient shop fluorescent mixed with a shaft of natural light from one side. The fluorescent gives a subtle warm-green cast that feels authentic, not clinical. Push shadows toward forest-black.
 
-**Color grade:** Let the regional packaging colors (reds, golds, greens of Arabic packaging) be present but desaturated by 15–20% in grade so they harmonize with the cream/ink palette without fighting it.
+**Color grade:** Let the regional packaging colors (reds, golds, greens of Arabic packaging) be present but desaturated by 15–20% in grade so they harmonize with the cream/olive palette without fighting it.
 
 ```json
 {
@@ -135,7 +135,7 @@ Append this fragment to **every** individual prompt. Treat it as the base layer.
   "negative_prompt": "pristine supermarket, Western grocery brands, perfectly aligned products, studio lighting, blue cold light, hologram, digital price labels, text overlay, logo, stock imagery, overly clean, HDR, oversaturated",
   "aspect_ratio": "3:2",
   "style": "documentary editorial, Kodak Portra 400 film, slight warm-green fluorescent",
-  "lighting": "ambient shop fluorescent + natural light shaft from right, warm-green cast, deep ink shadows",
+  "lighting": "ambient shop fluorescent + natural light shaft from right, warm-green cast, deep forest shadows",
   "mood": "abundance but human-scale, real inventory that an owner has built piece by piece",
   "usage_notes": "Noor/Arjun agent sections. Background texture at 20–30% opacity. Shadow side holds white text well."
 }
@@ -156,11 +156,11 @@ Append this fragment to **every** individual prompt. Treat it as the base layer.
 ```json
 {
   "id": "shot-05-phone-in-hand",
-  "prompt": "Documentary photograph of a Filipino male shopkeeper in his late 20s standing at the side of a baqala counter, shot at 3/4 from behind and to one side, one hand resting on the counter edge, the other hand holding a smartphone at waist height, thumb actively on screen, face not fully visible — we see jaw, ear, side of head — looking down at phone with focused attention, 35mm lens at f/2.2, Kodak Portra 400 film emulation, warm natural window light from behind-left illuminates the hand and phone, the shop shelves and counter in the background are soft-focused warm bokeh — Arabic product packaging blurred, phone screen is not visible (back of device only or blurred suggestion), candid mid-action moment, warm amber skin tones, deep ink shadows in shop background, film grain, photojournalism quality, 4:5 aspect ratio",
+  "prompt": "Documentary photograph of a Filipino male shopkeeper in his late 20s standing at the side of a baqala counter, shot at 3/4 from behind and to one side, one hand resting on the counter edge, the other hand holding a smartphone at waist height, thumb actively on screen, face not fully visible — we see jaw, ear, side of head — looking down at phone with focused attention, 35mm lens at f/2.2, Kodak Portra 400 film emulation, warm natural window light from behind-left illuminates the hand and phone, the shop shelves and counter in the background are soft-focused warm bokeh — Arabic product packaging blurred, phone screen is not visible (back of device only or blurred suggestion), candid mid-action moment, warm amber skin tones, deep forest shadows in shop background, film grain, photojournalism quality, 4:5 aspect ratio",
   "negative_prompt": "phone held up posing for camera, visible app UI overlay, glowing screen, blue screen light, ring light, stock photography, full face portrait, corporate suit, tablet, laptop, hologram, digital UI elements, text, logo, AI face artifacts, studio lighting",
   "aspect_ratio": "4:5",
   "style": "documentary, Kodak Portra 400 film, candid",
-  "lighting": "warm natural window light from behind-left, hand/phone brightest element, ink shadows behind",
+  "lighting": "warm natural window light from behind-left, hand/phone brightest element, forest shadows behind",
   "mood": "effortless control, pocket-scale power, unposed competence",
   "usage_notes": "Hero message support image. Works as mobile-native portrait crop. Phone screen intentionally absent — remove temptation to show UI."
 }
@@ -176,16 +176,16 @@ Append this fragment to **every** individual prompt. Treat it as the base layer.
 
 **Lighting:** Backlit from the open doorway — bright exterior, dark warm interior. Strong silhouette on one figure, the other partially rim-lit. Documentary, harsh but beautiful contrast.
 
-**Color grade:** High contrast. Bright doorway bleeds warm white, interior is deep ink. The boxes and hands are in the transitional mid-tones.
+**Color grade:** High contrast. Bright doorway bleeds warm white, interior is deep forest. The boxes and hands are in the transitional mid-tones.
 
 ```json
 {
   "id": "shot-06-supplier-delivery",
-  "prompt": "Documentary editorial photograph of a supplier delivery moment at a small GCC baqala shop, shot from inside the shop looking toward the bright open doorway, an Arab delivery driver in a uniform is handing a cardboard box across the threshold to a South Asian male shopkeeper who holds a mobile phone checking a list, a white delivery van partially visible outside in brilliant warm afternoon light, several large cardboard boxes and sacks stacked near the entrance, the doorway creates strong backlight — exterior overexposed warm white, shop interior warm-dark ink, one figure silhouetted, the other rim-lit, 35mm lens f/4 for more depth, Kodak Portra 400 film emulation, strong high-contrast backlit scene, film grain, photojournalism editorial quality, 16:9 aspect ratio",
+  "prompt": "Documentary editorial photograph of a supplier delivery moment at a small GCC baqala shop, shot from inside the shop looking toward the bright open doorway, an Arab delivery driver in a uniform is handing a cardboard box across the threshold to a South Asian male shopkeeper who holds a mobile phone checking a list, a white delivery van partially visible outside in brilliant warm afternoon light, several large cardboard boxes and sacks stacked near the entrance, the doorway creates strong backlight — exterior overexposed warm white, shop interior warm-dark forest, one figure silhouetted, the other rim-lit, 35mm lens f/4 for more depth, Kodak Portra 400 film emulation, strong high-contrast backlit scene, film grain, photojournalism editorial quality, 16:9 aspect ratio",
   "negative_prompt": "studio lighting, blue light, neon, glowing screen, stock photography, smiling at camera, corporate uniforms, supermarket loading dock, text visible, logo on boxes legible, HDR, oversaturated, AI face artifacts",
   "aspect_ratio": "16:9",
   "style": "documentary editorial, Kodak Portra 400, backlit high contrast",
-  "lighting": "strong afternoon backlight from open doorway, silhouette/rim-lit, interior deep ink shadow",
+  "lighting": "strong afternoon backlight from open doorway, silhouette/rim-lit, interior deep forest shadow",
   "mood": "the rhythm of supply, manual work, the cycle before automation",
   "usage_notes": "Tariq purchase-agent section. Strong silhouette works as section divider background at low opacity."
 }
@@ -247,7 +247,7 @@ Append this fragment to **every** individual prompt. Treat it as the base layer.
 
 **Framing:** 3:2 horizontal or 1:1. Top-down flat-lay of a wooden or cardboard box of Medjool dates, lid open, with several dates loose outside the box. Around it: small cloth bags of turmeric and cumin, a metal scoop, a few star anise pods. Rich, warm, regional. No human element. Pure texture and color. Shot from directly above.
 
-**Lighting:** Soft window light from camera-left. Long shadows from the spice bags and date box. Everything warm — golds, ochres, deep umbers. This shot is the most visually aligned with the citron/olive brand palette.
+**Lighting:** Soft window light from camera-left. Long shadows from the spice bags and date box. Everything warm — golds, ochres, deep umbers. This shot is the most visually aligned with the olive/sand/caramel brand palette.
 
 ```json
 {
@@ -258,7 +258,7 @@ Append this fragment to **every** individual prompt. Treat it as the base layer.
   "style": "documentary flat-lay texture, Kodak Portra 400 film, warm palette",
   "lighting": "soft window light from left, long warm shadows, golds and ochres",
   "mood": "regional richness, the raw material of GCC trade",
-  "usage_notes": "Most palette-aligned shot — golds match citron accent. Strong country-page background at 15–25% opacity."
+  "usage_notes": "Most palette-aligned shot — golds match the caramel accent. Strong country-page background at 15–25% opacity."
 }
 ```
 
@@ -318,7 +318,7 @@ Append this fragment to **every** individual prompt. Treat it as the base layer.
 
 **Lighting:** Single source — either last light through the open door or a single warm incandescent bulb. Everything else falls into deep shadow. High chiaroscuro contrast.
 
-**Color grade:** Deep. Ink-heavy. The warmth is the single light source; everything else is near-black. This is the most cinematic shot on the list.
+**Color grade:** Deep. Forest-heavy. The warmth is the single light source; everything else is near-black. This is the most cinematic shot on the list.
 
 ```json
 {
@@ -327,7 +327,7 @@ Append this fragment to **every** individual prompt. Treat it as the base layer.
   "negative_prompt": "studio lighting, ring light, smiling, posing for camera, blue light, neon, phone showing app UI, multiple people, bright cheerful shop, AI face artifacts, text, logo, HDR, oversaturated, young male model",
   "aspect_ratio": "4:5",
   "style": "cinematic documentary, Kodak Portra 400 pushed, chiaroscuro",
-  "lighting": "single warm practical source (open door or bare bulb), high chiaroscuro, ink-heavy shadows",
+  "lighting": "single warm practical source (open door or bare bulb), high chiaroscuro, forest-heavy shadows",
   "mood": "the weight of ownership, the moment Zerupt speaks to — alone with the numbers at closing time",
   "usage_notes": "Most emotionally resonant image. Use on /start founder letter and /switch 'before' emotional hook. Needs no text overlay — let it breathe."
 }
@@ -452,15 +452,15 @@ Append this fragment to **every** individual prompt. Treat it as the base layer.
 
 ---
 
-### SHOT 16 — Abstract: Ink-Dark Shop Interior Background
+### SHOT 16 — Abstract: Forest-Dark Shop Interior Background
 
 **Site usage:** Full-bleed dark section backgrounds. `/` homepage dark sections. `/pricing` dark pricing table background.
 
 **Framing:** 16:9. The shop at dusk or with most lights off — a narrow corridor of shelves or the back of the shop, barely lit. This is an abstract background shot. Details are intentionally obscured. The shelves create vertical rhythm. A single warm light source (bare bulb in background, or the glow from a small TV off-screen) creates a warm hot-point in the deep-dark scene. The image is 80% shadow.
 
-**Lighting:** Near darkness. Single warm practical light source far in the background. Everything else is ink-black with just the ghost of shelf structure visible.
+**Lighting:** Near darkness. Single warm practical light source far in the background. Everything else is forest-black with just the ghost of shelf structure visible.
 
-**Color grade:** Push all shadows to ink-black #141310. Keep only the single warm light point. Minimal film grain (shadows eat grain). This is a texture background, not a narrative image.
+**Color grade:** Push all shadows to forest-black #0F1A0E. Keep only the single warm light point. Minimal film grain (shadows eat grain). This is a texture background, not a narrative image.
 
 ```json
 {
@@ -469,7 +469,7 @@ Append this fragment to **every** individual prompt. Treat it as the base layer.
   "negative_prompt": "bright lit shop, studio lighting, blue neon, teal light, multiple light sources, modern supermarket, visible product text, stock photography, AI artifacts, HDR, color grading toward blue or purple, persons in frame",
   "aspect_ratio": "16:9",
   "style": "atmospheric documentary, Kodak Portra 400 pushed dark, minimal ambient",
-  "lighting": "single warm incandescent practical in deep background, 80% shadow, ink-black",
+  "lighting": "single warm incandescent practical in deep background, 80% shadow, forest-black",
   "mood": "quiet and absolute, the shop after it closes, space that holds memory of a day's work",
   "usage_notes": "Background texture for dark sections. Site dark mode sections. Place white or cream text directly over. The single warm light gives a visual anchor. Use at 60–80% opacity for section backgrounds."
 }
@@ -507,6 +507,6 @@ Append this fragment to **every** individual prompt. Treat it as the base layer.
 1. **Run the global style block + individual prompt together** — paste both into the generator, with the global style appended to the end of the individual prompt field, and the global negative prompt merged with the individual negative prompt.
 2. **Preferred generators:** Midjourney v6.1+ (`--ar` flag for ratio, `--style raw`, `--sw 0`), DALL-E 3 (high quality), Flux Pro 1.1, or Stable Diffusion 3.5 Large.
 3. **Midjourney tip:** Add `--v 6.1 --style raw --cref [previous accepted shot URL]` after shots 01/02 are approved to maintain visual consistency across the set.
-4. **Iterating toward the palette:** After generation, run the image through a Lightroom preset or Photoshop curve that: lifts shadows to the cream (#F9F7F5) tone, pushes blacks toward ink (#141310), and adds a slight warm orange-amber to midtones. This bridges AI generation to the exact brand palette.
+4. **Iterating toward the palette:** After generation, run the image through a Lightroom preset or Photoshop curve that: lifts shadows to the canvas (#F7F6EF) tone, pushes blacks toward forest night (#0F1A0E), and adds a slight warm orange-amber to midtones. This bridges AI generation to the exact brand palette.
 5. **Shot 07 is the intentional exception** — it should feel cooler and more uncomfortable than the rest. Do not warm-grade it.
 6. **For country pages**, shots 01, 04, 09, 14 are culturally neutral and can be used across GCC. Shots 12 (prayer beads) and 15 (kirana) are market-specific.

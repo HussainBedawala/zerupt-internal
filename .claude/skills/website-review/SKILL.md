@@ -242,8 +242,10 @@ Run these tools and address all critical issues:
 
 | Check | Requirement |
 |-------|-------------|
-| Colors | Match design tokens exactly |
-| Typography | Correct fonts, weights, sizes |
+| Colors | Palette roles from `erp/DESIGN.md` only: canvas `#F7F6EF`, surface `#FFFFFF`, moss ink `#283618`, brand olive `#606C38`, lime `#ECF39E` for selection, caramel `#DDA15E` as the one money moment (fill-only, moss text on it, never caramel text on light); website may add cornsilk `#FEFAE0` and forest night `#0F1A0E` sections; no raw hex or raw Tailwind palette; no violet/teal/navy |
+| Typography | Noto Sans family per script (Arabic, Devanagari, Gurmukhi, Thai) + Noto Sans Mono only, weights 400/500/600; no Inter/Roboto/serif; no text under 12px |
+| Light-first | Light is the default theme; dark must also work |
+| Glass | Frosted-paper glass only on floating chrome (top bar on scroll, menus, sheets, toasts); never on cards, forms, tables, sidebar, dialogs |
 | Spacing | Follows design system spacing scale |
 | Logo usage | Correct version, clear space, no distortion |
 | Iconography | Consistent icon style and sizing |
@@ -255,7 +257,8 @@ Run these tools and address all critical issues:
 | Component usage | Using design system components |
 | No one-offs | Custom styles justified and documented |
 | Responsive behavior | Matches design system breakpoints |
-| Dark mode (if applicable) | Colors invert correctly |
+| Dark mode | Dark roles used, colors invert correctly |
+| Spec | Rules live in `erp/DESIGN.md`; Paper "Zerupt Design System" is the visual source |
 
 ### Photography & Imagery
 

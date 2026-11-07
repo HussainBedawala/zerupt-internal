@@ -55,7 +55,7 @@ Most code here is written by delegated subagents, and they do NOT reliably inher
 - **Money / accounting correctness** — double-entry balance, VAT/GST, COGS, multi-currency, period controls. FX fails loud, never silently defaults. 100% test coverage.
 - **Multi-tenant isolation** — every query tenant-scoped; never leak across tenants to save a line.
 - **Auth / security** — 100% coverage, validate client AND server, never hardcode secrets, immutable audit log for every mutation.
-- **Defensive UX** — MENA/India/SEA retail users aren't tech-savvy. Every action needs loading/error/empty/success states; confirm destructive actions; debounce buttons; handle race conditions; warn before data loss. Ask "what's the dumbest thing a user could do here?"
+- **Defensive UX** — MENA/India/SEA retail users aren't tech-savvy. Every action needs loading/error/empty/success states; confirm destructive actions; debounce buttons; handle race conditions; warn before data loss (action lifecycle + error catalogue: `erp/DESIGN.md` §9-10). Ask "what's the dumbest thing a user could do here?"
 - **Immutability** — return new objects, never mutate in place (mechanics in `~/.claude/rules/common/coding-style.md`).
 - **i18n from day one** — ar + en, `en/` is source of truth, never hardcode strings. CSS logical properties only (RTL/LTR), never physical `margin-left`/`padding-right`.
 - **No em dashes** in product copy or UI strings.
@@ -171,7 +171,10 @@ Vitest for web/shared. **`pnpm --filter @zerupt/web test -- <path>` does NOT fil
 
 ## Brand
 
-Warm cream `#F9F7F5` (canvas) · Ink `#141310` (text/primary) · Citron `#979C1A` (the one accent) · Olive `#747818`/`#454729` (data viz). Citron is **fill/accent only** — never text on light (fails WCAG); citron-toned text uses olive-deep. Primary actions are ink. Fonts: IBM Plex Sans (Latin + Arabic + Devanagari, same family) + IBM Plex Mono. Dark-first, premium. Do NOT use violet/teal (old palette) or mix with Inter/Noto Sans. **Source of truth: `erp/DESIGN.md`** + tokens in `erp/apps/web/src/app/globals.css`.
+Design system v3 "Olive Grove" + Noto Sans (locked 2026-11-06). Light-first, dark = forest night `#0F1A0E`. Canvas `#F7F6EF` · surface `#FFFFFF` · moss ink `#283618` (text, primary buttons) · brand olive `#606C38` · lime `#ECF39E` = selection · caramel `#DDA15E` = the one money moment per screen (moss text on it, never text on light). Status = vivid colour + icon + word. Fonts: Noto Sans family per script (Arabic, Devanagari, Gurmukhi, Thai) + Noto Sans Mono, weights 400/500/600.
+Frosted-paper glass on floating chrome only (top bar on scroll, bulk bar, menus, command palette, sheets, toasts); never tables, forms, sidebar, POS, dialogs or print; no "Simple look" toggle. Every action follows the action lifecycle + error formula (`erp/DESIGN.md` §9-10). Components use roles only.
+Banned: violet, teal, navy, raw Tailwind palette classes, raw hex in components, IBM Plex, Inter, serif. The logo keeps its original citron colours (`logo-*` tokens, logo component only); citron is never used in UI.
+**Source of truth: Paper "Zerupt Design System" + `erp/DESIGN.md`** -> `erp/apps/web/src/app/globals.css` (code migration pending).
 
 ---
 

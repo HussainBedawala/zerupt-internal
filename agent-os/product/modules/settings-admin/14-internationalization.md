@@ -89,12 +89,14 @@ All via `Intl.*` APIs.
 ## Font Stack
 
 ```css
-:root { --font-sans: 'Inter', 'Noto Sans Arabic', 'Noto Sans Devanagari', system-ui; }
-[lang="ar"] { --font-sans: 'Noto Sans Arabic', 'Inter', system-ui; }
-[lang="hi"] { --font-sans: 'Noto Sans Devanagari', 'Inter', system-ui; }
+:root { --font-sans: 'Noto Sans', system-ui; --leading: 1.4; }
+[lang="ar"] { --font-sans: 'Noto Sans Arabic', 'Noto Sans', system-ui; --leading: 1.6; }
+[lang="hi"] { --font-sans: 'Noto Sans Devanagari', 'Noto Sans', system-ui; --leading: 1.6; }
+[lang="pa"] { --font-sans: 'Noto Sans Gurmukhi', 'Noto Sans', system-ui; --leading: 1.6; }
+[lang="th"] { --font-sans: 'Noto Sans Thai', 'Noto Sans', system-ui; --leading: 1.7; }
 ```
 
-Load via Google Fonts with `font-display: swap`.
+One family, every script (Noto Sans / Arabic / Devanagari / Gurmukhi / Thai, plus Noto Sans Mono for codes), selected via `:lang` and `unicode-range` so each user downloads only their script. Per-script line height: Latin 1.4, Arabic / Devanagari / Gurmukhi 1.6, Thai 1.7. Arabic gets a +6% size boost. Spec: `erp/DESIGN.md`. Load via Google Fonts with `font-display: swap`.
 
 ---
 

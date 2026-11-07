@@ -162,7 +162,7 @@ Slide 9: CTA -- "Follow @hussainbuildswithai" or "Join waitlist: zerupt.com"
 Slide 10: PROFILE -- Photo, name, "Building Zerupt"
 ```
 
-Build an HTML template that renders slides with Puppeteer screenshots. Store at `/content/templates/carousel.html`. Brand: ink `#141310` for dark backgrounds, citron `#979C1A` (or `#C2C84A` on dark) as the accent.
+Build an HTML template that renders slides with Puppeteer screenshots. Store at `/content/templates/carousel.html`. Brand: forest night `#0F1A0E` for dark slides, canvas `#F7F6EF` or cornsilk `#FEFAE0` for light slides, olive `#606C38` as the brand colour (signature lime `#ECF39E` on dark) and caramel `#DDA15E` for the one highlight. Spec: `erp/DESIGN.md`.
 
 ### Reels (30-60 sec)
 

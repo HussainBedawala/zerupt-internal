@@ -88,10 +88,12 @@ codemaps/specs before promising specifics. NEVER promise a spec-only feature as 
 
 - Voice: confident, warm, concrete, zero enterprise jargon. Speak to a shop owner, not a
   CFO. Arabic-first respect (never machine-translated-feeling copy).
-- Visual: warm cream `#F9F7F5` canvas, ink `#141310`, citron `#979C1A` accent (fill only,
-  never text on light), olive `#747818`/`#454729` + sage `#ADAB92` for data viz. IBM Plex
-  Sans (Latin+Arabic+Devanagari) + IBM Plex Mono. Premium, editorial, dark-first. Never
-  violet/teal, never Inter/Noto.
+- Visual: warm cream `#F7F6EF` canvas, cornsilk `#FEFAE0` marketing sections, moss ink `#283618`,
+  forest night `#0F1A0E` dark sections, brand olive `#606C38`, signature lime `#ECF39E` spark,
+  caramel `#DDA15E` for the one money moment (fill only, never text on light). Noto Sans
+  (Latin + Arabic + Devanagari) + Noto Sans Mono (eyebrows/code only; figures use Noto Sans
+  tabular numerals). Premium, editorial, light-first with dark fully supported. Never
+  violet/teal, never Inter/IBM Plex. Spec: `erp/DESIGN.md`.
 - **Brand authority (canonical):** `agent-os/brand/brand-foundation.md` (MCP resource: `brand`).
   Engineering token spec: `erp/DESIGN.md`. Copy voice: `agent-os/content-style-guide.md`.
 

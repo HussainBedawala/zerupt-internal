@@ -128,7 +128,7 @@ The homepage is the three-act story, scrolled. Every section is a beat. This rec
 | The guide appears + the turn | **The Way (2 hours)** | "It was never supposed to be this hard." Up and running in an afternoon, pay nothing until you are. |
 | The magic, personified | **Meet the team** (Zee + roster) | The reveal. Introduce them by name AFTER the job is clear. The control-fear payoff: can't steal/quit/err. |
 | Authority of the guide | **Founding Member Offer** | The guarantee, free setup, founder pricing, Founding 50. Earns belief. |
-| The signature difference | **Your Next Move** | The growth engine. The one citron moment. Keep it (it already works). |
+| The signature difference | **Your Next Move** | The growth engine. The one lime-spark moment. Keep it (it already works). |
 | Proof it's real | **Product preview / capabilities** | Show the team doing the work, in owner-language. |
 | Better than the alternatives | **Comparison** | Zerupt vs the enemy's faces (legacy, POS bundles, spreadsheets). |
 | The guide is a real person | **Founder note** | The insider-indictment origin, short, with a face. Empathy + authority. |

@@ -13,13 +13,13 @@ A premium, Arabic-first, editorial-print marketing site where the **named AI tea
 
 - **Spine = B (People):** the AI team you "hire."
 - **Hero = A (Time):** signup → live in under 2 hours, shown not claimed.
-- **Texture = C (Print):** cream/ink/citron, IBM Plex, ledger lines, mono data tables, real bidi tension.
+- **Texture = C (Print):** cream/moss/olive, Noto Sans, ledger lines, mono data tables, real bidi tension.
 
 ## Non-Negotiables (from brand-foundation.md + DESIGN.md)
-- Cream `#F9F7F5` canvas · Ink `#141310` · ONE citron accent `#979C1A` (fill/ring only, never text on cream; citron-toned text uses olive-deep `#454729`). Dark-first w/ full light parity.
-- Primary CTAs = ink, not citron. ~60% canvas / 30% ink / 10% citron.
-- IBM Plex Sans (Latin/Arabic/Devanagari) + IBM Plex Mono. NO Inter/Noto/serif.
-- BANNED: violet, teal, navy, glassmorphism, bento homepage, particles, floating 3D shapes, typewriter-cursor hero, animated trust-counters, "built with AI" badges, bounce/spring easing.
+- Cream `#F7F6EF` canvas · cornsilk `#FEFAE0` marketing sections · Moss ink `#283618` · forest night `#0F1A0E` dark sections · brand olive `#606C38` (links, brand marks) · signature lime `#ECF39E` (spark and highlight on dark) · caramel `#DDA15E` for the ONE money/CTA moment (fill/ring only, never text on cream). The homepage dark-to-light story runs forest night to cornsilk. Light-first, dark fully supported. Spec: `erp/DESIGN.md`.
+- Primary CTAs = moss ink, not caramel. ~60% canvas or cornsilk / 30% moss ink / 10% olive, lime and caramel (guideline; one caramel moment per screen).
+- Noto Sans (Latin) / Noto Sans Arabic / Noto Sans Devanagari + Noto Sans Mono (eyebrows, code, labels only). Money and figures use Noto Sans tabular numerals. NO Inter/IBM Plex/serif.
+- BANNED: violet, teal, navy, glassmorphism (only exception: frosted-paper glass on floating chrome such as bars, menus, sheets, toasts), bento homepage, particles, floating 3D shapes, typewriter-cursor hero, animated trust-counters, "built with AI" badges, bounce/spring easing.
 - Arabic = art direction, not translation. Motion respects `dir` + `prefers-reduced-motion`.
 - Real baqala/kirana documentary photography only. No stock tech imagery.
 
@@ -76,8 +76,8 @@ Route base: `/[locale]` (en/ar). Handoff endpoint = app.zerupt.com (where we sto
 - **Linear hygiene:** close superseded DEV-304/307–327; map new pages to DEV-379/380/381/382.
 
 ## Resolved Decisions (2026-06-08)
-1. **Agent visual identity = ABSTRACT-SYMBOLIC.** Each agent = a distinct geometric "spark"/sigil in citron+olive, built in code/SVG/Rive. Zero uncanny-AI risk. Upgradeable to illustration later.
-2. **Photography = AI-GENERATED** from a precise shot list + framing guide + JSON prompts (see `agent-os/product/website/photography-shotlist.md`). Documentary MENA-retail aesthetic, dark-gradeable to ink.
+1. **Agent visual identity = ABSTRACT-SYMBOLIC.** Each agent = a distinct geometric "spark"/sigil in the lime/olive (grove and moss) scales, built in code/SVG/Rive. Zero uncanny-AI risk. Upgradeable to illustration later.
+2. **Photography = AI-GENERATED** from a precise shot list + framing guide + JSON prompts (see `agent-os/product/website/photography-shotlist.md`). Documentary MENA-retail aesthetic, dark-gradeable to forest night.
 3. **No Redis.** Rate-limit + counter on Supabase Postgres.
 
 ## Still Open (asset blockers)

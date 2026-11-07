@@ -68,7 +68,7 @@ Ask: **"Research complete. Additional context? (continue / add context)"**
 Present implementation plan:
 - Files to create/modify, packages to install, manual steps needed
 - **Risk table**: what can go wrong, severity, mitigation (think: race conditions, data loss, slow networks, user mistakes)
-- **Defensive UX checklist**: loading states, error states, confirmation dialogs, double-click protection
+- **Defensive UX checklist**: loading states, error states, confirmation dialogs, double-click protection (per `erp/DESIGN.md` action lifecycle + error catalogue)
 - **Migration check**: does this need a DB migration? If yes, outline the migration steps.
 - Your own recommendations and improvements, even if missing from the spec
 
@@ -130,7 +130,7 @@ Skip for backend-only, docs, study, infra. If the issue ships UI a user touches
 (forms, pages, import flow, dashboards), run gstack `/qa` against the running app
 AFTER Phase 7's scripted checks pass. `/qa` drives the app like a confused user and
 catches the Defensive UX gaps scripted E2E misses (loading/error/empty states,
-double-click, navigate-away). Fix bugs it finds before committing.
+double-click, navigate-away; per `erp/DESIGN.md` action lifecycle + error catalogue). Fix bugs it finds before committing.
 
 ## PHASE 8: COMMIT + PR + LINEAR
 

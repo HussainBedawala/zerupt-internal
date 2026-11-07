@@ -299,7 +299,7 @@ CTA: Claim your founding seat
 Caption: Sales, handled at the counter. Arabic and English. Every transaction straight to the books.
 
 **Preview caption 2 (dashboard / numbers):**
-Caption: Your real profit. Every shop. One glance. IBM Plex Mono so every number is exact.
+Caption: Your real profit. Every shop. One glance. Tabular numerals so every number is exact.
 
 **Preview caption 3 (Sami / invoice scan):**
 Caption: Sami reads the invoice. You tap once. The purchase is logged, the stock is updated, the books are right.
@@ -1185,7 +1185,7 @@ _End of document. Arabic copy pass to follow as a separate document. All section
 
 # الجزء العربي, Full Arabic Copy (RTL)
 
-> **ملاحظة التحرير:** هذا الجزء هو توجيه فني للعلامة التجارية، لا ترجمة حرفية. كل قسم مرتب بنفس ترتيب النسخة الإنجليزية ليسهل الربط والتنفيذ. أسماء الفريق تُكتب كما وردت (زي، ميرا، سامي، نور، أرجن، طارق، مايا). الأرقام والعملات تبقى بالأرقام الغربية مضبوطة بـ IBM Plex Mono. لا شرطات طويلة في أي مكان.
+> **ملاحظة التحرير:** هذا الجزء هو توجيه فني للعلامة التجارية، لا ترجمة حرفية. كل قسم مرتب بنفس ترتيب النسخة الإنجليزية ليسهل الربط والتنفيذ. أسماء الفريق تُكتب كما وردت (زي، ميرا، سامي، نور، أرجن، طارق، مايا). الأرقام والعملات تبقى بالأرقام الغربية مضبوطة بـ Noto Sans Mono. لا شرطات طويلة في أي مكان.
 
 ---
 
@@ -1478,7 +1478,7 @@ _End of document. Arabic copy pass to follow as a separate document. All section
 تعليق: المبيعات، مُدارة عند الكاشير. بالعربية والإنجليزية. كل صفقة مباشرة إلى الدفاتر.
 
 **تعليق المعاينة 2 (لوحة الأرقام):**
-تعليق: ربحك الحقيقي. كل متجر. نظرة واحدة. IBM Plex Mono حتى يكون كل رقم دقيقًا.
+تعليق: ربحك الحقيقي. كل متجر. نظرة واحدة. أرقام منتظمة العرض حتى يكون كل رقم دقيقًا.
 
 **تعليق المعاينة 3 (سامي / مسح الفاتورة):**
 تعليق: سامي يقرأ الفاتورة. تضغط مرة واحدة. المشتريات مسجّلة، المخزون محدَّث، الدفاتر صحيحة.

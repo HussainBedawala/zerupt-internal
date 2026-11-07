@@ -272,9 +272,8 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['Inter', 'system-ui', 'sans-serif'],
-        heading: ['Poppins', 'system-ui', 'sans-serif'],
-        mono: ['Fira Code', 'monospace'],
+        sans: ['Noto Sans', 'system-ui', 'sans-serif'],
+        mono: ['Noto Sans Mono', 'monospace'],
       },
     },
   },
@@ -285,18 +284,17 @@ Import fonts in your layout:
 
 ```tsx
 // app/layout.tsx
-import { Inter, Poppins } from 'next/font/google'
+import { Noto_Sans } from 'next/font/google'
 
-const inter = Inter({ subsets: ['latin'], variable: '--font-sans' })
-const poppins = Poppins({ 
-  weight: ['600', '700'], 
+const notoSans = Noto_Sans({
+  weight: ['400', '500', '600'],
   subsets: ['latin'],
-  variable: '--font-heading',
+  variable: '--font-sans',
 })
 
 export default function RootLayout({ children }) {
   return (
-    <html className={`${inter.variable} ${poppins.variable}`}>
+    <html className={`${notoSans.variable}`}>
       <body className="font-sans">{children}</body>
     </html>
   )

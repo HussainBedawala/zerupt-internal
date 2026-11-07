@@ -10,6 +10,8 @@ audience: developers + anyone connecting an AI agent (Claude Code, claude.ai, op
 
 # zerupt-mcp — The Zerupt Product-Knowledge MCP Server
 
+> Scope note: the running server serves `internal/agent-os/**` only; `erp/DESIGN.md` is not served. Where this document describes `erp/` code, codemap or study access, treat it as superseded by `tools/zerupt-mcp/README.md` and the code.
+
 ## TL;DR (for agents and humans in a hurry)
 
 - **What:** read-only MCP server exposing Zerupt product knowledge (specs, as-built
@@ -116,10 +118,7 @@ Defence in depth, applied in this order on every request:
 3. **Path allowlist** (`src/security.ts`) — only these virtual paths are readable,
    listable, or searchable:
    - `internal/agent-os/**` (specs, brand, offer, marketing context)
-   - `internal/study/**` (study notes)
-   - `erp/docs/**` (codemaps + dev docs)
-   - `erp/DESIGN.md`, `erp/README.md`
-   - `erp/apps/*/src/**`, `erp/packages/*/src/**` (source code, read + search)
+   - Nothing else. `erp/DESIGN.md`, `erp/` source, codemaps and study notes are NOT served (verified against `tools/zerupt-mcp/src/security.ts`, where the allowlist is `internal/agent-os/` only). Read `erp/DESIGN.md` directly from the erp repo.
 4. **Path denylist** (always wins, even inside the allowlist) — any path segment
    matching `.env*`, `*.pem`, `*.key`, `node_modules`, `.git`, `dist`, `coverage`,
    `secrets`, `credentials`, `drizzle/meta`.
@@ -179,7 +178,7 @@ capped per §4.
 - **Use when:** "does anything mention ZATCA QR codes?", "where is store credit handled?"
 
 ### 5.6 `read_file` — direct read of any allowlisted path
-- **Args:** `path` (virtual path, e.g. `erp/DESIGN.md`,
+- **Args:** `path` (virtual path under `internal/agent-os/`, e.g. `internal/agent-os/brand/design-system.md`,
   `internal/agent-os/offer.md`, `erp/apps/api/src/pos/pos.service.ts`)
 - **Use when:** following up a search hit or a codemap reference.
 
@@ -200,7 +199,7 @@ Resources are pinnable context (clients can attach them without a tool round-tri
 | Name | URI | Content |
 | -- | -- | -- |
 | `mission` | `zerupt://internal/agent-os/product/mission.md` | Product mission |
-| `design` | `zerupt://erp/DESIGN.md` | Brand design system + tokens |
+| `design` | `zerupt://internal/agent-os/brand/design-system.md` | Brand design system summary (the full spec is `erp/DESIGN.md`, not served) |
 | `content-style-guide` | `zerupt://internal/agent-os/content-style-guide.md` | Content/messaging style guide |
 | `marketing-context` | `zerupt://internal/agent-os/marketing-context.md` | The GTM digest (same as the tool) |
 

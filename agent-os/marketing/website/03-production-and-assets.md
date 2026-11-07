@@ -29,7 +29,7 @@ tldr: The complete build manifest for zerupt.com. Every React component, agent s
 | `StickyHeader` | Logo + nav links + CTA + LangSwitch; transparent over dark hero, solid cream on scroll | Client | transparent, solid-cream, scrolled | [NEW][PRIMITIVE] |
 | `LangSwitch` | en/ar toggle; sets locale via next-intl router, persists to cookie | Client | en-active, ar-active, loading | [NEW][PRIMITIVE] |
 | `WhatsAppFloat` | Fixed WhatsApp CTA button, GCC only (geo-aware); always reachable | Client | visible, hidden-on-form-focus | [NEW][PRIMITIVE] |
-| `SectionBand` | Full-width section wrapper; accepts `variant`: cream, dark (ink bg), warm-dim | Server | cream, dark, warm-dim | [NEW][PRIMITIVE] |
+| `SectionBand` | Full-width section wrapper; accepts `variant`: cream, dark (forest night bg), warm-dim | Server | cream, dark, warm-dim | [NEW][PRIMITIVE] |
 | `RevealOnScroll` | Wraps any child; fade+translate-up on enter viewport; no-op on reduced-motion | Client | hidden, visible, reduced-motion | [NEW][PRIMITIVE] |
 | `Footer` | Links, brand note, WhatsApp, `/start` link, legal links, lang switch | Server | default | [NEW] |
 
@@ -39,21 +39,21 @@ tldr: The complete build manifest for zerupt.com. Every React component, agent s
 
 | Component | Section | Purpose | Client/Server | Key States |
 |---|---|---|---|---|
-| `HeroSection` | S1 | Full-bleed dark band; headline, sub, CTA, citron spark waking; shot-01 background | Client | loading, awake (spark animates in), reduced-motion |
+| `HeroSection` | S1 | Full-bleed dark band; headline, sub, CTA, lime spark waking; shot-01 background | Client | loading, awake (spark animates in), reduced-motion |
 | `AgentSigilWake` | S1 | Zee's sigil "coming online" intro animation inside the hero | Client | dormant, waking, awake | [NEW][PRIMITIVE] |
 | `TrapSection` | S2 | 3-panel asymmetric pain layout; dark/dim canvas; editorial, no CTA | Server | default |
 | `TurnSection` | S3 | 3-step setup + Mira named; cream lift begins here | Server | default |
 | `TeamPreviewSection` | S4 | Zee intro + roster cards (condensed); links to `/team`; "hiring" teaser | Client | default, expanded-card |
 | `AgentCard` | S4 | One card per agent: sigil, name, title, one-line win; used on home + /team | Client | default, hover/focus, "hiring-soon" state | [NEW][PRIMITIVE] |
-| `NextMoveSection` | S5 | **THE dark citron band**; NextMoveCard; this section already exists, rebuild with brand tokens | Client | card-loading, card-revealed, reduced-motion |
-| `NextMoveCard` | S5 | The signature recommendation card: citron border/spark, mono numbers, action button | Client | loading (pulse), revealed, acted | [NEW][PRIMITIVE] |
+| `NextMoveSection` | S5 | **THE dark lime band**; NextMoveCard; this section already exists, rebuild with brand tokens | Client | card-loading, card-revealed, reduced-motion |
+| `NextMoveCard` | S5 | The signature recommendation card: lime border/spark, tabular numbers, action button | Client | loading (pulse), revealed, acted | [NEW][PRIMITIVE] |
 | `OfferSection` | S6 | Grand Slam Offer stack + SeatCounter | Client | seats-available, seats-low, seats-full |
 | `OfferStack` | S6 | Stacked offer bullets (setup free, 30-day refund, no card, founding pricing) | Server | default | [NEW][PRIMITIVE] |
-| `SeatCounter` | S6 | Live "X of 50 founding spots left"; citron; animates on load | Client | counting, low (≤10), full | [NEW][PRIMITIVE] |
+| `SeatCounter` | S6 | Live "X of 50 founding spots left"; lime; animates on load | Client | counting, low (≤10), full | [NEW][PRIMITIVE] |
 | `ProductPreviewSection` | S7 | 3 mockup frames side by side (POS, your numbers, Sami invoice); agent shown acting | Client | default, frame-focused |
-| `MockupFrame` | S7 | Device/browser shell containing a screenshot or live component; cream/ink border | Server | default, mobile-crop | [NEW][PRIMITIVE] |
+| `MockupFrame` | S7 | Device/browser shell containing a screenshot or live component; cream/moss border | Server | default, mobile-crop | [NEW][PRIMITIVE] |
 | `ComparisonSection` | S8 | Comparison ledger table (Zerupt vs legacy/POS/sheets) | Server | default, SSR for LLM citation |
-| `ComparisonLedger` | S8 | Table: rows = criteria, cols = competitors; citron checkmarks for Zerupt | Server | default | [NEW][PRIMITIVE] |
+| `ComparisonLedger` | S8 | Table: rows = criteria, cols = competitors; lime checkmarks for Zerupt | Server | default | [NEW][PRIMITIVE] |
 | `PricingTeaserSection` | S9 | 3 tiers summarized in local currency; links to /pricing | Server | default |
 | `FounderNoteSection` | S10 | Hussain photo + short letter; asymmetric layout | Server | default |
 | `FounderNote` | S10 | Photo + pull-quote + name/signature; reused on /start | Server | default | [NEW][PRIMITIVE] |
@@ -131,9 +131,9 @@ tldr: The complete build manifest for zerupt.com. Every React component, agent s
 
 ### Design Rules (non-negotiable)
 - Every sigil is **built in SVG/code**, not raster. No human faces, no uncanny AI avatars, no generic robot icons.
-- Each agent = a **unique geometric form** using citron (`#979C1A` light / `#C2C84A` dark) and olive tones. The spark device (rising triangles from the logo) is the shared DNA; each agent's sigil is a *variation* or *fragment* of the brand spark language, not a copy of the logo.
-- **Calm "thinking/acting" pulse:** a gentle `opacity` oscillation (0.7→1.0) on the citron fill, 2000ms cycle, `ease-in-out`. No scale bounce. `prefers-reduced-motion`: remove animation, hold `opacity: 1`.
-- **Hiring/locked state:** fill drains to `olive-deep #454729` with a 60% opacity overlay and a horizontal progress bar in citron fills up left-to-right as the countdown reaches zero.
+- Each agent = a **unique geometric form** using olive (`#606C38` on light) and signature lime (`#ECF39E` on dark), with deeper moss and grove tones (fern `#90A955`, grove-800 `#31572C`). The spark device (rising triangles from the logo) is the shared DNA; each agent's sigil is a *variation* or *fragment* of the brand spark language, not a copy of the logo.
+- **Calm "thinking/acting" pulse:** a gentle `opacity` oscillation (0.7→1.0) on the lime fill, 2000ms cycle, `ease-in-out`. No scale bounce. `prefers-reduced-motion`: remove animation, hold `opacity: 1`.
+- **Hiring/locked state:** fill drains to grove-800 `#31572C` with a 60% opacity overlay and a horizontal progress bar in lime fills up left-to-right as the countdown reaches zero.
 - Sigils render at three sizes: 48px (roster list), 80px (agent card), 120px (hero reveal on /team Zee section).
 
 ---
@@ -142,44 +142,44 @@ tldr: The complete build manifest for zerupt.com. Every React component, agent s
 
 #### Zee, The Lead (the brand's face)
 - **Geometry:** The full Zerupt spark mark, rendered slightly larger than the wordmark dot. Both triangles and the dot present. This is the only agent who "owns" the full logo geometry.
-- **Color:** Large triangle = citron-light `#C2C84A` on dark / citron `#979C1A` on cream. Small triangle = olive-mid `#747818`. Dot = citron.
+- **Color:** Large triangle = lime `#ECF39E` on dark / olive `#606C38` on cream. Small triangle = fern `#90A955` on dark / moss ink `#283618` on cream. Dot = lime on dark / olive on cream.
 - **Pulse:** All three elements breathe together at 2000ms.
 - **Distinction:** She is the only agent whose sigil matches the brand mark, hierarchy is visual.
 - **SVG structure:** `<g class="zee-sigil">` with the three paths from §11.1 of brand-foundation.
 
 #### Mira, Migration Specialist
 - **Geometry:** Two horizontal arrow-lines pointing right (→→), slightly staggered vertically, with a short vertical line on the left side that "feeds" them, suggesting data flowing in and being directed.
-- **Color:** Lines in citron; the feed-stroke in olive-mid.
+- **Color:** Lines in lime (olive on light); the feed-stroke in fern `#90A955`.
 - **Pulse:** The two arrows shimmer alternately (stagger 200ms).
 - **Rationale:** Migration = movement across, structured input into structured output.
 
 #### Sami, Invoice Scanner
-- **Geometry:** A small rectangle (the invoice) at a slight ~10° tilt with a scan-line arc passing across it, one crisp horizontal stroke mid-rectangle, with a small citron dot at the end of the arc (the "captured" moment).
-- **Color:** Rectangle outline = olive-mid. Scan line and dot = citron.
+- **Geometry:** A small rectangle (the invoice) at a slight ~10° tilt with a scan-line arc passing across it, one crisp horizontal stroke mid-rectangle, with a small lime dot at the end of the arc (the "captured" moment).
+- **Color:** Rectangle outline = fern `#90A955`. Scan line and dot = lime.
 - **Pulse:** The scan-line dot pulses (opacity) while the line itself is static.
 - **Rationale:** Camera + document = Sami's literal job.
 
 #### Noor, Dead Stock Finder
-- **Geometry:** A single downward-pointing equilateral triangle (like a gem/crystal, or an hourglass top-half), sand trickling down, stock going stale. A small citron upward spark erupts from the top center, breaking the downward form.
-- **Color:** Triangle stroke = olive-deep. Upward spark = citron fill.
+- **Geometry:** A single downward-pointing equilateral triangle (like a gem/crystal, or an hourglass top-half), sand trickling down, stock going stale. A small lime upward spark erupts from the top center, breaking the downward form.
+- **Color:** Triangle stroke = grove-800 `#31572C`. Upward spark = lime fill.
 - **Pulse:** The upward spark pulses, the "found it" moment.
 - **Rationale:** She identifies value trapped going down; the spark is the rescue.
 
 #### Arjun, Stockout Predictor
-- **Geometry:** An ascending step-graph: three horizontal bars of decreasing length stacked top-to-bottom (reading: stock depleting), with a citron vertical tick mark just past where the last bar ends, the warning moment.
-- **Color:** Bars = olive-mid (filled left-to-right). Tick = citron.
-- **Pulse:** The citron tick pulses on the "warning" threshold.
+- **Geometry:** An ascending step-graph: three horizontal bars of decreasing length stacked top-to-bottom (reading: stock depleting), with a lime vertical tick mark just past where the last bar ends, the warning moment.
+- **Color:** Bars = fern `#90A955` (filled left-to-right). Tick = lime.
+- **Pulse:** The lime tick pulses on the "warning" threshold.
 - **Rationale:** Inventory chart going down; the mark is the alert point.
 
 #### Tariq, Shrinkage Guard
-- **Geometry:** A shield-like hexagon (minimal, flat edges, no frills) with a single vertical citron line through the center, the watching eye abstracted to a line.
-- **Color:** Hexagon stroke = ink (or cream on dark). Center line = citron.
+- **Geometry:** A shield-like hexagon (minimal, flat edges, no frills) with a single vertical lime line through the center, the watching eye abstracted to a line.
+- **Color:** Hexagon stroke = moss ink (or cream on dark). Center line = lime.
 - **Pulse:** The center line pulses slowly (3000ms, slower than others, watchful, not urgent).
 - **Rationale:** Guard/protection = shield; the eye abstracted.
 
 #### Maya, Margin Watchdog
-- **Geometry:** Two lines diverging from a point (like a margin being squeezed, or a V shape): one line inclines up slightly (price), one declines slightly (cost drift). A citron bracket `]` closes them together, Maya catching the spread.
-- **Color:** Lines = olive-mid. Bracket = citron.
+- **Geometry:** Two lines diverging from a point (like a margin being squeezed, or a V shape): one line inclines up slightly (price), one declines slightly (cost drift). A lime bracket `]` closes them together, Maya catching the spread.
+- **Color:** Lines = fern `#90A955`. Bracket = lime (olive on light).
 - **Pulse:** The bracket "closes" with a 0.3px stroke-width oscillation (subtle tightening).
 - **Rationale:** Margin = the gap between two lines. She holds it.
 
@@ -194,7 +194,7 @@ tldr: The complete build manifest for zerupt.com. Every React component, agent s
 //        state: 'active' | 'thinking' | 'locked' | 'hiring'
 //        theme: 'dark' | 'cream'
 // - 'thinking' triggers the pulse animation
-// - 'locked' drains fill to olive-deep + adds progress bar slot
+// - 'locked' drains fill to grove-800 + adds progress bar slot
 // - All paths are inline SVG; no raster fallbacks needed
 // - Exports each agent as a named sub-component too: <ZeeSigil />, <MiraSigil />, etc.
 ```
@@ -244,7 +244,7 @@ tldr: The complete build manifest for zerupt.com. Every React component, agent s
 |---|---|---|---|---|
 | **Founder portrait (Hussain)** | `/` S10, `/start`, `/team` trust section | Hussain's face in editorial treatment; warm, candid, not a headshot | Shot against a neutral warm wall or shop context; 4:5; same warm Portra grade | Must produce, founder to supply or shoot |
 | **Morning-glance hero** | `/` S12 Final CTA | The "Act 3 resolution" image: a phone showing a calm business overview, hand, coffee, morning light, suggesting total control. Very aspirational. | 16:9; warm morning light; phone screen intentionally blurred or showing only abstract color/warmth; no app UI visible | Must produce |
-| **OG / Social card image** | All pages | `og:image` for social sharing; 1200×630 | Wordmark on warm cream or ink; no photo overlay needed. Generate in code (Satori/next-og) using brand tokens | Build in code (Satori) |
+| **OG / Social card image** | All pages | `og:image` for social sharing; 1200×630 | Wordmark on warm cream or forest night; no photo overlay needed. Generate in code (Satori/next-og) using brand tokens | Build in code (Satori) |
 | **Favicon / App icon** | All | `favicon.svg` + `apple-touch-icon.png` | Already exists: `zerupt-symbol.svg` adapted. Ensure 16/32/180/192/512px set | Derive from existing SVG |
 | **Hero with AR caption** | `/ar` | Shot-01 cropped with right-side open for RTL overlay | Mirror crop of shot-01: open area on the right (text-start in RTL) | Art-direction note on the `<picture>` element |
 
@@ -257,20 +257,20 @@ tldr: The complete build manifest for zerupt.com. Every React component, agent s
 - Easing exit: `cubic-bezier(0.4, 0, 1, 1)`, accelerate-out
 - Durations: micro 120ms · standard 200ms · large 320ms · ambient ≤600ms
 - Max translate: 8px. No bounce/overshoot. No spring physics.
-- Citron pulse: `opacity` 0.7→1.0, 2000ms `ease-in-out`, infinite (stops on `prefers-reduced-motion`).
+- Lime pulse: `opacity` 0.7→1.0, 2000ms `ease-in-out`, infinite (stops on `prefers-reduced-motion`).
 
 ---
 
 ### Per-Section Motion Choreography
 
 #### S1, Hero
-- **Enter:** Page loads dark (ink bg). After 200ms: headline fades in (opacity 0→1, translateY 8px→0, 320ms). After 400ms: subhead same. After 600ms: CTA button.
-- **AgentSigilWake:** Zee's sigil begins at `opacity: 0`, scales from 0.9→1.0 + opacity 0→1 over 320ms at 800ms after load. Then enters the ambient citron pulse.
+- **Enter:** Page loads dark (forest night bg). After 200ms: headline fades in (opacity 0→1, translateY 8px→0, 320ms). After 400ms: subhead same. After 600ms: CTA button.
+- **AgentSigilWake:** Zee's sigil begins at `opacity: 0`, scales from 0.9→1.0 + opacity 0→1 over 320ms at 800ms after load. Then enters the ambient lime pulse.
 - **shot-01 background:** loads as `loading="eager"` with a cream-to-transparent gradient overlay; no fade-in needed (avoid LCP delay).
 - **Reduced-motion:** all elements visible immediately, no translate, no pulse, sigil static at `opacity: 1`.
 
 #### S2, Trap (dark/dim)
-- **Temperature:** `SectionBand variant="warm-dim"`, `background: #1A1813` (dark card token).
+- **Temperature:** `SectionBand variant="warm-dim"`, `background: #172416` (dark surface role).
 - **RevealOnScroll:** Each of the 3 pain panels reveals with 120ms stagger (translateY 8px→0, opacity 0→1, 200ms each).
 - **shot-07** (ledger) appears at 30% opacity as a background accent, no animation.
 - **Reduced-motion:** panels visible, no stagger.
@@ -281,19 +281,19 @@ tldr: The complete build manifest for zerupt.com. Every React component, agent s
 
 #### S4, Meet the Team
 - **AgentCard reveal:** cards stagger in left-to-right, 100ms apart, translateY 8px→0, 200ms.
-- **Hover/tap state:** card elevates via `box-shadow` deepening (100ms), citron ring appears on focus/hover, sigil enters "thinking" pulse on hover.
-- **"Hiring" cards (Noor, Arjun, Tariq, Maya):** fill is olive-deep, progress bar fills on hover (200ms). Label reads "X days to hire."
+- **Hover/tap state:** card elevates via `box-shadow` deepening (100ms), lime ring appears on focus/hover, sigil enters "thinking" pulse on hover.
+- **"Hiring" cards (Noor, Arjun, Tariq, Maya):** fill is grove-800 `#31572C`, progress bar fills on hover (200ms). Label reads "X days to hire."
 - **Reduced-motion:** no stagger, no hover translate.
 
-#### S5, NextMove (the dark citron band)
+#### S5, NextMove (the dark lime band)
 - **Section:** `SectionBand variant="dark"` with shot-16 at 70% opacity.
 - **NextMoveCard reveal:** single card; enter with `opacity 0→1, translateY 8px→0, 320ms` triggered on scroll entry.
-- **Citron pulse:** the card border (1.5px citron) pulses at ambient 2000ms, this is THE citron moment. Only one pulse on the entire page at a time.
-- **The spark device:** a single `⬆` spark SVG appears above the card, 48px, citron, before the card reveals (100ms lead). It is the "Zerupt is advising" marker from §15 brand-foundation.
+- **Lime pulse:** the card border (1.5px lime) pulses at ambient 2000ms, this is THE lime moment. Only one pulse on the entire page at a time.
+- **The spark device:** a single `⬆` spark SVG appears above the card, 48px, lime, before the card reveals (100ms lead). It is the "Zerupt is advising" marker from §15 brand-foundation.
 - **Reduced-motion:** card visible, no pulse, spark static.
 
 #### S6, Offer + SeatCounter
-- **SeatCounter:** on mount, counts down from displayed number to current value over 600ms (ambient, `ease-out`). If seats ≤10, counter label turns citron and the number pulses once (scale 1.0→1.05→1.0, 120ms, one-shot).
+- **SeatCounter:** on mount, counts down from displayed number to current value over 600ms (ambient, `ease-out`). If seats ≤10, counter label turns lime and the number pulses once (scale 1.0→1.05→1.0, 120ms, one-shot).
 - **OfferStack:** each bullet reveals with RevealOnScroll, 80ms stagger.
 - **Reduced-motion:** counter static, no count animation, no pulse.
 
@@ -304,11 +304,11 @@ tldr: The complete build manifest for zerupt.com. Every React component, agent s
 
 #### S8, Comparison Ledger
 - **Table rows:** RevealOnScroll stagger 60ms per row.
-- **Citron checkmarks:** revealed with a single `scale 0→1` pop (120ms, decelerate-in) per row as it enters.
+- **Lime checkmarks:** revealed with a single `scale 0→1` pop (120ms, decelerate-in) per row as it enters.
 - **Reduced-motion:** all rows and checks visible.
 
 #### S9, Pricing Teaser
-- **PricingTierCard hover:** card lifts with `box-shadow` + citron ring (200ms). Featured (Growth) card has a persistent 1px citron border at rest.
+- **PricingTierCard hover:** card lifts with `box-shadow` + lime ring (200ms). Featured (Growth) card has a persistent 1px lime border at rest.
 
 #### S10, Founder Note
 - **Photo:** RevealOnScroll, photo slides in from the inline-start edge (translateX −8px → 0, 320ms). Text fades in simultaneously.
@@ -320,7 +320,7 @@ tldr: The complete build manifest for zerupt.com. Every React component, agent s
 
 #### S12, Final CTA
 - **Morning-glance image:** full-bleed, no animation; it is the landing point after a long scroll, let it breathe.
-- **CTA button:** on hover, ink bg slightly lightens to `#2A2822` (card token); 120ms.
+- **CTA button:** on hover, moss ink bg lightens ~8%; 120ms.
 
 ---
 
@@ -333,8 +333,8 @@ The page arc is: dark (S1) → dim (S2) → **cream snap** (S3 onward, with dark
 1. Triggered when any pricing CTA is tapped.
 2. Opens as a **bottom sheet on mobile**, a **centered modal on desktop** (not full-page, user should feel they are one step from completing).
 3. Tiles animate in with 60ms stagger (fade+translateY 8px).
-4. Selecting a tile: selected state = citron fill ring + checkmark overlay (120ms).
-5. On confirm: a brief 200ms "routing" state (spinner in ink, not citron, we are neutral here), then redirect or waitlist form.
+4. Selecting a tile: selected state = lime fill ring + checkmark overlay (120ms).
+5. On confirm: a brief 200ms "routing" state (spinner in moss ink, not lime, we are neutral here), then redirect or waitlist form.
 6. Back/close: dismiss with 200ms fade+translateY 4px downward (exit easing).
 7. **Never lose selection:** if user presses back on the waitlist form, the gate remembers their selection.
 8. **Reduced-motion:** no stagger, no tile animation, instant transitions.
@@ -356,7 +356,7 @@ The page arc is: dark (S1) → dim (S2) → **cream snap** (S3 onward, with dark
 ### Recommended (in priority order)
 
 #### V1, "Meet Zee" Teaser Film (P2, post-launch)
-- **What:** A 20–30 second Remotion film. Zee's sigil pulses to life on a dark ink canvas. Her voice (text-in, not TTS) introduces herself. A NextMove card slides in. Ends on the Zerupt wordmark.
+- **What:** A 20–30 second Remotion film. Zee's sigil pulses to life on a dark forest night canvas. Her voice (text-in, not TTS) introduces herself. A NextMove card slides in. Ends on the Zerupt wordmark.
 - **Where:** `/team` page, Zee section. Autoplay video tag: `muted loop playsinline`, no audio track. User can unmute for optional ambient "paper" sound.
 - **File budget:** ≤ 2MB, rendered as AV1.
 - **Skip if:** Remotion render time threatens launch timeline.
@@ -379,7 +379,7 @@ The page arc is: dark (S1) → dim (S2) → **cream snap** (S3 onward, with dark
 All mockup data must be:
 - **Realistic and true-to-life GCC figures** (SAR, AED, KWD currencies; Arabic product names mixed with English; plausible margins 20–35% for FMCG, 40–60% for apparel).
 - **Anonymized**, no real business names, no real owner names.
-- **Rendered in IBM Plex Mono** for all numbers.
+- **Rendered in Noto Sans tabular numerals** for all numbers.
 - **In the product's actual UI components** where possible (reuse from `apps/web`); use `MockupFrame` to wrap them.
 
 ---
@@ -416,8 +416,8 @@ Shops:  Olaya  |  Malaz  |  Sulaimaniyah
         SAR 6k  | SAR 4.2k | SAR 2.6k
 ```
 - Render on a laptop/browser frame at desktop breakpoint.
-- Numbers in IBM Plex Mono. Revenue in citron (`accent-text` olive-deep on light).
-- The "Low stock" row has a citron warning spark beside it.
+- Numbers in Noto Sans tabular numerals. Revenue in olive `#606C38` on light, lime on dark.
+- The "Low stock" row has a lime warning spark beside it.
 
 ### Mockup 3: Sami Reading an Invoice (S7)
 **Screen:** The invoice scan mapping review.
@@ -446,7 +446,7 @@ Mapping SKUs...  ████████████░░  83%
 Estimated: 12 minutes remaining.
 You can close this. Mira keeps working.
 ```
-- Dark canvas, citron progress bar.
+- Dark canvas, lime progress bar.
 - Mira's sigil prominent, "thinking" pulse.
 
 ### Mockup 5: NextMove Card (S5, the signature moment)
@@ -461,17 +461,17 @@ Saves: SAR 280 in rush-order premium
 
 [Send order to Al Nafees]  [See the numbers]
 ```
-- Citron border, 1.5px.
-- "Your next move" label in `accent-text` (olive-deep on light / citron on dark).
-- Numbers in IBM Plex Mono.
-- The spark device icon (`⬆` SVG) at top-right, 24px, citron.
+- Lime border, 1.5px (olive on light).
+- "Your next move" label in olive `#606C38` on light / lime `#ECF39E` on dark.
+- Numbers in Noto Sans tabular numerals.
+- The spark device icon (`⬆` SVG) at top-right, 24px, lime.
 
 ---
 
 ## 7. Iconography & The Spark Device
 
 ### Lucide Icons per Use Case
-Use Lucide icons at 24px grid, 1.5px stroke, in ink/muted tone. Citron only when signaling active/advising state.
+Use Lucide icons at 24px grid, 1.5px stroke, in moss ink/muted tone. Lime (olive on light) only when signaling active/advising state.
 
 | Feature / Industry Tile | Lucide Icon |
 |---|---|
@@ -501,14 +501,14 @@ Use Lucide icons at 24px grid, 1.5px stroke, in ink/muted tone. Citron only when
 | Calendar / booking | `CalendarCheck` |
 
 ### The Spark Device (§15 brand-foundation)
-- The spark is a single citron upward-tick or the rising-triangle fragment from the logo symbol. It is built as an inline SVG component: `<SparkIcon />`.
+- The spark is a single lime upward-tick or the rising-triangle fragment from the logo symbol. It is built as an inline SVG component: `<SparkIcon />`.
 - Use sparingly: **one per view**, never as a repeating pattern.
 - Appears in these specific locations:
-  1. **S5 NextMove section**, above the NextMove card, 48px, citron. This is the primary brand moment.
+  1. **S5 NextMove section**, above the NextMove card, 48px, lime. This is the primary brand moment.
   2. **SeatCounter**, tiny 16px spark beside the count when seats are low.
-  3. **AgentCard**, on hover, a 16px spark appears at the top-right corner of the citron ring.
+  3. **AgentCard**, on hover, a 16px spark appears at the top-right corner of the lime ring.
   4. **Loading states**, the spark rotates gently (180° over 600ms, `ease-in-out`) as a brand-native loading indicator, replacing a generic spinner.
-  5. **Header**, the logo wordmark's citron dot is the atomic spark; it counts.
+  5. **Header**, the logo wordmark's full stop (logo citron `#5C6012` on light, `#C5CB55` on dark, logo component only) is the atomic spark; it counts.
 
 ---
 
@@ -517,14 +517,14 @@ Use Lucide icons at 24px grid, 1.5px stroke, in ink/muted tone. Citron only when
 ### Contrast Checklist
 | Pair | Required | Must verify |
 |---|---|---|
-| Ink on cream (body) | AAA | Already 18.5:1 |
-| `accent-text` (olive-deep) on cream | AAA | Already 9.0:1 |
-| Citron fill with ink text (buttons) | AA | Already 6.7:1 |
-| Cream text on ink sections | AAA | Already 17.4:1 |
-| Citron-light on ink (dark agent sigils) | AAA | Already 11.0:1 |
-| Muted text on cream (captions) | AA | Already 5.1:1 |
-| **Never:** citron text on cream | ❌ | 2.77:1, blocked by token system |
-| **Never:** white text on citron | ❌ | 2.96:1, blocked |
+| Moss ink `#283618` on canvas (body) | AAA | 11.9:1 |
+| Brand olive `#606C38` on white (links) | AA | 5.7:1 |
+| Caramel `#DDA15E` fill with moss ink text (money button) | AA | 5.7:1 |
+| Off-white text on dark canvas | AAA | 16:1 |
+| Lime `#ECF39E` on forest night surface (dark agent sigils) | AAA | 13.8:1 |
+| Muted text on canvas (captions) | AA | 5.2:1 |
+| **Never:** caramel or lime text on cream | ❌ | caramel 2.2:1, blocked by token system |
+| **Never:** white text on caramel or lime | ❌ | blocked |
 
 ### Motion Safety
 - `RevealOnScroll`: wrap all animations in `if (!prefersReducedMotion)` via `useReducedMotion()` hook (Framer Motion provides this).
@@ -545,7 +545,7 @@ The following assets need RTL art-direction or mirroring:
 | `AgentCard` sigil | Sigil is geometric, symmetric, no mirror needed. |
 | `NextMoveCard` spark | The upward-tick spark is symmetric, no mirror needed. |
 | `Mira` sigil (arrows →→) | In RTL these should point ← ← (toward inline-start). The SVG needs a `transform: scaleX(-1)` in RTL context. |
-| Typography | IBM Plex Sans Arabic loaded via `font-family` `:lang(ar)`. Line heights ≥1.5 enforced (brand-foundation §13). |
+| Typography | Noto Sans Arabic loaded via `font-family` `:lang(ar)`. Line heights ≥1.5 enforced (brand-foundation §13). |
 | All CTAs | Copy is translated; button widths must be fluid (Arabic copy is often longer). No fixed-width buttons. |
 | `IndustryGate` tiles | Grid reflows naturally with `dir="rtl"`. |
 | `WhatsAppFloat` | Fixed `bottom: 24px; inline-end: 24px`, CSS logical property positions it correctly in both LTR/RTL. |
@@ -588,7 +588,7 @@ The following assets need RTL art-direction or mirroring:
 | 18 | Resend integration (waitlist form) | Dev | Needs Resend API key + account |
 | 19 | Cal.com booking link (Founding 50 concierge) | Hussain | Yes, needs Cal.com account + link |
 | 20 | AVIF/WebP image processing pipeline (sharp, next/image) | Dev | No |
-| 21 | RTL layout + IBM Plex Arabic font loading | Dev | No |
+| 21 | RTL layout + Noto Sans Arabic font loading | Dev | No |
 | 22 | `FAQPage` JSON-LD schema | Dev | No |
 | 23 | `prefers-reduced-motion` fallbacks on all animations | Dev | No |
 | 24 | Lighthouse mobile ≥90 audit + fix | Dev | No (must pass before launch) |

@@ -53,9 +53,8 @@ Read these files for context:
 | `agent-os/product/mission.md` | Product positioning, target audience |
 | `agent-os/content-style-guide.md` | Voice, tone, messaging guidelines |
 | `agent-os/build-in-public-plan.md` | Landing page specs, launch timeline |
-| `agent-os/design-system/` | Design tokens, colors, typography |
+| `agent-os/brand/design-system.md` + `erp/DESIGN.md` | Design tokens, colors, typography (v2 spec; Paper "Zerupt Design System" is the visual source) |
 | `erp/apps/website/` | Existing pages, components, structure |
-| `erp/apps/website/.stitch/DESIGN.md` | Stitch design system (if exists) |
 | `erp/apps/website/.stitch/SITE.md` | Site vision, sitemap, roadmap (if exists) |
 | `erp/packages/ui/` | Shared UI components (can be used by website) |
 
@@ -85,12 +84,11 @@ Determine the design path based on the issue type:
 
 ### Path A: Stitch-first (new pages, major sections)
 
-1. **Check for DESIGN.md**: Read `erp/apps/website/.stitch/DESIGN.md`
-   - If missing: invoke the `stitch-design-md` skill to create it from an existing screen
+1. **Read the design system**: Read `erp/DESIGN.md` (the single spec; do not create a separate Stitch DESIGN.md)
    
 2. **Enhance the prompt**: Invoke the `stitch-enhance-prompt` skill
    - Transform the issue description into a Stitch-optimized prompt
-   - Include the design system block from DESIGN.md
+   - Include the design system block from `erp/DESIGN.md`
    
 3. **Generate via Stitch MCP**: Call `generate_screen_from_text`
    - Use the project ID from `erp/apps/website/.stitch/metadata.json`
@@ -105,7 +103,7 @@ Determine the design path based on the issue type:
 ### Path B: Code-first (edits, components, small changes)
 
 1. **Invoke frontend-design skill**: Read and follow `.claude/skills/frontend-design/SKILL.md`
-2. **Reference design tokens**: Use values from `agent-os/design-system/`
+2. **Reference design tokens**: Use values from `erp/DESIGN.md` (see also `agent-os/brand/design-system.md`)
 3. **Build component directly**: Skip Stitch for small, targeted changes
 
 Ask: "Design approach: [Stitch-first / Code-first]. Proceed? (yes / switch approach)"
@@ -139,8 +137,8 @@ Present the copy for review. Ask: "Copy ready. Approve? (yes / revise)"
    - Use `stitch-react-components` skill for complex conversions
    
 2. **Apply design tokens**:
-   - Colors from CSS variables
-   - Typography from brand fonts
+   - Colors from CSS variable roles (never raw hex or raw palette)
+   - Typography from the Noto Sans family (Sans/Arabic/Devanagari/Gurmukhi/Thai + Noto Sans Mono)
    - Spacing from design system
    
 3. **Add animations** (for scroll-driven pages):
@@ -191,8 +189,8 @@ Invoke the `website-review` skill. Run through all checklists:
 - [ ] Mobile-friendly line lengths
 
 ### Brand Consistency
-- [ ] Colors match design tokens
-- [ ] Typography matches brand fonts
+- [ ] Colors are Olive Grove v3 roles only (canvas `#F7F6EF`, moss ink `#283618`, olive `#606C38`, lime `#ECF39E`, caramel `#DDA15E` fill-only, one per screen), no raw hex or violet/teal/navy
+- [ ] Typography is the Noto Sans family only (400/500/600), light-first, glass only on floating chrome
 - [ ] Logo usage correct
 
 Document findings. Fix all issues before proceeding.

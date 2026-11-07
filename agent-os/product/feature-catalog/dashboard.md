@@ -98,7 +98,7 @@
 ## Advisor Card (AI Recommendation Panel)
 
 - **Status:** shipped (placeholder UI only)
-- **Description:** A citron-accent card slot reserved for Zee/Mira AI recommendations on the dashboard. Currently renders a "warming up" placeholder with a disabled CTA when no live recommendation is passed in.
+- **Description:** A lime-highlighted card slot with the Zee shimmer reserved for Zee/Mira AI recommendations on the dashboard. Currently renders a "warming up" placeholder with a disabled CTA when no live recommendation is passed in.
 - **Who it's for:** Owner, manager.
 - **Constraints / notes:** The UI component is built and accepts a real recommendation object; however the AI endpoint that generates and feeds recommendations to this card is not yet connected. It will become fully live when the AI suggestion pipeline is wired.
 

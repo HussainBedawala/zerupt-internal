@@ -66,7 +66,7 @@ Total: 13 route templates × 2 locales = 26+ rendered pages (more with blog arti
 Components in `src/components/seo/`: Organization, SoftwareApplication, Website, Article, Breadcrumb, FAQ schemas.
 
 ### Web App Manifest
-- `name: "Zerupt"`, `display: standalone`, `theme_color: #f9f7f5` (cream), `background_color: #141310` (ink).
+- `name: "Zerupt"`, `display: standalone`, `theme_color: #f7f6ef` (canvas), `background_color: #0f1a0e` (forest night).
 
 ### Sitemap priority values
 | Page | Priority |

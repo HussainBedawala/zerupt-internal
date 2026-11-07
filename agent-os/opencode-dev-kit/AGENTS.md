@@ -126,7 +126,10 @@ Coverage targets: 80%+ general, 100% financial/accounting, 100% auth/security.
 
 ## Brand
 
-Warm cream `#F9F7F5` (canvas), Ink `#141310` (text/primary), Citron `#979C1A` (the one accent), Olive `#747818` / `#454729` (data viz). Citron is fill/accent only, never text on light background (fails WCAG); citron-toned text uses olive-deep instead. Primary actions are ink. Fonts: IBM Plex Sans (Latin + Arabic + Devanagari, same family) + IBM Plex Mono. Dark-first, premium. Do NOT use violet/teal or mix with Inter/Noto Sans. Source of truth for full tokens: `erp/DESIGN.md` and `erp/apps/web/src/app/globals.css`.
+Design system v3 "Olive Grove" + Noto Sans (locked 2026-11-06). Light-first, dark = forest night `#0F1A0E`. Canvas `#F7F6EF` · surface `#FFFFFF` · moss ink `#283618` (text, primary buttons) · brand olive `#606C38` · lime `#ECF39E` = selection · caramel `#DDA15E` = the one money moment per screen (moss text on it, never text on light). Status = vivid colour + icon + word. Fonts: Noto Sans family per script (Arabic, Devanagari, Gurmukhi, Thai) + Noto Sans Mono, weights 400/500/600.
+Frosted-paper glass on floating chrome only (top bar on scroll, bulk bar, menus, command palette, sheets, toasts); never tables, forms, sidebar, POS, dialogs or print; no "Simple look" toggle. Every action follows the action lifecycle + error formula (`erp/DESIGN.md` §9-10). Components use roles only.
+Banned: violet, teal, navy, raw Tailwind palette classes, raw hex in components, IBM Plex, Inter, serif. The logo keeps its original citron colours (`logo-*` tokens, logo component only); citron is never used in UI.
+**Source of truth: Paper "Zerupt Design System" + `erp/DESIGN.md`** -> `erp/apps/web/src/app/globals.css` (code migration pending).
 
 ---
 

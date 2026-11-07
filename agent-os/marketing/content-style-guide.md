@@ -7,7 +7,7 @@ source_of_truth: agent-os/brand/brand-foundation.md
 
 ## TL;DR
 
-Zerupt is the world's first agentic AI retail business brain. Taglines: "Your business, handled." / "Know your next move." Voice: confident, warm, zero jargon. Palette: cream, ink, one citron accent. IBM Plex only. Never lead with "ERP."
+Zerupt is the world's first agentic AI retail business brain. Taglines: "Your business, handled." / "Know your next move." Voice: confident, warm, zero jargon. Palette: Olive Grove (cream, moss ink, olive, lime spark, one caramel money moment). Noto Sans only. The logo keeps its original citron colours (logo-only, never in UI). Never lead with "ERP."
 
 ---
 
@@ -49,7 +49,7 @@ Zerupt is the world's first agentic AI retail business brain. Taglines: "Your bu
 | it knows, it tells you, it handles | onboard (as verb), dashboard (when "your numbers" works) |
 | agentic AI retail business brain | ERP (never lead with this) |
 
-**Grammar:** Sentence case for headlines and UI. Contractions welcome. Numerals for quantities and money (IBM Plex Mono). Oxford comma. Never ALL-CAPS for emphasis — use weight instead.
+**Grammar:** Sentence case for headlines and UI. Contractions welcome. Numerals for quantities and money (Noto Sans tabular numerals). Oxford comma. Never ALL-CAPS for emphasis — use weight instead.
 
 **Naming surfaces:** after the owner's outcome, not the engineering domain. "Your Numbers," not "Reporting Module."
 
@@ -80,39 +80,45 @@ Zerupt is the world's first agentic AI retail business brain. Taglines: "Your bu
 
 > Full token spec: `erp/DESIGN.md`. CSS implementation: `apps/web/src/app/globals.css`. Brand meaning: `agent-os/brand/brand-foundation.md`.
 
-### Palette (the ONLY allowed colors)
+### Palette (roles, not primitives)
 
-| Name | Hex | Use |
-|------|-----|-----|
-| Cream (canvas) | `#F9F7F5` | Page background (light) |
-| Ink | `#141310` | Text, primary buttons |
-| Citron (accent) | `#979C1A` (light) / `#C2C84A` (dark) | Fill, ring, data viz only |
-| Olive-mid | `#747818` | Data viz |
-| Olive-deep | `#454729` | Citron-toned text, links (`accent-text`) |
-| Sage | `#ADAB92` | Muted data viz |
-| Dark bg | `#0E0D0A` | Dark mode canvas |
-| Dark fg | `#F2F0EC` | Dark mode text |
-| Dark muted | `#A8A496` | Dark mode muted text |
+Source of truth: `erp/DESIGN.md` (Paper boards -> DESIGN.md -> `globals.css`). Spec v3 "Olive Grove" is locked; app code is still migrating to it. Use roles, never raw hex or raw Tailwind palette classes.
 
-**Three hard rules:**
-1. One citron accent per view. ~10% of any composition.
-2. Citron is fill/ring/data ONLY — never text on light (`#F9F7F5`). Citron-toned text uses olive-deep (`#454729`), AAA contrast.
-3. Primary CTAs are ink (`#141310`), not citron.
+| Role | Light | Dark (forest night) | Use |
+|------|-------|------|-----|
+| Canvas (`bg`) | `#F7F6EF` | `#0F1A0E` | Page background. Light first, dark fully supported |
+| Surface | `#FFFFFF` | `#172416` | Cards, inputs |
+| Moss ink / foreground (`fg`) | `#283618` | `#EFF1ED` | Text, primary buttons |
+| Muted foreground | `#6B6A55` | `#B4B9A4` | Secondary text |
+| Brand olive | `#606C38` | fern `#90A955` | Links, "+ Add" actions, brand marks |
+| Signature lime | `#ECF39E` | `#ECF39E` | Selection, highlight and spark (on dark it is also accent text and links) |
+| Signature caramel | `#DDA15E` | `#DDA15E` | The one money/CTA moment (Charge, Pay). Fill only, moss text on it |
+| Copper | `#BC6C25` | same | Marketing highlight. Fill/decoration only, never text on light |
+| Cornsilk | `#FEFAE0` | n/a | Marketing section backgrounds only |
 
-**Absolutely banned:** violet (#7C3AED or any variant), teal (#14B8A6 or any variant), dark navy, raw Tailwind zinc, raw white (#FFFFFF as brand color).
+Scales (moss, grove, caramel, sand) and the bark tones for illustration and photography live in `erp/DESIGN.md`.
 
-**Always consume semantic tokens** (`bg-primary`, `text-muted-foreground`, `bg-accent`) — never raw hex or raw Tailwind palette classes.
+**Hard rules:**
+1. One caramel money moment per screen or slide. Roughly 60% canvas or cornsilk / 30% moss ink / 10% olive, lime and caramel as a guideline.
+2. Caramel, copper and lime are fill/accent only on light. Never caramel or lime text on light (`#F7F6EF`). Olive `#606C38` is the brand text and link colour on light.
+3. Primary CTAs are moss ink (`#283618`), not caramel. The caramel button is the single money moment (Charge, Pay).
+
+**Absolutely banned:** violet, teal, navy, raw Tailwind palette classes, raw hex in components, IBM Plex, Inter, serif. Glassmorphism is banned except frosted-paper glass on floating chrome (bars, menus, sheets, toasts); never on tables, forms, paragraphs, or marketing graphics.
+
+**Always consume semantic roles** (`bg-primary`, `text-muted-foreground`, `bg-accent`) never raw hex.
 
 ### Typography
 
 | Family | Use |
 |--------|-----|
-| IBM Plex Sans (Latin / Arabic / Devanagari) | All display, headings, body, UI |
-| IBM Plex Mono | Numbers, currency, codes, data tables |
+| Noto Sans / Noto Sans Arabic / Noto Sans Devanagari (plus Gurmukhi, Thai per script) | All display, headings, body, UI, money and figures (tabular numerals) |
+| Noto Sans Mono | Eyebrows, codes, SKUs, small labels |
 
-**Never:** Inter, Noto Sans, any serif, or any other typeface.
+Money and figures use Noto Sans tabular numerals (`tabular-nums`), right-aligned in tables, full precision (KWD 3dp). Not Mono.
 
-Weights in use: 400 (body), 500 (card titles), 600 (headings/display). RTL line-heights ≥1.5.
+**Never:** IBM Plex, Inter, any serif, or any other typeface.
+
+Weights in use: 400 (body), 500 (display, card titles), 600 (headings). No 700. Arabic runs about 6% larger with line-height 1.6.
 
 ---
 
@@ -137,7 +143,7 @@ Weights in use: 400 (body), 500 (card titles), 600 (headings/display). RTL line-
 ### Both accounts
 
 - Sentence case always.
-- Arabic content: same IBM Plex Arabic, same tone (warm, confident, owner-language).
+- Arabic content: same Noto Sans Arabic, same tone (warm, confident, owner-language).
 - CTAs: outcome-led. "See it run" not "Click here."
 
 ---
@@ -145,28 +151,28 @@ Weights in use: 400 (body), 500 (card titles), 600 (headings/display). RTL line-
 ## Carousel & Asset Rules
 
 **Slide layout:**
-- Background: cream `#F9F7F5` (light) or ink-dark `#0E0D0A` (dark).
-- Headline: IBM Plex Sans SemiBold (600), ink or cream. Sentence case.
-- Data / numbers: IBM Plex Mono, set in olive-deep on light or citron-light on dark.
-- Accent element: one citron fill or underline per slide — not repeated across every element.
+- Background: cream `#F7F6EF` or cornsilk `#FEFAE0` (light) or forest night `#0F1A0E` (dark).
+- Headline: Noto Sans SemiBold (600), moss ink or cream. Sentence case.
+- Data / numbers: Noto Sans tabular numerals, set in olive `#606C38` on light or lime `#ECF39E` on dark.
+- Accent element: one lime or caramel fill or underline per slide — not repeated across every element.
 - One slide = one idea. Lead with the owner outcome, not the feature name.
 
 **Data visualization in assets:**
-- Chart colors: citron → olive-mid → sage → ink (this ramp only).
-- Numbers in IBM Plex Mono.
+- Chart colors: the category palette in `erp/DESIGN.md` (fern, caramel, sky, rose, jade, copper, berry, forest; provisional). Max 6 series, direct labels.
+- Numbers in Noto Sans tabular numerals.
 - Label the insight, not just the data. "You'll run out Thursday" not just a bar chart.
 
 **Photography / imagery:**
 - Real retail, real owners, MENA / India / SEA context.
 - Warm, natural light. True-to-life color. No heavy filters.
-- Logo on imagery: monochrome cream or ink only, with scrim if contrast < AA.
+- Logo on imagery: mono ink `#141310` or mono reversed `#F7F6F2` only, with scrim if contrast < AA.
 - Never: generic stock tech, abstract 3D gradients, corporate boardrooms, screens glowing in dark rooms.
 
 **Banned in all assets:**
 - Violet, teal, navy, or any color outside the palette above.
-- White text on citron.
-- Citron text on cream.
-- Inter, Noto Sans, or any non-IBM Plex font.
+- White text on caramel or lime.
+- Caramel or lime text on cream.
+- Inter, IBM Plex, or any non-Noto font.
 - Gradients, patterns, noise fills.
 - Bounce/spring animations.
 

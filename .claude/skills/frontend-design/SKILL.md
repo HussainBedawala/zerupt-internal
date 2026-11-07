@@ -4,6 +4,10 @@ description: Create distinctive, production-grade frontend interfaces with high 
 license: Complete terms in LICENSE.txt
 ---
 
+## Zerupt override
+
+In this repo `erp/DESIGN.md` wins over everything below. Frosted-paper glass IS allowed, on the floating-chrome allow-list only (top bar on scroll, bulk bar, menus/popovers, command palette, sheets, toasts). Fonts are the Noto Sans family only (Noto Sans, Arabic, Devanagari, Gurmukhi, Thai, plus Noto Sans Mono); the "choose unexpected fonts" guidance does not apply. Palette is Olive Grove: light-first, canvas `#F7F6EF`, moss ink `#283618` for text and primary buttons, brand olive `#606C38`, lime `#ECF39E` for selection, caramel `#DDA15E` as the one money moment per screen. Roles only, no raw palette or hex.
+
 This skill guides creation of distinctive, production-grade frontend interfaces that avoid generic "AI slop" aesthetics. Implement real working code with exceptional attention to aesthetic details and creative choices.
 
 The user provides frontend requirements: a component, page, application, or interface to build. They may include context about the purpose, audience, or technical constraints.
@@ -53,7 +57,7 @@ When this skill is invoked for a scroll-driven animated website (used alongside 
 - Text hierarchy replaces card containers. Size, weight, and color ARE the structure
 
 ### No Cards, No Boxes
-- **NEVER** use glassmorphism cards, frosted glass, or visible containers around text on scroll-driven sites
+- **NEVER** use glassmorphism cards, frosted glass, or visible containers around text on scroll-driven sites (outside the Zerupt glass allow-list in `erp/DESIGN.md`)
 - Text sits directly on the background — clean, confident, editorial
 - Readability comes from: font weight (600+), text-shadow if needed, and ensuring video frames have clean backgrounds at text scroll points
 - The only acceptable "container" is generous padding on the section itself

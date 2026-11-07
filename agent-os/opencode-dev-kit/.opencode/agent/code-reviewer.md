@@ -109,7 +109,7 @@ When reviewing React/Next.js code, also check:
 - **Prop drilling** — Props passed through 3+ levels (use context or composition)
 - **Unnecessary re-renders** — Missing memoization for expensive computations
 - **Client/server boundary** — Using `useState`/`useEffect` in Server Components
-- **Missing loading/error states** — Data fetching without fallback UI
+- **Missing loading/error states** — Data fetching or actions without the action lifecycle (verb label, first-load skeleton, success panel) and the 4-part error formula in `erp/DESIGN.md` §9-10
 - **Stale closures** — Event handlers capturing stale state values
 
 ```tsx

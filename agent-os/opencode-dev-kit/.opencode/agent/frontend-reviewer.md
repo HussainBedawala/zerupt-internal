@@ -53,11 +53,27 @@ You review frontend code in `apps/web/`. Focus on bugs, a11y, and i18n — not s
 - No inline styles — use Tailwind classes.
 - Dark mode: use CSS variables / `dark:` variants, not hardcoded colors.
 
-### Defensive UX (HIGH — per project conventions)
-- Every async action: loading state, error state, success feedback.
-- Destructive actions have confirmation dialogs.
-- Buttons disabled/debounced after click.
-- Empty states for lists/tables.
+### Design system v3 Olive Grove (HIGH, per erp/DESIGN.md)
+- Colour via roles only (canvas, surface, moss-ink `fg`, `brand` olive, `selected` lime, `money` caramel). Flag raw Tailwind palette classes (`bg-red-100`), raw hex, and `text-[Npx]`.
+- Caramel (`money`) at most one per screen, always moss text on it, never caramel or copper as text on light. Lime = selection everywhere (rows, chips); lime shimmer only on Zee suggestions, never as a loader.
+- Status uses the shared `StatusBadge` (vivid status tokens, colour + icon + word), never ad-hoc colour classes.
+- Radius, control height and row height come from density/radius tokens, not literals.
+- Glass (`glass-thin`/`glass-regular`) only on the floating-chrome allow-list (top bar on scroll, bulk bar, menus/popovers, command palette, sheets, toasts); never on tables, forms, sidebar, POS, dialogs, print. Tint >= 85%, no glass on glass, solid fallback for reduced-transparency/forced-colors/no backdrop-filter.
+- Focus ring is 2px solid moss ink with 2px offset (3px in high contrast), `:focus-visible` only, never hidden under sticky bars.
+- Touch targets 44px (POS keys 48px); no hover-only actions or reveals; row actions always visible.
+- Motion uses the motion tokens (120/200/320ms, no overshoot); reduced motion becomes a 120ms fade.
+- Fonts: Noto Sans family per script (Noto Sans, Arabic, Devanagari, Gurmukhi, Thai) + Noto Sans Mono; weights 400/500/600; no text under 12px.
+- Display settings respected: text size Large/Extra large (115/130%) scales without clipping (tables wrap, layouts reflow), and the high contrast theme works (solid, no glass, 3px focus).
+
+### Action lifecycle & errors (HIGH, per erp/DESIGN.md)
+- Buttons: verb label while working (Saving/Posting/Charging), locked and width-stable, double tap does nothing.
+- Skeleton only on first load and only after 200ms, same shape as the page; refresh keeps old data visible (thin bar, never wipe filters or results to a skeleton). No full-page spinner.
+- Requests over 4s show the slow-connection message ("Still working, nothing is lost").
+- Success replaces the form with a panel saying what happened plus 2-3 next actions.
+- Ledger actions get a confirm dialog naming the object and consequences, never an undo toast.
+- Drafts autosave and leaving with unsaved changes is guarded (Keep editing / Save draft / Discard).
+- Errors use the 4-part formula (what happened, is it safe, what to do, the button) shown in place of the problem, with a reference code for support. Never a toast-only error, never raw codes or blame.
+- Destructive actions confirmed; empty states for lists/tables.
 
 ### Accessibility (MEDIUM)
 - Interactive elements are focusable and keyboard-navigable.

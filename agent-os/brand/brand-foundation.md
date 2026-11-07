@@ -2,15 +2,16 @@
 
 **The single source of truth for what Zerupt means, says, and looks like.**
 
-*Version 1.0 · Founder strategy session 2026-05-28 · Owner: Hussain · Audience: designers & builders*
+*Version 3.0 · 2026-11-06 · Owner: Hussain · Audience: designers & builders*
 
 ---
 
 > **How this document governs.** Strategy decides everything below it. If a logo, a line
 > of copy, a feature name, a color, or a motion curve disagrees with this book, **this
-> book wins.** The engineering token spec in `erp/DESIGN.md` is the *implementation
-> mirror* of Part C — when the two differ, this book is corrected first, then the tokens
-> and CSS are brought back in line.
+> book wins**, with one exception: **visual identity**. The visual source of truth is the
+> Paper page "Zerupt Design System" (boards 00-11) and its written form, `erp/DESIGN.md`.
+> Part C summarises and links to them; where Part C and `erp/DESIGN.md` differ on a visual
+> value, `erp/DESIGN.md` wins and Part C is corrected.
 >
 > **How to use it:** Part A tells you *why* Zerupt exists — read it once, internalize it.
 > Parts B & C are reference specs — follow them to the value. Part D shows the system in
@@ -23,7 +24,7 @@
 
 **A — Foundation** · 1 At a Glance · 2 Strategy · 3 Enemy & Positioning · 4 Audience · 5 Personality & Voice
 **B — Verbal Identity** · 6 Voice Principles · 7 Tagline & Messaging · 8 Lexicon & Naming · 9 Copy in Context
-**C — Visual Identity** · 10 Design Philosophy · 11 Logo · 12 Color · 13 Typography · 14 Grid & Layout · 15 Iconography & Graphic Device · 16 Imagery & Art Direction · 17 Motion · 18 Data Visualization
+**C — Visual Identity** · 10 Design Philosophy · 11 Logo · 12 Color · 13 Typography · 14 Grid & Layout · 15 Iconography & Graphic Device · 16 Imagery & Art Direction · 17 Materials & Motion · 18 Data Visualization
 **D — Applications** · 19 The "Next Move" Moment · 20 Touchpoints
 **E — Governance** · 21 Do / Don't Summary · 22 Document Map & Versioning
 
@@ -51,7 +52,7 @@
 | **Premium flavor** | Trusted institution, clearly ahead — via quiet luxury |
 | **Aspiration peers** | Apple, Tesla / SpaceX |
 | **Values** | Obsessive quality · Radical simplicity · Customer-shaped · Earned trust |
-| **Look** | Warm cream canvas · near-black ink · one citron accent · IBM Plex |
+| **Look** | Olive Grove: warm cream canvas · moss ink · olive brand · lime selection · one caramel money moment · Noto Sans |
 
 ## 2. Strategy — The Foundation
 
@@ -162,7 +163,7 @@ technology that was never built for them. They're working *in* the business, nev
 ### Premium flavor
 **A trusted institution that's clearly ahead** — the gravitas of a private bank meets the
 "this is the future" of Apple / Tesla, expressed through quiet-luxury restraint (cream,
-ink, one citron accent). Premium because it's *trustworthy AND ahead*, never because it's
+moss ink, olive, restrained accents). Premium because it's *trustworthy AND ahead*, never because it's
 loud.
 
 ---
@@ -237,7 +238,7 @@ fancy · Direct, not blunt · Calm, not boring.
 | it knows, it tells you, it handles | dashboard (when "your numbers" works), onboard |
 
 **Grammar & style:** sentence case for UI and headlines (not Title Case). One space after
-periods. Numerals for quantities and money (set in IBM Plex Mono). Oxford comma. Contractions
+periods. Numerals for quantities and money (tabular figures in Noto Sans). Oxford comma. Contractions
 are welcome (we're human). Never ALL-CAPS for emphasis — use weight instead.
 
 **Naming convention:** name product surfaces after the **owner's outcome**, not the
@@ -262,220 +263,184 @@ engineering domain. "Your Numbers," not "Reporting Module." "What to stock next,
 
 # PART C — VISUAL IDENTITY
 
-> Part C is canonical for all visual *meaning*. Exact CSS variable names, dark-mode values,
-> and verified WCAG ratios are mirrored in `erp/DESIGN.md` (engineering token spec) and
-> implemented in `apps/web/src/app/globals.css`. Values must always match; this book is
-> corrected first.
+> Part C is a brand-level summary. The visual source of truth is the **Paper page "Zerupt
+> Design System" (boards 00-11)** and its written form, **`erp/DESIGN.md`**. This book
+> summarises and links; exact values (hex, radii, timings, contrast ratios) live in
+> `erp/DESIGN.md`. If this summary and `erp/DESIGN.md` disagree, `erp/DESIGN.md` wins.
+> Status: the spec is locked; the product CSS and component library are still being migrated.
 
 ## 10. Design Philosophy
 
-**Warm, editorial, restrained.** A cream "paper" canvas, near-black ink, and a single
-earthy **citron** accent doing all the highlighting work — grounded by olive-green nature
-tones. The opposite of generic SaaS violet. Premium and calm; the data is the hero, the
-chrome recedes. **Dark-first product with full light parity.**
+**Calm, soft, light-first.** The user works on a calm, smooth canvas. Data sits on solid
+paper. Floating chrome is frosted paper. Colour is spent at the moments that matter
+(lime selection, one caramel money moment, vivid status), and the chrome recedes so the numbers lead. Dark is a fully supported preference, not the default:
+owners read numbers in bright shops.
 
-Three rules that override aesthetics (the Magician's discipline — power shown sparingly):
-1. **One accent.** Citron is the only brand color. No secondary brand hue competes with it.
-2. **Citron never carries text on light.** It fails WCAG as text on cream. It is a
-   **fill / ring / data** color only. Citron-*toned* text uses `accent-text` (olive-deep).
-3. **Primary actions are ink, not citron.** The hero CTA is near-black with cream text.
-   Citron marks focus, selection, active state, charts, and "Zerupt is acting."
+**Personality: "Olive Grove."** A sunlit olive grove and desert sand. Earthy, grounded and
+Gulf-native (olive, date palm, sand), lasting, and never dull because colour appears where it
+matters on calm cream and white. Dark mode is forest night (green-black), distinctive against
+every grey ERP.
+
+Seven principles (full text in `erp/DESIGN.md` section 1):
+1. **Light first.** Dark is a preference, fully supported.
+2. **Colour is spent at the moments that matter.** Lime is selection, caramel is the one money moment per screen (fill only, never text on light), status is vivid.
+3. **Status never relies on colour alone.** Colour, icon and word.
+4. **WCAG 2.2 AA is the floor.** Readable text, visible focus, generous touch targets.
+5. **One family, every script.** The Noto Sans family per script (Latin, Arabic, Devanagari, Gurmukhi, Thai), plus Noto Sans Mono.
+6. **Motion explains, then gets out of the way.** Short, calm, no bounce.
+7. **Soft, continuous, concentric.** Generous radii, nested corners that share a centre.
 
 ## 11. Logo
 
 The Zerupt logo has two elements: the **symbol** (the rising-triangles "spark") and the
 **wordmark** (`zerupt.`). They are used together in the horizontal lockup, or independently.
+The logo geometry is unchanged in v3 (Paper board 01); the logo keeps its original citron colours (v3.1), a logo-only exception never used in the interface. Logo hexes are tokens (`logo-citron-500` `#979C1A`, `logo-citron-700` `#5C6012`, `logo-olive` `#747818`, `logo-citron-300` `#C5CB55`, `logo-ink` `#141310`, `logo-paper` `#F7F6F2`) used only by the logo component.
 
 > Asset: `agent-os/brand/zerupt-symbol.svg`. Live preview of the full system:
-> `agent-os/brand/zerupt-logo-concepts.html`. Production note: the wordmark renders in live
-> IBM Plex Sans for review — convert to **outlined vector paths** with tuned kerning before
-> production so it never depends on a loaded font.
+> `agent-os/brand/zerupt-logo-concepts.html`. Production note: convert the wordmark to
+> **outlined vector paths** with tuned kerning before production so it never depends on a loaded font.
 
-### 11.1 The symbol — "the spark"
-Two upward, rounded triangles (rising / erupting / growth) with a dot below (the spark — the
-same citron mark used in-product to signal "Zerupt is advising"). Geometry is traced from the
-original mark; only the palette changed (old violet → the brand system). SVG viewBox `0 0 100 100`:
+### 11.1 The symbol: "the spark"
+Two upward, rounded triangles (rising, erupting, growth) with a dot below (the spark; the in-product
+"Zerupt is advising" spark device is a separate lime UI element). SVG viewBox `0 0 100 100`:
 - **Large triangle (back):** points `58.75,16 · 73.25,55.88 · 35.38,79.88`
 - **Small triangle (front):** points `51.13,43 · 60.5,72 · 29.5,61.75`
 - **Dot:** center `40.88,78.5`, radius `5.6`
 - **Corner rounding:** `stroke-width:6` with `stroke-linejoin:round` (stroke matches fill).
 
-**Symbol colors**
-| Element | On ink (primary) | On cream (light) |
-| --- | --- | --- |
-| Large triangle (back) | citron `#C2C84A` | citron `#979C1A` |
-| Small triangle (front) | olive-mid `#747818` | olive-deep `#454729` |
-| Dot (spark) | citron `#C2C84A` | citron `#979C1A` |
-| Mono fallback (1-color) | all cream `#F9F7F5` | all ink `#141310` |
-
-At ≤ 32px, drop the dot and use a single-tone symbol so it stays legible.
+On light the large triangle and dot are citron `#979C1A` and the small triangle is `#5C6012`; on dark the large triangle is `#979C1A`, the small triangle `#747818` and the dot `#C5CB55`. Mono ink `#141310` for
+print and stamps (shown on a citron panel); mono reversed `#F7F6F2` for dark. At 32px and below, drop the dot and use a single-tone symbol.
 
 ### 11.2 The wordmark
-`zerupt.` — lowercase, IBM Plex Sans **SemiBold (600)**, tracking **−3%**. Ink on light, cream
-on dark. The trailing **dot is citron** on the two primary versions only (`#979C1A` light /
-`#C2C84A` dark); in mono lockups the dot matches the wordmark. Dot diameter ≈ 1.1× the letter
-stem width, on the baseline, with a gap of half its diameter after the "t".
+`zerupt.` in lowercase Noto Sans SemiBold (600). Ink `#141310` on light, off-white on dark. The
+trailing full stop is citron (`#5C6012` on light, `#C5CB55` on dark); in mono lockups it matches the wordmark. The app
+icon is the dark-variant mark on an ink `#141310` squircle. The Arabic wordmark is drawn, not typed. Below 24px tall, use the mark only.
 
 ### 11.3 Lockup, clearspace, minimum sizes
-- **Horizontal lockup:** symbol + wordmark, optically centered; gap between them = the
-  wordmark's x-height. Symbol height ≈ the wordmark's cap-to-descender height.
-- **Clearspace:** on all sides = the x-height of the wordmark (the height of the "z"). Nothing
-  intrudes.
-- **Minimum size:** wordmark — 20px tall digital / 8mm print. Symbol/icon — 16px (drop dot ≤32px).
+- **Horizontal lockup:** symbol + wordmark, optically centered; gap = the wordmark's x-height.
+- **Clearspace:** on all sides = the x-height of the wordmark. Nothing intrudes.
+- **Minimum size:** wordmark 20px tall digital / 8mm print. Symbol 16px.
 
 ### 11.4 Approved variations
-(a) horizontal lockup · (b) symbol only · (c) wordmark only · (d) `z.` app-icon (rounded
-square, ink, radius ≈ 22% of size) · (e) monochrome ink · (f) monochrome cream (reversed).
+(a) horizontal lockup · (b) symbol only · (c) wordmark only · (d) app icon: the mark on a
+continuous squircle · (e) monochrome moss ink · (f) monochrome reversed.
 
 ### 11.5 Misuse (never)
-Recolor the wordmark to citron on light (fails WCAG) · stretch / condense · rotate or tilt ·
-add shadow / glow / bevel · alter letter spacing · place on citron or busy imagery without a
-scrim · revert the symbol to the old violet palette · recreate the wordmark in another typeface.
+Recolor the wordmark to caramel on light (fails contrast) · stretch or condense · rotate or
+tilt · add shadow, glow or bevel · alter letter spacing · place on caramel or busy imagery
+without a scrim · recreate the wordmark in another typeface.
 
-### 11.6 On imagery & co-branding
-On photography use the mono cream/ink version on a calm area, with a scrim if contrast drops
-below AA. Co-branding: partner logo separated from the Zerupt mark by a 1px ink/cream divider
-with clearspace on both sides; neither dominates.
+### 11.6 On imagery and co-branding
+On photography use the mono version on a calm area, with a scrim if contrast drops below AA.
+Co-branding: partner logo separated from the Zerupt mark by a 1px divider with clearspace on
+both sides; neither dominates.
 
 ## 12. Color
 
-### 12.1 Core palette — full values
-| Name | HEX (light) | RGB | CMYK | Nearest Pantone† | Dark | Meaning |
-| --- | --- | --- | --- | --- | --- | --- |
-| Cream (canvas) | `#F9F7F5` | 249·247·245 | 0·1·2·2 | 11-0601 TCX | — | page background |
-| Ink | `#141310` | 20·19·16 | 0·5·20·92 | Black C / 419 C | — | text & primary buttons |
-| Citron (accent) | `#979C1A` | 151·156·26 | 3·0·83·39 | 384 C | `#C2C84A` | the one accent |
-| Olive-mid | `#747818` | 116·120·24 | 3·0·80·53 | 5757 C | — | data viz |
-| Olive-deep | `#454729` | 69·71·41 | 3·0·42·72 | 5747 C | — | citron-toned text, data viz |
-| Sage | `#ADAB92` | 173·171·146 | 0·1·16·32 | 451 C | — | muted data viz |
+Palette roles at brand level (hex values, dark roles, status colours and contrast ratios:
+`erp/DESIGN.md` section 2).
 
-† Pantone values are **nearest approximations — verify against a physical swatch book before
-any print run.** Citron lightens to `#C2C84A` in dark mode for AAA contrast on ink.
-
-### 12.2 Semantic tokens
-| Token | Light | Dark | Use |
-| --- | --- | --- | --- |
-| background / foreground | `#F9F7F5` / `#141310` | `#0E0D0A` / `#F2F0EC` | page |
-| card / card-foreground | `#FFFFFF` / `#141310` | `#1A1813` / `#F2F0EC` | raised surfaces |
-| popover / popover-foreground | `#FFFFFF` / `#141310` | `#1A1813` / `#F2F0EC` | menus, tooltips |
-| primary / primary-foreground | `#141310` / `#F9F7F5` | `#EDEBE4` / `#141310` | hero actions |
-| secondary / secondary-foreground | `#EFEDE7` / `#141310` | `#232019` / `#F2F0EC` | secondary buttons |
-| muted / muted-foreground | `#F0EEE9` / `#6B6A5E` | `#232019` / `#A8A496` | subdued surfaces / text |
-| accent / accent-foreground | `#979C1A` / `#141310` | `#C2C84A` / `#0E0D0A` | citron fills, active state |
-| accent-text | `#454729` | `#C2C84A` | citron-*toned* text, links |
-| destructive / -foreground | `#B3261E` / `#F9F7F5` | `#E5484D` / `#0E0D0A` | delete, errors |
-| success / -foreground | `#4C7A1F` / `#F9F7F5` | `#84CC4F` / `#0E0D0A` | confirms, positive |
-| warning / -foreground | `#B7791F` / `#141310` | `#E0A82E` / `#0E0D0A` | cautions |
-| border / input | `#E4E1D9` | `#2C2820` | hairlines, field borders |
-| ring | `#979C1A` | `#C2C84A` | focus ring (citron) |
-| chart-1..5 | citron→olive→sage→ink | lightened | data viz ramp |
-
-### 12.3 Usage proportions (the 60·30·10 rule)
-- **~60%** canvas (cream / dark background) — let it breathe.
-- **~30%** ink + neutrals (text, borders, cards).
-- **~10%** citron — focus, active state, advising, key data. **Never more.** If citron is
-  doing a lot of work on a screen, you're overusing it.
-
-### 12.4 Accessibility (WCAG, verified)
-| Pair | Ratio | Grade |
+| Role | What it is | Rule |
 | --- | --- | --- |
-| ink on cream | 18.5 | AAA |
-| ink on citron | 6.7 | AA ✅ (citron buttons use ink text) |
-| white on citron | 2.96 | ❌ never |
-| citron text on cream | 2.77 | ❌ use `accent-text` |
-| olive-deep (`accent-text`) on cream | 9.0 | AAA |
-| muted-foreground on cream | 5.1 | AA |
-| cream on ink (dark) | 17.4 | AAA |
-| citron-light on ink (dark) | 11.0 | AAA |
+| Canvas | warm cream paper | the page; let it breathe |
+| Surface | white | cards, inputs, tables |
+| Moss ink | deep green-black | text and primary buttons |
+| Brand olive | the brand green | links, "+ Add" actions, brand marks |
+| Lime | the signature highlight | selection everywhere, and the Zerupt shimmer on AI suggestions |
+| Caramel | the warm accent | fill only, with moss text; the one money moment (Charge, Pay) per screen |
+| Status | success, warning, danger, info | vivid, always colour + icon + word |
+| Category | eight hues for charts, tags, branch dots, avatars | provisional, never the only signal |
 
-**Always consume tokens** (`bg-primary`, `text-muted-foreground`, `border-border`,
-`ring-ring`) — never raw Tailwind palette utilities.
+- **Light first, dark supported.** Dark is forest night, a green-black canvas (never pure
+  black), with fern and lime allowed to carry text.
+- **Usage proportions:** mostly canvas and white, moss ink for text, olive for brand. Lime and
+  caramel are spent sparingly; if they are doing a lot of work on a screen, they are overused.
+- **Primary actions are moss ink.** Caramel marks one money moment; lime marks selection and
+  "Zerupt is advising".
+- **Marketing** adds cornsilk section backgrounds, forest night dark sections, copper highlights
+  and bark tones for illustration and photography grading.
+- **Display settings:** users can pick text size (100, 115, 130%) and a high contrast theme.
+- **Banned:** violet, teal, navy, raw palette classes, white text on caramel, caramel or copper
+  text on light, Inter, Roboto, serif.
+- **Retired:** the citron scale, one-citron-moment, ink `#141310`, IBM Plex.
+- **White-label brands** remap the brand olive only; danger stays danger.
 
 ## 13. Typography
 
-**IBM Plex** family throughout — chosen for first-class Latin + Arabic + Devanagari coverage
-in one type family (critical for MENA / India / SEA).
-- **Sans:** IBM Plex Sans (Latin), IBM Plex Sans Arabic, IBM Plex Sans Devanagari — selected
-  by `:lang()`. Everything: display, headings, body, UI.
-- **Mono:** IBM Plex Mono — numerals, currency, codes, tables, data-dense UI.
-- **Weights in use:** 400 (Regular), 500 (Medium), 600 (SemiBold). No Light, no Bold-800+.
-- **Web fallback stack:** `"IBM Plex Sans", system-ui, "Segoe UI", sans-serif`.
-- **Mono fallback:** `"IBM Plex Mono", ui-monospace, "SF Mono", monospace`.
+**Noto Sans family** throughout, chosen because one harmonised, free family covers every script
+we sell in (English, Arabic, Hindi, Punjabi, Thai, Malay) and matches the Android system font:
+Noto Sans, Noto Sans Arabic, Noto Sans Devanagari, Noto Sans Gurmukhi, Noto Sans Thai (selected
+by language) and Noto Sans Mono for codes and eyebrows.
 
-> No editorial serif: no serif with equal Arabic + Devanagari coverage exists in IBM Plex,
-> and multilingual consistency outranks the serif look. Display personality = weight + size
-> + tight tracking.
+- **Weights:** 400, 500, 600 only. Display uses 500.
+- **Floor:** no text below 12px.
+- **Arabic:** 6% larger, taller line-height (1.6; Thai 1.7), no letter-spacing, no italics, no uppercase styling.
+- **Money and numbers:** Noto Sans with tabular figures, right-aligned, full precision.
+  Western digits by default, Arabic-Indic as a per-tenant and per-user choice.
+- **Dates:** unambiguous (`06 Nov 2026`), never `06/11/26`.
+- **Display personality** comes from size, weight and tight tracking. No serif.
 
-**Type scale** (1.25 major-third, 16px base):
-| Token | Web (rem / line-height) | Print (pt) | Weight | Use |
-| --- | --- | --- | --- | --- |
-| display | 3.05rem / 1.1 | 44pt | 600 | hero numbers, marketing |
-| h1 | 2.44rem / 1.15 | 34pt | 600 | page titles |
-| h2 | 1.95rem / 1.2 | 27pt | 600 | section |
-| h3 | 1.56rem / 1.3 | 22pt | 600 | subsection |
-| h4 | 1.25rem / 1.4 | 18pt | 500 | card titles |
-| body | 1rem / 1.6 | 11pt | 400 | default |
-| small | 0.8rem / 1.5 | 9pt | 400 | captions, helper |
-| mono | 0.875rem / 1.5 | 10pt | 400–500 | numbers, codes |
+Product and website scales: `erp/DESIGN.md` section 3.
 
-**Tracking:** display/h1 ≈ −2%; h2–h4 ≈ −1%; body 0; all-caps labels (rare) +4%.
-**RTL / Devanagari:** line-heights ≥1.5 on body to give Arabic/Devanagari ascenders room.
-Never set `line-height < 1.4` on multilingual text.
+## 14. Grid and Layout
 
-## 14. Grid & Layout
+- **Spacing:** 4px base.
+- **Breakpoints:** 640, 1024, 1280, 1536. Content widths: 1280 lists and reports, 960 forms
+  and documents, 720 settings.
+- **Shape:** soft, continuous and concentric. Generous radii that step up with the size of
+  the surface (chips small, cards larger, dialogs largest), squircle corners where supported,
+  inner radius = outer radius minus padding. Dense back-office screens tighten the radii.
+- **Density:** one component, three modes (compact for back office, comfortable by default,
+  touch for POS).
+- **Elevation:** four calm levels; cards sit on the canvas with a hairline, not a heavy shadow.
+- **Print page:** A4, 18mm margins. Printed documents follow the document's language and
+  brand, not the app theme.
 
-- **Spacing system:** 4px base. Rhythm in multiples of 4 (`gap-2/4/6/8` = 8/16/24/32px).
-- **Columns:** 12-column fluid grid; 24px gutter desktop, 16px mobile.
-- **Breakpoints:** sm 640 · md 768 · lg 1024 · xl 1280 · 2xl 1536px. Max content width 1280px.
-- **Page gutters:** `px-6` (24px) mobile, `px-8`+ (32px) desktop.
-- **Radii:** `--radius-lg: 0.5rem` (cards, buttons), `md`/`sm` derived. Soft, not pill — pills
-  reserved for the citron status / nav accent.
-- **Elevation:** subtle. Cards sit on cream via a 1px `border` + faint shadow, not heavy
-  drop-shadows. Dark mode uses surface lightness (`card` > `background`) over shadow.
-- **Print page:** A4, 18mm margins, 12-col grid, baseline aligned to the 11pt body leading.
+## 15. Iconography and Graphic Device
 
-## 15. Iconography & Graphic Device
+- **Icons:** Lucide, line style, `currentColor`, three sizes (16, 20, 24). Quiet by default;
+  icons clarify, never decorate. Directional icons mirror in RTL; logos and numbers never do.
+- **The graphic device, "the spark":** a single lime tick or upward stroke derived from
+  "erupt." Used sparingly as the "Zerupt is advising" marker. One per view, never a pattern.
+- **Patterns and textures:** avoid. Whitespace is the texture; no gradients or noise.
 
-- **Icons:** minimal line icons, **24px grid, 1.5px stroke**, rounded joins, consistent
-  optical weight. Quiet by default (ink / muted); citron only to signal active/advisory
-  state. Icons clarify, never decorate. Source library: Lucide (matches stroke style).
-- **The graphic device — "the spark / upward mark":** a single citron tick or upward stroke
-  derived from "erupt." Used sparingly as a brand signal (the "Zerupt is advising" marker,
-  loading/thinking state, section accent). One per view, never a pattern.
-- **Patterns/textures:** avoid. Whitespace is the texture. If a fill is ever needed, use a
-  faint ink hairline rule or a low-opacity sage tint — never gradients or noise.
+## 16. Imagery and Art Direction
 
-## 16. Imagery & Art Direction
+- **Subject:** real retail, real owners, real markets (MENA, India, SEA). The **owner is the
+  hero; Zerupt is the quiet force behind them.**
+- **Treatment:** warm natural light, true-to-life colour, shallow depth, authentic moments.
+- **Crop:** generous negative space for text overlay; subject off-center.
+- **Do:** a shop owner mid-work, hands on product, local context.
+- **Don't:** generic stock-tech, abstract 3D gradients, fake boardrooms, anything cold or corporate.
+- **Logo on imagery:** monochrome only, on a calm area, with a scrim if contrast is below AA.
 
-- **Subject:** real retail, real owners, real markets (MENA / India / SEA). The **owner is
-  the hero; Zerupt is the quiet force behind them.**
-- **Treatment:** warm, natural light; true-to-life color (no heavy filters); shallow depth;
-  authentic moments over posed stock. Slight warm grade to sit with cream.
-- **Crop:** generous negative space for text overlay; rule-of-thirds; subject off-center.
-- **Do:** a shop owner mid-work, hands on product, genuine expression, local context.
-- **Don't:** generic stock-tech, abstract 3D gradients, fake diverse boardrooms, screens
-  glowing in dark rooms, anything cold or corporate.
-- **Logo on imagery:** monochrome cream/ink only, on a calm area, with scrim if contrast < AA.
+## 17. Materials and Motion
 
-## 17. Motion
+**Materials: frosted paper, not glass.** A frosted-glass effect is allowed only on floating
+chrome (top bar on scroll, bulk-action bar, menus and popovers, command palette, sheets,
+toasts). Tables, forms, sidebar, dialogs, the POS checkout bar and print are always solid.
+It falls back to solid only when the device asks for it (reduced transparency, forced colours,
+no support). There is no "Simple look" setting.
 
-Effortless and assured — things resolve smoothly, never bounce or over-animate. Motion =
-*the impossible made easy* (Magician) with calm timing (Sage).
-- **Easing:** standard `cubic-bezier(0.2, 0, 0, 1)` (decelerate-in); exits `cubic-bezier(0.4, 0, 1, 1)`.
-- **Durations:** micro 120ms · standard 200ms · large/transition 320ms · ambient ≤ 600ms.
-- **Principles:** one thing moves at a time; opacity + small translate (≤8px), no large
-  slides; **no spring/bounce, no easing that overshoots**; respect `prefers-reduced-motion`.
-- **Citron in motion** marks "**Zerupt is acting / thinking / advising**" — a calm pulse or
-  the spark device, never a flashing or attention-grabbing animation.
-- **Logo animation (when mark exists):** wordmark settles in; optional single citron-spark
-  reveal on the accent detail. Under 600ms, never playful.
+**Motion: effortless and assured.** Things resolve smoothly and never bounce.
+- One calm ease, no overshoot ever. Durations from 120ms (press) to 320ms (dialogs), longer only on the website.
+- Motion explains a change (a menu grows from its button, a sheet slides from the inline end),
+  then gets out of the way. Reduced motion becomes a short fade.
+- **Lime in motion** marks "Zerupt is acting, thinking or advising": a slow lime shimmer on the
+  suggestion card edge or the spark device, never flashing and never used for loading. The
+  success check draws itself.
+- **Feedback and errors** follow the action lifecycle: every tap gets an answer, every error
+  says what happened, whether it is safe, and what to do next.
+
+Tokens, choreography, feedback tiers, lifecycle and error catalogue: `erp/DESIGN.md` sections 6-10.
 
 ## 18. Data Visualization
 
-The data is the hero. Use the **citron→olive→sage→ink** ramp (`chart-1..5`). Charts feel like
-**insight handed to you, not a dashboard to decode** — every chart implies a next action
-where possible. Numbers in IBM Plex Mono. Gridlines are faint ink hairlines; no heavy
-chrome; citron reserved for the single most important series or the recommended value.
+The data is the hero. Charts feel like **insight handed to you, not a dashboard to decode**;
+every chart implies a next action where possible. Caramel or lime is reserved for the single most
+important series or the recommended value. Maximum 6 series, direct labels, faint hairline
+gridlines, no heavy chrome, numbers in tabular Noto Sans. The categorical palette is
+provisional pending colour-vision-deficiency checks: see `erp/DESIGN.md` section 11.8.
 
 ---
 
@@ -489,8 +454,8 @@ business. This is the brand's soul made interactive — the single most importan
 of the Magician–Sage.
 
 Principles for this surface:
-- **Visually distinct and citron-marked** — the one place citron carries meaning as "Zerupt
-  is advising."
+- **Visually distinct and lime-marked**: a lime-highlighted card with the Zee shimmer (fill
+  and accent only), the one place the shimmer carries meaning as "Zerupt is advising."
 - **Calm and confident** — a clear recommendation with a reason, never a wall of options.
 - **Always actionable** — one obvious next step, phrased as an outcome ("Restock X before
   the weekend — you'll run out Thursday"), one tap to act.
@@ -501,15 +466,16 @@ is the brand.
 
 ## 20. Touchpoints
 
-- **Product UI:** dark-first, cream/ink surfaces, citron only for focus/active/advising, ink
-  CTAs, IBM Plex throughout, numbers in mono.
+- **Product UI:** light first (dark supported), calm canvas with solid paper data surfaces,
+  frosted chrome only on floating bars and menus, moss-ink CTAs, one caramel money moment per screen,
+  Noto Sans throughout, numbers in tabular Noto Sans.
 - **Marketing site:** quiet-luxury layout, generous whitespace, owner-hero photography,
-  confident-bold copy, one citron accent per view. No SaaS-violet, no gradient soup.
+  confident-bold copy, restrained accents per view. No SaaS-violet, no gradient soup.
 - **Social (@zerupt.erp / @hussainbuildswithai):** confident, outcome-led captions; show the
   product *doing the work* and *giving the next move*; real owners over stock.
-- **Stationery:** business card — ink card, cream wordmark, mono details; or cream card, ink
-  wordmark, one citron edge. A4 letterhead: wordmark top-left, 18mm margins.
-- **Presentation / deck:** cream slides, ink type, one citron accent per slide, big numbers
+- **Stationery:** business card: moss card, cream wordmark, mono details; or cream card, moss
+  wordmark, one lime edge. A4 letterhead: wordmark top-left, 18mm margins.
+- **Presentation / deck:** cream slides, moss type, one accent per slide, big numbers
   in mono, lots of air.
 - **Email / docs / receipts:** restrained, trustworthy, mono for figures, never noisy.
 - **Sales conversations:** lead with the outcome ("your business, handled") and the next
@@ -523,24 +489,30 @@ is the brand.
 
 | ✅ Always | ❌ Never |
 | --- | --- |
-| One citron accent, ~10% of a view | Citron text on light; >1 accent color |
-| Ink for primary CTAs | Citron buttons with white text |
+| Lime for selection, caramel for the one money moment | Caramel text on light; more than one caramel button per screen |
+| Moss ink for primary CTAs | Caramel buttons with white text |
 | Sentence case, outcome-led copy | Jargon (ERP, module, SKU); Title Case headlines |
-| IBM Plex everywhere; mono for numbers | Mixing in Inter / Noto / a serif |
+| Noto Sans family per script; tabular figures for numbers | Mixing in Inter / Roboto / a serif |
 | Logical CSS (`ms/me/ps/pe`) | Physical `margin-left` / `right` |
 | Real owner photography, warm & true | Stock-tech, 3D gradients, cold corporate |
 | Calm motion, no bounce | Springy/overshoot animation, flashing |
+| Light first; verify dark too | Treating dark as the default design target |
+| Glass only on floating chrome | Glass on tables, forms, sidebar, dialogs, POS bar, print |
+| Colour + icon + word for status | Status by colour alone |
 | Whitespace as texture | Patterns, noise, gradient fills |
 | Verify ar + en on every screen | Shipping LTR-only or English-only |
 
 ## 22. Document Map & Versioning
 
 **Hierarchy (top wins):**
-1. **This Brand Book** (`agent-os/brand/brand-foundation.md`) — all brand meaning.
-2. **`erp/DESIGN.md`** — engineering token spec; machine-readable mirror of Part C.
-3. **`apps/web/src/app/globals.css`** — the CSS implementation.
+1. **Paper boards (page "Zerupt Design System", 00-11) + `erp/DESIGN.md`**: the visual source
+   of truth (chain: Paper boards, then `erp/DESIGN.md`, then `apps/web/src/app/globals.css`).
+2. **This Brand Book** (`agent-os/brand/brand-foundation.md`): brand meaning, strategy, voice;
+   Part C summarises and links to the visual source.
+3. **`agent-os/brand/design-system.md`**: short marketing-facing cheat sheet.
 
-When anything disagrees: fix this book first, then `DESIGN.md`, then the CSS.
+Visual disagreements: fix this book to match `erp/DESIGN.md`. Strategy and voice disagreements:
+this book wins.
 
 **Companion file:** `agent-os/brand/zerupt-brand-book.html` — the designed, print-ready
 render of this document (open → Print → Save as PDF).
@@ -553,6 +525,9 @@ templates · deck template · email template.
 | Version | Date | Change |
 | --- | --- | --- |
 | 1.0 | 2026-05-28 | Initial brand book — strategy, verbal, visual, applications, governance. Logo placeholder. |
+| 2.0 | 2026-11-06 | Visual identity (Part C) rewritten for Design System v2: light first, new palette roles, soft shape, frosted chrome, motion and lifecycle. Visual source of truth moved to Paper boards + `erp/DESIGN.md`. Parts A and B unchanged. |
+| 3.0 | 2026-11-06 | Visual identity moved to Olive Grove palette + Noto Sans family: moss ink, olive, lime selection, caramel money moment, vivid status, forest night dark, category palette, signature moments, display settings. |
+| 3.1 | 2026-11-06 | Logo keeps original citron colours (logo-only exception, never in UI); logo hexes are tokens used only by the logo component. |
 
 **Living document.** Update when strategy shifts, the tagline is chosen, the logo is
 finalized, or motion tokens land. Keep §1 current — it is the brand in one screen.

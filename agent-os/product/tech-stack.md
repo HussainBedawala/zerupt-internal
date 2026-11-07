@@ -97,7 +97,7 @@ erp/
 | TanStack Query | ^5 | Server-state caching |
 | Zustand | ^5 | Local UI state |
 | next-intl | ^4.8.3 | i18n: locale routing, translations. Launch: `ar`, `en` |
-| IBM Plex Sans / Mono | — | Latin, Arabic, Devanagari (same family) + monospace |
+| Noto Sans family (Sans, Arabic, Devanagari, Gurmukhi, Thai) + Noto Sans Mono | — | One family per script via `:lang` + `unicode-range`, plus monospace |
 | React Hook Form + Zod | — | Form validation |
 
 ### Backend

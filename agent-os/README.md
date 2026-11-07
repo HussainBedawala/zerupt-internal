@@ -19,7 +19,7 @@ code repo; if an agent needs a fact about the product, it lives here.
 
 | Folder | What lives here | Primary audience |
 |--------|-----------------|------------------|
-| **`brand/`** | Identity, positioning, voice, visual system. The 100%-correct source of truth everything else must align to. | Everyone |
+| **`brand/`** | Identity, positioning, voice, visual system (visual source: Paper "Zerupt Design System" + `erp/DESIGN.md`). The 100%-correct source of truth everything else must align to. | Everyone |
 | **`marketing/`** | GTM context, offer, content style guide, build-in-public plan, and the `website/` sub-tree (specs + SEO + live digest). | Marketing agents |
 | **`customers/`** | Who we sell to: `personas/`, `journeys/`, `testing-checklists/`, and `test-data/` fixtures. | Marketing + Product |
 | **`product/`** | What we've built: `mission.md`, `tech-stack.md`, `system-architecture.md`, `feature-catalog/` (canonical feature list), and `modules/` (per-module design specs). | Product + Marketing |
@@ -33,7 +33,7 @@ code repo; if an agent needs a fact about the product, it lives here.
 | I need… | Go to |
 |---------|-------|
 | Brand positioning / the "enemy" / the "Next Move" moment | `brand/brand-foundation.md`, `brand/brand-story.md` |
-| Colors, typography, logo usage (marketing-facing) | `brand/design-system.md` |
+| Colors, typography, logo usage (marketing-facing) | `brand/design-system.md` (summary). Visual source of truth: Paper "Zerupt Design System"; written spec: `erp/DESIGN.md` |
 | Voice, tone, always-say / never-say | `marketing/content-style-guide.md` |
 | Positioning, ICP, pricing guardrails | `marketing/marketing-context.md` |
 | The Grand Slam Offer | `marketing/offer.md` |

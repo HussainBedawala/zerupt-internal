@@ -4,7 +4,7 @@
 > the site the *right* way before writing feature code.
 > **Canon:** June brand + offer docs win over the March MW Linear issues (see "Linear hygiene").
 > **App:** `erp/apps/website` (`@zerupt/website`), Next.js 16 + next-intl v4 (`localePrefix: "always"`,
-> en/ar), `motion` for animation, Tailwind v4 tokens in `globals.css` (brand tokens already correct).
+> en/ar), `motion` for animation, Tailwind v4 tokens in `globals.css` (brand tokens: spec v2 in `erp/DESIGN.md`; website `globals.css` still migrating).
 
 ---
 
@@ -54,7 +54,7 @@ Home page section order (single `<h1>`, then `<h2>` per section):
 3. **The Zerupt Way** — 3 steps (answer → AI configures → up and running in 2 hours).
 4. **Product preview** — branded mockups (POS / your numbers / AI import). Not stock screenshots.
 5. **What it does** — outcome-framed capability cards (NOT "modules"; name by owner outcome).
-6. **"Your Next Move"** — the one differentiator moment; the single citron-meaning surface.
+6. **"Your Next Move"** — the one differentiator moment; the single lime-meaning surface.
 7. **Comparison** — Zerupt vs SAP/NetSuite/Odoo/Foodics-Qoyod (price, setup time, Arabic/GCC VAT, AI, ZATCA e-invoicing). ZATCA Phase 1 + Phase 2 is shipped and claimable as a comparison axis for KSA.
 8. **Pricing teaser** — 3 tiers summary → link to `/pricing`.
 9. **Proof / Founding 50** — guarantee (2-part), scarcity counter, founder note.
@@ -99,13 +99,13 @@ index when Phase-2 pushes URL count up.
       `BreadcrumbList` (country pages, phase 2). Validate in Rich Results Test.
 - [ ] **Semantic HTML** — one `<h1>`/page, ordered headings, `<nav>/<main>/<footer>` landmarks, lists.
 - [ ] **404** `not-found.tsx` (branded, links home). Confirm correct 404 status, not soft-200.
-- [ ] **Favicon set** — `icon`, `apple-icon`, `manifest.ts` (name, theme-color cream/ink, icons), `theme-color`.
+- [ ] **Favicon set** — `icon`, `apple-icon`, `manifest.ts` (name, theme-color cream/forest night, icons), `theme-color`.
 - [ ] **OG/Twitter** — `openGraph` + `twitter` (`summary_large_image`) on every page.
-- [ ] **Dynamic OG image** — `@vercel/og` branded template (logo + page title, cream/ink/citron). Per page.
+- [ ] **Dynamic OG image** — `@vercel/og` branded template (logo + page title, cream/forest night/olive/lime). Per page.
 - [ ] **`alt` text** on all meaningful images; decorative images `alt=""`.
 
 ### 2.2 Performance / Core Web Vitals (Lighthouse: Perf 90+, A11y 95+, BP 95+, SEO 100)
-- [ ] **Fonts** — IBM Plex Sans (Latin+Arabic+Devanagari) + Mono via `next/font` (self-host, subset,
+- [ ] **Fonts** — Noto Sans (Latin + Arabic + Devanagari per script) + Noto Sans Mono via `next/font` (self-host, subset,
       `display: swap`, preload critical weights 400/500/600 only). Tune fallback metrics to kill CLS.
 - [ ] **Images** — `next/image` everywhere, explicit width/height, AVIF/WebP, lazy below fold, hero priority.
 - [ ] **CLS** — reserve space for hero/media; no layout shift from fonts/animation. Target CLS < 0.05.
@@ -148,14 +148,14 @@ index when Phase-2 pushes URL count up.
       country C.") that an LLM can quote verbatim without inference.
 
 ### 2.6 Brand / UX consistency (first-impression gate — non-tech TA)
-- [ ] **Brand tokens** confirmed cream/ink/citron in `globals.css` (DONE) — audit pages for any stray
+- [ ] **Brand tokens** confirmed canvas/moss ink/olive/lime/caramel (v3) in `globals.css` (DONE) — audit pages for any stray
       violet/teal/zinc leftover from March scaffolding.
-- [ ] **Color rules** — one accent/view; citron never as text on light (use olive-deep); **primary CTA = ink**,
-      citron = active/focus/"Zerupt is acting" only.
+- [ ] **Color rules** — one accent/view; lime and caramel never as text on light (brand text and links use olive `#606C38`); **primary CTA = moss ink**,
+      lime = active/focus/"Zerupt is acting" only; caramel = the one money moment.
 - [ ] **Defensive UX on every form** — loading / error / empty / success / already-submitted states;
       debounced submit; client+server validation; never lose user input on error.
 - [ ] **RTL parity** — logical CSS props only; arrows/chevrons flip; no horizontal overflow in ar;
-      Arabic line-height ≥1.5; numbers in Mono.
+      Arabic line-height ≥1.5; numbers in Noto Sans tabular numerals.
 - [ ] **i18n parity** — `pnpm --filter @zerupt/website i18n:check` passes (en source of truth).
 - [ ] **Cross-browser/device** — Chrome/Safari/Firefox/Edge/Samsung; 1920/1440/1366/iPad/iPhone/Android.
 
@@ -199,4 +199,4 @@ The March MW issues are **structural scaffolding with stale brand/pricing/copy**
   324 (legal — built), 325 (perf), 326 (cross-browser), 327 (deploy).
 - **New issues to add:** geo-aware CTA component; `/llms.txt`; dynamic OG; metadata factory; JSON-LD set;
   GCC country-page template (Phase F); Cal.com booking integration.
-- Update issue copy/colors away from violet/teal/per-user pricing → cream/ink/citron + per-outlet GCC.
+- Update issue copy/colors away from violet/teal/per-user pricing → canvas/moss ink/olive/lime + per-outlet GCC.

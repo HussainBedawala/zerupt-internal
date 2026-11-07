@@ -40,7 +40,7 @@ Build the smartest, most beautiful, most trustworthy system a retail owner has e
 2. **It works for you** — done-for-you operations. The system runs the busywork so the owner manages, not operates. No manual data entry. No fighting the tool.
 3. **It grows you** — a directive advisor. Zerupt tells the owner their next move: what to stock, what's running out, where money is leaking, what to do this week. Not a dashboard to decode — insight handed to you.
 
-**The signature moment:** a recurring, citron-marked UI surface where Zerupt says what to do next — one clear recommendation, one tap to act, the why on demand. This is the brand's soul made interactive.
+**The signature moment:** a recurring, lime-highlighted UI surface (with the Zee shimmer) where Zerupt says what to do next — one clear recommendation, one tap to act, the why on demand. This is the brand's soul made interactive.
 
 ---
 
@@ -63,7 +63,7 @@ Build the smartest, most beautiful, most trustworthy system a retail owner has e
 - **Up and running on your real numbers in under 2 hours.** AI handles configuration, data import, and setup. No implementation partner. No consultant. No months-long project.
 - **Agentic, not just automated.** The system watches, advises, and acts — not just stores data and waits for queries.
 - **Built for the owner, not the accountant.** Every surface is designed for a non-technical, time-starved operator. Radical simplicity over feature completeness.
-- **Language-first.** Arabic RTL from day one. IBM Plex Sans covers Latin, Arabic, and Devanagari in one family. MENA/India/SEA tax compliance baked in — not bolted on.
+- **Language-first.** Arabic RTL from day one. The Noto Sans family covers Latin, Arabic, Devanagari, Gurmukhi, and Thai in one harmonised set. MENA/India/SEA tax compliance baked in — not bolted on.
 - **Built from 10 years of family retail-industry experience.** Every workflow reflects real GCC retail reality, not generic software assumptions. No generic AI guessing — domain patterns are learned from the inside.
 
 ---

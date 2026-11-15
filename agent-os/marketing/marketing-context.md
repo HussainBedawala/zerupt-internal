@@ -52,7 +52,6 @@ import (with free done-for-you migration in the offer) kills that objection.
 - Core ERP + ZATCA compliance are NEVER gated; only scale + AI depth are gated.
 - **Guarantee (2 parts):** (1) up and running in under 2 hours or we do setup + migration free and
   you don't pay until you're running; (2) 30-day clarity-or-full-refund.
-- **Founding 50:** lifetime-locked founder pricing, public live seat counter for urgency.
 - GTM motion: no card at signup → concierge onboarding = activation → card after they're up and running.
   Reverse trial, never permanent freemium.
 
@@ -101,4 +100,4 @@ codemaps/specs before promising specifics. NEVER promise a spec-only feature as 
 
 - Never: "ERP" as the hook, per-user pricing, "free forever", uptime/SLA promises,
   features not in codemaps, India pricing, fundraising/VC framing (bootstrapped).
-- Always: up and running in under 2 hours, free migration, proper Arabic, GCC VAT compliance, KSA ZATCA e-invoicing (Phase 1 + Phase 2) up and running, unlimited staff logins, Founding 50 scarcity (with the real seat number), the two-part guarantee.
+- Always: up and running in under 2 hours, free migration, proper Arabic, GCC VAT compliance, KSA ZATCA e-invoicing (Phase 1 + Phase 2) up and running, unlimited staff logins, the two-part guarantee.

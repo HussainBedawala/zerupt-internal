@@ -61,11 +61,9 @@ tldr: Complete English copy for every page, section, button, state, and microcop
 
 | Context | Label | Sub-label (if any) |
 |---|---|---|
-| Primary (GCC, Founding 50 active) | Book your free setup | First 50 GCC shops. Founder pricing, frozen. |
-| Primary (GCC, post-50) | Start free | Up and running in under 2 hours. |
+| Primary (GCC) | Start free | Up and running in under 2 hours. |
 | Primary (non-GCC) | Join the waitlist | Be first when we open your market. |
 | Secondary | See how it works | |
-| Founding 50 CTA | Claim your founding seat | [X] of 50 remaining |
 | Team page CTA | Hire your team | |
 | Pricing page CTA | Get your team | |
 
@@ -271,13 +269,6 @@ Body: If you are not up and running on your real numbers within 2 hours of start
 Icon: calendar
 Headline: 30 days. If you don't see more clearly, every fil back.
 Body: Spend 30 days with your team. If your profit, stock, and cash are not more clearly in front of you than they ever were before, we give you every fil back. No questions. No lock-in. Your data is yours. Export anytime.
-
-**Founding 50 block:**
-Eyebrow: Founding 50 seats
-Headline: The first 50 GCC shops get a different deal.
-Body: Founder pricing, frozen for life. Personal done-with-you onboarding from Hussain's team. In return, honest feedback that makes Zerupt better. We are filling the seats now.
-Live counter: [X] of 50 remaining
-CTA: Claim your founding seat
 
 **Trust details row:**
 - No credit card to start
@@ -669,22 +660,9 @@ Up and running in under 2 hours, or we finish the setup ourselves, free.
 
 ---
 
-### Founding 50 block
-
-**Eyebrow:** Founding 50
-
-**Headline:** The first 50 GCC shops get a deal that never expires.
-
-**Body:** Founder pricing, frozen for your account for life. Personal done-with-you onboarding from Hussain's team. Access to Hussain directly for feedback and questions. In return, honest feedback that shapes the product.
-
-**Live counter:** [X] of 50 seats remaining
-**CTA:** Claim your founding seat
-
----
-
 ### Industry gate
 
-**Gate trigger:** Shown when any "Get [tier]" or "Claim your founding seat" or "Book your free setup" CTA is clicked from the pricing page (and globally).
+**Gate trigger:** Shown when any "Get [tier]" or "Book your free setup" CTA is clicked from the pricing page (and globally).
 
 **Gate headline:** One quick question before we get you started.
 
@@ -821,8 +799,6 @@ Here is my promise to you. Up and running on your real numbers in under 2 hours.
 
 And if you spend 30 days with Zerupt and you do not see your profit, your stock, and your cash more clearly than you ever have before, I will give you every fil back. No conditions. No lock-in. Your data is yours. Export it anytime.
 
-The first 50 GCC shops to join get something extra. Founder pricing, locked for your account for life. Personal onboarding from my team. And direct access to me for honest conversations about what is working and what is not. We have 50 seats and they are going. If you are reading this, one of them might be yours.
-
 I am not asking you to trust a pitch. I am asking you to try something that cannot hurt you, built by someone who grew up watching exactly what you are going through and decided to do something about it.
 
 Book your free setup below. Mira and the team will be ready.
@@ -840,9 +816,6 @@ Primary CTA: Book your free setup
 CTA microcopy: Up and running in under 2 hours. Pay nothing until you are. 30-day guarantee.
 
 Secondary CTA: See full pricing
-
-**Founding 50 note:**
-[X] of 50 founding seats remaining. Founder pricing, frozen for life.
 
 ---
 

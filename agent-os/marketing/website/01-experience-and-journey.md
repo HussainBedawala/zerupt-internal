@@ -110,7 +110,7 @@ The homepage IS the three-act story. Each section below lists its **story beat, 
 ### Section 6, The offer + guarantee (trust): the safest yes in retail software
 - **Beat:** Act 2 authority. The Grand Slam Offer, assembled in one frame.
 - **Feeling:** "I cannot lose." Risk evaporates.
-- **Mechanism:** the offer stack (up and running in 2 hours or we do it free; 30 days or every fil back; no card; pay nothing until up and running; Founding 50 frozen pricing). A live seat counter (lime). This block sits ABOVE pricing (trust before price).
+- **Mechanism:** the offer stack (up and running in 2 hours or we do it free; 30 days or every fil back; no card; pay nothing until up and running). This block sits ABOVE pricing (trust before price).
 - **Transition:** trust + a clear offer makes them ready to weigh price.
 
 ### Section 7, Proof it is real (belief): the product, doing the work
@@ -151,7 +151,7 @@ The homepage IS the three-act story. Each section below lists its **story beat, 
 ### Global elements
 - **Sticky header:** logo, Pricing, Team, Log in, primary CTA, language toggle. Transparent over the dark hero, solid cream on scroll.
 - **Floating WhatsApp:** the GCC default channel, always reachable.
-- **Geo-aware CTA:** GCC sees "Book your free setup" (Founding 50, Cal.com); non-GCC sees "Join the waitlist." Never hard-block; reorder emphasis.
+- **Geo-aware CTA:** GCC sees "Book your free setup" (Cal.com); non-GCC sees "Join the waitlist." Never hard-block; reorder emphasis.
 
 ---
 
@@ -176,7 +176,7 @@ This page does two jobs: make price feel fair, then route each visitor to the ri
 
 ### Page experience
 - **Feeling target:** fairness + safety. "The whole shop is in every plan. I cannot make a wrong choice."
-- Tiers (Starter / Growth / Pro) in local currency, full ERP in every tier, annual = 2 months free, the two-part guarantee prominent, Founding 50 live seats, the "Beyond Pro / Chains" custom line.
+- Tiers (Starter / Growth / Pro) in local currency, full ERP in every tier, annual = 2 months free, the two-part guarantee prominent, the "Beyond Pro / Chains" custom line.
 
 ### The industry gate (the new flow you requested)
 When the visitor clicks the primary CTA (Start / Get your team / Choose plan), we ask **"What kind of shop do you run?"** before handing off. This single question routes them correctly and sets expectations.
@@ -199,7 +199,7 @@ Step A, Industry select (required):
 Step B, Market check (from country / locale / IP hint):
   GCC (SA, AE, KW, BH, OM, QA):
     -> WAC industry: route to SIGNUP (app.zerupt.com/{locale}/signup?plan&cycle&currency&industry)
-       and offer the Founding 50 "Book your free setup" (Cal.com) as the concierge path.
+       and offer the "Book your free setup" (Cal.com) as the concierge path.
     -> FIFO industry: route to WAITLIST, message: "We are getting [industry] ready. You are in the front of the line."
   Non-GCC (India, SEA, other):
     -> any industry: route to WAITLIST, message: "Zerupt is coming to [country] soon. Be first."
@@ -212,7 +212,7 @@ Step B, Market check (from country / locale / IP hint):
 - Pre-fill everything we know (plan, currency, industry, locale) into the signup or waitlist so the handoff feels effortless.
 
 ### The handoff boundary
-Signup and login happen on `app.zerupt.com`. The website's job ends at a clean, pre-filled handoff. The Founding 50 path goes to Cal.com (concierge setup), not self-serve signup.
+Signup and login happen on `app.zerupt.com`. The website's job ends at a clean, pre-filled handoff. The concierge setup path goes to Cal.com, not self-serve signup.
 
 ---
 

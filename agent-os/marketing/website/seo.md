@@ -18,7 +18,7 @@
 | 4 | Language | **Full ar/en parity at launch.** RTL polished. hreflang both ways + x-default. |
 
 **Implication of #2 (geo-aware conversion):** the site detects/segments visitor market.
-- GCC visitor → primary CTA = **Book setup call** (high-intent, concierge, Founding 50).
+- GCC visitor → primary CTA = **Book setup call** (high-intent, concierge).
 - SEA / India / other → primary CTA = **Join waitlist** ("Zerupt is launching in your market soon").
 - Detection: country page context > IP/`Accept-Language` hint > explicit market picker. Never hard-block;
   always offer both actions, just reorder emphasis.
@@ -41,7 +41,7 @@
 | Path (per locale) | Purpose | Primary CTA | Schema | Priority |
 |---|---|---|---|---|
 | `/{locale}` (home) | The landing page. Full narrative. | Geo-aware (call/waitlist) | Organization, WebSite, SoftwareApplication, FAQPage | 1.0 |
-| `/{locale}/pricing` | Per-outlet tiers, currency select, Founding 50, guarantee | Book setup / select plan | Product/Offer, FAQPage | 0.9 |
+| `/{locale}/pricing` | Per-outlet tiers, currency select, guarantee | Book setup / select plan | Product/Offer, FAQPage | 0.9 |
 | `/{locale}/start` | Raw founder-voice **ad landing page** (paid traffic). Minimal chrome, long-form letter. | Book / waitlist (UTM-tagged) | — (noindex optional, see §4) | 0.6 |
 | `/{locale}/thanks` | Post-conversion confirmation (call booked / waitlisted) | Share / next steps | — (noindex) | — |
 | `/{locale}/privacy` | Privacy policy (exists) | — | — | 0.3 |
@@ -57,7 +57,7 @@ Home page section order (single `<h1>`, then `<h2>` per section):
 6. **"Your Next Move"** — the one differentiator moment; the single lime-meaning surface.
 7. **Comparison** — Zerupt vs SAP/NetSuite/Odoo/Foodics-Qoyod (price, setup time, Arabic/GCC VAT, AI, ZATCA e-invoicing). ZATCA Phase 1 + Phase 2 is shipped and claimable as a comparison axis for KSA.
 8. **Pricing teaser** — 3 tiers summary → link to `/pricing`.
-9. **Proof / Founding 50** — guarantee (2-part), scarcity counter, founder note.
+9. **Proof** — guarantee (2-part), founder note.
 10. **FAQ** — 6–8 Q&A (FAQPage schema; objection handling + "2 hours, really?").
 11. **Final CTA** + **Footer** (links, socials @zerupt.erp / @hussainbuildswithai, "Built in Kuwait").
 
@@ -186,7 +186,6 @@ Arabic review → deploy → GSC/Bing submit → verify conversions live → ann
 - `/start` indexing: **noindex** (paid-traffic doorway, avoids thin-content/dup with home) — recommended.
 - Country-page slugs: descriptive (`/saudi-arabia`) vs ISO (`/sa`) → **descriptive** for readability+SEO.
 - Waitlist storage: Supabase `public.waitlist` (schema from DEV-309) — keep, RLS insert-only.
-- Whether home shows a live Founding-50 counter pre-launch (needs a source of truth) → static "X of 50" ok for now.
 
 ---
 

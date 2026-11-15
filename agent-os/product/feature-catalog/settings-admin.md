@@ -205,14 +205,6 @@
 
 ---
 
-## Founding Seats / Waitlist Endpoint
-- **Status:** shipped
-- **Description:** Public endpoint tracks remaining Founding 50 seats and registers waitlist interest. Powers the website's "Join Founding 50" offer.
-- **Who it's for:** Marketing / growth — captures early-adopter signups before full launch.
-- **Constraints / notes:** Public (unauthenticated) endpoint. API: `public/founding-seats`. No admin UI — data consumed by the website.
-
----
-
 ## Tenant Signup & Provisioning
 - **Status:** shipped
 - **Description:** End-to-end new-tenant registration: account creation, Supabase Auth setup, per-tenant Postgres database provisioning, seed data (default COA, currencies, document sequences, one legal entity, one branch), and initial admin user — all in a single signup flow.

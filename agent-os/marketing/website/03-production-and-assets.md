@@ -47,9 +47,8 @@ tldr: The complete build manifest for zerupt.com. Every React component, agent s
 | `AgentCard` | S4 | One card per agent: sigil, name, title, one-line win; used on home + /team | Client | default, hover/focus, "hiring-soon" state | [NEW][PRIMITIVE] |
 | `NextMoveSection` | S5 | **THE dark lime band**; NextMoveCard; this section already exists, rebuild with brand tokens | Client | card-loading, card-revealed, reduced-motion |
 | `NextMoveCard` | S5 | The signature recommendation card: lime border/spark, tabular numbers, action button | Client | loading (pulse), revealed, acted | [NEW][PRIMITIVE] |
-| `OfferSection` | S6 | Grand Slam Offer stack + SeatCounter | Client | seats-available, seats-low, seats-full |
-| `OfferStack` | S6 | Stacked offer bullets (setup free, 30-day refund, no card, founding pricing) | Server | default | [NEW][PRIMITIVE] |
-| `SeatCounter` | S6 | Live "X of 50 founding spots left"; lime; animates on load | Client | counting, low (≤10), full | [NEW][PRIMITIVE] |
+| `OfferSection` | S6 | Grand Slam Offer stack | Client | default |
+| `OfferStack` | S6 | Stacked offer bullets (setup free, 30-day refund, no card) | Server | default | [NEW][PRIMITIVE] |
 | `ProductPreviewSection` | S7 | 3 mockup frames side by side (POS, your numbers, Sami invoice); agent shown acting | Client | default, frame-focused |
 | `MockupFrame` | S7 | Device/browser shell containing a screenshot or live component; cream/moss border | Server | default, mobile-crop | [NEW][PRIMITIVE] |
 | `ComparisonSection` | S8 | Comparison ledger table (Zerupt vs legacy/POS/sheets) | Server | default, SSR for LLM citation |
@@ -586,7 +585,7 @@ The following assets need RTL art-direction or mirroring:
 | 16 | `/start` page (noindex) | Dev | No |
 | 17 | Legal pages shell (privacy, terms) + `/404` | Dev | Needs legal copy |
 | 18 | Resend integration (waitlist form) | Dev | Needs Resend API key + account |
-| 19 | Cal.com booking link (Founding 50 concierge) | Hussain | Yes, needs Cal.com account + link |
+| 19 | Cal.com booking link (concierge setup) | Hussain | Yes, needs Cal.com account + link |
 | 20 | AVIF/WebP image processing pipeline (sharp, next/image) | Dev | No |
 | 21 | RTL layout + Noto Sans Arabic font loading | Dev | No |
 | 22 | `FAQPage` JSON-LD schema | Dev | No |
@@ -633,7 +632,7 @@ The following assets need RTL art-direction or mirroring:
 | Morning-glance hero image | S12 final CTA | Not started |
 | `zerupt-symbol.svg` outlined vector | Sigil system, favicon | Exists in `agent-os/brand/`, needs path-outlining |
 | Resend API key + account | WaitlistForm | Needs setup |
-| Cal.com booking link | Founding 50 CTA | Needs setup |
+| Cal.com booking link | Concierge CTA | Needs setup |
 | Legal copy (privacy + terms) | /privacy, /terms | Legal review required before launch |
 | Seat count source of truth | SeatCounter | Decide: hardcoded (P0) vs DB-backed (P1), recommend hardcoded at launch, swap after |
 

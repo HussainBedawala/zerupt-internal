@@ -106,8 +106,7 @@ For weight-sold items the catalog price IS the per-kg price. No additional prici
 
 ### Rationale
 
-The launch ICP for June 2026 is general MENA/India/SEA small retail (electronics, auto parts, fashion, general merchandise). None of these verticals sell by weight. The only weighing verticals are grocery, produce, butcher shops, and sweets counters. None of the founding 50 target accounts are in those verticals.
-
+The launch ICP for June 2026 is general MENA/India/SEA small retail (electronics, auto parts, fashion, general merchandise). None of these verticals sell by weight. The only weighing verticals are grocery, produce, butcher shops, and sweets counters.
 The barcode scan path (existing) already covers the higher-volume case for any early weighing-vertical customer who uses a label-printing scale. Manual entry is an edge case within an edge vertical.
 
 The `soldByWeight` backend flag also does not exist today, which means any implementation requires a DB migration and API surface change, not just a frontend tweak.

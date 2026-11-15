@@ -14,7 +14,7 @@ All pages live under `/{locale}/` where locale is `en` or `ar`.
 | URL pattern | Purpose |
 |---|---|
 | `/{locale}/` | Homepage — primary conversion page, full emotional scroll |
-| `/{locale}/pricing` | Pricing page — tiers, founding-50, guarantee, industry gate |
+| `/{locale}/pricing` | Pricing page — tiers, guarantee, industry gate |
 | `/{locale}/start` | Founder letter / paid-traffic doorway (noindex) |
 | `/{locale}/team` | AI team page — Zee, Mira, Sami and the full agent roster |
 | `/{locale}/blog` | Blog index |
@@ -122,11 +122,6 @@ Components in `src/components/seo/`: Organization, SoftwareApplication, Website,
 - **WAC industries → signup:** hardware/building, auto parts, general merchandise, stationery/office, electronics/mobile (with IMEI note), apparel/fashion, cosmetics/beauty, grocery/convenience, other general.
 - **FIFO industries → waitlist:** pharmacy/medical, fresh food/bakery, restaurant/café (batch+expiry tracking not ready).
 - **Out-of-GCC market → waitlist.**
-
-### Founding 50
-- Counter fetched live from API (`/api/v1/public/founding-seats`, 60-second revalidation); falls back to env constant.
-- Shown on home "offer" section and pricing founding band.
-- Promise: first 50 GCC shops lock current pricing permanently.
 
 ### Pricing tiers (per outlet/month, SAR anchor)
 | Tier | SAR/mo | AED/mo | KWD/mo | Notes |

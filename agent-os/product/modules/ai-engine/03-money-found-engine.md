@@ -24,6 +24,7 @@ All four detectors share one substrate (features → per-tenant models → score
 - **Method:** per-SKU/location demand forecast — intermittent-demand-aware (Croston/TSB for sparse sellers, ETS/lightGBM for fast movers), reorder point vs forecast + supplier lead time. Same forecasting core later powers reorder quantities (the "employee" stage drafting POs).
 - **Actions:** 1-tap draft PO (qty suggested) · transfer from overstocked location (pairs beautifully with Noor).
 - **Baseline:** ~4–8 weeks of sales history.
+- **Deterministic pre-signal (purchase form):** `arjun.low_stock` — purchase line chip when on hand <= reorder level. Arjun later replaces the static reorder level with his forecast; the key stays.
 
 ### Tariq — Shrinkage Guard
 - **Finds:** voids/refunds/discount abuse per cashier vs peer+self baseline; count variances per location vs history. "Cashier #2 voided 6 sales yesterday — 3× their normal."
@@ -34,6 +35,12 @@ All four detectors share one substrate (features → per-tenant models → score
 - **Finds:** quiet bleeding: items selling below intended margin, price-list drift vs cost changes, customers exceeding credit terms, aging receivables risk-scored.
 - **Method:** mostly deterministic rules + simple scoring on accounting/sales data (fastest to ship of the four; lowest model risk).
 - **Actions:** price update draft · credit-hold suggestion · payment-reminder draft.
+- **Deterministic pre-signals (purchase line):**
+  - `maya.cost_rise` / `maya.cost_drop` — typed price vs this supplier's last confirmed bill price, same currency, VAT mode and unit; fires at a 5% move or more. Maya later adds "selling price now only X% above cost" and a price update draft.
+  - `maya.cheaper_supplier` — another supplier's last confirmed price for the same item is lower (same currency and unit). Becomes a Money Found card: "you paid X more than Supplier B".
+
+### Signal source keys (contract)
+Every deterministic signal built before its agent exists carries a source key `<agentKey>.<signal>` (above, plus `sami.costs_pending` in `agents/sami.md`). When the agent ships, Zee promotes the signal to an insight card with `origin: 'zee/<agentKey>'`, with no UI rework. Plain facts with no judgement (e.g. "first time buying this") get no agent key.
 
 ## Delivery Surfaces (v1 = simple, locked)
 

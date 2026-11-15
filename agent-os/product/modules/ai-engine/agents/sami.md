@@ -29,6 +29,7 @@ bar: "boringly reliable, not impressive-when-it-works" (skeptical retail veteran
 | 6 | **Review screen** — draft purchase + GL preview; low-confidence fields amber, high-confidence quiet; new items called out; blurry photo → "Retake — I can't read the totals" with problem region highlighted | web |
 | 7 | **Correction capture** — every review-screen edit recorded (field path, extracted vs corrected, confidence, modelVersion) + original image retained. Non-negotiable: this is the future self-hosted model's training set AND the supplier-item-code cache | `ai_corrections` (F0.7) |
 | 8 | **Accuracy telemetry** — per-scan: fields extracted/corrected, time-to-post → real accuracy metric per supplier/format from week 1; weekly worst-supplier review | telemetry sink (F0.2) |
+| 9 | **Late cost invoices → landed cost (Phase B)** — when a purchase is flagged "more costs come later" (`costs_pending`, signal key `sami.costs_pending`), Sami matches the later customs/freight/clearing invoice to that purchase and drafts the landed cost; human taps to post via the existing landed-cost path. Until scanned, Zee surfaces open `sami.costs_pending` purchases in the digest | ScannerModule + landed-cost path |
 
 ## What Sami does NOT own
 
@@ -66,7 +67,7 @@ PRIVACY: invoice images are SUPPLIER documents — outside "your numbers never l
 | Low-confidence extraction | Amber fields on review screen — human attention directed precisely |
 | Unreadable photo | Retake flow with highlighted problem region |
 | Unmatched supplier/product | Create-new draft pre-filled — never a dead end |
-| Quality shaky at launch | Risk valve: ship behind "Founding 50 early access" flag, never slip the MVP |
+| Quality shaky at launch | Risk valve: ship behind an early-access flag, never slip the MVP |
 
 ## Diagnostic anchors (testing)
 

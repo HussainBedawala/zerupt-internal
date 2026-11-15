@@ -51,7 +51,7 @@ Route base: `/[locale]` (en/ar). Handoff endpoint = app.zerupt.com (where we sto
 - Remotion — rendered brand/product films (2-hour switch sequence, "meet Zee").
 - Ambient video — native `<video>`, AV1/H.265, no audio track, <1MB above-fold, `+faststart`, load after LCP.
 - Resend — waitlist confirmation email (Zee voice, React Email).
-- Rate-limit (DEV-383) + Founding-50 counter — **Supabase Postgres, NOT Redis.** Small rate-limit table keyed on IP+window; counter = `count()` query. No Upstash/Redis dependency (cost decision, 2026-06-08).
+- Rate-limit (DEV-383) — **Supabase Postgres, NOT Redis.** Small rate-limit table keyed on IP+window. No Upstash/Redis dependency (cost decision, 2026-06-08).
 
 ### Perf rules
 - LCP element is always text/CTA, never canvas/video. `dpr` capped 1.5, shaders at 30fps.

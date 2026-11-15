@@ -77,9 +77,9 @@ stop losing money blindly → **feel in control of my business instead of it con
 | Variable | Score | Lever |
 | -- | -- | -- |
 | Dream outcome | 9/10 | Real-time visibility + GCC VAT compliance + KSA ZATCA e-invoicing (Phase 1 + Phase 2) + multi-branch control + the "next move" advisor. |
-| **Perceived likelihood** | **4 to 8 (the bottleneck)** | Nobody believes "2 hours". Every ERP lied before. Fix with **proof**: recorded real onboardings, live demo, the speed guarantee, founding-customer testimonials. |
+| **Perceived likelihood** | **4 to 8 (the bottleneck)** | Nobody believes "2 hours". Every ERP lied before. Fix with **proof**: recorded real onboardings, live demo, the speed guarantee, customer testimonials. |
 | Time delay | 10/10 | **Under 2 hours** vs 6 to 18 months. Show their real P&L inside the first 30 min of onboarding. |
-| Effort | 8→9 | AI self-config + AI data import + Arabic-first + concierge onboarding for the founding cohort. |
+| Effort | 8→9 | AI self-config + AI data import + Arabic-first + concierge onboarding. |
 
 **The entire go-to-market job is raising *perceived likelihood*.** The dream is already huge and the
 time delay is already world-class.
@@ -103,8 +103,7 @@ Accounting (double-entry, multi-currency, period control) · Dashboard · Report
 | 6 | **5-minute staff setup**: role-based screens + AI permission suggestions | "My staff won't learn a new system" | $2,000 |
 
 **Trimmed** (don't scale for a solo founder, or undercut the self-serve promise): in-person
-training, custom report-building service, dedicated account manager. Concierge onboarding is
-reserved for the **Founding 50** only.
+training, custom report-building service, dedicated account manager.
 
 ---
 
@@ -154,19 +153,7 @@ agentic advisor, transparently priced, up and running in 2 hours.
 
 ---
 
-## 8. Enhancers: scarcity, urgency, guarantee
-
-### Scarcity: Founding 50
-
-First **50 GCC customers** lock **founder pricing for life** (frozen even as standard prices rise
-post-launch). In exchange: honest feedback + a testimonial/case study + the occasional 15-min call.
-**Genuine** because a solo founder can only give 50 customers real concierge attention. Kept at 50
-(not 100) so it stays credible and high-touch.
-
-### Urgency
-
-Public counter: *"37 of 50 Founding seats left. Lock founder pricing for life."* Real, because there
-are literally 50.
+## 8. Enhancers: guarantee
 
 ### Guarantee: two clean parts, both built on the 2-hour USP
 
@@ -199,13 +186,9 @@ Concierge + **reverse trial**, not self-serve card-required trial:
 
 ---
 
-## 10. Offer name (MAGIC)
+## 10. Offer name
 
 **"Zerupt: up and running in 2 hours. Your whole shop, handled."**
-
-| M (reason) | A (avatar) | G (goal) | I (time) | C (container) |
-| -- | -- | -- | -- | -- |
-| Founding 50 | GCC retail owners (1 to 5 outlets) | spreadsheet chaos → real-time control | under 2 hours | the 2-hour setup |
 
 Brand voice: the **brand** leads emotional ("Your business, handled. Know your next move."); the
 **category words** (POS, accounting, inventory, ZATCA) live one layer down for comprehension + SEO.

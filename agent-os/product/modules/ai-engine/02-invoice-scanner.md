@@ -70,4 +70,4 @@ Plus the stored original image (retention policy: keep while tenant active). Thi
 | 7 | Arabic invoices, thermal/crumpled photos, totals-mismatch and retake flows, edge cases |
 | 8 | Demo polish, real-invoice test set (collect 20+ real GCC supplier invoices), i18n, telemetry |
 
-Risk valve: if day 6 quality is shaky, v1 ships behind a "Founding 50 early access" flag rather than slipping the MVP.
+Risk valve: if day 6 quality is shaky, v1 ships behind an early-access flag rather than slipping the MVP.

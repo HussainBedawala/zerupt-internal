@@ -106,8 +106,14 @@ Seeded per legal entity during entity creation. Country-specific tax accounts ar
 ├── 5100  Cost of Goods Sold                          [Expense, CostOfSales, DR]
 ├── 5200  Inventory Write-Down                        [Expense, CostOfSales, DR]
 ├── 5300  Inventory Gain/Loss on Count                [Expense, CostOfSales, DR]
-├── 5400  Freight and Delivery (Cost)                 [Expense, CostOfSales, DR]
-└── 5500  Production / Assembly Costs                 [Expense, CostOfSales, DR]
+└── 5400  Freight and Delivery (Cost)                 [Expense, CostOfSales, DR]
+
+Production pack overlay (only tenants with the production pack):
+1146 Work in Progress, 1147 Finished Goods, 1193 Inter-branch Clearing,
+5220 Wastage (Wastage), 5230 Production Variance (both CostOfSales, shown with
+COGS 5100). There is no production cost-control account: COGS 5100 is the holding
+account for production wages, rent and utilities, and step costs credit it.
+1143 Raw Materials is in the base chart; only production tenants bind its role.
 
 6000  OPERATING EXPENSES
 ├── 6110  Salaries and Wages                          [Expense, OperatingExpense, DR]

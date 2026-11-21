@@ -140,24 +140,43 @@ Line 1's own remaining quantity is not used, the pool ratio applies
 regardless of which line the correction lands on.
 ```
 
-## Assembly / Production
+## Manufacturing (production pack)
+
+Stock stages each live in their own balance-sheet account, assigned automatically
+(production pack seeds the categories and their stock-account mappings; zero setup):
+
+| Stage | Account | How assigned |
+|---|---|---|
+| Raw materials | 1143 Raw Materials (role `raw_materials_inventory`) | items in the "Raw material" category |
+| Work in progress | 1146 WIP (role `wip_inventory`) | production events |
+| Finished goods (made here) | 1147 Finished Goods (role `finished_goods_inventory`) | items in the "Finished goods" category |
+| Bought to resell | 1141 Merchandise Inventory | default for every other item |
+
+Stock entering account X always leaves from X: the `inventory` line type resolves per
+item (item > category > tenant > system) on EVERY stock event (receipt, bill, landed
+cost, sale, POS, return, count, transfer, opening stock, production).
+
+Costing is WAC per (item, legal entity). FIFO is refused for production outputs.
 
 ```
-Finished goods cost = sum(component qty × component WAC/FIFO cost)
+Material issue        DR WIP (1146)                    CR Raw Materials (1143)
+Step cost / cost adder DR WIP (1146)                   CR COGS (5100)
+Outside maker's bill  DR WIP (1146)                    CR Supplier (2111)
+Output received       DR Finished Goods (1147)         CR WIP (1146)
+Waste over tolerance  DR Wastage / Wastage (5220) CR WIP (1146)
+Sale                  DR COGS (5100)                   CR Finished Goods (1147)
 ```
 
-Entry:
-```
-DR  Inventory — Finished Good     [total]
-CR  Inventory — Component A       [cost A]
-CR  Inventory — Component B       [cost B]
-```
+Within-tolerance waste stays in WIP and raises the unit cost of the output. Order close
+trues WIP to zero (on-hand finished goods revalued, sold share to 5230 Production Variance).
 
-No P&L impact (inventory reclassification). COGS recognized only when finished goods are sold.
+### COGS is the holding account (no Production Cost Control)
 
-Scrap during production:
-```
-DR  Inventory — Finished Good     [cost minus scrap]
-DR  Production Costs (5500)       [scrap cost]
-CR  Inventory — Components        [full component cost]
-```
+Production wages, factory rent and utilities are booked by the user to COGS (5100) as
+normal expense entries. No special flag, account or default. Step costs (per output
+unit, per input base unit, flat) and recipe cost adders move that cost into WIP:
+DR WIP (1146) / CR COGS (5100). When the goods are sold, DR COGS / CR Finished Goods
+(1147) brings it back. So in any period COGS shows the overhead not yet absorbed plus
+the cost of what was sold, with Wastage (5220) and Variance (5230) beside it in the cost
+of sales section. There is no period-close sweep and no separate "Production / Assembly
+Costs" (5500) or "Production Cost Control" (5510) account.

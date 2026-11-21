@@ -286,15 +286,21 @@ DR  Internal Consumption (6800)       [qty × cost, FN]
 CR  Merchandise Inventory (1141)      [same, FN]
 ```
 
-### `inventory.assembly.completed` — Assembly
+### Production pack events
 
-```
-DR  Inventory — Finished Good         [total component cost]
-CR  Inventory — Component A           [component A cost]
-CR  Inventory — Component B           [component B cost]
-```
+`inventory` resolves per item: raw materials 1143, finished goods 1147, others 1141.
 
-With scrap: DR Production Costs (5500) for scrap amount.
+| Event | DR | CR |
+|---|---|---|
+| `production.material.issued` | WIP 1146 | inventory (1143) |
+| `production.material.returned` | inventory (1143) | WIP 1146 (inherits issued) |
+| `production.step.costed` | WIP 1146 | COGS 5100 (step cost + cost adders; line type `cogs`) |
+| `production.output.received` | inventory (1147) | WIP 1146 |
+| `production.waste.lost` | Wastage 5220 | WIP 1146 |
+| `production.order.closed` | inventory / Production Variance 5230 | WIP 1146 (or reversed) |
+
+Outside maker's bill: DR WIP 1146 / CR Supplier (purchase bill with a production reference).
+Cross-branch legs add Inter-branch Clearing 1193 so every branch balances alone.
 
 ### `inventory.disassembly.completed` — Disassembly
 

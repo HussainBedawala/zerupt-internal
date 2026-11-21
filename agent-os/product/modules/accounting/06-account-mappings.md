@@ -51,3 +51,16 @@ Item override > Category override > Warehouse override > Tenant default > System
 1. Referenced account must exist and be active
 2. Account type must match line type (revenue → Income, cogs → Expense/CostOfSales, etc.)
 3. Control accounts cannot be overridden by users
+
+## Stock account per item (inventory line type)
+
+Item and category rows for the `inventory` line type are EVENT-AGNOSTIC: one row routes
+receipt and relief on every stock event, so stock entering account X always leaves X.
+Targets must be a stock account: bound to a stock role (`merchandise_inventory` 1141,
+`raw_materials_inventory` 1143, `finished_goods_inventory` 1147) or a tenant-created
+sibling of 1141 under the Inventory header. A category change that would move held stock
+to another account is refused. The production pack seeds "Raw material" -> 1143 and
+"Finished goods" -> 1147 per legal entity. A category row applies to the category and every
+sub-category ("Raw material > Fabric" items land on 1143); the nearest mapped ancestor
+wins. Re-parenting a category that would move held stock is refused. A new "made here"
+item saved with no category goes to the finished-goods category when exactly one exists.

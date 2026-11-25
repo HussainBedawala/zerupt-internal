@@ -169,6 +169,17 @@ Vitest for web/shared. **`pnpm --filter @zerupt/web test -- <path>` does NOT fil
 
 ---
 
+## Performance budget (Neon bills every awake minute; users are far from Singapore)
+
+- **Push over poll.** No `refetchInterval`/timer network call under 5 min; it must stop at a terminal state and in hidden/idle tabs. Use `useLiveChanges` (SSE). Pinned by `apps/web/src/__tests__/refetch-interval-guard.test.ts` (`perf-poll:` comment = justification).
+- **Never hold or wake the DB on a timer.** Schedules go in the 02:00 UTC `@NightlyJob` window; no idle-open connections; LISTEN only with a subscriber.
+- **Display-only dashboards/overviews** read canonical report services; precompute what is read often (`gl_daily_balances` + readiness fallback); one overview endpoint, not N calls.
+- **Every new query:** tenant-scoped, `EXPLAIN (ANALYZE, BUFFERS)` on the largest tenant, indexed (and no index without a reader), server-paginated, batched in imports.
+- **Cache safe reads** with an explicit staleTime/revalidate and tenant in the key; `enabled` for anything not visible; nav links `prefetch={false}`.
+- **Page weight:** per-route-group i18n (`i18n/message-scopes.ts`; core <200 KB, `/login` <260 KB), heavy libs dynamically imported, list payloads only the shown fields. Reviewer: `perf-reviewer`. Evidence: `study/ops/perf/`.
+
+---
+
 ## Brand
 
 Design system v3 "Olive Grove" + Noto Sans (locked 2026-11-06). Light-first, dark = forest night `#0F1A0E`. Canvas `#F7F6EF` · surface `#FFFFFF` · moss ink `#283618` (text, primary buttons) · brand olive `#606C38` · lime `#ECF39E` = selection · caramel `#DDA15E` = the one money moment per screen (moss text on it, never text on light). Status = vivid colour + icon + word. Fonts: Noto Sans family per script (Arabic, Devanagari, Gurmukhi, Thai) + Noto Sans Mono, weights 400/500/600.
@@ -221,6 +232,7 @@ Always read the spec before building. **Branch:** `<prefix>/<DEV-XX>-<short-keba
 | Database | + `database-reviewer` + `neon-postgres` skill |
 | AI Service/Python | + `python-reviewer` |
 | Accounting | + `accounting-reviewer` |
+| New query, hook, schedule, stream, list or route | + `perf-reviewer` |
 
 **Coverage:** 80%+ general · 100% financial/accounting · 100% auth/security. **Study topics:** `study/<phase>/<topic-kebab>/README.md` (root repo), grouped by topic.
 

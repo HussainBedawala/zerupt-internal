@@ -106,6 +106,7 @@ pnpm --filter @zerupt/api typecheck    # or test
 - **Modular monolith** — NOT microservices. Solo founder = low ops. Event-driven side effects via NestJS EventEmitter.
 - **Multi-tenancy:** Central Admin DB (tenant registry, subscriptions) + per-tenant Postgres DBs. Supabase Auth (centralized), JWT carries tenant_id, TenantContextMiddleware resolves the Drizzle connection.
 - **Neon drivers:** Admin DB → `neon-http`; Tenant DBs → `neon-serverless` (WebSocket pooling).
+- **Brand:** Zerupt only. The `merpec` brand is no longer used at all (its Vercel project blocks every new deploy on purpose). Brand-as-config code still exists; don't build or test for merpec.
 - **NestJS DI tokens:** `TENANT_DB` (per-request), `ADMIN_DB` (singleton).
 
 ## Monorepo Structure
